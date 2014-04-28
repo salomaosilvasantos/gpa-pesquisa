@@ -30,8 +30,9 @@
 					<td>${projeto.id}</td>
 					<td>${projeto.nome}</td>
 				</tr>
+			</c:forEach>
 		</tbody>
-		</c:forEach>
+		
 	</table>
 </body>
 </html>
