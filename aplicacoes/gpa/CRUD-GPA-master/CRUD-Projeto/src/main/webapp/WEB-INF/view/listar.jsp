@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -12,10 +12,10 @@
 	<p>Here you can see the list of the teams, edit them, remove or
 		update.</p>
 
-	
 
-	<c:foreach var="projeto" items="${projeto}">
-	
+
+
+
 	<table border="1px" cellpadding="0" cellspacing="0">
 		<thead>
 			<tr>
@@ -25,15 +25,13 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td>${projeto.id}</td>
-				<td>${projeto.nome}</td>
-			</tr>
-
+			<c:forEach var="projeto" items="${projetos}">
+				<tr>
+					<td>${projeto.id}</td>
+					<td>${projeto.nome}</td>
+				</tr>
 		</tbody>
+		</c:forEach>
 	</table>
-</c:foreach>
-
-
 </body>
 </html>
