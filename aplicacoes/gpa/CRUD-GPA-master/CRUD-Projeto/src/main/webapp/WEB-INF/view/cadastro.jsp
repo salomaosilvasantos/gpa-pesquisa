@@ -9,6 +9,9 @@
 <html>
 <head>
 <meta charset="utf-8">
+<link
+	href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />"
+	rel="stylesheet" />
 <script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
 <script
 	src="<c:url value="/webjars/jquery-maskedinput/1.3.1/jquery.maskedinput.min.js" />"></script>
@@ -17,66 +20,80 @@
 </head>
 
 <body>
-	<div class="novo-projeto" align="left">
-		<div class="form" align="center">
-			<h2>Cadastrar Projeto</h2>
-			<form action="<c:url value="novoProjeto" />" method="POST"
-				class="form-horizontal" id="add-projeto-form"
-				onsubmit="return valida(this);">   
+	<ul class="pager">
+		<li class="previous"><a href="home">&larr; Voltar para Início</a></li>
+	</ul>
 
-				<table name="tab1">
-					<tr>
-						<td>Nome do Projeto:</td>
-						<td><input type='text' name='nome' value='' id="nomeprojeto"></td>
-					</tr>
-					<tr>
-						<td>Data de Inicio:</td>
-						<td><input type="text" name='inicio' value="dd/mm/aaaa"
-							id="datainicio"
-							onfocus="if (this.value=='dd/mm/aaaa'){this.value='';}"
-							onblur="if (this.value==''){this.value='dd/mm/aaaa';}" /></td>
-					</tr>
-					<tr>
-						<td>Data de Término:</td>
-						<td><input type="text" name='termino' value="dd/mm/aaaa"
-							id="datatermino"
-							onfocus="if (this.value=='dd/mm/aaaa'){this.value='';}"
-							onblur="if (this.value==''){this.value='dd/mm/aaaa';}"></td>
-					</tr>
-					<tr>
-						<td>Descrição do Projeto:</td>
-						<td><input type='text' name='descricao' id="descricaoprojeto" /></td>
-					</tr>
-					<tr>
-						<td>Atividades:</td>
-						<td><input type='text' name='atividades' value=''
-							id="atividades"></td>
-					</tr>
-					<tr>
-						<td>Número de Bolsas:</td>
-						<td><input type="number" name='numero_bolsas' id="numbolsas" /></td>
-					</tr>
-					<tr>
-						<td>Local do Projeto:</td>
-						<td><input type='text' name='local' value=''
-							id="localprojeto"></td>
-					</tr>
-					<tr>
-						<td>Participantes:</td>
-						<td><input type='text' name='participantes'
-							id="participantes" /></td>
-					</tr>
-					<tr>
-						<td><input name="reset" type="reset" value="Limpar Campos" />
-						</td>
-						<td><input name="submit" type="submit"
-							value="Cadastrar Projeto" /></td>
-					</tr>
-				</table>
+	<div class="container">
+		<div class="novo-projeto" align="left">
+			<div class="form" align="center">
+				<h2>Cadastrar Projeto</h2>
+				<form action="<c:url value="/projetos/new" />" method="POST"
+					class="form-horizontal" id="add-projeto-form"
+					onsubmit="return valida(this);">
 
-			</form>
+						<label>Nome do Projeto:</label> 
+						<input type='text' name='nome'
+						value='' id="nomeprojeto" class="form-control"  required>
+						
+						<label>Data	de Inicio:</label>
+						<input type="text" name='inicio' class="form-control"
+						value="dd/mm/aaaa" id="datainicio"
+						onfocus="if (this.value=='dd/mm/aaaa'){this.value='';}"
+						onblur="if (this.value==''){this.value='dd/mm/aaaa';}"  />
+						
+						<label>Data	de Término: </label>
+						<input type="text" name='termino'
+						class="form-control" value="dd/mm/aaaa" id="datatermino"
+						onfocus="if (this.value=='dd/mm/aaaa'){this.value='';}"
+						onblur="if (this.value==''){this.value='dd/mm/aaaa';}"  />
+						
+						<label>Descrição do Projeto:</label>
+						<input type='text' name='descricao'
+						id="descricaoprojeto" class="form-control" />
+						
+					<label>Atividades:</label>
+					<input type='text' name='atividades' value=''
+						id="atividades" class="form-control" />
+						
+						<label>Número de Bolsas:</label>
+						<input type="number" name='numero_bolsas' id="numbolsas"
+							class="form-control"  required/>
+					
+						<label>Local do Projeto:</label>
+						<input type='text' name='local' value=''
+							id="localprojeto" class="form-control" />
+					
+					
+						<label>Participantes:</label>
+						<input type='text' class="form-control"
+							name='participantes' id="participantes" />
+					
+					
+						<input name="reset" type="reset" value="Limpar Campos"
+							class="btn btn-default" />
+						<input name="submit" type="submit"
+							class="btn btn-default" value="Cadastrar Projeto" />
+				</form>
+			</div>
 		</div>
 	</div>
 </body>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#datatermino,#datainicio").mask("99/99/9999");
+
+</script>
+
+<style type="text/css">
+	.container{
+	width:30%;
+	}
+	
+	.btn-default{
+		margin-top:5%;
+	}
+</style>
 
 </html>
