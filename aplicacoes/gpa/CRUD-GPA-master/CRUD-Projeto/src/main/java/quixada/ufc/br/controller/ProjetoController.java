@@ -42,7 +42,7 @@ public class ProjetoController {
 	
 	
 
-	@RequestMapping(value = "/projetos/new", method = RequestMethod.POST)
+	@RequestMapping(value = "/novoProjeto", method = RequestMethod.POST)
 	public String adicionarProjeto(@Valid Projeto projeto,
 			BindingResult result, SessionStatus status,
 			HttpServletRequest request) {

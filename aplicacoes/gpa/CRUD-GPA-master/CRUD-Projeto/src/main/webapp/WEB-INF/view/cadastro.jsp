@@ -20,7 +20,7 @@
 	<div class="novo-projeto" align="left">
 		<div class="form" align="center">
 			<h2>Cadastrar Projeto</h2>
-			<form action="<c:url value="/projetos/new" />" method="POST"
+			<form action="<c:url value="novoProjeto" />" method="POST"
 				class="form-horizontal" id="add-projeto-form"
 				onsubmit="return valida(this);">
 
