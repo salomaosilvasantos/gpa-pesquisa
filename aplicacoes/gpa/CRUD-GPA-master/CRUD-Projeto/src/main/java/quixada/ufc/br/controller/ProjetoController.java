@@ -46,50 +46,47 @@ public class ProjetoController {
 	public String adicionarProjeto(@Valid Projeto projeto,
 			BindingResult result, SessionStatus status,
 			HttpServletRequest request) {
-
-		String stringData = request.getParameter("termino");
-		System.out.println(stringData);
 		projeto.setStatus("NOVO");
-
-		System.out.println(projeto.toString());
 		log.info("controller: projeto - action: AdicionarProjetos");
 		if (result.hasErrors()) {
 			return "home";
 		} else {
 			this.pc.salvar(projeto);
 			status.setComplete();
-			return "confirmacao";
+			return "redirect:/listar";
 		}
 	}
 	
 	@RequestMapping(value="/{id}/editarProjeto")
 	public String editar(Projeto p, @PathVariable("id") Integer id, Model model){
 		Projeto projeto = pc.findById(id);
-		
 		model.addAttribute("editarProjeto", projeto);
-		
-		
 		return "editar";
 	}
 	
 	@RequestMapping(value = "/{id}/editarProjetoForm", method=RequestMethod.POST)
 	public String atualizarProjeto(@PathVariable("id") Integer id, @ModelAttribute(value="editarProjeto") Projeto projetoAtualizado,BindingResult result){
-		
 		this.pc.atualizar(projetoAtualizado);
-		
-	
 		return "redirect:/listar";
 	}
 
+	@RequestMapping(value="/{id}/excluirProjeto")
+	public String excluirProjeto(Projeto p, @PathVariable("id") Integer id, Model model){
+		Projeto projeto = pc.findById(id);
+		if(projeto == null){
+			return "redirect:/listar";
+		}
+		else{
+			this.pc.delete(projeto);
+			return "redirect:/listar";
+		}
+	}
+	
 	@RequestMapping(value = "/listar")
 	public ModelAndView listar() {
 		ModelAndView modelAndView = new ModelAndView("listar");
-
 		List<Projeto> projeto = pc.findAll();
 		modelAndView.addObject("projetos", projeto);
-
 		return modelAndView;
 	}
-
-
 }

@@ -21,7 +21,8 @@
 				<th width="10%">id</th>
 				<th width="15%">name</th>
 				<th width="5%"></th>
-
+				<th width="5%"></th>
+				
 			</tr>
 		</thead>
 		<tbody>
@@ -30,6 +31,7 @@
 					<td>${projeto.id}</td>
 					<td>${projeto.nome}</td>
 					<td><a href="<c:url value="/${projeto.id}/editarProjeto" ></c:url>">Editar</a></td>
+					<td><a href="<c:url value="/${projeto.id}/excluirProjeto" ></c:url>">Excluir</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>
