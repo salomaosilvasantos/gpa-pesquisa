@@ -82,6 +82,15 @@ public class ProjetoController {
 		}
 	}
 	
+	@RequestMapping(value="{id}/submeterProjeto")
+	public String submeterProjeto(@PathVariable("id") Integer id){
+		Projeto projeto = pc.findById(id);
+		projeto.setStatus("SUBMETIDO");
+		this.pc.atualizar(projeto);
+		
+		return "redirect:/listar";
+	}
+	
 	@RequestMapping(value = "/listar")
 	public ModelAndView listar() {
 		ModelAndView modelAndView = new ModelAndView("listar");
