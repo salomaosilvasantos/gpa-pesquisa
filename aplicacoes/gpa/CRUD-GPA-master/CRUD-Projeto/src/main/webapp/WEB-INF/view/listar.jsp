@@ -8,9 +8,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>List of teams</h1>
-	<p>Here you can see the list of the teams, edit them, remove or
-		update.</p>
+	<h1>Lista de projetos</h1>
+	<p>Listagem de projetos cadastrados.</p>
 
 
 
@@ -21,6 +20,7 @@
 			<tr>
 				<th width="10%">id</th>
 				<th width="15%">name</th>
+				<th width="5%"></th>
 
 			</tr>
 		</thead>
@@ -29,6 +29,7 @@
 				<tr>
 					<td>${projeto.id}</td>
 					<td>${projeto.nome}</td>
+					<td><a href="<c:url value="/${projeto.id}/editarProjeto" ></c:url>">Editar</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>

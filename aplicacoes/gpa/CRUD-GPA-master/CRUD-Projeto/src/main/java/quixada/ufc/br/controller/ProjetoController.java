@@ -9,7 +9,10 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
@@ -36,6 +39,8 @@ public class ProjetoController {
 	public ModelAndView cadastro() {
 		return new ModelAndView("cadastro");
 	}
+	
+	
 
 	@RequestMapping(value = "/projetos/new", method = RequestMethod.POST)
 	public String adicionarProjeto(@Valid Projeto projeto,
@@ -56,6 +61,25 @@ public class ProjetoController {
 			return "confirmacao";
 		}
 	}
+	
+	@RequestMapping(value="/{id}/editarProjeto")
+	public String editar(Projeto p, @PathVariable("id") Integer id, Model model){
+		Projeto projeto = pc.findById(id);
+		
+		model.addAttribute("editarProjeto", projeto);
+		
+		
+		return "editar";
+	}
+	
+	@RequestMapping(value = "/{id}/editarProjetoForm", method=RequestMethod.POST)
+	public String atualizarProjeto(@PathVariable("id") Integer id, @ModelAttribute(value="editarProjeto") Projeto projetoAtualizado,BindingResult result){
+		
+		this.pc.atualizar(projetoAtualizado);
+		
+	
+		return "redirect:/listar";
+	}
 
 	@RequestMapping(value = "/listar")
 	public ModelAndView listar() {
@@ -66,5 +90,6 @@ public class ProjetoController {
 
 		return modelAndView;
 	}
+
 
 }
