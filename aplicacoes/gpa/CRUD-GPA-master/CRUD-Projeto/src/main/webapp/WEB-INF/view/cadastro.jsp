@@ -22,7 +22,7 @@
 			<h2>Cadastrar Projeto</h2>
 			<form action="<c:url value="novoProjeto" />" method="POST"
 				class="form-horizontal" id="add-projeto-form"
-				onsubmit="return valida(this);">
+				onsubmit="return valida(this);">   
 
 				<table name="tab1">
 					<tr>
