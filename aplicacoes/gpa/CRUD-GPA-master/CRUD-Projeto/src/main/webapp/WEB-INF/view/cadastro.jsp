@@ -20,11 +20,11 @@
 	<div class="novo-projeto" align="left">
 		<div class="form" align="center">
 			<h2>Cadastrar Projeto</h2>
-			<form action="<c:url value="/projetos/new" />" method="POST"
+			<form action="<c:url value="novoProjeto" />" method="POST"
 				class="form-horizontal" id="add-projeto-form"
-				onsubmit="return valida(this);">
+				onsubmit="return valida(this);">   
 
-				<table>
+				<table name="tab1">
 					<tr>
 						<td>Nome do Projeto:</td>
 						<td><input type='text' name='nome' value='' id="nomeprojeto"></td>
@@ -78,35 +78,5 @@
 		</div>
 	</div>
 </body>
-
-<script type="text/javascript">
-	$(document).ready(function() {
-		$("#datatermino,#datainicio").mask("99/99/9999");
-		
-		$("#add-projeto-form").validade({
-			
-			rules: {
-				nomeprojeto: "required",
-				descricaoprojeto: "required",
-				atividades: "required",
-				participantes: "required"
-			},
-			
-		messages: {
-			nomeprojeto: "Informe o nome do projeto.",
-			descricaoprojeto: "Informe a descrição do projeto.",
-			atividades: "Informe as atividades.",
-			participantes: "Informe o número de participantes"
-			
-		},
-		
-			submitHandler: function(form){
-				form.submit();
-			}
-			
-		});
-	});
-</script>
-
 
 </html>
