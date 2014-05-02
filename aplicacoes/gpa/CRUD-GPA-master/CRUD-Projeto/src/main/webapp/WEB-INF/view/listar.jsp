@@ -21,7 +21,9 @@
 	<div class="container">
 		<div class="panel panel-default">
 			<!-- Default panel contents -->
-			<div class="panel-heading">Listagem de Projetos</div>
+			
+			<div class="panel-heading" align="right"><a href="cadastro"><button class="btn btn-primary">Cadastrar Projeto  <span class="glyphicon glyphicon-plus"></span></button></a></div>
+			<div class="panel-heading" align="left"><h4>Lista de Projeto</h4></div>
 
 			<!-- Table -->
 			<table class="table" id="table">
@@ -34,7 +36,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="projeto" items="${projetos}">
+					<c:forEach var="projeto" items="${projetos}" >
 						<tr>
 							<td>${projeto.id}</td>
 							<td>${projeto.nome}</td>
@@ -50,16 +52,15 @@
 
 			</table>
 
-
+		</div>
+		</div>
 			<script type="text/javascript">
 				$(document).ready(function() {
-					var status = $('.status').text();
 					
-					if (status == 'SUBMETIDO') {
-						$(".botaoBloqueado").prop("disabled", true);
+					if ($('.status').text() == 'SUBMETIDO') {
 						 $(".acoes").text("PROJETO SUBMETIDO, AGUARDE PROCESSAMENTO");
 					}
-				},16);
+				});
 			</script>
 </body>
 </html>

@@ -17,7 +17,8 @@
 
 <body>
 	<ul class="pager">
-		<li class="previous"><a href="home">&larr; Voltar para Início</a></li>
+		<li class="previous"><a href="home">&larr; Voltar para Inicio</a></li>
+		<li class="previous"><a href="listar">&larr; Voltar para Listagem</a></li>
 	</ul>
 
 	<div class="container">
