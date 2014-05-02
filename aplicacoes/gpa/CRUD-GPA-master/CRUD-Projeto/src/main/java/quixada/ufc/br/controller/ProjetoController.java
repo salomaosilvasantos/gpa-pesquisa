@@ -47,6 +47,7 @@ public class ProjetoController {
 			BindingResult result, SessionStatus status,
 			HttpServletRequest request) {
 		projeto.setStatus("NOVO");
+		System.out.println(projeto.toString());
 		log.info("controller: projeto - action: AdicionarProjetos");
 		if (result.hasErrors()) {
 			return "home";
