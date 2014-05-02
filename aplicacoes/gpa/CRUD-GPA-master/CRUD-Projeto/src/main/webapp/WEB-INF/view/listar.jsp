@@ -53,7 +53,7 @@
 
 			<script type="text/javascript">
 				$(document).ready(function() {
-					var status = $('projeto.status').text();
+					var status = $('.status').text();
 					
 					if (status == 'SUBMETIDO') {
 						$(".botaoBloqueado").prop("disabled", true);
