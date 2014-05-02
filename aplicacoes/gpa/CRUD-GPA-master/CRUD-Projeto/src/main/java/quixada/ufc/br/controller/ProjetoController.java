@@ -39,8 +39,6 @@ public class ProjetoController {
 	public ModelAndView cadastro() {
 		return new ModelAndView("cadastro");
 	}
-	
-	
 
 	@RequestMapping(value = "/novoProjeto", method = RequestMethod.POST)
 	public String adicionarProjeto(@Valid Projeto projeto,
@@ -57,46 +55,64 @@ public class ProjetoController {
 			return "redirect:/listar";
 		}
 	}
-	
-	@RequestMapping(value="/{id}/editarProjeto")
-	public String editar(Projeto p, @PathVariable("id") Integer id, Model model){
+
+	@RequestMapping(value = "/{id}/editarProjeto")
+	public String editar(Projeto p, @PathVariable("id") Integer id, Model model) {
 		Projeto projeto = pc.findById(id);
 		model.addAttribute("editarProjeto", projeto);
 		return "editar";
 	}
-	
-	@RequestMapping(value = "/{id}/editarProjetoForm", method=RequestMethod.POST)
-	public String atualizarProjeto(@PathVariable("id") Integer id, @ModelAttribute(value="editarProjeto") Projeto projetoAtualizado,BindingResult result){
+
+	@RequestMapping(value = "/{id}/editarProjetoForm", method = RequestMethod.POST)
+	public String atualizarProjeto(@PathVariable("id") Integer id,
+			@ModelAttribute(value = "editarProjeto") Projeto projetoAtualizado,
+			BindingResult result) {
 		this.pc.atualizar(projetoAtualizado);
 		return "redirect:/listar";
 	}
 
-	@RequestMapping(value="/{id}/excluirProjeto")
-	public String excluirProjeto(Projeto p, @PathVariable("id") Integer id, Model model){
+	@RequestMapping(value = "/{id}/excluirProjeto")
+	public String excluirProjeto(Projeto p, @PathVariable("id") Integer id,
+			Model model) {
 		Projeto projeto = pc.findById(id);
-		if(projeto == null){
+		if (projeto == null) {
 			return "redirect:/listar";
-		}
-		else{
+		} else {
 			this.pc.delete(projeto);
 			return "redirect:/listar";
 		}
 	}
-	
-	@RequestMapping(value="{id}/submeterProjeto")
-	public String submeterProjeto(@PathVariable("id") Integer id){
+
+	@RequestMapping(value = "{id}/submeterProjeto")
+	public String submeterProjeto(@PathVariable("id") Integer id) {
 		Projeto projeto = pc.findById(id);
-		projeto.setStatus("SUBMETIDO");
-		this.pc.atualizar(projeto);
-		
-		return "redirect:/listar";
+		//if (validaSubmissao(projeto)) {
+			projeto.setStatus("SUBMETIDO");
+			this.pc.atualizar(projeto);
+			return "redirect:/listar";
+		//} else {
+			//return "redirect:/home";
+		//}
 	}
-	
+
 	@RequestMapping(value = "/listar")
 	public ModelAndView listar() {
 		ModelAndView modelAndView = new ModelAndView("listar");
 		List<Projeto> projeto = pc.findAll();
 		modelAndView.addObject("projetos", projeto);
 		return modelAndView;
+	}
+
+	private boolean validaSubmissao(Projeto projeto) {
+		if (!projeto.getNome().isEmpty() 
+				&& !projeto.getLocal().isEmpty()
+				&& !projeto.getParticipantes().isEmpty()
+				&& projeto.getNumero_bolsas().intValue() > 0
+				&& !projeto.getAtividades().isEmpty()
+				&& !projeto.getDescricao().isEmpty()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

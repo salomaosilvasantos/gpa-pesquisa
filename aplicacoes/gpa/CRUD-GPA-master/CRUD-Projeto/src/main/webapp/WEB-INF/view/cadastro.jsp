@@ -10,15 +10,11 @@
 <head>
 <meta charset="utf-8">
 <link href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />" rel="stylesheet" />
-<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
-<script src="<c:url value="/webjars/jquery-maskedinput/1.3.1/jquery.maskedinput.min.js" />"></script>
-<script src="<c:url value="/webjars/jquery-validation/1.12.0/jquery.validate.min.js" />"></script>
 </head>
 
 <body>
 	<ul class="pager">
 		<li class="previous"><a href="home">&larr; Voltar para Inicio</a></li>
-		<li class="previous"><a href="listar">&larr; Voltar para Listagem</a></li>
 	</ul>
 
 	<div class="container">
@@ -54,13 +50,21 @@
 			</div>
 		</div>
 	</div>
+	<ul class="pager">
+		<li class="previous"><a href="listar">&larr; Voltar para Listagem</a></li>
+	</ul>
+	
+	
+<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
+<script src="<c:url value="/webjars/jquery-maskedinput/1.3.1/jquery.maskedinput.min.js" />"></script>
+<script src="<c:url value="/webjars/jquery-validation/1.12.0/jquery.validate.min.js" />"></script>	
 </body>
 
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		$("#termino,#inicio").mask("99/99/9999");
-	}
+		$("#datatermino,#datainicio").mask("99/99/9999");
+	});
 		
 
 </script>

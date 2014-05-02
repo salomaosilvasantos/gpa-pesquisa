@@ -7,9 +7,6 @@
 <link
 	href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />"
 	rel="stylesheet" />
-<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
-<script
-	src="<c:url value="/webjars/bootstrap/3.1.1/js/bootstrap.min.js" />"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Listagem de Projetos</title>
 </head>
@@ -37,7 +34,7 @@
 				</thead>
 				<tbody>
 					<c:forEach var="projeto" items="${projetos}" >
-						<tr>
+						<tr class="linha">
 							<td>${projeto.id}</td>
 							<td>${projeto.nome}</td>
 							<td class="status">${projeto.status}</td>
@@ -53,14 +50,23 @@
 			</table>
 
 		</div>
+		<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
+		<script	src="<c:url value="/webjars/bootstrap/3.1.1/js/bootstrap.min.js" />"></script>
 		</div>
+		
+	
 			<script type="text/javascript">
-				$(document).ready(function() {
+			// Status não é quebrado, este fica junto SUBMETIDONOVO, olhar console;
+			
+			/*	$(document).ready(function() {
+					$('.status').each(function(){
+						//if($(this).text() == 'SUBMETIDO'){
+							console.log($('.status').text());
+							$('.acoes').text("PROJETO SUBMETIDO, AGUARDE PROCESSAMENTO . . .");
+						//}
+						});
 					
-					if ($('.status').text() == 'SUBMETIDO') {
-						 $(".acoes").text("PROJETO SUBMETIDO, AGUARDE PROCESSAMENTO");
-					}
-				});
+				});*/
 			</script>
 </body>
 </html>
