@@ -35,26 +35,10 @@ public class ProjetoController {
 		return "index";
 	}
 
-	/*
-	 * @RequestMapping("/cadastro") public ModelAndView cadastro() {
-	 * ModelAndView model = new ModelAndView("cadastro"); return model; }
-	 */
-
 	@RequestMapping("/cadastro")
 	public String cadastro() {
 		return "cadastro";
 	}
-
-	/*
-	 * @RequestMapping(value = "/novoProjeto", method = RequestMethod.POST)
-	 * public String adicionarProjeto(@Valid @ModelAttribute("projeto") Projeto
-	 * projeto, BindingResult result, SessionStatus status, HttpServletRequest
-	 * request) { projeto.setStatus("NOVO");
-	 * System.out.println(projeto.toString());
-	 * log.info("controller: projeto - action: AdicionarProjetos"); if
-	 * (result.hasErrors()) { return "home"; } else { this.pc.salvar(projeto);
-	 * status.setComplete(); return "redirect:/listar"; } }
-	 */
 
 	@RequestMapping(value = "/novoProjeto", method = RequestMethod.POST)
 	public String adicionarProjeto(
