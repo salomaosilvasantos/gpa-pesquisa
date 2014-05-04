@@ -29,31 +29,44 @@ public class ProjetoController {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index() {
 		log.info("controller: projeto - action: index");
 		return "index";
 	}
 
+	/*
+	 * @RequestMapping("/cadastro") public ModelAndView cadastro() {
+	 * ModelAndView model = new ModelAndView("cadastro"); return model; }
+	 */
+
 	@RequestMapping("/cadastro")
-	public ModelAndView cadastro() {
-		return new ModelAndView("cadastro");
+	public String cadastro() {
+		return "cadastro";
 	}
 
+	/*
+	 * @RequestMapping(value = "/novoProjeto", method = RequestMethod.POST)
+	 * public String adicionarProjeto(@Valid @ModelAttribute("projeto") Projeto
+	 * projeto, BindingResult result, SessionStatus status, HttpServletRequest
+	 * request) { projeto.setStatus("NOVO");
+	 * System.out.println(projeto.toString());
+	 * log.info("controller: projeto - action: AdicionarProjetos"); if
+	 * (result.hasErrors()) { return "home"; } else { this.pc.salvar(projeto);
+	 * status.setComplete(); return "redirect:/listar"; } }
+	 */
+
 	@RequestMapping(value = "/novoProjeto", method = RequestMethod.POST)
-	public String adicionarProjeto(@Valid Projeto projeto,
-			BindingResult result, SessionStatus status,
-			HttpServletRequest request) {
-		projeto.setStatus("NOVO");
-		System.out.println(projeto.toString());
-		log.info("controller: projeto - action: AdicionarProjetos");
+	public String adicionarProjeto(
+			@Valid @ModelAttribute("projeto") Projeto projeto,
+			BindingResult result) {
 		if (result.hasErrors()) {
-			return "home";
-		} else {
-			this.pc.salvar(projeto);
-			status.setComplete();
-			return "redirect:/listar";
+			return ("cadastro");
 		}
+		projeto.setStatus("NOVO");
+		this.pc.salvar(projeto);
+		return "redirect:/listar";
+
 	}
 
 	@RequestMapping(value = "/{id}/editarProjeto")
@@ -86,13 +99,13 @@ public class ProjetoController {
 	@RequestMapping(value = "{id}/submeterProjeto")
 	public String submeterProjeto(@PathVariable("id") Integer id) {
 		Projeto projeto = pc.findById(id);
-		//if (validaSubmissao(projeto)) {
-			projeto.setStatus("SUBMETIDO");
-			this.pc.atualizar(projeto);
-			return "redirect:/listar";
-		//} else {
-			//return "redirect:/home";
-		//}
+		// if (validaSubmissao(projeto)) {
+		projeto.setStatus("SUBMETIDO");
+		this.pc.atualizar(projeto);
+		return "redirect:/listar";
+		// } else {
+		// return "redirect:/home";
+		// }
 	}
 
 	@RequestMapping(value = "/listar")
@@ -103,16 +116,12 @@ public class ProjetoController {
 		return modelAndView;
 	}
 
-	private boolean validaSubmissao(Projeto projeto) {
-		if (!projeto.getNome().isEmpty() 
-				&& !projeto.getLocal().isEmpty()
-				&& !projeto.getParticipantes().isEmpty()
-				&& projeto.getNumero_bolsas().intValue() > 0
-				&& !projeto.getAtividades().isEmpty()
-				&& !projeto.getDescricao().isEmpty()) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+	/*
+	 * private boolean validaSubmissao(Projeto projeto) { if
+	 * (!projeto.getNome().isEmpty() && !projeto.getLocal().isEmpty() &&
+	 * !projeto.getParticipantes().isEmpty() &&
+	 * projeto.getNumero_bolsas().intValue() > 0 &&
+	 * !projeto.getAtividades().isEmpty() && !projeto.getDescricao().isEmpty())
+	 * { return true; } else { return false; } }
+	 */
 }

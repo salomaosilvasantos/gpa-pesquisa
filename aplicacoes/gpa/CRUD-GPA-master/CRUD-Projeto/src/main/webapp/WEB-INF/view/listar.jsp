@@ -13,7 +13,7 @@
 <body>
 
 	<ul class="pager">
-		<li class="previous"><a href="home">&larr; Voltar para Início</a></li>
+		<li class="previous"><a href="index">&larr; Voltar para Início</a></li>
 	</ul>
 	<div class="container">
 		<div class="panel panel-default">
