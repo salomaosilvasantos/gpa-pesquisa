@@ -56,17 +56,17 @@
 		
 	
 			<script type="text/javascript">
-			// Status não é quebrado, este fica junto SUBMETIDONOVO, olhar console;
 			
-			/*	$(document).ready(function() {
-					$('.status').each(function(){
-						//if($(this).text() == 'SUBMETIDO'){
-							console.log($('.status').text());
-							$('.acoes').text("PROJETO SUBMETIDO, AGUARDE PROCESSAMENTO . . .");
-						//}
-						});
-					
-				});*/
+			$(document).ready(function() {
+				$(".status").each(function(){
+					if($(this).text() == 'SUBMETIDO'){
+					$(this).parent().find(".botaoBloqueado").prop("disabled", true);
+					$(this).parent().find('.acoes').text('PROJETO SUBMETIDO, AGUARDE PROCESSAMENTO');
+				}
+
+			});
+			});
+
 			</script>
 </body>
 </html>
