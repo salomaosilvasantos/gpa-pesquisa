@@ -45,7 +45,7 @@
 
 				<form:label path="status">Status:</form:label>
 				<br>
-				<form:input path="status" class="form-control"/>
+				<form:input path="status" disabled="true" class="form-control"/>
 				<br>
 				
 				<form:label path="descricao">Descrição:</form:label>
