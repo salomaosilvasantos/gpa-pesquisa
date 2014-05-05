@@ -44,7 +44,8 @@ public class ProjetoController {
 	public String adicionarProjeto(
 			@Valid @ModelAttribute("projeto") Projeto projeto,
 			BindingResult result) {
-		if (result.hasErrors()) {
+		String resultado = projeto.getNome().trim();		
+		if (result.hasErrors() || resultado.isEmpty()) {
 			return ("cadastro");
 		}
 		projeto.setStatus("NOVO");
@@ -83,13 +84,15 @@ public class ProjetoController {
 	@RequestMapping(value = "{id}/submeterProjeto")
 	public String submeterProjeto(@PathVariable("id") Integer id) {
 		Projeto projeto = pc.findById(id);
-		// if (validaSubmissao(projeto)) {
+		//if (validaSubmissao(projeto)) {
 		projeto.setStatus("SUBMETIDO");
 		this.pc.atualizar(projeto);
+		System.out.println(projeto);
 		return "redirect:/listar";
 		// } else {
-		// return "redirect:/home";
-		// }
+		 //return "redirect:/index";
+		 //}
+		
 	}
 
 	@RequestMapping(value = "/listar")
@@ -100,12 +103,12 @@ public class ProjetoController {
 		return modelAndView;
 	}
 
-	/*
-	 * private boolean validaSubmissao(Projeto projeto) { if
-	 * (!projeto.getNome().isEmpty() && !projeto.getLocal().isEmpty() &&
-	 * !projeto.getParticipantes().isEmpty() &&
-	 * projeto.getNumero_bolsas().intValue() > 0 &&
-	 * !projeto.getAtividades().isEmpty() && !projeto.getDescricao().isEmpty())
-	 * { return true; } else { return false; } }
-	 */
+	
+	  private boolean validaSubmissao(Projeto projeto) { if
+	  (!projeto.getNome().isEmpty() && !projeto.getLocal().isEmpty() &&
+	  !projeto.getParticipantes().isEmpty() &&
+	  projeto.getNumero_bolsas().intValue() > 0 &&
+	  !projeto.getAtividades().isEmpty() && !projeto.getDescricao().isEmpty())
+	  { return true; } else { return false; } }
+	 
 }
