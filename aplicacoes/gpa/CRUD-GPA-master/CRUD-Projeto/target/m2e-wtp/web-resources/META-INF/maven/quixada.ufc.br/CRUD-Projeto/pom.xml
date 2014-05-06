@@ -49,6 +49,8 @@
 
 	<dependencies>
 
+
+
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
@@ -201,7 +203,12 @@
 			<version>1.12.0</version>
 		</dependency>
 
-
+		<!-- Dependência do hibernate validator para validar o form -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>5.1.0.Final</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>exemplo-jpa-spring-mvc</finalName>

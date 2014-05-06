@@ -42,8 +42,7 @@
 				<form:input path="nome" class="form-control"/>
 				<br>
 				<form:errors class="invalid" path="nome" />
-				
-				
+
 				<form:label path="status">Status:</form:label>
 				<br>
 				<form:input path="status" readonly="true" class="form-control"/>
