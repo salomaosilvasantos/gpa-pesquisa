@@ -56,7 +56,6 @@ public class ProjetoController {
 	public String editar(Projeto p, @PathVariable("id") Integer id, Model model) {
 		Projeto projeto = pc.findById(id);
 		System.out.println("Projeto do Banco antes de atualizar: " + projeto.toString());
-
 		model.addAttribute("projeto", projeto);
 		return "editar";
 	}
