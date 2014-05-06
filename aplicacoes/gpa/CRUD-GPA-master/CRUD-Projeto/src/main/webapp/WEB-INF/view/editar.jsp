@@ -68,7 +68,7 @@
 				<br>
 				<form:input path="local" class="form-control"/>
 				<br>
-								
+
 				<form:label path="numero_bolsas">Número de Bolsas:</form:label>
 				<br>
 				<form:input path="numero_bolsas" class="form-control"/>

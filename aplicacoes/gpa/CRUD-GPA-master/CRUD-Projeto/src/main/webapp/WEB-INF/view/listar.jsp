@@ -41,7 +41,7 @@
 							<td class="acoes">
 								<a id="editar" href="<c:url value="/${projeto.id}/editarProjeto" ></c:url>"><button class="botaoBloqueado btn btn-primary">Editar</button></a> 
 								<a id="excluir" href="<c:url value="/${projeto.id}/excluirProjeto" ></c:url>"><button class="botaoBloqueado btn btn-primary">Excluir</button></a> 
-								<a id="submeter" href="<c:url value="/${projeto.id}/submeterProjeto"></c:url>"><button class="botaoBloqueado btn btn-primary">Submeter</button></a>
+								<a id="submeter" href="<c:url value="/${projeto.id}/submeterProjeto" ></c:url>" onclick="submeter(${projeto.id});"><button class="botaoBloqueado btn btn-primary">Submeter</button></a>
 								</td>
 						</tr>
 					</c:forEach>
@@ -64,8 +64,18 @@
 					$(this).parent().find('.acoes').text('PROJETO SUBMETIDO, AGUARDE PROCESSAMENTO');
 				}
 
+				});
+				
+				
+
 			});
-			});
+			
+			function submeter(id){
+				var confirmarSubmissao = confirm("Deseja submeter?");
+				if(!confirmarSubmissao){
+					document.getElementById("submeter").href=""; 
+				}
+			}
 
 			</script>
 </body>
