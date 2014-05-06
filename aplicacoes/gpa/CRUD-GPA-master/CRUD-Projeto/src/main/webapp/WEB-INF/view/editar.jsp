@@ -32,10 +32,10 @@
 			<form:form commandName="projeto" id="reg"
 				action="editarProjetoForm">
 
-				<!--<form:label path="id">ID:</form:label>
+				<form:label path="id">ID:</form:label>
 				<br>
-				<form:input path="id" disabled="true" class="form-control"/>
-				<br> -->
+				<form:input path="id" readonly="true" class="form-control"/>
+				<br>
 
 				<form:label path="nome">Nome:</form:label>
 				<br>
@@ -43,11 +43,11 @@
 				<br>
 				<form:errors class="invalid" path="nome" />
 				
-				<!--
+				
 				<form:label path="status">Status:</form:label>
 				<br>
-				<form:input path="status" disabled="false" class="form-control"/>
-				<br>-->
+				<form:input path="status" readonly="true" class="form-control"/>
+				<br>
 				
 				<form:label path="descricao">Descrição:</form:label>
 				<br>

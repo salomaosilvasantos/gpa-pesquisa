@@ -66,7 +66,6 @@ public class ProjetoController {
 	public String atualizarProjeto(@PathVariable("id") Integer id,
 			@ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result) {
-		projetoAtualizado.setStatus("NOVO");
 		this.pc.atualizar(projetoAtualizado);
 		System.out.println("Projeto do Banco DEPOIS de atualizar: "+projetoAtualizado.toString());
 		return "redirect:/listar";
