@@ -29,7 +29,7 @@
 	<div class="novo-projeto" align="left">
 		<div class="form" align="center">
 			<h2>Editar Projeto</h2>
-			<form:form commandName="editarProjeto" id="reg"
+			<form:form commandName="projeto" id="reg"
 				action="editarProjetoForm">
 
 				<form:label path="id">ID:</form:label>
@@ -61,6 +61,11 @@
 				<form:label path="participantes">Participantes:</form:label>
 				<br>
 				<form:input path="participantes" class="form-control"/>
+				<br>
+				
+				<form:label path="local">Local:</form:label>
+				<br>
+				<form:input path="local" class="form-control"/>
 				<br>
 				
 				

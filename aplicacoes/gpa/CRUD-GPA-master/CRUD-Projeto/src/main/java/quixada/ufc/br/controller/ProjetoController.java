@@ -3,7 +3,6 @@ package quixada.ufc.br.controller;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import quixada.ufc.br.model.Projeto;
@@ -56,15 +54,18 @@ public class ProjetoController {
 	@RequestMapping(value = "/{id}/editarProjeto")
 	public String editar(Projeto p, @PathVariable("id") Integer id, Model model) {
 		Projeto projeto = pc.findById(id);
-		model.addAttribute("editarProjeto", projeto);
+		System.out.println("Projeto do Banco antes de atualizar: "+projeto.toString());
+		model.addAttribute("projeto", projeto);
 		return "editar";
 	}
 
 	@RequestMapping(value = "/{id}/editarProjetoForm", method = RequestMethod.POST)
 	public String atualizarProjeto(@PathVariable("id") Integer id,
-			@ModelAttribute(value = "editarProjeto") Projeto projetoAtualizado,
+			@ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result) {
+		projetoAtualizado.setStatus("NOVO");
 		this.pc.atualizar(projetoAtualizado);
+		System.out.println("Projeto do Banco DEPOIS de atualizar: "+projetoAtualizado.toString());
 		return "redirect:/listar";
 	}
 
