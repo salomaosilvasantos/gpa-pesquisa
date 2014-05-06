@@ -45,7 +45,6 @@ public class Projeto {
 	private Integer numero_bolsas;
 	
 	private String local;
-	
 	private String status;
 	
 	private String participantes;
@@ -138,8 +137,7 @@ public class Projeto {
 				+ ", termino=" + termino + ", descricao=" + descricao
 				+ ", atividades=" + atividades + ", numero_bolsas="
 				+ numero_bolsas + ", local=" + local + ", status=" + status
-				+ ", participantes=" + participantes + ", usuarios=" + usuarios
-				+ "]";
+				+ ", participantes=" + participantes + "]";
 	}
 	
 }

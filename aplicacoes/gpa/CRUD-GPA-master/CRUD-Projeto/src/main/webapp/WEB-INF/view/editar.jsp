@@ -29,24 +29,25 @@
 	<div class="novo-projeto" align="left">
 		<div class="form" align="center">
 			<h2>Editar Projeto</h2>
-			<form:form commandName="editarProjeto" id="reg"
+			<form:form commandName="projeto" id="reg"
 				action="editarProjetoForm">
 
-				<form:label path="id">ID:</form:label>
+				<!--<form:label path="id">ID:</form:label>
 				<br>
 				<form:input path="id" disabled="true" class="form-control"/>
-				<br>
+				<br> -->
 
 				<form:label path="nome">Nome:</form:label>
 				<br>
 				<form:input path="nome" class="form-control"/>
 				<br>
 				<form:errors class="invalid" path="nome" />
-
+				
+				<!--
 				<form:label path="status">Status:</form:label>
 				<br>
-				<form:input path="status" disabled="true" class="form-control"/>
-				<br>
+				<form:input path="status" disabled="false" class="form-control"/>
+				<br>-->
 				
 				<form:label path="descricao">Descrição:</form:label>
 				<br>
@@ -63,7 +64,11 @@
 				<form:input path="participantes" class="form-control"/>
 				<br>
 				
-				
+				<form:label path="local">Local:</form:label>
+				<br>
+				<form:input path="local" class="form-control"/>
+				<br>
+								
 				<form:label path="numero_bolsas">Número de Bolsas:</form:label>
 				<br>
 				<form:input path="numero_bolsas" class="form-control"/>

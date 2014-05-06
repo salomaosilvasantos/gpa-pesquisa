@@ -57,15 +57,18 @@ public class ProjetoController {
 	@RequestMapping(value = "/{id}/editarProjeto")
 	public String editar(Projeto p, @PathVariable("id") Integer id, Model model) {
 		Projeto projeto = pc.findById(id);
-		model.addAttribute("editarProjeto", projeto);
+		System.out.println("Projeto do Banco antes de atualizar: " + projeto.toString());
+		model.addAttribute("projeto", projeto);
 		return "editar";
 	}
 
 	@RequestMapping(value = "/{id}/editarProjetoForm", method = RequestMethod.POST)
 	public String atualizarProjeto(@PathVariable("id") Integer id,
-			@ModelAttribute(value = "editarProjeto") Projeto projetoAtualizado,
+			@ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result) {
+		projetoAtualizado.setStatus("NOVO");
 		this.pc.atualizar(projetoAtualizado);
+		System.out.println("Projeto do Banco DEPOIS de atualizar: "+projetoAtualizado.toString());
 		return "redirect:/listar";
 	}
 
@@ -90,8 +93,8 @@ public class ProjetoController {
 		System.out.println(projeto);
 		return "redirect:/listar";
 		// } else {
-		 //return "redirect:/index";
-		 //}
+		//return "redirect:/index";
+		//}
 		
 	}
 
@@ -104,9 +107,12 @@ public class ProjetoController {
 	}
 
 	
-	  private boolean validaSubmissao(Projeto projeto) { if
+	  private boolean validaSubmissao(Projeto projeto) { 
+		  
+		  System.out.println("PROJETO:");
+		  if
 	  (!projeto.getNome().isEmpty() && !projeto.getLocal().isEmpty() &&
-	  !projeto.getParticipantes().isEmpty() &&
+	//  !projeto.getParticipantes().isEmpty() &&
 	  projeto.getNumero_bolsas().intValue() > 0 &&
 	  !projeto.getAtividades().isEmpty() && !projeto.getDescricao().isEmpty())
 	  { return true; } else { return false; } }
