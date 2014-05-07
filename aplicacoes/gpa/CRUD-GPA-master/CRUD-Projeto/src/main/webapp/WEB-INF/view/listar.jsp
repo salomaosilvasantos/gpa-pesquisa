@@ -7,42 +7,57 @@
 <link
 	href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />"
 	rel="stylesheet" />
+<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
+<script	src="<c:url value="/webjars/bootstrap/3.1.1/js/bootstrap.min.js" />"></script>
+<script src="<c:url value="/resources/js/funcoes.js" />"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Listagem de Projetos</title>
 </head>
 <body>
 
 	<ul class="pager">
-		<li class="previous"><a href="index">&larr; Voltar para Início</a></li>
+		<li class="previous"><a href="index">&larr; Voltar para
+				Início</a></li>
 	</ul>
 	<div class="container">
 		<div class="panel panel-default">
 			<!-- Default panel contents -->
-			
-			<div class="panel-heading" align="right"><a href="cadastro"><button class="btn btn-primary">Cadastrar Projeto  <span class="glyphicon glyphicon-plus"></span></button></a></div>
-			<div class="panel-heading" align="left"><h4>Lista de Projeto</h4></div>
+
+			<div class="panel-heading" align="right">
+				<a href="cadastro"><button class="btn btn-primary">
+						Cadastrar Projeto <span class="glyphicon glyphicon-plus"></span>
+					</button></a>
+			</div>
+			<div class="panel-heading" align="left">
+				<h4 onclick="teste()">Lista de Projeto</h4>
+			</div>
 
 			<!-- Table -->
 			<table class="table" id="table">
 				<thead>
 					<tr>
-						<th>Identificador do Projeto</th>
-						<th>Nome do Projeto</th>
-						<th>Status do Projeto</th>
-						<th id="acoes" >Ações</th>
+						<th>Identificador</th>
+						<th>Nome</th>
+						<th>Status</th>
+						<th id="acoes">Ações</th>
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="projeto" items="${projetos}" >
+					<c:forEach var="projeto" items="${projetos}">
 						<tr class="linha">
 							<td>${projeto.id}</td>
 							<td>${projeto.nome}</td>
 							<td class="status">${projeto.status}</td>
-							<td class="acoes">
-								<a id="editar" href="<c:url value="/${projeto.id}/editarProjeto" ></c:url>"><button class="botaoBloqueado btn btn-primary">Editar</button></a> 
-								<a id="excluir" href="<c:url value="/${projeto.id}/excluirProjeto" ></c:url>"><button class="botaoBloqueado btn btn-primary">Excluir</button></a> 
-								<a id="submeter" href="<c:url value="/${projeto.id}/submeterProjeto" ></c:url>" onclick="submeter(${projeto.id});"><button class="botaoBloqueado btn btn-primary">Submeter</button></a>
-								</td>
+							<td class="acoes"><a id="editar"
+								href="<c:url value="/${projeto.id}/editarProjeto" ></c:url>"><button
+										class="botaoBloqueado btn btn-primary">Editar</button></a> <a
+								id="excluir"
+								href="<c:url value="/${projeto.id}/excluirProjeto" ></c:url>"><button
+										class="botaoBloqueado btn btn-primary">Excluir</button></a> <a
+								id="submeter"
+								href="<c:url value="/${projeto.id}/submeterProjeto" ></c:url>"
+								onclick="submeter(${projeto.id});"><button
+										class="botaoBloqueado btn btn-primary">Submeter</button></a></td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -50,33 +65,9 @@
 			</table>
 
 		</div>
-		<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
-		<script	src="<c:url value="/webjars/bootstrap/3.1.1/js/bootstrap.min.js" />"></script>
-		</div>
-		
-	
-			<script type="text/javascript">
-			
-			$(document).ready(function() {
-				$(".status").each(function(){
-					if($(this).text() == 'SUBMETIDO'){
-					$(this).parent().find(".botaoBloqueado").prop("disabled", true);
-					$(this).parent().find('.acoes').text('PROJETO SUBMETIDO, AGUARDE PROCESSAMENTO');
-				}
+	</div>
 
-				});
-				
-				
 
-			});
-			
-			function submeter(id){
-				var confirmarSubmissao = confirm("Deseja submeter?");
-				if(!confirmarSubmissao){
-					document.getElementById("submeter").href=""; 
-				}
-			}
 
-			</script>
 </body>
 </html>
