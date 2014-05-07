@@ -7,9 +7,6 @@
 <link
 	href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />"
 	rel="stylesheet" />
-<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
-<script	src="<c:url value="/webjars/bootstrap/3.1.1/js/bootstrap.min.js" />"></script>
-<script src="<c:url value="/resources/js/funcoes.js" />"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Listagem de Projetos</title>
 </head>
@@ -29,7 +26,7 @@
 					</button></a>
 			</div>
 			<div class="panel-heading" align="left">
-				<h4 onclick="teste()">Lista de Projeto</h4>
+				<h4">Lista de Projeto</h4>
 			</div>
 
 			<!-- Table -->
@@ -68,6 +65,8 @@
 	</div>
 
 
-
+<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
+<script	src="<c:url value="/webjars/bootstrap/3.1.1/js/bootstrap.min.js" />"></script>
+<script src="<c:url value="/resources/js/funcoes.js" />"></script>
 </body>
 </html>
