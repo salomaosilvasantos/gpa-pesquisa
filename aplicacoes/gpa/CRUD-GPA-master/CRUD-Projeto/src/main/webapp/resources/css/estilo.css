@@ -1,0 +1,22 @@
+.container{
+	margin:auto;
+}
+
+#header-page{
+	background-color:#0064A1;
+	padding-top:20px;
+	padding-bottom:20px;
+}
+
+#footer{
+	position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 50px;
+    background-color: #F5F5F5;
+}
+
+#text-ufc{
+	margin-top:20px;
+	
+}

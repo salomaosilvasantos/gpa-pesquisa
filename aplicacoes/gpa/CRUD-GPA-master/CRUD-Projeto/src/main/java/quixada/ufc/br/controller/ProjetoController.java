@@ -38,7 +38,7 @@ public class ProjetoController {
 		return "index";
 	}
 
-	@RequestMapping(value="/cadastro", method = RequestMethod.GET)
+	@RequestMapping(value = "/cadastro", method = RequestMethod.GET)
 	public String cadastro(Model model) {
 		model.addAttribute("projeto", new Projeto());
 		return "cadastro";
@@ -48,7 +48,7 @@ public class ProjetoController {
 	public String adicionarProjeto(
 			@Valid @ModelAttribute("projeto") Projeto projeto,
 			BindingResult result) {
-		String resultado = projeto.getNome().trim();		
+		String resultado = projeto.getNome().trim();
 		if (result.hasErrors() || resultado.isEmpty()) {
 			return ("cadastro");
 		}
@@ -61,7 +61,8 @@ public class ProjetoController {
 	@RequestMapping(value = "/{id}/editarProjeto")
 	public String editar(Projeto p, @PathVariable("id") Integer id, Model model) {
 		Projeto projeto = pc.findById(id);
-		System.out.println("Projeto do Banco antes de atualizar: " + projeto.toString());
+		System.out.println("Projeto do Banco antes de atualizar: "
+				+ projeto.toString());
 		model.addAttribute("projeto", projeto);
 		return "editar";
 	}
@@ -72,7 +73,8 @@ public class ProjetoController {
 			BindingResult result) {
 		projetoAtualizado.setStatus("NOVO");
 		this.pc.atualizar(projetoAtualizado);
-		System.out.println("Projeto do Banco DEPOIS de atualizar: "+projetoAtualizado.toString());
+		System.out.println("Projeto do Banco DEPOIS de atualizar: "
+				+ projetoAtualizado.toString());
 		return "redirect:/listar";
 	}
 
@@ -91,15 +93,15 @@ public class ProjetoController {
 	@RequestMapping(value = "{id}/submeterProjeto")
 	public String submeterProjeto(@PathVariable("id") Integer id) {
 		Projeto projeto = pc.findById(id);
-		//if (validaSubmissao(projeto)) {
-		projeto.setStatus("SUBMETIDO");
-		this.pc.atualizar(projeto);
-		System.out.println(projeto);
-		return "redirect:/listar";
-		// } else {
-		//return "redirect:/index";
-		//}
-		
+		if (validaSubmissao(projeto)) {
+			projeto.setStatus("SUBMETIDO");
+			this.pc.atualizar(projeto);
+			System.out.println(projeto);
+			return "redirect:/listar";
+		} else {
+			return "redirect:/index";
+		}
+
 	}
 
 	@RequestMapping(value = "/listar")
@@ -110,15 +112,18 @@ public class ProjetoController {
 		return modelAndView;
 	}
 
-	
-	  private boolean validaSubmissao(Projeto projeto) { 
-		  
-		  System.out.println("PROJETO:");
-		  if
-	  (!projeto.getNome().isEmpty() && !projeto.getLocal().isEmpty() &&
-	//  !projeto.getParticipantes().isEmpty() &&
-	  projeto.getNumero_bolsas().intValue() > 0 &&
-	  !projeto.getAtividades().isEmpty() && !projeto.getDescricao().isEmpty())
-	  { return true; } else { return false; } }
-	 
+	private boolean validaSubmissao(Projeto projeto) {
+
+		System.out.println("PROJETO:");
+		if (!projeto.getNome().isEmpty() && !projeto.getLocal().isEmpty()
+				&& !projeto.getParticipantes().isEmpty()
+				&& projeto.getNumero_bolsas().intValue() > 0
+				&& !projeto.getAtividades().isEmpty()
+				&& !projeto.getDescricao().isEmpty()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }

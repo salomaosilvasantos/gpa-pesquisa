@@ -16,6 +16,8 @@
 		<li class="previous"><a href="index">&larr; Voltar para
 				Início</a></li>
 	</ul>
+
+
 	<div class="container">
 		<div class="panel panel-default">
 			<!-- Default panel contents -->
@@ -33,7 +35,7 @@
 			<table class="table" id="table">
 				<thead>
 					<tr>
-						<th>Identificador</th>
+						<th id="teste">Identificador</th>
 						<th>Nome</th>
 						<th>Status</th>
 						<th id="acoes">Ações</th>
@@ -50,8 +52,8 @@
 										class="botaoBloqueado btn btn-primary">Editar</button></a> <a
 								id="excluir"
 								href="<c:url value="/${projeto.id}/excluirProjeto" ></c:url>"><button
-										class="botaoBloqueado btn btn-primary">Excluir</button></a> <a
-								id="submeter"
+										id="deletar" class="botaoBloqueado btn btn-primary"
+										name="deletar">Excluir</button></a> <a id="submeter"
 								href="<c:url value="/${projeto.id}/submeterProjeto" ></c:url>"
 								onclick="submeter(${projeto.id});"><button
 										class="botaoBloqueado btn btn-primary">Submeter</button></a></td>
@@ -60,13 +62,13 @@
 				</tbody>
 
 			</table>
-
 		</div>
 	</div>
+	
 
 
-<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
-<script	src="<c:url value="/webjars/bootstrap/3.1.1/js/bootstrap.min.js" />"></script>
-<script src="<c:url value="/resources/js/funcoes.js" />"></script>
+	<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
+	<script	src="<c:url value="/webjars/bootstrap/3.1.1/js/bootstrap.min.js" />"></script>
+	<script src="<c:url value="/resources/js/funcoes.js" />"></script>
 </body>
 </html>

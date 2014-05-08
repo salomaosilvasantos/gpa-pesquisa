@@ -7,6 +7,7 @@ $(document).ready(function() {
 	});
 });
 
+
 function submeter(id){
 	var confirmarSubmissao = confirm("Deseja submeter?");
 		if(!confirmarSubmissao){
