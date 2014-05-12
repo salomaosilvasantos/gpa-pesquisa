@@ -99,7 +99,7 @@ public class ProjetoController {
 			System.out.println(projeto);
 			return "redirect:/listar";
 		} else {
-			return "redirect:/index";
+			return "redirect:/"+id+"/editarProjeto";
 		}
 
 	}
