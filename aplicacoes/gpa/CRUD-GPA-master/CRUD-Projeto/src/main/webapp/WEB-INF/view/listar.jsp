@@ -45,7 +45,7 @@
 					<c:forEach var="projeto" items="${projetos}">
 						<tr class="linha">
 							<td>${projeto.id}</td>
-							<td>${projeto.nome}</td>
+							<td><a href="<c:url value="/${projeto.id}/informacoesProjeto" ></c:url>">${projeto.nome}</a></td>
 							<td class="status">${projeto.status}</td>
 							<td class="acoes"><a id="editar"
 								href="<c:url value="/${projeto.id}/editarProjeto" ></c:url>"><button

@@ -58,6 +58,13 @@ public class ProjetoController {
 
 	}
 
+	@RequestMapping(value = "/{id}/informacoesProjeto")
+	public String informacoes(Projeto p, @PathVariable("id") Integer id, Model model) {
+		Projeto projeto = pc.findById(id);
+		model.addAttribute("projeto", projeto);
+		return "informacoes";
+	}	
+	
 	@RequestMapping(value = "/{id}/editarProjeto")
 	public String editar(Projeto p, @PathVariable("id") Integer id, Model model) {
 		Projeto projeto = pc.findById(id);
