@@ -1,15 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-	<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-	<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-	<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-	<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
+
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>InformaÃ§Ãµes do Projeto</title>
+<title>Informações do Projeto</title>
 </head>
 <body>
 	
@@ -25,7 +24,7 @@
 	<div class="container" >
 	<div class="novo-projeto" align="left">
 		<div class="form" align="center">
-			<h2>InformaÃ§Ãµes do Projeto</h2>
+			<h2>Informações do Projeto</h2>
 			<form:form commandName="projeto" id="reg" >
 
 				<form:label path="id">ID:</form:label>
@@ -44,7 +43,7 @@
 				<form:input path="status" readonly="true" class="form-control"/>
 				<br>
 				
-				<form:label path="descricao">DescriÃ§Ã£o:</form:label>
+				<form:label path="descricao">Descrição:</form:label>
 				<br>
 				<form:input path="descricao" readonly="true" class="form-control"/>
 				<br>
@@ -64,17 +63,17 @@
 				<form:input path="local" readonly="true" class="form-control"/>
 				<br>
 
-				<form:label path="numero_bolsas">NÃºmero de Bolsas:</form:label>
+				<form:label path="numero_bolsas">Número de Bolsas:</form:label>
 				<br>
 				<form:input path="numero_bolsas" readonly="true" class="form-control"/>
 				<br>
 				
-				<form:label path="inicio">InÃ­cio:</form:label>
+				<form:label path="inicio">Início:</form:label>
 				<br>
 				<form:input path="inicio" readonly="true" class="form-control"/>
 				<br>
 				
-				<form:label path="termino">TÃ©rmino:</form:label>
+				<form:label path="termino">Término:</form:label>
 				<br>
 				<form:input path="termino" readonly="true" class="form-control"/>
 				<br>
