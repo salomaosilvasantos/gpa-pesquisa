@@ -26,9 +26,7 @@ public class Projeto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Size(min = 2, message = "Mínimo 2 caracteres")
-	//@Column(unique = true)
-	//@UniqueNome(message = "Nome do projeto já existe!") Falta implementar o método da classe UniqueNomeValidator 
+	@Size(min = 2, message = "Mínimo 2 caracteres")	
 	private String nome;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy")	
