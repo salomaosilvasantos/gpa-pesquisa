@@ -3,7 +3,6 @@ package quixada.ufc.br.model;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,7 +16,6 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-//import quixada.ufc.br.annotation.UniqueNome;
 
 @Entity
 public class Projeto {
@@ -48,6 +46,8 @@ public class Projeto {
 	private String status;
 	
 	private String participantes;
+	
+	
 	
 	@ManyToMany
 	@JoinTable(name = "projeto_usuario", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "projeto_id"))
