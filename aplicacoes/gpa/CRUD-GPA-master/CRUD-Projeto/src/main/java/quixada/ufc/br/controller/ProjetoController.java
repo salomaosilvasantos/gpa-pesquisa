@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -13,8 +14,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import quixada.ufc.br.model.Documentos;
 import quixada.ufc.br.model.Projeto;
 import quixada.ufc.br.service.ProjetoService;
 
@@ -56,12 +60,13 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/{id}/informacoesProjeto")
-	public String informacoes(Projeto p, @PathVariable("id") String id, Model model) {
+	public String informacoes(Projeto p, @PathVariable("id") String id,
+			Model model) {
 		Projeto projeto = pc.findById(id);
 		model.addAttribute("projeto", projeto);
 		return "informacoes";
-	}	
-	
+	}
+
 	@RequestMapping(value = "/{id}/editarProjeto")
 	public String editar(Projeto p, @PathVariable("id") String id, Model model) {
 		Projeto projeto = pc.findById(id);
@@ -103,7 +108,7 @@ public class ProjetoController {
 			System.out.println(projeto);
 			return "redirect:/listar";
 		} else {
-			return "redirect:/"+id+"/editarProjeto";
+			return "redirect:/" + id + "/editarProjeto";
 		}
 
 	}
@@ -114,6 +119,23 @@ public class ProjetoController {
 		List<Projeto> projeto = pc.findAll();
 		modelAndView.addObject("projetos", projeto);
 		return modelAndView;
+	}
+
+	@RequestMapping(value = "upload-doc", method = RequestMethod.POST)
+	public String handleFileUpload(@RequestParam("idNo") String idNo,
+			@RequestParam("file") MultipartFile file, Model model) {
+		
+		if (!file.isEmpty()) {
+			try {
+			
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+		
+		return idNo;
+
 	}
 
 	private boolean validaSubmissao(Projeto projeto) {
