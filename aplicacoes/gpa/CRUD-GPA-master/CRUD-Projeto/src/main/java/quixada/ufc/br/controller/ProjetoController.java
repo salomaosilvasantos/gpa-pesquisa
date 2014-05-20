@@ -23,6 +23,7 @@ public class ProjetoController {
 
 	@Inject
 	private ProjetoService pc;
+	private static int contador = 0;
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -42,6 +43,8 @@ public class ProjetoController {
 	public String adicionarProjeto(
 			@Valid @ModelAttribute("projeto") Projeto projeto,
 			BindingResult result) {
+		contador = contador + 1;
+		projeto.setId(String.valueOf(contador));
 		String resultado = projeto.getNome().trim();
 		if (result.hasErrors() || resultado.isEmpty()) {
 			return ("cadastro");
@@ -53,14 +56,14 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/{id}/informacoesProjeto")
-	public String informacoes(Projeto p, @PathVariable("id") Integer id, Model model) {
+	public String informacoes(Projeto p, @PathVariable("id") String id, Model model) {
 		Projeto projeto = pc.findById(id);
 		model.addAttribute("projeto", projeto);
 		return "informacoes";
 	}	
 	
 	@RequestMapping(value = "/{id}/editarProjeto")
-	public String editar(Projeto p, @PathVariable("id") Integer id, Model model) {
+	public String editar(Projeto p, @PathVariable("id") String id, Model model) {
 		Projeto projeto = pc.findById(id);
 		System.out.println("Projeto do Banco antes de atualizar: "
 				+ projeto.toString());
@@ -80,7 +83,7 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/{id}/excluirProjeto")
-	public String excluirProjeto(Projeto p, @PathVariable("id") Integer id,
+	public String excluirProjeto(Projeto p, @PathVariable("id") String id,
 			Model model) {
 		Projeto projeto = pc.findById(id);
 		if (projeto == null) {
@@ -92,7 +95,7 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "{id}/submeterProjeto")
-	public String submeterProjeto(@PathVariable("id") Integer id) {
+	public String submeterProjeto(@PathVariable("id") String id) {
 		Projeto projeto = pc.findById(id);
 		if (validaSubmissao(projeto)) {
 			projeto.setStatus("SUBMETIDO");

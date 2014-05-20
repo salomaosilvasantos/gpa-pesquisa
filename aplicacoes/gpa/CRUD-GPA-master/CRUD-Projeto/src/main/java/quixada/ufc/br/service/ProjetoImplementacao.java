@@ -33,7 +33,7 @@ public class ProjetoImplementacao implements ProjetoService{
 
 	
 	@Transactional
-	public Projeto findById(int id) {
+	public Projeto findById(String id) {
 		return pRepository.find(id);
 		 
 	}

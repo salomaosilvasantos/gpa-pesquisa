@@ -21,8 +21,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Projeto {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private String id;
 	
 	@Size(min = 2, message = "Mínimo 2 caracteres")	
 	private String nome;
@@ -49,14 +49,14 @@ public class Projeto {
 	
 	
 	
-	@ManyToMany
-	@JoinTable(name = "projeto_usuario", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "projeto_id"))
-	private List<Usuario> usuarios;
+//	@ManyToMany
+//	@JoinTable(name = "projeto_usuario", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "projeto_id"))
+//	private List<Usuario> usuarios;
 	
 	public Projeto(){
 		super();
 	}
-	public Projeto(Integer id, String nome, Date inicio, Date termino,
+	public Projeto(String id, String nome, Date inicio, Date termino,
 			String descricao, String atividades, Integer numero_bolsas,
 			String local, String status, String participantes) {
 		super();
@@ -71,10 +71,10 @@ public class Projeto {
 		this.status = status;
 		this.participantes = participantes;
 	}
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getNome() {

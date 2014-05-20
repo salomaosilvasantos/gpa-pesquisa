@@ -10,7 +10,7 @@ public abstract void salvar(Projeto projeto);
 	
 	public abstract void atualizar(Projeto contato);
 
-	public abstract Projeto findById(int id);
+	public abstract Projeto findById(String id);
 
 	public abstract List<Projeto> findAll();
 
