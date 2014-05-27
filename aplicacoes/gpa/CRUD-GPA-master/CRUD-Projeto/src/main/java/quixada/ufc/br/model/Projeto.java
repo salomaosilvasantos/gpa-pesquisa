@@ -3,7 +3,9 @@ package quixada.ufc.br.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -45,7 +47,7 @@ public class Projeto {
 	private String participantes;
 
 	
-	@OneToMany(mappedBy = "projeto")	
+	@OneToMany(mappedBy = "projeto", fetch = FetchType.EAGER, cascade = CascadeType.ALL )	
 	private List<Documentos> documentos;
 
 	public Projeto() {
@@ -146,6 +148,14 @@ public class Projeto {
 
 	public void setParticipantes(String participantes) {
 		this.participantes = participantes;
+	}
+
+	public List<Documentos> getDocumentos() {
+		return documentos;
+	}
+
+	public void setDocumentos(List<Documentos> documentos) {
+		this.documentos = documentos;
 	}
 
 	@Override

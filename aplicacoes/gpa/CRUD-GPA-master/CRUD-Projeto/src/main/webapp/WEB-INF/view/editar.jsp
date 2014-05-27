@@ -82,6 +82,10 @@
 				<br>
 				<form:input path="termino" class="form-control"/>
 				<br>
+				
+				<form:label path="documentos">Arquivo:</form:label>
+				<br>
+				<form:input type="file" class="form-control" path="documentos" />
 
 				<br>
 				<input type="submit" value="Salvar" class="btn btn-default"/>
