@@ -52,7 +52,8 @@ public class ProjetoController {
 			@Valid @ModelAttribute("projeto") Projeto projeto,
 			BindingResult result) {
 		contador = contador + 1;
-		projeto.setId(String.valueOf(contador));
+		String id = stringFormatada(contador);
+		projeto.setId(id);
 		String resultado = projeto.getNome().trim();
 		if (result.hasErrors() || resultado.isEmpty()) {
 			return ("cadastro");
@@ -154,6 +155,18 @@ public class ProjetoController {
 		} else {
 			return false;
 		}
+	}
+	
+
+	private String stringFormatada(int contador){
+		if(contador < 10){
+			String id = "PESQ0"+ contador;
+			return id;
+		}else{
+			String id = "PESQ"+ contador;
+			return id;
+		}
+		
 	}
 
 }
