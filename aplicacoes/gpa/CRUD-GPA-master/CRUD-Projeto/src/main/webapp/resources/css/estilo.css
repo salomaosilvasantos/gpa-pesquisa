@@ -9,14 +9,22 @@
 }
 
 #footer{
-	position: absolute;
+	position: fixed;
     bottom: 0px;
     width: 100%;
     height: 50px;
-    background-color: #F5F5F5;
+    background-color: #eee;
 }
 
 #text-ufc{
 	margin-top:20px;
 	
+}
+
+.controls{
+	width:60%;
+}
+
+.acoes{
+	margin-top:5%;
 }

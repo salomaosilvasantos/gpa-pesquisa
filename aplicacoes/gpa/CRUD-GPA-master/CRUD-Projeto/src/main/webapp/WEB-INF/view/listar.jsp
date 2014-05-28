@@ -2,14 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<link
-	href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />"
-	rel="stylesheet" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Listagem de Projetos</title>
-</head>
+<jsp:include page="./modulos/header.jsp" />
 <body>
 
 	<ul class="pager">
@@ -64,11 +57,5 @@
 			</table>
 		</div>
 	</div>
-	
-
-
-	<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
-	<script	src="<c:url value="/webjars/bootstrap/3.1.1/js/bootstrap.min.js" />"></script>
-	<script src="<c:url value="/resources/js/funcoes.js" />"></script>
-</body>
+	<jsp:include page="./modulos/footer.jsp" />
 </html>

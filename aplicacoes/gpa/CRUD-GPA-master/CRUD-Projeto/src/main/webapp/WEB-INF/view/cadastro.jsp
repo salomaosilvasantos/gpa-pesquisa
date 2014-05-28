@@ -6,17 +6,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-<html>
-<head>
-<script type="text/javascript"
-	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
-<meta charset="utf-8">
-<link
-	href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />"
-	rel="stylesheet" />
-
-<title>Cadastro de Projetos</title>
-</head>
+<jsp:include page="./modulos/header.jsp" />
 
 <body>
 	<ul class="pager">
@@ -105,8 +95,8 @@
 
 					<div class="controls">
 						<input name="reset" type="reset" value="Limpar Campos"
-							class="btn btn-default" /> <input name="submit" type="submit"
-							class="btn btn-success" value="Cadastrar Projeto" />
+							class="btn btn-default acoes" /> <input name="submit" type="submit"
+							class="btn btn-success acoes" value="Cadastrar Projeto" />
 					</div>
 				</form:form>
 			</div>
@@ -118,11 +108,7 @@
 	</ul>
 
 
-	<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
-	<script
-		src="<c:url value="/webjars/jquery-maskedinput/1.3.1/jquery.maskedinput.min.js" />"></script>
-	<script
-		src="<c:url value="/webjars/jquery-validation/1.12.0/jquery.validate.min.js" />"></script>
+	<jsp:include page="./modulos/footer.jsp" />
 </body>
 
 
@@ -273,17 +259,5 @@
 										});
 					});
 </script>
-
-<style type="text/css">
-.container {
-	width: 30%;
-}
-
-.btn {
-	margin-top: 5%;
-}
-
-
-</style>
 
 </html>

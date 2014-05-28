@@ -82,7 +82,7 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/{id}/editarProjetoForm", method = RequestMethod.POST)
-	public String atualizarProjeto(@PathVariable("id") Integer id,
+	public String atualizarProjeto(@PathVariable("id") String id,
 			@ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result) {
 		projetoAtualizado.setStatus("NOVO");
