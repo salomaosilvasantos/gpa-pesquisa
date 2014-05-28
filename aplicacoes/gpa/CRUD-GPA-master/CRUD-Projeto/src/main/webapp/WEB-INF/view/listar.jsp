@@ -48,15 +48,15 @@
 							<td><a href="<c:url value="/${projeto.id}/informacoesProjeto" ></c:url>">${projeto.nome}</a></td>
 							<td class="status">${projeto.status}</td>
 							<td class="acoes"><a id="editar"
-								href="<c:url value="/${projeto.id}/editarProjeto" ></c:url>"><button
-										class="botaoBloqueado btn btn-primary">Editar</button></a> <a
+								href="<c:url value="/${projeto.id}/editarProjeto" ></c:url>"><button  glyphicon glyphicon-trash
+										class="botaoBloqueado btn btn-primary">Editar <span class="glyphicon glyphicon-cog"></span> </button></a> <a
 								id="excluir"
 								href="<c:url value="/${projeto.id}/excluirProjeto" ></c:url>"><button
 										id="deletar" class="botaoBloqueado btn btn-primary"
-										name="deletar">Excluir</button></a> <a id="submeter"
+										name="deletar">Excluir <span class="glyphicon glyphicon-trash"></span></button></a> <a id="submeter"
 								href="<c:url value="/${projeto.id}/submeterProjeto" ></c:url>"
 								onclick="submeter(${projeto.id});"><button
-										class="botaoBloqueado btn btn-primary">Submeter</button></a></td>
+										class="botaoBloqueado btn btn-primary">Submeter <span class="glyphicon glyphicon-open"></span></button></a></td>
 						</tr>
 					</c:forEach>
 				</tbody>

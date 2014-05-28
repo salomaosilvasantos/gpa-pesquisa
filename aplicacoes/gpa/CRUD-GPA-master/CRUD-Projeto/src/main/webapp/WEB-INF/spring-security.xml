@@ -30,5 +30,18 @@
 	    </user-service> 
 	  </authentication-provider> 
 	</authentication-manager> 
+	
+	<!-- <authentication-manager>
+		<authentication-provider>
+			<jdbc-user-service data-source-ref="dataSource"
+				users-by-username-query="
+                    SELECT nome, senha
+                    FROM usuario WHERE nome = ?"
+
+				authorities-by-username-query=
+                    "SELECT nome, " 
+                    />
+		</authentication-provider>
+ 	</authentication-manager>-->
   
 </beans:beans>
