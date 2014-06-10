@@ -6,21 +6,31 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Informações do Projeto</title>
-</head>
-<body>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Informações do Projeto</title>
+		<link href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />" rel="stylesheet" />
+				<link href="<c:url value="/resources/css/estilo.css" />" rel="stylesheet"/>
+	</head>
+
 	
-<head>
-
-<link href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />" rel="stylesheet" />
-<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
-<script src="<c:url value="/webjars/jquery-maskedinput/1.3.1/jquery.maskedinput.min.js" />"></script>
-<script src="<c:url value="/webjars/jquery-validation/1.12.0/jquery.validate.min.js" />"></script>
-</head>
-
 <body>
+	<header class="jumbotron" id="header-page">
+		<div class="row">
+			<div class="col-md-6">
+				<img width="370" src="../resources/images/brasao-qxd.png" alt="Brasão UFC Quixadá">
+			</div>
+			<div class="col-md-6">
+			</div>
+		</div>
+</header>
+
+	<div align="center">
+					<ul class="pager">
+						<li class="previous"><a href="<c:url value="/listar" />">&larr; Voltar para Listagem</a></li>
+					</ul>
+				</div>
+
 	<div class="container" >
 	<div class="novo-projeto" align="left">
 		<div class="form" align="center">
@@ -81,13 +91,14 @@
 				<br>
 
 			</form:form>
-				<div align="center">
-					<ul class="pager">
-						<li class="previous"><a href="<c:url value="/listar" />">&larr; Voltar para Listagem</a></li>
-					</ul>
-				</div>
+			
 		</div>
 	</div>
 </div>
+<jsp:include page="./modulos/footer.jsp" />
+
+<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
+<script src="<c:url value="/webjars/jquery-maskedinput/1.3.1/jquery.maskedinput.min.js" />"></script>
+<script src="<c:url value="/webjars/jquery-validation/1.12.0/jquery.validate.min.js" />"></script>
 </body>
 </html>

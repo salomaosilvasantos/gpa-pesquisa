@@ -7,12 +7,15 @@
 	<head>
 		<link href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />"
 		rel="stylesheet" />
+		<link href="<c:url value="/resources/css/estilo.css" />" rel="stylesheet"/>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 			<title>Listagem de Projetos</title>	
 	</head>
 
 
 <body>
+		<jsp:include page="./modulos/header-estrutura.jsp" />
+
 
 	<ul class="pager">
 		<li class="previous"><a href="index">&larr; Voltar para
@@ -66,8 +69,14 @@
 			</table>
 		</div>
 	</div>
-	<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
+	
+	<jsp:include page="./modulos/footer.jsp" />
+
+	 <script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
 	<script	src="<c:url value="/webjars/bootstrap/3.1.1/js/bootstrap.min.js" />"></script>
-	<script src="<c:url value="/resources/js/funcoes.js" />"></script>
+	<script src="<c:url value="/resources/js/funcoes.js" />"></script>	
+	</body>
+
+	
 	
 </html>
