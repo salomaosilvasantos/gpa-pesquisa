@@ -11,6 +11,7 @@
 		<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 		<meta charset="utf-8">
 		<link href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />" rel="stylesheet" />
+		<link href="<c:url value="/resources/css/estilo.css" />" rel="stylesheet"/>
 			<title>Cadastro de Projetos</title>
 	</head>
 
