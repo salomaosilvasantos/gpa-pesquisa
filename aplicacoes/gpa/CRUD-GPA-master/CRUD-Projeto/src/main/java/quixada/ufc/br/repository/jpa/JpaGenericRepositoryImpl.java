@@ -17,8 +17,7 @@ import quixada.ufc.br.repository.GenericRepository;
 
 
 @Named
-public abstract class JpaGenericRepositoryImpl<T> implements
-		GenericRepository<T> {
+public class JpaGenericRepositoryImpl<T> implements GenericRepository<T> {
 
 	private static Logger logger = LoggerFactory
 			.getLogger(JpaGenericRepositoryImpl.class);
@@ -70,20 +69,20 @@ public abstract class JpaGenericRepositoryImpl<T> implements
 	}
 
 	@Override
-	public T find(Object id) {
+	public T find(Class<T> entityClass, Object id) {
 		T result = null;
 		result = em.find(this.persistentClass, id);
 		return result;
 	}
 
 	@Override
-	public List<T> find() {
-		return find(-1, -1);
+	public List<T> find(Class<T> entityClass) {
+		return find(entityClass, -1, -1);
 
 	}
 
 	@Override
-	public List<T> find(int firstResult, int maxResults) {
+	public List<T> find(Class<T> entityClass, int firstResult, int maxResults) {
 		List<T> result = null;
 		Query q = em.createQuery("select obj from "
 				+ this.persistentClass.getSimpleName() + " obj");

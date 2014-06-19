@@ -27,4 +27,5 @@
  
 	<context:component-scan base-package="quixada.ufc.br.repository" />
 	<context:component-scan base-package="quixada.ufc.br.service" />
+	<context:component-scan base-package="quixada.ufc.br.controller" />
 </beans>

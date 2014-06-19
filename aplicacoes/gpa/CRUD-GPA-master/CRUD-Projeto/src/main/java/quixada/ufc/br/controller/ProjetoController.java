@@ -3,10 +3,12 @@ package quixada.ufc.br.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -21,20 +23,18 @@ import org.springframework.web.servlet.ModelAndView;
 
 import quixada.ufc.br.model.Documentos;
 import quixada.ufc.br.model.Projeto;
-import quixada.ufc.br.service.ProjetoService;
+import quixada.ufc.br.service.GenericService;
 
 @Controller
 public class ProjetoController {
 
 	@Inject
-	private ProjetoService pc;
+	private GenericService<Projeto> serviceProjeto;
+	
 	private static int contador = 0;
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
-	
- 
-
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index() {
 		log.info("controller: projeto - action: index");
@@ -59,7 +59,7 @@ public class ProjetoController {
 			return ("cadastro");
 		}
 		projeto.setStatus("NOVO");
-		this.pc.salvar(projeto);
+		this.serviceProjeto.save(projeto);
 		return "redirect:/listar";
 
 	}
@@ -67,14 +67,14 @@ public class ProjetoController {
 	@RequestMapping(value = "/{id}/informacoesProjeto")
 	public String informacoes(Projeto p, @PathVariable("id") String id,
 			Model model) {
-		Projeto projeto = pc.findById(id);
+		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		model.addAttribute("projeto", projeto);
 		return "informacoes";
 	}
 
 	@RequestMapping(value = "/{id}/editarProjeto")
 	public String editar(Projeto p, @PathVariable("id") String id, Model model) {
-		Projeto projeto = pc.findById(id);
+		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		System.out.println("Projeto do Banco antes de atualizar: "
 				+ projeto.toString());
 		model.addAttribute("projeto", projeto);
@@ -86,7 +86,7 @@ public class ProjetoController {
 			@ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result) {
 		projetoAtualizado.setStatus("NOVO");
-		this.pc.atualizar(projetoAtualizado);
+		this.serviceProjeto.update(projetoAtualizado);
 		System.out.println("Projeto do Banco DEPOIS de atualizar: "
 				+ projetoAtualizado.toString());
 		return "redirect:/listar";
@@ -95,21 +95,21 @@ public class ProjetoController {
 	@RequestMapping(value = "/{id}/excluirProjeto")
 	public String excluirProjeto(Projeto p, @PathVariable("id") String id,
 			Model model) {
-		Projeto projeto = pc.findById(id);
+		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		if (projeto == null) {
 			return "redirect:/listar";
 		} else {
-			this.pc.delete(projeto);
+			this.serviceProjeto.delete(projeto);
 			return "redirect:/listar";
 		}
 	}
 
 	@RequestMapping(value = "{id}/submeterProjeto")
 	public String submeterProjeto(@PathVariable("id") String id) {
-		Projeto projeto = pc.findById(id);
+		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		if (validaSubmissao(projeto)) {
 			projeto.setStatus("SUBMETIDO");
-			this.pc.atualizar(projeto);
+			this.serviceProjeto.update(projeto);
 			System.out.println(projeto);
 			return "redirect:/listar";
 		} else {
@@ -121,7 +121,7 @@ public class ProjetoController {
 	@RequestMapping(value = "/listar")
 	public ModelAndView listar() {
 		ModelAndView modelAndView = new ModelAndView("listar");
-		List<Projeto> projeto = pc.findAll();
+		List<Projeto> projeto = serviceProjeto.find(Projeto.class);
 		modelAndView.addObject("projetos", projeto);
 		return modelAndView;
 	}

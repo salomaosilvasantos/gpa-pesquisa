@@ -18,11 +18,11 @@ public interface GenericRepository<T> {
 
 	public abstract void delete(T entity);
 
-	public abstract T find(Object id);
+	public abstract T find(Class<T> entityClass, Object id);
 
-	public abstract List<T> find();
+	public abstract List<T> find(Class<T> entityClass);
 
-	public abstract List<T> find(int firstResult, int maxResults);
+	public abstract List<T> find(Class<T> entityClass, int firstResult, int maxResults);
 
 	public abstract List<T> find(String queryName,
 			Map<String, Object> namedParams);
