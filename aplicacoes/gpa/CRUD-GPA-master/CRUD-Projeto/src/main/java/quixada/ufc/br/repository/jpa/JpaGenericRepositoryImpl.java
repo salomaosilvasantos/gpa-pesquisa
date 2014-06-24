@@ -42,7 +42,7 @@ public class JpaGenericRepositoryImpl<T> implements GenericRepository<T> {
 		JPQL, NATIVE, NAMED
 	}
 
-	protected Class<T> persistentClass;
+	//protected Class<T> persistentClass;
 
 	/**
 		 * 
@@ -71,7 +71,7 @@ public class JpaGenericRepositoryImpl<T> implements GenericRepository<T> {
 	@Override
 	public T find(Class<T> entityClass, Object id) {
 		T result = null;
-		result = em.find(this.persistentClass, id);
+		result = em.find(entityClass, id);
 		return result;
 	}
 
@@ -81,11 +81,12 @@ public class JpaGenericRepositoryImpl<T> implements GenericRepository<T> {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> find(Class<T> entityClass, int firstResult, int maxResults) {
 		List<T> result = null;
 		Query q = em.createQuery("select obj from "
-				+ this.persistentClass.getSimpleName() + " obj");
+				+ entityClass.getSimpleName() + " obj");
 		if (firstResult >= 0 && maxResults >= 0) {
 			q = q.setFirstResult(firstResult).setMaxResults(maxResults);
 		}
@@ -111,6 +112,7 @@ public class JpaGenericRepositoryImpl<T> implements GenericRepository<T> {
 				maxResults);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> find(QueryType type, String query,
 			Map<String, Object> namedParams, int firstResult, int maxResults) {

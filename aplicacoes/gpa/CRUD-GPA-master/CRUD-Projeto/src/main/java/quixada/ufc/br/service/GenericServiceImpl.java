@@ -5,8 +5,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import quixada.ufc.br.repository.GenericRepository;
@@ -16,8 +14,6 @@ public class GenericServiceImpl<T> implements GenericService<T> {
 
 	@Inject
 	private GenericRepository<T> genericRepository;
-	
-	protected Class<T> persistentClass;
 	
 	@Transactional
 	public void save(T entity) {
