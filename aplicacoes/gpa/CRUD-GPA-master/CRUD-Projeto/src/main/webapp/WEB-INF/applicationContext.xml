@@ -12,8 +12,11 @@
 
 	<bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="persistenceUnitName" value="dev" />
+		<property name="dataSource" ref="gpa_pesquisa"/>
 	</bean>
-	
+	<bean id="gpa_pesquisa" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/gpa_pesquisa"/>
+	</bean>
 	<bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="emf" />
 	</bean>
