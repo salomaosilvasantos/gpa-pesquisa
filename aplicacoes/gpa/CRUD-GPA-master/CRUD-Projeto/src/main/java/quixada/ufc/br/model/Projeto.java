@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Future;
@@ -18,8 +20,29 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Projeto {
 
 	@Id
-	// @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private String id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+	public int getId() {
+		return id;
+	}
+
+
+
+	private String codigo;
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	
 
 	@Size(min = 2, message = "Mínimo 2 caracteres")
 	private String nome;
@@ -52,11 +75,12 @@ public class Projeto {
 		super();
 	}
 
-	public Projeto(String id, String nome, Date inicio, Date termino,
+	public Projeto(int id,String codigo, String nome, Date inicio, Date termino,
 			String descricao, String atividades, Integer numero_bolsas,
 			String local, String status, String participantes) {
 		super();
 		this.id = id;
+		this.codigo = codigo;
 		this.nome = nome;
 		this.inicio = inicio;
 		this.termino = termino;
@@ -68,13 +92,7 @@ public class Projeto {
 		this.participantes = participantes;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
+	
 
 	public String getNome() {
 		return nome;

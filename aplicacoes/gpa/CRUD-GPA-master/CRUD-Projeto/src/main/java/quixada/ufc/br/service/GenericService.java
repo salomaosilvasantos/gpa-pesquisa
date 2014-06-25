@@ -1,6 +1,9 @@
 package quixada.ufc.br.service;
 
 import java.util.List;
+import java.util.Map;
+
+import quixada.ufc.br.repository.jpa.JpaGenericRepositoryImpl.QueryType;
 
 public interface GenericService<T> {
 	
@@ -13,4 +16,7 @@ public interface GenericService<T> {
 	public abstract List<T> find(Class<T> entityClass);
 
 	public abstract void delete(T entity);
+	
+	public abstract List<T> find(QueryType type, String query,
+			Map<String, Object> namedParams);
 }

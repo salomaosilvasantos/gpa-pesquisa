@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.Valid;
 
+import org.omg.PortableInterceptor.INACTIVE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +24,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 import quixada.ufc.br.model.Documentos;
 import quixada.ufc.br.model.Projeto;
+import quixada.ufc.br.repository.jpa.JpaGenericRepositoryImpl.QueryType;
 import quixada.ufc.br.service.GenericService;
+import quixada.ufc.br.service.ProjetoService;
 
 @Controller
 public class ProjetoController {
 
 	@Inject
-	private GenericService<Projeto> serviceProjeto;
+	private GenericService<Projeto> serviceGeneric;
 	
-	private static int contador = 0;
+	@Inject
+	private ProjetoService serviceProjeto;
+
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
@@ -51,30 +56,31 @@ public class ProjetoController {
 	public String adicionarProjeto(
 			@Valid @ModelAttribute("projeto") Projeto projeto,
 			BindingResult result) {
-		contador = contador + 1;
-		String id = stringFormatada(contador);
-		projeto.setId(id);
+		
+		int tamanho = serviceProjeto.getMAXid();
+		String id = stringFormatada(tamanho);
+		projeto.setCodigo(id);
 		String resultado = projeto.getNome().trim();
 		if (result.hasErrors() || resultado.isEmpty()) {
 			return ("projeto/cadastro");
 		}
 		projeto.setStatus("NOVO");
-		this.serviceProjeto.save(projeto);
-		return "redirect:projeto/listar";
+		this.serviceGeneric.save(projeto);
+		return "redirect:/listar";
 
 	}
 
 	@RequestMapping(value = "/{id}/informacoesProjeto")
 	public String informacoes(Projeto p, @PathVariable("id") String id,
 			Model model) {
-		Projeto projeto = serviceProjeto.find(Projeto.class, id);
+		Projeto projeto = serviceGeneric.find(Projeto.class, id);
 		model.addAttribute("projeto", projeto);
 		return "projeto/informacoes";
 	}
 
 	@RequestMapping(value = "/{id}/editarProjeto")
 	public String editar(Projeto p, @PathVariable("id") String id, Model model) {
-		Projeto projeto = serviceProjeto.find(Projeto.class, id);
+		Projeto projeto = serviceGeneric.find(Projeto.class, id);
 		System.out.println("Projeto do Banco antes de atualizar: "
 				+ projeto.toString());
 		model.addAttribute("projeto", projeto);
@@ -86,7 +92,7 @@ public class ProjetoController {
 			@ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result) {
 		projetoAtualizado.setStatus("NOVO");
-		this.serviceProjeto.update(projetoAtualizado);
+		this.serviceGeneric.update(projetoAtualizado);
 		System.out.println("Projeto do Banco DEPOIS de atualizar: "
 				+ projetoAtualizado.toString());
 		return "redirect:/projeto/listar";
@@ -95,21 +101,21 @@ public class ProjetoController {
 	@RequestMapping(value = "/{id}/excluirProjeto")
 	public String excluirProjeto(Projeto p, @PathVariable("id") String id,
 			Model model) {
-		Projeto projeto = serviceProjeto.find(Projeto.class, id);
+		Projeto projeto = serviceGeneric.find(Projeto.class, id);
 		if (projeto == null) {
 			return "redirect:/projeto/listar";
 		} else {
-			this.serviceProjeto.delete(projeto);
+			this.serviceGeneric.delete(projeto);
 			return "redirect:/projeto/listar";
 		}
 	}
 
 	@RequestMapping(value = "{id}/submeterProjeto")
 	public String submeterProjeto(@PathVariable("id") String id) {
-		Projeto projeto = serviceProjeto.find(Projeto.class, id);
+		Projeto projeto = serviceGeneric.find(Projeto.class, id);
 		if (validaSubmissao(projeto)) {
 			projeto.setStatus("SUBMETIDO");
-			this.serviceProjeto.update(projeto);
+			this.serviceGeneric.update(projeto);
 			System.out.println(projeto);
 			return "redirect:projeto/listar";
 		} else {
@@ -121,7 +127,7 @@ public class ProjetoController {
 	@RequestMapping(value = "/listar")
 	public ModelAndView listar() {
 		ModelAndView modelAndView = new ModelAndView("projeto/listar");
-		List<Projeto> projeto = serviceProjeto.find(Projeto.class);
+		List<Projeto> projeto = serviceGeneric.find(Projeto.class);
 		modelAndView.addObject("projetos", projeto);
 		return modelAndView;
 	}
