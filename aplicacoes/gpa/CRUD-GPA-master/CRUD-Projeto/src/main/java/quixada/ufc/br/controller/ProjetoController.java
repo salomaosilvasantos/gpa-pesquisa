@@ -60,7 +60,7 @@ public class ProjetoController {
 		}
 		projeto.setStatus("NOVO");
 		this.serviceProjeto.save(projeto);
-		return "redirect:projeto/listar";
+		return "redirect:/listar";
 
 	}
 
@@ -89,7 +89,7 @@ public class ProjetoController {
 		this.serviceProjeto.update(projetoAtualizado);
 		System.out.println("Projeto do Banco DEPOIS de atualizar: "
 				+ projetoAtualizado.toString());
-		return "redirect:/projeto/listar";
+		return "redirect:/listar";
 	}
 
 	@RequestMapping(value = "/{id}/excluirProjeto")
@@ -100,7 +100,7 @@ public class ProjetoController {
 			return "redirect:/projeto/listar";
 		} else {
 			this.serviceProjeto.delete(projeto);
-			return "redirect:/projeto/listar";
+			return "redirect:/listar";
 		}
 	}
 
