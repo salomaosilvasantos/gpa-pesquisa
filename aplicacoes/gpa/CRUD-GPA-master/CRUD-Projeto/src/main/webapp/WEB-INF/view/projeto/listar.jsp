@@ -14,7 +14,7 @@
 
 
 <body>
-		<jsp:include page="./modulos/header-estrutura.jsp" />
+		<jsp:include page="../modulos/header-estrutura.jsp" />
 
 
 	<ul class="pager">
@@ -70,7 +70,7 @@
 		</div>
 	</div>
 	
-	<jsp:include page="./modulos/footer.jsp" />
+	<jsp:include page="../modulos/footer.jsp" />
 
 	 <script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
 	<script	src="<c:url value="/webjars/bootstrap/3.1.1/js/bootstrap.min.js" />"></script>

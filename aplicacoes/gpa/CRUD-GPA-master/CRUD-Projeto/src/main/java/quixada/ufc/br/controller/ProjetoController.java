@@ -41,13 +41,13 @@ public class ProjetoController {
 		return "index";
 	}
 
-	@RequestMapping(value = "/cadastro", method = RequestMethod.GET)
+	@RequestMapping(value = "cadastro", method = RequestMethod.GET)
 	public String cadastro(Model model) {
 		model.addAttribute("projeto", new Projeto());
-		return "cadastro";
+		return "projeto/cadastro";
 	}
 
-	@RequestMapping(value = "/novoProjeto", method = RequestMethod.POST)
+	@RequestMapping(value = "novoProjeto", method = RequestMethod.POST)
 	public String adicionarProjeto(
 			@Valid @ModelAttribute("projeto") Projeto projeto,
 			BindingResult result) {
@@ -56,11 +56,11 @@ public class ProjetoController {
 		projeto.setId(id);
 		String resultado = projeto.getNome().trim();
 		if (result.hasErrors() || resultado.isEmpty()) {
-			return ("cadastro");
+			return ("projeto/cadastro");
 		}
 		projeto.setStatus("NOVO");
 		this.serviceProjeto.save(projeto);
-		return "redirect:/listar";
+		return "redirect:projeto/listar";
 
 	}
 
@@ -69,7 +69,7 @@ public class ProjetoController {
 			Model model) {
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		model.addAttribute("projeto", projeto);
-		return "informacoes";
+		return "projeto/informacoes";
 	}
 
 	@RequestMapping(value = "/{id}/editarProjeto")
@@ -78,7 +78,7 @@ public class ProjetoController {
 		System.out.println("Projeto do Banco antes de atualizar: "
 				+ projeto.toString());
 		model.addAttribute("projeto", projeto);
-		return "editar";
+		return "projeto/editar";
 	}
 
 	@RequestMapping(value = "/{id}/editarProjetoForm", method = RequestMethod.POST)
@@ -89,7 +89,7 @@ public class ProjetoController {
 		this.serviceProjeto.update(projetoAtualizado);
 		System.out.println("Projeto do Banco DEPOIS de atualizar: "
 				+ projetoAtualizado.toString());
-		return "redirect:/listar";
+		return "redirect:/projeto/listar";
 	}
 
 	@RequestMapping(value = "/{id}/excluirProjeto")
@@ -97,10 +97,10 @@ public class ProjetoController {
 			Model model) {
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		if (projeto == null) {
-			return "redirect:/listar";
+			return "redirect:/projeto/listar";
 		} else {
 			this.serviceProjeto.delete(projeto);
-			return "redirect:/listar";
+			return "redirect:/projeto/listar";
 		}
 	}
 
@@ -111,16 +111,16 @@ public class ProjetoController {
 			projeto.setStatus("SUBMETIDO");
 			this.serviceProjeto.update(projeto);
 			System.out.println(projeto);
-			return "redirect:/listar";
+			return "redirect:projeto/listar";
 		} else {
-			return "redirect:/" + id + "/editarProjeto";
+			return "redirect:projeto/" + id + "/editarProjeto";
 		}
 
 	}
 
 	@RequestMapping(value = "/listar")
 	public ModelAndView listar() {
-		ModelAndView modelAndView = new ModelAndView("listar");
+		ModelAndView modelAndView = new ModelAndView("projeto/listar");
 		List<Projeto> projeto = serviceProjeto.find(Projeto.class);
 		modelAndView.addObject("projetos", projeto);
 		return modelAndView;

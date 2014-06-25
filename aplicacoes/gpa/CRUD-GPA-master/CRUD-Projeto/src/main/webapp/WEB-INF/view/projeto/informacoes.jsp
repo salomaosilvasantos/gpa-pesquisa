@@ -95,7 +95,7 @@
 		</div>
 	</div>
 </div>
-<jsp:include page="./modulos/footer.jsp" />
+<jsp:include page="../modulos/footer.jsp" />
 
 <script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
 <script src="<c:url value="/webjars/jquery-maskedinput/1.3.1/jquery.maskedinput.min.js" />"></script>
