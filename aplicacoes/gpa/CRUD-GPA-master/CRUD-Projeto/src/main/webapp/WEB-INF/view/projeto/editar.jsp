@@ -32,9 +32,9 @@
 			<form:form commandName="projeto" id="reg"
 				action="editarProjetoForm">
 
-				<form:label path="id">ID:</form:label>
+				<form:label path="codigo">Código</form:label>
 				<br>
-				<form:input path="id" readonly="true" class="form-control"/>
+				<form:input path="codigo" readonly="true" class="form-control"/>
 				<br>
 
 				<form:label path="nome">Nome:</form:label>

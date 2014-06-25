@@ -58,8 +58,8 @@ public class ProjetoController {
 			BindingResult result) {
 		
 		int tamanho = serviceProjeto.getMAXid();
-		String id = stringFormatada(tamanho);
-		projeto.setCodigo(id);
+		String codigo = stringFormatada(tamanho + 1);
+		projeto.setCodigo(codigo );
 		String resultado = projeto.getNome().trim();
 		if (result.hasErrors() || resultado.isEmpty()) {
 			return ("projeto/cadastro");
@@ -71,7 +71,7 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/{id}/informacoesProjeto")
-	public String informacoes(Projeto p, @PathVariable("id") String id,
+	public String informacoes(Projeto p, @PathVariable("id") int id,
 			Model model) {
 		Projeto projeto = serviceGeneric.find(Projeto.class, id);
 		model.addAttribute("projeto", projeto);
@@ -79,7 +79,7 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/{id}/editarProjeto")
-	public String editar(Projeto p, @PathVariable("id") String id, Model model) {
+	public String editar(Projeto p, @PathVariable("id") int id, Model model) {
 		Projeto projeto = serviceGeneric.find(Projeto.class, id);
 		System.out.println("Projeto do Banco antes de atualizar: "
 				+ projeto.toString());
@@ -88,30 +88,30 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/{id}/editarProjetoForm", method = RequestMethod.POST)
-	public String atualizarProjeto(@PathVariable("id") String id,
+	public String atualizarProjeto(@PathVariable("id") int id,
 			@ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result) {
 		projetoAtualizado.setStatus("NOVO");
 		this.serviceGeneric.update(projetoAtualizado);
 		System.out.println("Projeto do Banco DEPOIS de atualizar: "
 				+ projetoAtualizado.toString());
-		return "redirect:/projeto/listar";
+		return "redirect:/listar";
 	}
 
 	@RequestMapping(value = "/{id}/excluirProjeto")
-	public String excluirProjeto(Projeto p, @PathVariable("id") String id,
+	public String excluirProjeto(Projeto p, @PathVariable("id") int id,
 			Model model) {
 		Projeto projeto = serviceGeneric.find(Projeto.class, id);
 		if (projeto == null) {
 			return "redirect:/projeto/listar";
 		} else {
 			this.serviceGeneric.delete(projeto);
-			return "redirect:/projeto/listar";
+			return "redirect:/listar";
 		}
 	}
 
 	@RequestMapping(value = "{id}/submeterProjeto")
-	public String submeterProjeto(@PathVariable("id") String id) {
+	public String submeterProjeto(@PathVariable("id") int id) {
 		Projeto projeto = serviceGeneric.find(Projeto.class, id);
 		if (validaSubmissao(projeto)) {
 			projeto.setStatus("SUBMETIDO");
@@ -119,7 +119,7 @@ public class ProjetoController {
 			System.out.println(projeto);
 			return "redirect:projeto/listar";
 		} else {
-			return "redirect:projeto/" + id + "/editarProjeto";
+			return "redirect:/" + id + "/editarProjeto";
 		}
 
 	}
@@ -166,11 +166,11 @@ public class ProjetoController {
 
 	private String stringFormatada(int contador){
 		if(contador < 10){
-			String id = "PESQ0"+ contador;
-			return id;
+			String codigo = "PESQ0"+ contador;
+			return codigo;
 		}else{
-			String id = "PESQ"+ contador;
-			return id;
+			String codigo = "PESQ"+ contador;
+			return codigo;
 		}
 		
 	}

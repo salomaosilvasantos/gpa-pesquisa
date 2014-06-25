@@ -22,12 +22,7 @@ public class Projeto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	public int getId() {
-		return id;
-	}
-
-
-
+	
 	private String codigo;
 
 	public String getCodigo() {
@@ -40,6 +35,10 @@ public class Projeto {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public int getId() {
+		return id;
 	}
 	
 	
