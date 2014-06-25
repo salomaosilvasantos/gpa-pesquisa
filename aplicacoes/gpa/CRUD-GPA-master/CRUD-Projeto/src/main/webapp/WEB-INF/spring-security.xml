@@ -8,40 +8,28 @@
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security-3.2.xsd"> 
   
-	<http auto-config="true" use-expressions="true"> 		
-	
-		<intercept-url pattern="/login*" access="permitAll" />
-		<intercept-url pattern="/webjars/**" access="permitAll" />  	
-		<intercept-url pattern="/resources/**" access="permitAll" /> 			
-		<intercept-url pattern="/**" access="hasRole('COORDENADOR')" />
-		
-		<form-login login-page="/login" default-target-url="/index"
-		authentication-failure-url="/login" />
-		
-		<logout logout-success-url="/index" /> 	
-		
-		<http-basic/>
-	</http> 
+	<http auto-config="true">
+ 		<intercept-url pattern="/login*" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 
+ 		<intercept-url pattern="/webjars/**" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 		
+ 		<intercept-url pattern="/**" access="ROLE_COORDENADOR" />
+ 		
+ 		<form-login login-page="/login" default-target-url="/" 
+ 			authentication-failure-url="/loginfailed" />
+ 		<logout logout-success-url="/login" /> 	
+ 	</http>
   
-	<authentication-manager> 
-	  <authentication-provider> 
-	    <user-service> 
-		<user name="admin" password="123" authorities="COORDENADOR" /> 
-	    </user-service> 
-	  </authentication-provider> 
-	</authentication-manager> 
-	
-	<!-- <authentication-manager>
+ 	<authentication-manager>
 		<authentication-provider>
-			<jdbc-user-service data-source-ref="dataSource"
+			<password-encoder hash="sha-256"/>
+			<jdbc-user-service data-source-ref="gpa_pesquisa"
 				users-by-username-query="
-                    SELECT nome, senha
-                    FROM usuario WHERE nome = ?"
+                    SELECT login, password, habilitado
+                    FROM usuario WHERE login = ?"
 
 				authorities-by-username-query=
-                    "SELECT nome, " 
+                    "SELECT u.login, p.nome FROM usuario AS u, papel_usuario AS pu, papel AS p WHERE u.id = pu.usuario_id AND pu.papel_id = p.id AND u.login=?" 
                     />
 		</authentication-provider>
- 	</authentication-manager>-->
+ 	</authentication-manager>
   
 </beans:beans>
