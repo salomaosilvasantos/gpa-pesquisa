@@ -33,7 +33,7 @@
 					</button></a>
 			</div>
 			<div class="panel-heading" align="left">
-				<h4">Lista de Projeto</h4>
+				<h4>Lista de Projeto</h4>
 			</div>
 
 			<!-- Table -->

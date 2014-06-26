@@ -6,13 +6,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.Valid;
 
-import org.omg.PortableInterceptor.INACTIVE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -103,7 +100,7 @@ public class ProjetoController {
 			Model model) {
 		Projeto projeto = serviceGeneric.find(Projeto.class, id);
 		if (projeto == null) {
-			return "redirect:/projeto/listar";
+			return "redirect:/listar";
 		} else {
 			this.serviceGeneric.delete(projeto);
 			return "redirect:/listar";
@@ -117,7 +114,7 @@ public class ProjetoController {
 			projeto.setStatus("SUBMETIDO");
 			this.serviceGeneric.update(projeto);
 			System.out.println(projeto);
-			return "redirect:projeto/listar";
+			return "redirect:/listar";
 		} else {
 			return "redirect:/" + id + "/editarProjeto";
 		}
