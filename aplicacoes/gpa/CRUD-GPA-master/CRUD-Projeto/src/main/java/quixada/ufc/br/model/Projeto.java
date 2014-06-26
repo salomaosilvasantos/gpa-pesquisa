@@ -55,9 +55,11 @@ public class Projeto {
 
 	private String local;
 	
-	@Enumerated(EnumType.STRING)
-	private Enum<StatusProjeto> statusProjeto;
+	//@Enumerated(EnumType.STRING)
+	//private Enum<StatusProjeto> statusProjeto;
 
+	private String status;
+	
 	private String participantes;
 
 	
@@ -70,7 +72,7 @@ public class Projeto {
 
 	public Projeto(int id,String codigo, String nome, Date inicio, Date termino,
 			String descricao, String atividades, Integer numero_bolsas,
-			String local, Enum<StatusProjeto> statusProjeto, String participantes, Usuario usuarioCriador) {
+			String local, String statusProjeto, String participantes, Usuario usuarioCriador) {
 		super();
 		this.id = id;
 		this.codigo = codigo;
@@ -81,7 +83,7 @@ public class Projeto {
 		this.atividades = atividades;
 		this.numero_bolsas = numero_bolsas;
 		this.local = local;
-		this.statusProjeto = statusProjeto;
+		this.status = statusProjeto;
 		this.participantes = participantes;
 		this.usuarioCriador = usuarioCriador;
 	}
@@ -142,12 +144,12 @@ public class Projeto {
 		this.local = local;
 	}
 
-	public Enum<StatusProjeto> getStatusProjeto() {
-		return statusProjeto;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setStatusProjeto(Enum<StatusProjeto> status) {
-		this.statusProjeto = status;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String getParticipantes() {
@@ -195,7 +197,7 @@ public class Projeto {
 		return "Projeto [id=" + id + ", codigo=" + codigo + ", nome=" + nome + ", inicio=" + inicio
 				+ ", termino=" + termino + ", descricao=" + descricao
 				+ ", atividades=" + atividades + ", numero_bolsas="
-				+ numero_bolsas + ", local=" + local + ", status=" + statusProjeto
+				+ numero_bolsas + ", local=" + local + ", status=" + status
 				+ ", participantes=" + participantes + "]";
 	}
 

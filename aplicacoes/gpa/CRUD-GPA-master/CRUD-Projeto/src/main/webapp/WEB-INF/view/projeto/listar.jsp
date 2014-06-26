@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
@@ -33,9 +34,13 @@
 					</button></a>
 			</div>
 			<div class="panel-heading" align="left">
-				<a href="cadastro"><button class="btn btn-primary">
-					Projetos Submetidos <span class="glyphicon glyphicon-plus"></span>
-					</button></a>
+			
+			<!-- <sec:authorize  ifAnyGranted="ROLE_DIRETOR">  -->
+				<a href="listarDiretor"><button class="btn btn-primary">
+					Listar Projetos Submetidos <span class="glyphicon glyphicon-list"></span>
+				</button></a>
+			<!--</sec:authorize>  -->
+			
 			</div>
 			<div class="panel-heading" align="left">
 				<h4>Lista de Projeto</h4>
