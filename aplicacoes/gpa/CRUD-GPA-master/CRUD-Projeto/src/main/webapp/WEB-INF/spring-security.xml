@@ -12,7 +12,7 @@
  		<intercept-url pattern="/login*" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 
  		<intercept-url pattern="/webjars/**" access="IS_AUTHENTICATED_ANONYMOUSLY" /> 		
  		<intercept-url pattern="/**" access="ROLE_COORDENADOR" />
- 		
+ 		<intercept-url pattern="/**" access="ROLE_DIRETOR" />
  		
  		
  		<form-login login-page="/login" default-target-url="/" 

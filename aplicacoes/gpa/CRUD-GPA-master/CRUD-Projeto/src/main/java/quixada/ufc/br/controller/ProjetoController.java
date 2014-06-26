@@ -132,6 +132,14 @@ public class ProjetoController {
 		modelAndView.addObject("projetos", projeto);
 		return modelAndView;
 	}
+	
+	@RequestMapping(value = "/listarDiretor")
+	public ModelAndView listarDiretor() {
+		ModelAndView modelAndView = new ModelAndView("diretor/listarDiretor");
+		List<Projeto> projeto = serviceProjeto.projetosSubmetidos();
+		modelAndView.addObject("projetos", projeto);
+		return modelAndView;
+	}
 
 	@RequestMapping(value = "upload-doc", method = RequestMethod.POST)
 	public String handleFileUpload(@RequestParam("idNo") String idNo,
