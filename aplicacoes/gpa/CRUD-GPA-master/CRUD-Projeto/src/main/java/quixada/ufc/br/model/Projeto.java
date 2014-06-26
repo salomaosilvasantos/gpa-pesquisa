@@ -25,25 +25,7 @@ public class Projeto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	private String codigo;
-
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-	
-	public int getId() {
-		return id;
-	}
-	
-	
+	private String codigo;	
 
 	@Size(min = 2, message = "Mínimo 2 caracteres")
 	private String nome;
@@ -68,6 +50,7 @@ public class Projeto {
 	private Integer numero_bolsas;
 
 	private String local;
+	
 	private String status;
 
 	private String participantes;
@@ -82,7 +65,7 @@ public class Projeto {
 
 	public Projeto(int id,String codigo, String nome, Date inicio, Date termino,
 			String descricao, String atividades, Integer numero_bolsas,
-			String local, String status, String participantes) {
+			String local, String status, String participantes, Usuario usuarioCriador) {
 		super();
 		this.id = id;
 		this.codigo = codigo;
@@ -95,9 +78,8 @@ public class Projeto {
 		this.local = local;
 		this.status = status;
 		this.participantes = participantes;
+		this.usuarioCriador = usuarioCriador;
 	}
-
-	
 
 	public String getNome() {
 		return nome;
@@ -188,10 +170,26 @@ public class Projeto {
 	public void setUsuarioCriador(Usuario usuarioCriador) {
 		this.usuarioCriador = usuarioCriador;
 	}
+	
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public int getId() {
+		return id;
+	}
 
 	@Override
 	public String toString() {
-		return "Projeto [id=" + id + ", nome=" + nome + ", inicio=" + inicio
+		return "Projeto [id=" + id + ", codigo=" + codigo + ", nome=" + nome + ", inicio=" + inicio
 				+ ", termino=" + termino + ", descricao=" + descricao
 				+ ", atividades=" + atividades + ", numero_bolsas="
 				+ numero_bolsas + ", local=" + local + ", status=" + status

@@ -40,12 +40,12 @@ public class Usuario {
 	@OneToMany(mappedBy = "usuarioCriador", fetch = FetchType.EAGER, cascade = CascadeType.ALL )	
 	private List<Projeto> projetos;
 	
+	@OneToMany(mappedBy="usuario")
+	private List<Servidor> servidores;
+	
 	private Integer cpf;
 	private String nome;
 	private String email;
-	
-	
-	
 	
 	public Usuario(){
 		super();
@@ -115,6 +115,12 @@ public class Usuario {
 	}
 	public void setPapeis(List<Papel> papeis) {
 		this.papeis = papeis;
+	}
+	public List<Servidor> getServidores() {
+		return servidores;
+	}
+	public void setServidores(List<Servidor> servidores) {
+		this.servidores = servidores;
 	}
 	
 }
