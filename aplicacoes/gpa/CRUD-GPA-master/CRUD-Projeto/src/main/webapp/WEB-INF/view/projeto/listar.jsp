@@ -33,6 +33,11 @@
 					</button></a>
 			</div>
 			<div class="panel-heading" align="left">
+				<a href="cadastro"><button class="btn btn-primary">
+					Projetos Submetidos <span class="glyphicon glyphicon-plus"></span>
+					</button></a>
+			</div>
+			<div class="panel-heading" align="left">
 				<h4>Lista de Projeto</h4>
 			</div>
 

@@ -22,5 +22,13 @@ public class  ProjetoServiceImpl implements ProjetoService {
 		}
 		return proj.get(0).getId();
 	}
+	
+	@Override
+	public List<Projeto> projetosSubmetidos(){
+		List<Projeto> projeto = genericRepository.find(QueryType.JPQL, "from Projeto as p where p.status='SUBMETIDO' ",null);
+		
+		return projeto;
+		
+	}
   
 }
