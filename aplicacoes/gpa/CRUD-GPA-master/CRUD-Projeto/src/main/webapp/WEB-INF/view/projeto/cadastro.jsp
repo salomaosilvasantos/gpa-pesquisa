@@ -11,11 +11,32 @@
 		<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
 		<meta charset="utf-8">
 		<link href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />" rel="stylesheet" />
+		<link href="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet">
 		<link href="<c:url value="/resources/css/estilo.css" />" rel="stylesheet"/>
 			<title>Cadastro de Projetos</title>
 	</head>
+<style>
+#envolve {
+ width: 890px;
+}
 
+#div_3 {
+ float: left;
+ text-align: center;
+ 
+ 
+}
+#center {
+ background-color: #d0e4fe;
+ 
+ 
+}
 
+#clear {
+ clear:both; 
+}
+
+</style>
 <body>
 	<ul class="pager">
 		<li class="previous"><a href="index">&larr; Voltar para
@@ -30,82 +51,85 @@
 					cssClass="form-horizontal registrationForm">
 
 					<div class="control-group">
-						<form:label path="nome" cssClass="control-label">Nome do Projeto:</form:label>
+						<form:label path="nome" cssClass="control-label" > <h4> Nome do Projeto: </h4></form:label>
 						<div class="controls">
-							<form:input path="nome" cssClass="form-control" />
+							<form:input path="nome" cssClass="form-control" id="text" />
 							<form:errors path="nome" />
-						</div>
-					</div>
-
-						<div class="control-group">
-							<form:label path="inicio" cssClass="control-label">Data de
-								Inicio:</form:label>
-							<div class="controls">
-								<form:input path="inicio" cssClass="form-control" id="datainicio" />
-								<form:errors path="inicio"  />
-							</div>
-						</div>
-	
-						<div class="control-group">
-							<form:label path="termino" cssClass="control-label">Data de
-								Término:</form:label>
-							<div class="controls">
-								<form:input path="termino" cssClass="form-control"
-									id="datatermino" />
-								<form:errors path="termino"  />
-							</div>
-						</div>
-
-					<div class="control-group">
-						<form:label path="descricao" cssClass="control-label">Descrição
-							do Projeto:</form:label>
-						<div class="controls">
-							<form:input path="descricao" cssClass="form-control"
-								id="descricaoprojeto" />
-							<form:errors path="descricao"  />
-						</div>
-					</div>
-
-					<div class="control-group">
-						<form:label path="atividades" cssClass="control-label">Atividades:</form:label>
-						<div class="controls">
-							<form:input path="atividades" cssClass="form-control"
-								id="atividades" />
-						</div>
-					</div>
-
-					<div class="control-group">
-						<form:label path="numero_bolsas" cssClass="control-label">Número de
-							Bolsas:</form:label>
-						<div class="controls">
-							<form:input type="number" placeholder="1" path="numero_bolsas"
-								cssClass="form-control error" />
-							<form:errors path="numero_bolsas" />
-						</div>
-					</div>
-
-					<div class="control-group">
-						<form:label path="local" cssClass="control-label">Local do
-							Projeto:</form:label>
-						<div class="controls">
-							<form:input path="local" cssClass="form-control"
-								id="localprojeto" />
 						</div>
 					</div>
 					
 					<div class="control-group">
-						<form:label path="participantes" cssClass="control-label">Participantes:</form:label>
+							<div ><h4>Descrição do Projeto:</h4></div>
+							<textarea name="descricao" class="form-control" id="text" rows="3" id="descricaoprojeto"></textarea>
 						<div class="controls">
-							<form:input path="participantes" cssClass="form-control"
-								id="participantes" />
+						
+						</div>
+					</div>
+					<br>
+					<br>
+					<div id="envolve" style=" width: 1000px;">
+ 
+								<div id="envolve2" style=" width: 1000px;">
+								<div id="div1_1" style=" width: 200px; margin: 30px 80px 0px 70px ; float: left; text-align: center;"><h4>Data Início</h4></div>
+								<div id="div_2_2" style=" width: 200px; margin:30px 80px 0px 50px; float: left; text-align: center; "><h4>Data Término</h4></div>
+								<div id="div_3_3" style="width: 250px; float: left; text-align: center; margin:35px 0px 0px 30px ; " ><h4>Numero de Bolsas</h4></div>
+								</div>
+								<div id="clear">
+								</div>
+								<div id="div_1"  class="input-group date" style=" width: 200px; margin: 30px 80px 0px 70px ; float: left; text-align: center;">
+								<form:label path="inicio" cssClass="control-label"></form:label>
+								<form:input  type="text" path="inicio" cssClass="form-control" id="datainicio" /><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+								<form:errors path="inicio"  />
+								
+								</div>
+							
+						
+								<div id="div_2"  class="input-group date" style=" width: 200px; margin:30px 80px 0px 50px; float: left; text-align: center; " >
+								<form:label path="termino" cssClass="control-label"></form:label>
+								<form:input type="text" path="termino" cssClass="form-control" id="datatermino" /><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+								<form:errors path="termino"  />
+							</div>
+						
+
+						<div id="div_3" style=" position: relative; width: 250px; float: left; text-align: center; margin:35px 0px 0px 30px; " >
+							 <form:input type="number" placeholder="                    0" path="numero_bolsas" />
+						</div>
+						
+
+</div>
+
+<div id="clear">
+</div>
+<br>
+<br>
+<br>
+
+						<div class="control-group">
+						<form:label path="local" cssClass="control-label" > <h4> Local do Projeto: </h4></form:label>
+						<div class="controls">
+							<form:input path="local" cssClass="form-control"
+								id="text" />
+						</div>
+					</div>
+					
+					<div class="control-group">
+						<form:label path="participantes" cssClass="control-label" > <h4> Participantes: </h4></form:label>
+						<div class="controls">
+							<form:input path="participantes" cssClass="form-control" id="text"  />
 						</div>
 					</div>					
-
+					<div class="control-group">
+					<div><h4>Atividades</h4></div>
+						<textarea name="atividades" class="form-control" rows="3" id="text" ></textarea>
+						
+					</div>
 					<div class="controls">
 						<input name="reset" type="reset" value="Limpar Campos"
 							class="btn btn-default acoes" /> <input name="submit" type="submit"
 							class="btn btn-success acoes" value="Cadastrar Projeto" />
 					</div>
+	
+	
 				</form:form>
 			</div>
 		</div>
@@ -119,6 +143,7 @@
 	<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
 	<script	src="<c:url value="/webjars/jquery-maskedinput/1.3.1/jquery.maskedinput.min.js" />"></script>
 	<script	src="<c:url value="/webjars/jquery-validation/1.12.0/jquery.validate.min.js" />"></script>
+	<script src="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 
 </body>
 
@@ -127,6 +152,14 @@
 	$(document)
 			.ready(
 					function() {
+						$('.input-group.date').datepicker({
+					        format: "dd/mm/yyyy",
+					        startDate: "01-01-2012",
+					        endDate: "01-01-2015",
+					        todayBtn: "linked",
+					        autoclose: true,
+					        todayHighlight: true
+					    });
 						//Método que valida o dia mês e ano dd/MM/yyyy
 						jQuery.validator
 								.addMethod(
@@ -205,7 +238,7 @@
 							 success: function(element) {
 							 $(element).closest('.control-group').removeClass('error'); // remove the Boostrap error class from the control group
 							 }
-							 });
+						});
 						
 						
 						
