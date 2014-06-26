@@ -33,7 +33,10 @@ public class Projeto {
 
 	@Size(min = 5, message = "Mínimo 5 caracteres")
 	private String descricao;
-
+	
+	
+	private Usuario usuarioCriador;
+	
 	private String atividades;
 
 	@Min(value = 1, message = "Número de bolsas deve ser maior que 1")
@@ -154,6 +157,16 @@ public class Projeto {
 
 	public void setDocumentos(List<Documentos> documentos) {
 		this.documentos = documentos;
+	}
+	
+	
+	
+	public Usuario getUsuarioCriador() {
+		return usuarioCriador;
+	}
+
+	public void setUsuarioCriador(Usuario usuarioCriador) {
+		this.usuarioCriador = usuarioCriador;
 	}
 
 	@Override

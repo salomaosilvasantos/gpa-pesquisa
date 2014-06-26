@@ -3,15 +3,12 @@ package quixada.ufc.br.controller;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import quixada.ufc.br.model.Documentos;
 import quixada.ufc.br.model.Projeto;
 import quixada.ufc.br.service.GenericService;
 
@@ -47,6 +43,7 @@ public class ProjetoController {
 		return "projeto/cadastro";
 	}
 
+	
 	@RequestMapping(value = "novoProjeto", method = RequestMethod.POST)
 	public String adicionarProjeto(
 			@Valid @ModelAttribute("projeto") Projeto projeto,
@@ -64,6 +61,7 @@ public class ProjetoController {
 
 	}
 
+	
 	@RequestMapping(value = "/{id}/informacoesProjeto")
 	public String informacoes(Projeto p, @PathVariable("id") String id,
 			Model model) {
@@ -71,7 +69,9 @@ public class ProjetoController {
 		model.addAttribute("projeto", projeto);
 		return "projeto/informacoes";
 	}
-
+	
+	
+	
 	@RequestMapping(value = "/{id}/editarProjeto")
 	public String editar(Projeto p, @PathVariable("id") String id, Model model) {
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
@@ -81,6 +81,7 @@ public class ProjetoController {
 		return "projeto/editar";
 	}
 
+	
 	@RequestMapping(value = "/{id}/editarProjetoForm", method = RequestMethod.POST)
 	public String atualizarProjeto(@PathVariable("id") String id,
 			@ModelAttribute(value = "projeto") Projeto projetoAtualizado,
@@ -117,6 +118,8 @@ public class ProjetoController {
 		}
 
 	}
+
+	
 
 	@RequestMapping(value = "/listar")
 	public ModelAndView listar() {
