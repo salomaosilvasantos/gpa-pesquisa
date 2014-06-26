@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import quixada.ufc.br.model.Projeto;
+import quixada.ufc.br.model.Usuario;
 import quixada.ufc.br.service.GenericService;
 import quixada.ufc.br.service.ProjetoService;
 
@@ -30,6 +31,9 @@ public class ProjetoController {
 	
 	@Inject
 	private ProjetoService serviceProjeto;
+	
+	@Inject
+	private GenericService<Usuario> serviceUsuario;
 
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -174,6 +178,28 @@ public class ProjetoController {
 			return codigo;
 		}
 		
+	}
+	
+	@RequestMapping(value = "{projetoId}/atribuirParecerista", method = RequestMethod.GET)
+	public String atribuirParecerista(@PathVariable("projetoId") int projetoId, Model model) {
+		model.addAttribute("projetoId", projetoId);
+		model.addAttribute("usuarios", serviceUsuario.find(Usuario.class));
+		return "diretor/atribuirParecerista";
+	}
+	
+	@RequestMapping(value = "atribuirParecerista", method = RequestMethod.POST)
+	public String atribuirPareceristaNoProjeto(@RequestParam("parecerista") int parecerista, 
+			@RequestParam("projetoId") int projetoId, 
+			BindingResult result) {
+		
+		Projeto projeto = serviceGeneric.find(Projeto.class, projetoId);
+		Usuario usuario = serviceUsuario.find(Usuario.class, parecerista);
+		
+		if (serviceGeneric.find(Projeto.class, projetoId) == null){
+			
+		}
+		
+		return null;
 	}
 
 }
