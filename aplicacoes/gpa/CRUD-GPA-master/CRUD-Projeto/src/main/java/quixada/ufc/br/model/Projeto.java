@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
@@ -56,7 +58,8 @@ public class Projeto {
 	@Size(min = 5, message = "Mínimo 5 caracteres")
 	private String descricao;
 	
-	
+	@ManyToOne
+	@JoinColumn(name = "usuario_id")
 	private Usuario usuarioCriador;
 	
 	private String atividades;

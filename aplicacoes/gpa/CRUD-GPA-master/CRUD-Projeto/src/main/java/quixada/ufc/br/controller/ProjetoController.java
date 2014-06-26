@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import quixada.ufc.br.model.Projeto;
-import quixada.ufc.br.repository.jpa.JpaGenericRepositoryImpl.QueryType;
 import quixada.ufc.br.service.GenericService;
 import quixada.ufc.br.service.ProjetoService;
 
