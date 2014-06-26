@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import quixada.ufc.br.enumerator.StatusProjeto;
 import quixada.ufc.br.model.Projeto;
 import quixada.ufc.br.model.Usuario;
 import quixada.ufc.br.service.GenericService;
@@ -49,7 +51,6 @@ public class ProjetoController {
 		return "projeto/cadastro";
 	}
 
-	
 	@RequestMapping(value = "novoProjeto", method = RequestMethod.POST)
 	public String adicionarProjeto(
 			@Valid @ModelAttribute("projeto") Projeto projeto,
@@ -62,13 +63,12 @@ public class ProjetoController {
 		if (result.hasErrors() || resultado.isEmpty()) {
 			return ("projeto/cadastro");
 		}
-		projeto.setStatus("NOVO");
+		projeto.setStatusProjeto(StatusProjeto.NOVO);
 		this.serviceGeneric.save(projeto);
 		return "redirect:/listar";
 
 	}
 
-	
 	@RequestMapping(value = "/{id}/informacoesProjeto")
 	public String informacoes(Projeto p, @PathVariable("id") int id,
 			Model model) {
@@ -93,7 +93,7 @@ public class ProjetoController {
 	public String atualizarProjeto(@PathVariable("id") int id,
 			@ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result) {
-		projetoAtualizado.setStatus("NOVO");
+		projetoAtualizado.setStatusProjeto(StatusProjeto.NOVO);
 		this.serviceGeneric.update(projetoAtualizado);
 		System.out.println("Projeto do Banco DEPOIS de atualizar: "
 				+ projetoAtualizado.toString());
@@ -116,22 +116,27 @@ public class ProjetoController {
 	public String submeterProjeto(@PathVariable("id") int id) {
 		Projeto projeto = serviceGeneric.find(Projeto.class, id);
 		if (validaSubmissao(projeto)) {
-			projeto.setStatus("SUBMETIDO");
+			projeto.setStatusProjeto(StatusProjeto.SUBMETIDO);
 			this.serviceGeneric.update(projeto);
 			System.out.println(projeto);
 			return "redirect:/listar";
 		} else {
 			return "redirect:/" + id + "/editarProjeto";
 		}
-
 	}
-
-	
 
 	@RequestMapping(value = "/listar")
 	public ModelAndView listar() {
 		ModelAndView modelAndView = new ModelAndView("projeto/listar");
 		List<Projeto> projeto = serviceGeneric.find(Projeto.class);
+		modelAndView.addObject("projetos", projeto);
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/listarDiretor")
+	public ModelAndView listarDiretor() {
+		ModelAndView modelAndView = new ModelAndView("diretor/listarDiretor");
+		List<Projeto> projeto = serviceProjeto.projetosSubmetidos();
 		modelAndView.addObject("projetos", projeto);
 		return modelAndView;
 	}
@@ -150,7 +155,6 @@ public class ProjetoController {
 		}
 		
 		return idNo;
-
 	}
 
 	private boolean validaSubmissao(Projeto projeto) {
@@ -188,12 +192,12 @@ public class ProjetoController {
 	@RequestMapping(value = "atribuirParecerista", method = RequestMethod.POST)
 	public String atribuirPareceristaNoProjeto(@RequestParam("parecerista") int parecerista, 
 			@RequestParam("projetoId") int projetoId, 
-			BindingResult result) {
+			BindingResult result, final RedirectAttributes redirectAttributes) {
 		
 		Projeto projeto = serviceGeneric.find(Projeto.class, projetoId);
 		Usuario usuario = serviceUsuario.find(Usuario.class, parecerista);
 		
-		if (serviceGeneric.find(Projeto.class, projetoId) == null){
+		if (serviceGeneric.find(Projeto.class, projetoId).equals(projetoId)){
 			
 		}
 		

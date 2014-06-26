@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +19,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import quixada.ufc.br.enumerator.StatusProjeto;
 
 @Entity
 public class Projeto {
@@ -51,7 +55,8 @@ public class Projeto {
 
 	private String local;
 	
-	private String status;
+	@Enumerated(EnumType.STRING)
+	private Enum<StatusProjeto> statusProjeto;
 
 	private String participantes;
 
@@ -65,7 +70,7 @@ public class Projeto {
 
 	public Projeto(int id,String codigo, String nome, Date inicio, Date termino,
 			String descricao, String atividades, Integer numero_bolsas,
-			String local, String status, String participantes, Usuario usuarioCriador) {
+			String local, Enum<StatusProjeto> statusProjeto, String participantes, Usuario usuarioCriador) {
 		super();
 		this.id = id;
 		this.codigo = codigo;
@@ -76,7 +81,7 @@ public class Projeto {
 		this.atividades = atividades;
 		this.numero_bolsas = numero_bolsas;
 		this.local = local;
-		this.status = status;
+		this.statusProjeto = statusProjeto;
 		this.participantes = participantes;
 		this.usuarioCriador = usuarioCriador;
 	}
@@ -137,12 +142,12 @@ public class Projeto {
 		this.local = local;
 	}
 
-	public String getStatus() {
-		return status;
+	public Enum<StatusProjeto> getStatusProjeto() {
+		return statusProjeto;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setStatusProjeto(Enum<StatusProjeto> status) {
+		this.statusProjeto = status;
 	}
 
 	public String getParticipantes() {
@@ -160,8 +165,6 @@ public class Projeto {
 	public void setDocumentos(List<Documentos> documentos) {
 		this.documentos = documentos;
 	}
-	
-	
 	
 	public Usuario getUsuarioCriador() {
 		return usuarioCriador;
@@ -192,7 +195,7 @@ public class Projeto {
 		return "Projeto [id=" + id + ", codigo=" + codigo + ", nome=" + nome + ", inicio=" + inicio
 				+ ", termino=" + termino + ", descricao=" + descricao
 				+ ", atividades=" + atividades + ", numero_bolsas="
-				+ numero_bolsas + ", local=" + local + ", status=" + status
+				+ numero_bolsas + ", local=" + local + ", status=" + statusProjeto
 				+ ", participantes=" + participantes + "]";
 	}
 
