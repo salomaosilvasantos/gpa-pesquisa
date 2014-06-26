@@ -35,7 +35,6 @@ public class ProjetoController {
 	@Inject
 	private GenericService<Usuario> serviceUsuario;
 
-
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
@@ -177,7 +176,6 @@ public class ProjetoController {
 			String codigo = "PESQ"+ contador;
 			return codigo;
 		}
-		
 	}
 	
 	@RequestMapping(value = "{projetoId}/atribuirParecerista", method = RequestMethod.GET)
