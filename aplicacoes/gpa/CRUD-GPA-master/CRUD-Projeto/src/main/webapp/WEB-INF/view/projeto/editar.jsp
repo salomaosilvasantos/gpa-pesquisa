@@ -76,7 +76,7 @@
 				
 				<div class="control-group">
 							<div ><h4>Descrição do Projeto:</h4></div>
-							<textarea name="descricao" class="form-control" id="text" rows="3" id="descricaoprojeto"></textarea>
+							<form:input path="descricao" class="form-control"/>
 						<div class="controls">
 						
 						</div>
@@ -133,8 +133,7 @@
 					</div>					
 					<div class="control-group">
 					<div><h4>Atividades</h4></div>
-						<textarea name="atividades" class="form-control" rows="3" id="text" ></textarea>
-						
+						<form:input path="atividades" class="form-control"/>
 					</div>
 					
 	
