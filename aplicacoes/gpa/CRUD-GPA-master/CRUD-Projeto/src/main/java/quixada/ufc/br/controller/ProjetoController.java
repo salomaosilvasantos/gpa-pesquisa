@@ -63,7 +63,7 @@ public class ProjetoController {
 		if (result.hasErrors() || resultado.isEmpty()) {
 			return ("projeto/cadastro");
 		}
-		projeto.setStatusProjeto(StatusProjeto.NOVO);
+		projeto.setStatus("NOVO");
 		this.serviceGeneric.save(projeto);
 		return "redirect:/listar";
 
@@ -93,7 +93,7 @@ public class ProjetoController {
 	public String atualizarProjeto(@PathVariable("id") int id,
 			@ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result) {
-		projetoAtualizado.setStatusProjeto(StatusProjeto.NOVO);
+		projetoAtualizado.setStatus("NOVO");
 		this.serviceGeneric.update(projetoAtualizado);
 		System.out.println("Projeto do Banco DEPOIS de atualizar: "
 				+ projetoAtualizado.toString());
@@ -116,7 +116,7 @@ public class ProjetoController {
 	public String submeterProjeto(@PathVariable("id") int id) {
 		Projeto projeto = serviceGeneric.find(Projeto.class, id);
 		if (validaSubmissao(projeto)) {
-			projeto.setStatusProjeto(StatusProjeto.SUBMETIDO);
+			projeto.setStatus("SUBMETIDO");
 			this.serviceGeneric.update(projeto);
 			System.out.println(projeto);
 			return "redirect:/listar";
@@ -129,14 +129,6 @@ public class ProjetoController {
 	public ModelAndView listar() {
 		ModelAndView modelAndView = new ModelAndView("projeto/listar");
 		List<Projeto> projeto = serviceGeneric.find(Projeto.class);
-		modelAndView.addObject("projetos", projeto);
-		return modelAndView;
-	}
-	
-	@RequestMapping(value = "/listarDiretor")
-	public ModelAndView listarDiretor() {
-		ModelAndView modelAndView = new ModelAndView("diretor/listarDiretor");
-		List<Projeto> projeto = serviceProjeto.projetosSubmetidos();
 		modelAndView.addObject("projetos", projeto);
 		return modelAndView;
 	}
