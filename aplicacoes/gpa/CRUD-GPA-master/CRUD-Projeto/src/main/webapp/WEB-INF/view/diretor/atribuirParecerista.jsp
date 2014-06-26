@@ -16,12 +16,28 @@
 			<title>Atribuir Parecerista</title>
 	</head>
 
-
 	<body>
 	
-	<h3>Example heading<span class="label label-default">New</span></h3>
-	
-
+		<form:form id="usuario" method="post" role="form" class="form-horizontal">
+			
+			<br /> <br />
+			<input type="hidden" name="projetoId" value="${projetoId}">
+			
+			Atribuir Parecerista: <select name="parecerista">
+				<c:forEach items="${usuarios}" var="usuario">
+					<option value="${usuario.id}">${usuario.nome}</option>
+				</c:forEach>
+			</select>	
+			
+			<br /> <br />
+			
+			Data: <input type="date" min="0" max="5"> 
+			
+			<br /> <br />
+		
+			<button type="button" class="btn btn-success">Atribuir Parecerista</button>
+		</form:form>
+		
 	</body>
 	
 </html>
