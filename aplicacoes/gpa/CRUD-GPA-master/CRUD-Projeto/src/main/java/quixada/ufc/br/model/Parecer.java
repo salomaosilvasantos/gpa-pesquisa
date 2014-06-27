@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import quixada.ufc.br.enumerator.StatusParecer;
@@ -25,8 +26,6 @@ public class Parecer {
 	
 	@Enumerated(EnumType.STRING)
 	private StatusParecer statusParecer;
-	
-//	private String status;
 	
 	private String comentario_diretor;
 	
@@ -59,7 +58,6 @@ public class Parecer {
 		super();
 		this.id = id;
 		this.statusParecer = statusParecer;
-//		this.status = status;
 		this.comentario_diretor = comentario_diretor;
 		this.parecer = parecer;
 		this.data_atribuicao = data_atribuicao;
@@ -149,13 +147,4 @@ public class Parecer {
 				+ ", data_realizacao=" + data_realizacao + ", prazo=" + prazo
 				+ ", usuario=" + usuario + ", projetos=" + projetos + "]";
 	}
-
-//	public String getStatus() {
-//		return status;
-//	}
-//
-//	public void setStatus(String status) {
-//		this.status = status;
-//	}
-	
 }

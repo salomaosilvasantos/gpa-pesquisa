@@ -59,7 +59,6 @@ public class Projeto {
 	private StatusProjeto status;
 	
 	private String participantes;
-
 	
 	@OneToMany(mappedBy = "projeto", fetch = FetchType.EAGER, cascade = CascadeType.ALL )	
 	private List<Documentos> documentos;

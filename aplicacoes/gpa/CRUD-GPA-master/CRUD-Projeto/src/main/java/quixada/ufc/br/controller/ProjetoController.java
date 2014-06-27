@@ -82,13 +82,9 @@ public class ProjetoController {
 		return "projeto/informacoes";
 	}
 	
-	
-	
 	@RequestMapping(value = "/{id}/editarProjeto")
 	public String editar(Projeto p, @PathVariable("id") int id, Model model) {
 		Projeto projeto = serviceGeneric.find(Projeto.class, id);
-		System.out.println("Projeto do Banco antes de atualizar: "
-				+ projeto.toString());
 		model.addAttribute("projeto", projeto);
 		return "projeto/editar";
 	}
@@ -100,8 +96,6 @@ public class ProjetoController {
 			BindingResult result) {
 		projetoAtualizado.setStatus(StatusProjeto.NOVO);
 		this.serviceGeneric.update(projetoAtualizado);
-		System.out.println("Projeto do Banco DEPOIS de atualizar: "
-				+ projetoAtualizado.toString());
 		return "redirect:/listar";
 	}
 
@@ -152,13 +146,11 @@ public class ProjetoController {
 		
 		if (!file.isEmpty()) {
 			try {
-			
 				
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
 		}
-		
 		return idNo;
 	}
 
@@ -189,6 +181,13 @@ public class ProjetoController {
 	
 	@RequestMapping(value = "{projetoId}/atribuirParecerista", method = RequestMethod.GET)
 	public String atribuirParecerista(@PathVariable("projetoId") int projetoId, Model model) {
+		
+		Projeto projeto = serviceGeneric.find(Projeto.class, projetoId);
+		
+		if(projeto == null){
+			model.addAttribute("error", "O projeto não existe!");
+		}
+		
 		model.addAttribute("projetoId", projetoId);
 		model.addAttribute("usuarios", serviceUsuario.find(Usuario.class));
 		return "diretor/atribuirParecerista";

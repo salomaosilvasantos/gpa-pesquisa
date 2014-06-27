@@ -14,6 +14,13 @@
 		<link href="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet">
 		<link href="<c:url value="/resources/css/estilo.css" />" rel="stylesheet"/>
 		
+		<script type="text/javascript">
+			$( document ).ready(function() {
+				$('div:has(span.error)').find('span.error').css('color', '#a94442');
+				$('div:has(span.error)').find('span.error').parent().parent().addClass('has-error has-feedback');
+			});
+		</script>
+		
 			<title>Atribuir Parecerista</title>
 	</head>
 <style>
@@ -24,13 +31,10 @@
 #div_3 {
  float: left;
  text-align: center;
- 
- 
 }
+
 #center {
  background-color: #d0e4fe;
- 
- 
 }
 
 #clear {
@@ -50,51 +54,58 @@
 			<div class="form" align="center">
 				<h2>Atribuir Parecerista</h2>
 				
+				<br> <br>
 				
-				<form:form action="/exemplo-jpa-spring-mvc/atribuirParecerista" method="GET"
-					cssClass="form-horizontal registrationForm">
-
-<br> 
-				<input type="hidden" name="projetoId" value="${projetoId}">
+				<c:if test="${error != null }">
+					<div class="alert alert-danger" role="alert" style=" text-size: 30px;">${error}</div>
+				</c:if>
 				
-				<div id="envolve" style=" width: 1000px; height: 80px; margin: 30px 80px 0px 70px;" align="center">
+				<c:if test="${error == null }">
+					<form:form action="/exemplo-jpa-spring-mvc/atribuirParecerista" method="GET"
+						cssClass="form-horizontal registrationForm">
+	<br> 
+					<input type="hidden" name="projetoId" value="${projetoId}">
 					
-					<div id="clear">
-					</div>
+					<div id="envolve" style=" width: 1000px; height: 80px; margin: 30px 80px 0px 70px;" align="center">
+						
+						<div id="clear">
+						</div>
+										
+						<div id="div_1"  class="input-group" style=" width: 100px; margin: 0px 200px 0px 100px; float: left; text-align: center;">
+							<label  cssClass="control-label">Parecerista</label>
+							<select style=" width: 350px;" name="parecerista" class="form-control">
+								<c:forEach items="${usuarios}" var="usuario">
+									<option value="${usuario.id}">${usuario.nome}</option>
+								</c:forEach>
+							</select>
+						</div>
 									
-					<div id="div_1"  class="input-group" style=" width: 100px; margin: 0px 200px 0px 100px; float: left; text-align: center;">
-						<label  cssClass="control-label">Parecerista</label>
-						<select style=" width: 350px;" name="parecerista" class="form-control">
-							<c:forEach items="${usuarios}" var="usuario">
-								<option value="${usuario.id}">${usuario.nome}</option>
-							</c:forEach>
-						</select>
-					</div>
-								
-					<div id="div_2"  class="input-group date" style=" width: 200px; float: left; text-align: center; " >
-						<label cssClass="control-label">Prazo</label>
-							<input type="date" cssClass="form-control" id="prazo" name="prazo" /><span class="input-group-addon" style="width: 50px; height: 50px;"><i class="glyphicon glyphicon-th"></i></span>
-					</div>
-				</div>
-				
-			</div>
-
-			<br> <br>
-
-					<div class="control-group">
-						<div ><h4>Comentarios adicionais:</h4></div>
-							<textarea name="comentario_diretor" class="form-control" id="text" rows="3" id="comentario_diretor" style="width: 800px;"></textarea>
-						<div class="controls">
+						<div id="div_2"  class="input-group date" style=" width: 200px; float: left; text-align: center; " >
+							<label cssClass="control-label">Prazo</label>
+								<input type="date" cssClass="form-control" id="prazo" name="prazo" /><span class="input-group-addon" style="width: 50px; height: 50px;"><i class="glyphicon glyphicon-th"></i></span>
+								<form:errors path="prazo" cssClass="error" />
 						</div>
 					</div>
-
-			<br> 
-
-					<div class="controls">
-						<input name="submit" type="submit" class="btn btn-primary" value="Confirmar" />
-						<a href="/exemplo-jpa-spring-mvc/listar" class="btn btn-default" >Cancelar</a>
-					</div>
-				</form:form>
+					
+				</div>
+	
+				<br> <br>
+	
+						<div class="control-group">
+							<div ><h4>Comentarios adicionais:</h4></div>
+								<textarea name="comentario_diretor" class="form-control" id="text" rows="3" id="comentario_diretor" style="width: 800px;"></textarea>
+							<div class="controls">
+							</div>
+						</div>
+	
+				<br> 
+	
+						<div class="controls">
+							<input name="submit" type="submit" class="btn btn-primary" value="Confirmar" />
+							<a href="/exemplo-jpa-spring-mvc/listar" class="btn btn-default" >Cancelar</a>
+						</div>
+					</form:form>
+				</c:if>
 			</div>
 		</div>
 	</div>
@@ -209,6 +220,13 @@
 														}
 													}														
 												},
+												prazo : {
+													dateBR : {
+														depends : function () {
+															return $('input[name="termino"]').val().length > 0 && $('input[name="inicio"]').val().length > 0;
+														}
+													}														
+												},
 												numero_bolsas : {
 													positiveNumber : true
 												}
@@ -223,6 +241,9 @@
 													minlength : "Campo deve ter no mínimo 5 caracteres!"
 												},
 												inicio : {
+													dateBR : "Data Inválida"
+												},
+												termino : {
 													dateBR : "Data Inválida"
 												},
 												termino : {
