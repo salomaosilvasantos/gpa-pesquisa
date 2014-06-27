@@ -51,7 +51,7 @@ public class Projeto {
 	private String atividades;
 
 	@Min(value = 1, message = "Número de bolsas deve ser maior que 1")
-	private Integer numero_bolsas;
+	private Integer quantidadeBolsa;
 
 	private String local;
 	
@@ -61,14 +61,14 @@ public class Projeto {
 	private String participantes;
 	
 	@OneToMany(mappedBy = "projeto", fetch = FetchType.EAGER, cascade = CascadeType.ALL )	
-	private List<Documentos> documentos;
+	private List<Documento> documentos;
 
 	public Projeto() {
 		super();
 	}
 
-	public Projeto(int id,String codigo, String nome, Date inicio, Date termino,
-			String descricao, String atividades, Integer numero_bolsas,
+	public Projeto(int id, String codigo, String nome, Date inicio, Date termino,
+			String descricao, String atividades, Integer quantidadeBolsa,
 			String local, StatusProjeto status, String participantes, Usuario usuarioCriador) {
 		super();
 		this.id = id;
@@ -78,7 +78,7 @@ public class Projeto {
 		this.termino = termino;
 		this.descricao = descricao;
 		this.atividades = atividades;
-		this.numero_bolsas = numero_bolsas;
+		this.quantidadeBolsa = quantidadeBolsa;
 		this.local = local;
 		this.status = status;
 		this.participantes = participantes;
@@ -125,12 +125,12 @@ public class Projeto {
 		this.atividades = atividades;
 	}
 
-	public Integer getNumero_bolsas() {
-		return numero_bolsas;
+	public Integer getQuantidadeBolsa() {
+		return quantidadeBolsa;
 	}
 
-	public void setNumero_bolsas(Integer numero_bolsas) {
-		this.numero_bolsas = numero_bolsas;
+	public void setQuantidadeBolsa(Integer quantidadeBolsa) {
+		this.quantidadeBolsa = quantidadeBolsa;
 	}
 
 	public String getLocal() {
@@ -157,11 +157,11 @@ public class Projeto {
 		this.participantes = participantes;
 	}
 
-	public List<Documentos> getDocumentos() {
+	public List<Documento> getDocumentos() {
 		return documentos;
 	}
 
-	public void setDocumentos(List<Documentos> documentos) {
+	public void setDocumentos(List<Documento> documentos) {
 		this.documentos = documentos;
 	}
 	
@@ -193,8 +193,8 @@ public class Projeto {
 	public String toString() {
 		return "Projeto [id=" + id + ", codigo=" + codigo + ", nome=" + nome + ", inicio=" + inicio
 				+ ", termino=" + termino + ", descricao=" + descricao
-				+ ", atividades=" + atividades + ", numero_bolsas="
-				+ numero_bolsas + ", local=" + local + ", status=" + status
+				+ ", atividades=" + atividades + ", quantidadeBolsa="
+				+ quantidadeBolsa + ", local=" + local + ", status=" + status
 				+ ", participantes=" + participantes + "]";
 	}
 

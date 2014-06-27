@@ -80,10 +80,36 @@
 							</select>
 						</div>
 									
+<<<<<<< HEAD
 						<div id="div_2"  class="input-group date" style=" width: 200px; float: left; text-align: center; " >
 							<label cssClass="control-label">Prazo</label>
 								<input type="date" cssClass="form-control" id="prazo" name="prazo" /><span class="input-group-addon" style="width: 50px; height: 50px;"><i class="glyphicon glyphicon-th"></i></span>
 								<form:errors path="prazo" cssClass="error" />
+=======
+					<div id="div_1"  class="input-group" style=" width: 100px; margin: 0px 200px 0px 100px; float: left; text-align: center;">
+						<label  cssClass="control-label">Parecerista</label>
+						<select style=" width: 350px;" name="parecerista" class="form-control">
+							<c:forEach items="${usuarios}" var="usuario">
+								<option value="${usuario.id}">${usuario.nome}</option>
+							</c:forEach>
+						</select>
+					</div>
+								
+					<div id="div_2"  class="input-group date" style=" width: 200px; float: left; text-align: center; " >
+						<label cssClass="control-label">Prazo</label>
+							<input type="text" cssClass="form-control" id="prazo" name="prazo" /><span class="input-group-addon" style="width: 50px; height: 50px;"><i class="glyphicon glyphicon-th"></i></span>
+					</div>
+				</div>
+				
+			</div>
+
+			<br> <br>
+
+					<div class="control-group">
+						<div ><h4>Comentarios adicionais:</h4></div>
+							<textarea name="comentario_diretor" class="form-control" id="text" rows="3" id="comentario_diretor" style="width: 800px;"></textarea>
+						<div class="controls">
+>>>>>>> branch 'master' of https://github.com/npi-ufc-qxd/gpa-pesquisa.git
 						</div>
 					</div>
 					

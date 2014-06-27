@@ -73,9 +73,9 @@
 					<form:input path="local" readonly="true" class="form-control"/>
 					<br>
 	
-					<form:label path="numero_bolsas">Número de Bolsas:</form:label>
+					<form:label path="quantidadeBolsa">Número de Bolsas:</form:label>
 					<br>
-					<form:input path="numero_bolsas" readonly="true" class="form-control"/>
+					<form:input path="quantidadeBolsa" readonly="true" class="form-control"/>
 					<br>
 					
 					<form:label path="inicio">Início:</form:label>

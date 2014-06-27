@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.Type;
 
 @Entity
-public class Documentos {
+public class Documento {
 
 	@Id
 	private String id;
@@ -26,13 +26,11 @@ public class Documentos {
 	@JoinColumn(name = "projeto_id")
 	private Projeto projeto;
 	
-	
-	
-	public Documentos(){
+	public Documento(){
 		super();
 	}	
 	
-	public Documentos(String id, String nomeOriginal, String prefixo, String tipo, byte[] arquivo) {
+	public Documento(String id, String nomeOriginal, String prefixo, String tipo, byte[] arquivo) {
 		super();
 		this.id = id;
 		this.nomeOriginal = nomeOriginal;

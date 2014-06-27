@@ -93,7 +93,7 @@
 						
 
 						<div id="div_3" style=" position: relative; width: 250px; float: left; text-align: center; margin:35px 0px 0px 30px; " >
-							 <form:input type="number" placeholder="                    0" path="numero_bolsas" />
+							 <form:input type="number" placeholder="                    0" path="quantidadeBolsa" />
 						</div>
 				</div>
 

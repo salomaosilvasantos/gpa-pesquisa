@@ -1,7 +1,6 @@
 package quixada.ufc.br.model;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -25,17 +24,17 @@ public class Parecer {
 	private int id;
 	
 	@Enumerated(EnumType.STRING)
-	private StatusParecer statusParecer;
+	private StatusParecer status;
 	
-	private String comentario_diretor;
+	private String comentario;
 	
 	private String parecer;
 	
 	@DateTimeFormat(pattern = "dd/mm/yyyy")
-	private Date data_atribuicao;
+	private Date dataAtribuicao;
 	
 	@DateTimeFormat(pattern = "dd/mm/yyyy")
-	private Date data_realizacao;
+	private Date dataRealizacao;
 	
 	@DateTimeFormat(pattern = "dd/mm/yyyy")
 	private Date prazo;
@@ -46,25 +45,25 @@ public class Parecer {
 	
 	@ManyToOne
 	@JoinColumn(name = "projeto_id")
-	private Projeto projetos;
+	private Projeto projeto;
 
 	public Parecer(){
 		super();
 	}
 	
-	public Parecer(int id, StatusParecer statusParecer,
-			String comentario_diretor, String parecer, Date data_atribuicao,
-			Date data_realizacao, Date prazo, Usuario usuario, Projeto projetos) {
+	public Parecer(int id, StatusParecer status,
+			String comentario, String parecer, Date dataAtribuicao,
+			Date dataRealizacao, Date prazo, Usuario usuario, Projeto projeto) {
 		super();
 		this.id = id;
-		this.statusParecer = statusParecer;
-		this.comentario_diretor = comentario_diretor;
+		this.status = status;
+		this.comentario = comentario;
 		this.parecer = parecer;
-		this.data_atribuicao = data_atribuicao;
-		this.data_realizacao = data_realizacao;
+		this.dataAtribuicao = dataAtribuicao;
+		this.dataRealizacao = dataRealizacao;
 		this.prazo = prazo;
 		this.usuario = usuario;
-		this.projetos = projetos;
+		this.projeto = projeto;
 	}
 
 	public int getId() {
@@ -75,20 +74,20 @@ public class Parecer {
 		this.id = id;
 	}
 
-	public StatusParecer getStatusParecer() {
-		return statusParecer;
+	public StatusParecer getStatus() {
+		return status;
 	}
 
-	public void setStatusParecer(StatusParecer statusParecer) {
-		this.statusParecer = statusParecer;
+	public void setStatus(StatusParecer status) {
+		this.status = status;
 	}
 
-	public String getComentario_diretor() {
-		return comentario_diretor;
+	public String getComentario() {
+		return comentario;
 	}
 
-	public void setComentario_diretor(String comentario_diretor) {
-		this.comentario_diretor = comentario_diretor;
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
 	}
 
 	public String getParecer() {
@@ -99,20 +98,20 @@ public class Parecer {
 		this.parecer = parecer;
 	}
 
-	public Date getData_atribuicao() {
-		return data_atribuicao;
+	public Date getDataAtribuicao() {
+		return dataAtribuicao;
 	}
 
-	public void setData_atribuicao(Date data_atribuicao) {
-		this.data_atribuicao = data_atribuicao;
+	public void setDataAtribuicao(Date dataAtribuicao) {
+		this.dataAtribuicao = dataAtribuicao;
 	}
 
-	public Date getData_realizacao() {
-		return data_realizacao;
+	public Date getDataRealizacao() {
+		return dataRealizacao;
 	}
 
-	public void setData_realizacao(Date data_realizacao) {
-		this.data_realizacao = data_realizacao;
+	public void setDataRealizacao(Date dataRealizacao) {
+		this.dataRealizacao = dataRealizacao;
 	}
 
 	public Date getPrazo() {
@@ -131,20 +130,20 @@ public class Parecer {
 		this.usuario = usuario;
 	}
 
-	public Projeto getProjetos() {
-		return projetos;
+	public Projeto getProjeto() {
+		return projeto;
 	}
 
-	public void setProjetos(Projeto projetos) {
-		this.projetos = projetos;
+	public void setProjeto(Projeto projeto) {
+		this.projeto = projeto;
 	}
 
 	@Override
 	public String toString() {
-		return "Parecer [id=" + id + ", statusParecer=" + statusParecer
-				+ ", comentario_diretor=" + comentario_diretor + ", parecer="
-				+ parecer + ", data_atribuicao=" + data_atribuicao
-				+ ", data_realizacao=" + data_realizacao + ", prazo=" + prazo
-				+ ", usuario=" + usuario + ", projetos=" + projetos + "]";
+		return "Parecer [id=" + id + ", statusParecer=" + status
+				+ ", comentarioDiretor=" + comentario + ", parecer="
+				+ parecer + ", dataAtribuicao=" + dataAtribuicao
+				+ ", dataRealizacao=" + dataRealizacao + ", prazo=" + prazo
+				+ ", usuario=" + usuario + ", projeto=" + projeto + "]";
 	}
 }

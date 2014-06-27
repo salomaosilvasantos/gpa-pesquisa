@@ -44,7 +44,9 @@ public class Usuario {
 	private List<Servidor> servidores;
 	
 	private Integer cpf;
+	
 	private String nome;
+	
 	private String email;
 	
 	public Usuario(){

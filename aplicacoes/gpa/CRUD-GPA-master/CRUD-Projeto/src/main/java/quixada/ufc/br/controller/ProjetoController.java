@@ -82,9 +82,13 @@ public class ProjetoController {
 		return "projeto/informacoes";
 	}
 	
+	
+	
 	@RequestMapping(value = "/{id}/editarProjeto")
 	public String editar(Projeto p, @PathVariable("id") int id, Model model) {
 		Projeto projeto = serviceGeneric.find(Projeto.class, id);
+		System.out.println("Projeto do Banco antes de atualizar: "
+				+ projeto.toString());
 		model.addAttribute("projeto", projeto);
 		return "projeto/editar";
 	}
@@ -96,6 +100,8 @@ public class ProjetoController {
 			BindingResult result) {
 		projetoAtualizado.setStatus(StatusProjeto.NOVO);
 		this.serviceGeneric.update(projetoAtualizado);
+		System.out.println("Projeto do Banco DEPOIS de atualizar: "
+				+ projetoAtualizado.toString());
 		return "redirect:/listar";
 	}
 
@@ -146,11 +152,13 @@ public class ProjetoController {
 		
 		if (!file.isEmpty()) {
 			try {
+			
 				
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
 		}
+		
 		return idNo;
 	}
 
@@ -159,7 +167,7 @@ public class ProjetoController {
 		System.out.println("PROJETO:");
 		if (!projeto.getNome().isEmpty() && !projeto.getLocal().isEmpty()
 				&& !projeto.getParticipantes().isEmpty()
-				&& projeto.getNumero_bolsas().intValue() > 0
+				&& projeto.getQuantidadeBolsa().intValue() > 0
 				&& !projeto.getAtividades().isEmpty()
 				&& !projeto.getDescricao().isEmpty()) {
 			return true;
@@ -202,10 +210,10 @@ public class ProjetoController {
 		Usuario usuario = serviceUsuario.find(Usuario.class, parecerista);
 		Parecer parecer = new Parecer();
 		
-		parecer.setProjetos(projeto);
+		parecer.setProjeto(projeto);
 		parecer.setUsuario(usuario);
-		parecer.setData_atribuicao(new Date());
-		parecer.setComentario_diretor(comentario_diretor);
+		parecer.setDataAtribuicao(new Date());
+		parecer.setComentario(comentario_diretor);
 		parecer.setPrazo(prazo);
 		
 		serviceParecer.save(parecer);
