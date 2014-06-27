@@ -1,5 +1,6 @@
 package quixada.ufc.br.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import quixada.ufc.br.enumerator.StatusProjeto;
+import quixada.ufc.br.model.Parecer;
 import quixada.ufc.br.model.Projeto;
 import quixada.ufc.br.model.Usuario;
 import quixada.ufc.br.service.GenericService;
@@ -36,6 +38,9 @@ public class ProjetoController {
 	
 	@Inject
 	private GenericService<Usuario> serviceUsuario;
+	
+	@Inject
+	private GenericService<Parecer> serviceParecer;
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
@@ -63,7 +68,7 @@ public class ProjetoController {
 		if (result.hasErrors() || resultado.isEmpty()) {
 			return ("projeto/cadastro");
 		}
-		projeto.setStatus("NOVO");
+		projeto.setStatus(StatusProjeto.NOVO);
 		this.serviceGeneric.save(projeto);
 		return "redirect:/listar";
 
@@ -93,7 +98,7 @@ public class ProjetoController {
 	public String atualizarProjeto(@PathVariable("id") int id,
 			@ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result) {
-		projetoAtualizado.setStatus("NOVO");
+		projetoAtualizado.setStatus(StatusProjeto.NOVO);
 		this.serviceGeneric.update(projetoAtualizado);
 		System.out.println("Projeto do Banco DEPOIS de atualizar: "
 				+ projetoAtualizado.toString());
@@ -116,7 +121,7 @@ public class ProjetoController {
 	public String submeterProjeto(@PathVariable("id") int id) {
 		Projeto projeto = serviceGeneric.find(Projeto.class, id);
 		if (validaSubmissao(projeto)) {
-			projeto.setStatus("SUBMETIDO");
+			projeto.setStatus(StatusProjeto.SUBMETIDO);
 			this.serviceGeneric.update(projeto);
 			System.out.println(projeto);
 			return "redirect:/listar";
@@ -189,19 +194,26 @@ public class ProjetoController {
 		return "diretor/atribuirParecerista";
 	}
 	
-	@RequestMapping(value = "atribuirParecerista", method = RequestMethod.POST)
+	@RequestMapping(value = "atribuirParecerista", method = RequestMethod.GET)
 	public String atribuirPareceristaNoProjeto(@RequestParam("parecerista") int parecerista, 
-			@RequestParam("projetoId") int projetoId, 
-			BindingResult result, final RedirectAttributes redirectAttributes) {
+			@RequestParam("projetoId") int projetoId, @RequestParam("comentario_diretor") String comentario_diretor, 
+			@RequestParam("prazo") Date prazo){ 
 		
 		Projeto projeto = serviceGeneric.find(Projeto.class, projetoId);
 		Usuario usuario = serviceUsuario.find(Usuario.class, parecerista);
+		Parecer parecer = new Parecer();
 		
-		if (serviceGeneric.find(Projeto.class, projetoId).equals(projetoId)){
-			
-		}
+		parecer.setProjetos(projeto);
+		parecer.setUsuario(usuario);
+		parecer.setData_atribuicao(new Date());
+		parecer.setComentario_diretor(comentario_diretor);
+		parecer.setPrazo(prazo);
 		
-		return null;
+		serviceParecer.save(parecer);
+		projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);
+		serviceGeneric.update(projeto);
+		
+		return "redirect:/listar";
 	}
 
 }

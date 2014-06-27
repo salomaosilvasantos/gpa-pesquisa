@@ -14,7 +14,7 @@
 
 
 <body>
-		<jsp:include page="../modulos/header-estrutura.jsp" />
+		<jsp:include page="../modulos/header.jsp" />
 
 
 	<ul class="pager">
@@ -52,20 +52,27 @@
 							<td>${projeto.codigo}</td>
 							<td><a href="<c:url value="/${projeto.id}/informacoesProjeto" ></c:url>">${projeto.nome}</a></td>
 							<td class="status">${projeto.status}</td>
-							<td class="acoes">
-							<a id="editar"
-								href="<c:url value="/${projeto.id}/editarProjeto" ></c:url>"><button  glyphicon glyphicon-trash
-										class="botaoBloqueado btn btn-primary">Editar <span class="glyphicon glyphicon-cog"></span> </button></a> 
+							<td class="">
+<!-- 							<a id="editar" -->
+<%-- 								href="<c:url value="/${projeto.id}/editarProjeto" ></c:url>"><button  glyphicon glyphicon-trash --%>
+<!-- 										class="botaoBloqueado btn btn-primary">Editar <span class="glyphicon glyphicon-cog"></span> </button></a>  -->
 							
-							<a id="excluir"
-								href="<c:url value="/${projeto.id}/excluirProjeto" ></c:url>"><button
-										id="deletar" class="botaoBloqueado btn btn-primary"
-										name="deletar">Excluir <span class="glyphicon glyphicon-trash"></span></button></a> 
+<!-- 							<a id="excluir" -->
+<%-- 								href="<c:url value="/${projeto.id}/excluirProjeto" ></c:url>"><button --%>
+<!-- 										id="deletar" class="botaoBloqueado btn btn-primary" -->
+<!-- 										name="deletar">Excluir <span class="glyphicon glyphicon-trash"></span></button></a>  -->
 										
-							<a id="submeter"
-								href="<c:url value="/${projeto.id}/submeterProjeto" ></c:url>"
-								onclick="submeter(${projeto.id});"><button
-										class="botaoBloqueado btn btn-primary">Submeter <span class="glyphicon glyphicon-open"></span></button></a></td>
+<!-- 							<a id="submeter" -->
+<%-- 								href="<c:url value="/${projeto.id}/submeterProjeto" ></c:url>" --%>
+<%-- 								onclick="submeter(${projeto.id});"><button --%>
+<!-- 										class="botaoBloqueado btn btn-primary">Submeter <span class="glyphicon glyphicon-open"></span></button></a></td> -->
+										
+							<c:if test="${projeto.status == 'SUBMETIDO'}">
+									<a id="atribuirParecerista"
+									href="<c:url value="/${projeto.id}/atribuirParecerista" ></c:url>"
+									><button
+											class="btn btn-primary">Atribuir Parecerista <span class="glyphicon glyphicon-open"></span></button></a>
+							</c:if>
 						</tr>
 					</c:forEach>
 				</tbody>

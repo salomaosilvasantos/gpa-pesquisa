@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -46,6 +46,8 @@
 
 </style>
 <body>
+	<jsp:include page="../modulos/header.jsp" />
+
 	<ul class="pager">
 		<li class="previous"><a href="<c:url value="/listar" />">&larr; Voltar para Listagem</a></li>
 	</ul>
@@ -75,7 +77,7 @@
 				<br>
 				
 				<div class="control-group">
-							<div ><h4>Descrição do Projeto:</h4></div>
+							<div ><h4>DescriÃ§Ã£o do Projeto:</h4></div>
 							<form:input path="descricao" class="form-control"/>
 						<div class="controls">
 						
@@ -85,8 +87,8 @@
 					<div id="envolve" style=" width: 1000px;">
  
 								<div id="envolve2" style=" width: 1000px;">
-								<div id="div1_1" style=" width: 200px; margin: 30px 80px 0px 70px ; float: left; text-align: center;"><h4>Data Início</h4></div>
-								<div id="div_2_2" style=" width: 200px; margin:30px 80px 0px 50px; float: left; text-align: center; "><h4>Data Término</h4></div>
+								<div id="div1_1" style=" width: 200px; margin: 30px 80px 0px 70px ; float: left; text-align: center;"><h4>Data InÃ­cio</h4></div>
+								<div id="div_2_2" style=" width: 200px; margin:30px 80px 0px 50px; float: left; text-align: center; "><h4>Data TÃ©rmino</h4></div>
 								<div id="div_3_3" style="width: 250px; float: left; text-align: center; margin:35px 0px 0px 30px ; " ><h4>Numero de Bolsas</h4></div>
 								</div>
 								<div id="clear">
@@ -135,20 +137,22 @@
 					<div><h4>Atividades</h4></div>
 						<form:input path="atividades" class="form-control"/>
 					</div>
-					
-	
-												
+																	
 				<div><h4>Arquivos</h4></div>
 				<br>
 				<form:input type="file" class="form-control" path="documentos" />
 
 				<br>
-				<input type="submit" value="Salvar" class="btn btn-default"/>
-				<a href="<c:url value="/listar" />"><input type="button" value="Cancelar" class="btn btn-default"/></a>
-
+				<div class="controls" style="margin-bottom: 80px">
+					<input type="submit" value="Salvar" class="btn btn-primary"/>
+					<a href="<c:url value="/listar" />"><input type="button" value="Cancelar" class="btn btn-default"/></a>
+				</div>
 			</form:form>
 		</div>
 	</div>
 </div>
+
+	<jsp:include page="../modulos/footer.jsp"></jsp:include>
+
 </body>
 </html>

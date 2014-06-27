@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -38,6 +38,9 @@
 
 </style>
 <body>
+
+	<jsp:include page="../modulos/header.jsp" />
+
 	<ul class="pager">
 		<li class="previous"><a href="index">&larr; Voltar para
 				Inicio</a></li>
@@ -59,7 +62,7 @@
 					</div>
 					
 					<div class="control-group">
-							<div ><h4>Descrição do Projeto:</h4></div>
+							<div ><h4>DescriÃ§Ã£o do Projeto:</h4></div>
 							<textarea name="descricao" class="form-control" id="text" rows="3" id="descricaoprojeto"></textarea>
 						<div class="controls">
 						
@@ -68,35 +71,31 @@
 					<br>
 					<br>
 					<div id="envolve" style=" width: 1000px;">
- 
 								<div id="envolve2" style=" width: 1000px;">
-								<div id="div1_1" style=" width: 200px; margin: 30px 80px 0px 70px ; float: left; text-align: center;"><h4>Data Início</h4></div>
-								<div id="div_2_2" style=" width: 200px; margin:30px 80px 0px 50px; float: left; text-align: center; "><h4>Data Término</h4></div>
-								<div id="div_3_3" style="width: 250px; float: left; text-align: center; margin:35px 0px 0px 30px ; " ><h4>Numero de Bolsas</h4></div>
+									<div id="div1_1" style=" width: 200px; margin: 30px 80px 0px 70px ; float: left; text-align: center;"><h4>Data InÃ­cio</h4></div>
+									<div id="div_2_2" style=" width: 200px; margin:30px 80px 0px 50px; float: left; text-align: center; "><h4>Data TÃ©rmino</h4></div>
+									<div id="div_3_3" style="width: 250px; float: left; text-align: center; margin:35px 0px 0px 30px ; " ><h4>Numero de Bolsas</h4></div>
 								</div>
 								<div id="clear">
 								</div>
-								<div id="div_1"  class="input-group date" style=" width: 200px; margin: 30px 80px 0px 70px ; float: left; text-align: center;">
-								<form:label path="inicio" cssClass="control-label"></form:label>
-								<form:input  type="text" path="inicio" cssClass="form-control" id="datainicio" /><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-								<form:errors path="inicio"  />
 								
+								<div id="div_1"  class="input-group date" style=" width: 200px; margin: 30px 80px 0px 50px ; float: left; text-align: center;">
+									<form:label path="inicio" cssClass="control-label"></form:label>
+									<form:input  type="text" path="inicio" cssClass="form-control" id="datainicio" /><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+									<form:errors path="inicio"  />
 								</div>
 							
-						
 								<div id="div_2"  class="input-group date" style=" width: 200px; margin:30px 80px 0px 50px; float: left; text-align: center; " >
-								<form:label path="termino" cssClass="control-label"></form:label>
-								<form:input type="text" path="termino" cssClass="form-control" id="datatermino" /><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-								<form:errors path="termino"  />
-							</div>
+									<form:label path="termino" cssClass="control-label"></form:label>
+									<form:input type="text" path="termino" cssClass="form-control" id="datatermino" /><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+									<form:errors path="termino"  />
+								</div>
 						
 
 						<div id="div_3" style=" position: relative; width: 250px; float: left; text-align: center; margin:35px 0px 0px 30px; " >
 							 <form:input type="number" placeholder="                    0" path="numero_bolsas" />
 						</div>
-						
-
-</div>
+				</div>
 
 <div id="clear">
 </div>
@@ -135,7 +134,7 @@
 		</div>
 	</div>
 	<ul class="pager">
-		<li class="previous"><a href="listar">&larr; Voltar para
+		<li class="previous"><a href="/exemplo-jpa-spring-mvc/listar" style="margin-bottom: 80px">&larr; Voltar para
 				Listagem</a></li>
 	</ul>
 
@@ -144,6 +143,8 @@
 	<script	src="<c:url value="/webjars/jquery-maskedinput/1.3.1/jquery.maskedinput.min.js" />"></script>
 	<script	src="<c:url value="/webjars/jquery-validation/1.12.0/jquery.validate.min.js" />"></script>
 	<script src="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+	<jsp:include page="../modulos/footer.jsp" />
 
 </body>
 
@@ -160,7 +161,7 @@
 					        autoclose: true,
 					        todayHighlight: true
 					    });
-						//Método que valida o dia mês e ano dd/MM/yyyy
+						//MÃ©todo que valida o dia mÃªs e ano dd/MM/yyyy
 						jQuery.validator
 								.addMethod(
 										"dateBR",
@@ -190,7 +191,7 @@
 											if (ano < 1900)
 												return (this.optional(element) || false);
 											return (this.optional(element) || true);
-										}, "Informe uma data válida");
+										}, "Informe uma data vÃ¡lida");
 											
 						//Validando numero de bolsas positivo
 						$.validator.addMethod('positiveNumber',    function (value) { 
@@ -199,7 +200,7 @@
 
 						$("#datatermino,#datainicio").mask("99/99/9999");
 
-						//código para input só ser números
+						//cÃ³digo para input sÃ³ ser nÃºmeros
 						var specialKeys = new Array();
 						specialKeys.push(8);
 						$("#numero_bolsas")
@@ -276,20 +277,20 @@
 											},
 											messages : {
 												nome : {
-													required : "Campo obrigatório!",
-													minlength : "Campo deve ter no mínimo 2 caracteres!"
+													required : "Campo obrigatÃ³rio!",
+													minlength : "Campo deve ter no mÃ­nimo 2 caracteres!"
 												},
 												descricao : {
-													required : "Campo obrigatório!",
-													minlength : "Campo deve ter no mínimo 5 caracteres!"
+													required : "Campo obrigatÃ³rio!",
+													minlength : "Campo deve ter no mÃ­nimo 5 caracteres!"
 												},
 												inicio : {
-													dateBR : "Data Inválida"
+													dateBR : "Data InvÃ¡lida"
 												},
 												termino : {
-													dateBR : "Data Inválida"
+													dateBR : "Data InvÃ¡lida"
 												},
-												positiveNumber : "Somente números positivos"
+												positiveNumber : "Somente nÃºmeros positivos"
 											},
 
 											highlight : function(element) {
