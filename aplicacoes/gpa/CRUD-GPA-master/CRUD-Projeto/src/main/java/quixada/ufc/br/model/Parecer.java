@@ -23,10 +23,10 @@ public class Parecer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-//	@Enumerated(EnumType.STRING)
-//	private Enum<StatusParecer> statusParecer;
+	@Enumerated(EnumType.STRING)
+	private StatusParecer statusParecer;
 	
-	private String status;
+//	private String status;
 	
 	private String comentario_diretor;
 	
@@ -53,13 +53,13 @@ public class Parecer {
 		super();
 	}
 	
-	public Parecer(int id, String status,
+	public Parecer(int id, StatusParecer statusParecer,
 			String comentario_diretor, String parecer, Date data_atribuicao,
 			Date data_realizacao, Date prazo, Usuario usuario, Projeto projetos) {
 		super();
 		this.id = id;
-//		this.statusParecer = statusParecer;
-		this.status = status;
+		this.statusParecer = statusParecer;
+//		this.status = status;
 		this.comentario_diretor = comentario_diretor;
 		this.parecer = parecer;
 		this.data_atribuicao = data_atribuicao;
@@ -77,13 +77,13 @@ public class Parecer {
 		this.id = id;
 	}
 
-//	public Enum<StatusParecer> getStatusParecer() {
-//		return statusParecer;
-//	}
-//
-//	public void setStatusParecer(Enum<StatusParecer> statusParecer) {
-//		this.statusParecer = statusParecer;
-//	}
+	public StatusParecer getStatusParecer() {
+		return statusParecer;
+	}
+
+	public void setStatusParecer(StatusParecer statusParecer) {
+		this.statusParecer = statusParecer;
+	}
 
 	public String getComentario_diretor() {
 		return comentario_diretor;
@@ -143,19 +143,19 @@ public class Parecer {
 
 	@Override
 	public String toString() {
-		return "Parecer [id=" + id + ", statusParecer=" + status
+		return "Parecer [id=" + id + ", statusParecer=" + statusParecer
 				+ ", comentario_diretor=" + comentario_diretor + ", parecer="
 				+ parecer + ", data_atribuicao=" + data_atribuicao
 				+ ", data_realizacao=" + data_realizacao + ", prazo=" + prazo
 				+ ", usuario=" + usuario + ", projetos=" + projetos + "]";
 	}
 
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
+//	public String getStatus() {
+//		return status;
+//	}
+//
+//	public void setStatus(String status) {
+//		this.status = status;
+//	}
 	
 }
