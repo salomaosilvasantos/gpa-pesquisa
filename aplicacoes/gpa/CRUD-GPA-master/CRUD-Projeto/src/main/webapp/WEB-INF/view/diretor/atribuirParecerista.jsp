@@ -73,7 +73,7 @@
 								
 					<div id="div_2"  class="input-group date" style=" width: 200px; float: left; text-align: center; " >
 						<label cssClass="control-label">Prazo</label>
-							<input type="date" cssClass="form-control" id="prazo" name="prazo" /><span class="input-group-addon" style="width: 50px; height: 50px;"><i class="glyphicon glyphicon-th"></i></span>
+							<input type="text" cssClass="form-control" id="prazo" name="prazo" /><span class="input-group-addon" style="width: 50px; height: 50px;"><i class="glyphicon glyphicon-th"></i></span>
 					</div>
 				</div>
 				

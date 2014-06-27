@@ -167,7 +167,7 @@ public class ProjetoController {
 		System.out.println("PROJETO:");
 		if (!projeto.getNome().isEmpty() && !projeto.getLocal().isEmpty()
 				&& !projeto.getParticipantes().isEmpty()
-				&& projeto.getNumero_bolsas().intValue() > 0
+				&& projeto.getQuantidadeBolsa().intValue() > 0
 				&& !projeto.getAtividades().isEmpty()
 				&& !projeto.getDescricao().isEmpty()) {
 			return true;
@@ -203,10 +203,10 @@ public class ProjetoController {
 		Usuario usuario = serviceUsuario.find(Usuario.class, parecerista);
 		Parecer parecer = new Parecer();
 		
-		parecer.setProjetos(projeto);
+		parecer.setProjeto(projeto);
 		parecer.setUsuario(usuario);
-		parecer.setData_atribuicao(new Date());
-		parecer.setComentario_diretor(comentario_diretor);
+		parecer.setDataAtribuicao(new Date());
+		parecer.setComentario(comentario_diretor);
 		parecer.setPrazo(prazo);
 		
 		serviceParecer.save(parecer);
