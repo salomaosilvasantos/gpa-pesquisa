@@ -6,6 +6,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Type;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 public class Documento {
@@ -20,7 +21,7 @@ public class Documento {
 	private String tipo;
 	
 	@Type(type="org.hibernate.type.BinaryType") 
-	private byte[] arquivo;
+	private MultipartFile arquivo;
 
 	@ManyToOne
 	@JoinColumn(name = "projeto_id")
@@ -30,13 +31,21 @@ public class Documento {
 		super();
 	}	
 	
-	public Documento(String id, String nomeOriginal, String prefixo, String tipo, byte[] arquivo) {
+	public Documento(String id, String nomeOriginal, String prefixo, String tipo, MultipartFile arquivo) {
 		super();
 		this.id = id;
 		this.nomeOriginal = nomeOriginal;
 		this.prefixo = prefixo;
 		this.tipo = tipo;
 		this.arquivo = arquivo;	
+	}
+	
+	public Documento(String id, String nomeOriginal, String tipo, MultipartFile arquivo){
+		super();
+		this.id = id;
+		this.nomeOriginal = nomeOriginal;
+		this.tipo = tipo;
+		this.arquivo = arquivo;
 	}
 	
 	public String getId() {
@@ -71,14 +80,15 @@ public class Documento {
 		this.tipo = tipo;
 	}
 
-	public byte[] getArquivo() {
+	public MultipartFile getArquivo() {
 		return arquivo;
 	}
 
-	public void setArquivo(byte[] arquivo) {
+	public void setArquivo(MultipartFile arquivo) {
 		this.arquivo = arquivo;
 	}
 	
 	
 	
 }
+

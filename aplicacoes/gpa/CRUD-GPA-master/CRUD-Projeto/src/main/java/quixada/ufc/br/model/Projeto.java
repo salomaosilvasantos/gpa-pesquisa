@@ -195,7 +195,7 @@ public class Projeto {
 				+ ", termino=" + termino + ", descricao=" + descricao
 				+ ", atividades=" + atividades + ", quantidadeBolsa="
 				+ quantidadeBolsa + ", local=" + local + ", status=" + status
-				+ ", participantes=" + participantes + "]";
+				+ ", participantes=" + participantes + ", documentos="+ documentos +"]";
 	}
 
 }

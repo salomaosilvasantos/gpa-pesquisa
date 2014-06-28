@@ -56,7 +56,7 @@
 		<div class="form" align="center">
 			<h2>Editar Projeto</h2>
 			<form:form commandName="projeto" id="reg"
-				action="editarProjetoForm">
+				action="editarProjetoForm" enctype="multipart/form-data">
 
 				<form:label path="codigo">Codigo:</form:label>
 				<br>
@@ -140,7 +140,7 @@
 																	
 				<div><h4>Arquivos</h4></div>
 				<br>
-				<form:input type="file" class="form-control" path="documentos" />
+				<form:input type="file" class="form-control" path="documentos" name="documentos"/>
 
 				<br>
 				<div class="controls" style="margin-bottom: 80px">
