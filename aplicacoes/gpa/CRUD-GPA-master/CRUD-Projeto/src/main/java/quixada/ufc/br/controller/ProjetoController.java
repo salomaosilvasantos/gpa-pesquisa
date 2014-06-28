@@ -1,5 +1,7 @@
 package quixada.ufc.br.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.servlet.ModelAndView;
+
+
 
 import quixada.ufc.br.enumerator.StatusProjeto;
 import quixada.ufc.br.model.Documento;
@@ -113,15 +117,15 @@ public class ProjetoController {
 	public String atualizarProjeto(@PathVariable("id") int id,
 			@RequestParam(value="documentos", required = false) MultipartFile file,
 			@ModelAttribute(value = "projeto") Projeto projetoAtualizado,
-			BindingResult result) {
+			BindingResult result) throws IOException {
 		
+		List<Documento> docs = new ArrayList<>();
 		String idDoc = projetoAtualizado.getNome() + file.getOriginalFilename();
-		Documento documento = new Documento(idDoc, file.getOriginalFilename(), file.getContentType(), file);
-		//PROBLEMA NESTA LINHA, NÂO CONSIGO SALVAR NO BANCO, ERRO DESCONHECIDO
-		//serviceDocumento.save(documento);
-
+		Documento documento = new Documento(idDoc, file.getOriginalFilename(), file.getContentType(), file.getBytes());
+		serviceDocumento.save(documento);
+		docs.add(documento);
+		projetoAtualizado.setDocumentos(docs);
 		System.out.println("NOME DO ARQUIVO: " + documento.getNomeOriginal());
-
 		projetoAtualizado.setStatus(StatusProjeto.NOVO);
 		this.serviceGeneric.update(projetoAtualizado);
 		System.out.println("Projeto do Banco DEPOIS de atualizar: "

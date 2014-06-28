@@ -21,7 +21,7 @@ public class Documento {
 	private String tipo;
 	
 	@Type(type="org.hibernate.type.BinaryType") 
-	private MultipartFile arquivo;
+	private byte[] arquivo;
 
 	@ManyToOne
 	@JoinColumn(name = "projeto_id")
@@ -31,7 +31,7 @@ public class Documento {
 		super();
 	}	
 	
-	public Documento(String id, String nomeOriginal, String prefixo, String tipo, MultipartFile arquivo) {
+	public Documento(String id, String nomeOriginal, String prefixo, String tipo, byte[] arquivo) {
 		super();
 		this.id = id;
 		this.nomeOriginal = nomeOriginal;
@@ -40,7 +40,7 @@ public class Documento {
 		this.arquivo = arquivo;	
 	}
 	
-	public Documento(String id, String nomeOriginal, String tipo, MultipartFile arquivo){
+	public Documento(String id, String nomeOriginal, String tipo, byte[] arquivo){
 		super();
 		this.id = id;
 		this.nomeOriginal = nomeOriginal;
@@ -80,11 +80,11 @@ public class Documento {
 		this.tipo = tipo;
 	}
 
-	public MultipartFile getArquivo() {
+	public byte[] getArquivo() {
 		return arquivo;
 	}
 
-	public void setArquivo(MultipartFile arquivo) {
+	public void setArquivo(byte[] arquivo) {
 		this.arquivo = arquivo;
 	}
 	
