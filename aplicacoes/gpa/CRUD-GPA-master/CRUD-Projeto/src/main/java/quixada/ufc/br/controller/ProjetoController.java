@@ -28,31 +28,34 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 
+
+
+
 import quixada.ufc.br.enumerator.StatusProjeto;
 import quixada.ufc.br.model.Documento;
 import quixada.ufc.br.model.Parecer;
 import quixada.ufc.br.model.Projeto;
 import quixada.ufc.br.model.Usuario;
+import quixada.ufc.br.service.DocumentoService;
 import quixada.ufc.br.service.GenericService;
+import quixada.ufc.br.service.ParecerService;
 import quixada.ufc.br.service.ProjetoService;
+import quixada.ufc.br.service.UsuarioService;
 
 @Controller
 public class ProjetoController {
 
 	@Inject
-	private GenericService<Projeto> serviceGeneric;
-	
-	@Inject
 	private ProjetoService serviceProjeto;
 	
 	@Inject
-	private GenericService<Usuario> serviceUsuario;
+	private UsuarioService serviceUsuario;
 	
 	@Inject
-	private GenericService<Documento> serviceDocumento;
+	private DocumentoService serviceDocumento;
 	
 	@Inject
-	private GenericService<Parecer> serviceParecer;
+	private ParecerService serviceParecer;
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
@@ -88,7 +91,7 @@ public class ProjetoController {
 			return ("projeto/cadastro");
 		}
 		projeto.setStatus(StatusProjeto.NOVO);
-		this.serviceGeneric.save(projeto);
+		this.serviceProjeto.save(projeto);
 		return "redirect:/listar";
 
 	}
@@ -96,7 +99,7 @@ public class ProjetoController {
 	@RequestMapping(value = "/{id}/informacoesProjeto")
 	public String informacoes(Projeto p, @PathVariable("id") int id,
 			Model model) {
-		Projeto projeto = serviceGeneric.find(Projeto.class, id);
+		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		model.addAttribute("projeto", projeto);
 		return "projeto/informacoes";
 	}
@@ -105,7 +108,7 @@ public class ProjetoController {
 	
 	@RequestMapping(value = "/{id}/editarProjeto")
 	public String editar(Projeto p, @PathVariable("id") int id, Model model) {
-		Projeto projeto = serviceGeneric.find(Projeto.class, id);
+		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		System.out.println("Projeto do Banco antes de atualizar: "
 				+ projeto.toString());
 		model.addAttribute("projeto", projeto);
@@ -127,7 +130,7 @@ public class ProjetoController {
 		projetoAtualizado.setDocumentos(docs);
 		System.out.println("NOME DO ARQUIVO: " + documento.getNomeOriginal());*/
 		projetoAtualizado.setStatus(StatusProjeto.NOVO);
-		this.serviceGeneric.update(projetoAtualizado);
+		this.serviceProjeto.update(projetoAtualizado);
 		System.out.println("Projeto do Banco DEPOIS de atualizar: "
 				+ projetoAtualizado.toString());
 		return "redirect:/listar";
@@ -136,21 +139,21 @@ public class ProjetoController {
 	@RequestMapping(value = "/{id}/excluirProjeto")
 	public String excluirProjeto(Projeto p, @PathVariable("id") int id,
 			Model model) {
-		Projeto projeto = serviceGeneric.find(Projeto.class, id);
+		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		if (projeto == null) {
 			return "redirect:/listar";
 		} else {
-			this.serviceGeneric.delete(projeto);
+			this.serviceProjeto.delete(projeto);
 			return "redirect:/listar";
 		}
 	}
 
 	@RequestMapping(value = "{id}/submeterProjeto")
 	public String submeterProjeto(@PathVariable("id") int id) {
-		Projeto projeto = serviceGeneric.find(Projeto.class, id);
+		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		if (validaSubmissao(projeto)) {
 			projeto.setStatus(StatusProjeto.SUBMETIDO);
-			this.serviceGeneric.update(projeto);
+			this.serviceProjeto.update(projeto);
 			System.out.println(projeto);
 			return "redirect:/listar";
 		} else {
@@ -161,7 +164,7 @@ public class ProjetoController {
 	@RequestMapping(value = "/listar")
 	public ModelAndView listar() {
 		ModelAndView modelAndView = new ModelAndView("projeto/listar");
-		List<Projeto> projeto = serviceGeneric.find(Projeto.class);
+		List<Projeto> projeto = serviceProjeto.find(Projeto.class);
 		modelAndView.addObject("projetos", projeto);
 		return modelAndView;
 	}
@@ -202,7 +205,7 @@ public class ProjetoController {
 	@RequestMapping(value = "{projetoId}/atribuirParecerista", method = RequestMethod.GET)
 	public String atribuirParecerista(@PathVariable("projetoId") int projetoId, Model model) {
 		
-		Projeto projeto = serviceGeneric.find(Projeto.class, projetoId);
+		Projeto projeto = serviceProjeto.find(Projeto.class, projetoId);
 		
 		if(projeto == null){
 			model.addAttribute("error", "O projeto não existe!");
@@ -218,7 +221,7 @@ public class ProjetoController {
 			@RequestParam("projetoId") int projetoId, @RequestParam("comentario_diretor") String comentario_diretor, 
 			@RequestParam("prazo") Date prazo){ 
 		
-		Projeto projeto = serviceGeneric.find(Projeto.class, projetoId);
+		Projeto projeto = serviceProjeto.find(Projeto.class, projetoId);
 		Usuario usuario = serviceUsuario.find(Usuario.class, parecerista);
 		Parecer parecer = new Parecer();
 		
@@ -230,7 +233,7 @@ public class ProjetoController {
 		
 		serviceParecer.save(parecer);
 		projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);
-		serviceGeneric.update(projeto);
+		serviceProjeto.update(projeto);
 		
 		return "redirect:/listar";
 	}
