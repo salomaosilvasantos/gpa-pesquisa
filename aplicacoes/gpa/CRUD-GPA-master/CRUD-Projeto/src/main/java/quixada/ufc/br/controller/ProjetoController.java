@@ -119,13 +119,12 @@ public class ProjetoController {
 			@ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result) throws IOException {
 		
-		/*List<Documento> docs = new ArrayList<>();
-		String idDoc = projetoAtualizado.getNome() + file.getOriginalFilename();
-		Documento documento = new Documento(idDoc, file.getOriginalFilename(), file.getContentType(), file.getBytes());
+		List<Documento> docs = new ArrayList<>();
+		Documento documento = new Documento(file.getOriginalFilename(), file.getContentType(), file.getBytes(),projetoAtualizado);
 		serviceDocumento.save(documento);
 		docs.add(documento);
 		projetoAtualizado.setDocumentos(docs);
-		System.out.println("NOME DO ARQUIVO: " + documento.getNomeOriginal());*/
+		System.out.println("NOME DO ARQUIVO: " + documento.getNomeOriginal());
 		projetoAtualizado.setStatus(StatusProjeto.NOVO);
 		this.serviceGeneric.update(projetoAtualizado);
 		System.out.println("Projeto do Banco DEPOIS de atualizar: "
