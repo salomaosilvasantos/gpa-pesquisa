@@ -149,6 +149,7 @@ public class JpaGenericRepositoryImpl<T> implements GenericRepository<T> {
 	public T findFirst(String query, Map<String, Object> namedParams) {
 		return findFirst(query, namedParams, -1, -1);
 	}
+	
 
 	@Override
 	public T findFirst(String query, Map<String, Object> namedParams,

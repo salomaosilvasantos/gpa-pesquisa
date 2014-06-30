@@ -3,15 +3,19 @@ package quixada.ufc.br.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
+import javax.management.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,11 +32,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 
+
+
+
+
+
 import quixada.ufc.br.enumerator.StatusProjeto;
 import quixada.ufc.br.model.Documento;
 import quixada.ufc.br.model.Parecer;
 import quixada.ufc.br.model.Projeto;
 import quixada.ufc.br.model.Usuario;
+import quixada.ufc.br.repository.jpa.JpaGenericRepositoryImpl.QueryType;
 import quixada.ufc.br.service.GenericService;
 import quixada.ufc.br.service.ProjetoService;
 
@@ -83,6 +93,13 @@ public class ProjetoController {
 		int tamanho = serviceProjeto.getMAXid();
 		String codigo = stringFormatada(tamanho + 1);
 		projeto.setCodigo(codigo );
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put( "login", SecurityContextHolder.getContext().getAuthentication().getName() );
+		List<Usuario> user = serviceUsuario.find(QueryType.JPQL, "from Usuario where login=:login", params);
+		projeto.setUsuarioCriador(user.get(0));
+		
+		
 		String resultado = projeto.getNome().trim();
 		if (result.hasErrors() || resultado.isEmpty()) {
 			return ("projeto/cadastro");
@@ -160,10 +177,21 @@ public class ProjetoController {
 
 	@RequestMapping(value = "/listar")
 	public ModelAndView listar() {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put( "login", SecurityContextHolder.getContext().getAuthentication().getName() );
+		List<Usuario> user = serviceUsuario.find(QueryType.JPQL, "from Usuario where login=:login", params); 
+		System.out.println(user.get(0).getNome());
+		
+		params.remove("login");
+		params.put( "usuario", user.get(0).getId());
 		ModelAndView modelAndView = new ModelAndView("projeto/listar");
-		List<Projeto> projeto = serviceGeneric.find(Projeto.class);
+		List<Projeto> projeto = serviceGeneric.find(QueryType.JPQL, "from Projeto where usuario_id=:usuario", params);
+//				(Projeto.class);
+				
 		modelAndView.addObject("projetos", projeto);
+		
 		return modelAndView;
+		
 	}
 	
 	@RequestMapping(value = "/listarDiretor")
