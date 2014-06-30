@@ -4,7 +4,7 @@ import java.util.List;
 
 import quixada.ufc.br.model.Projeto;
 
-public interface ProjetoService {
+public interface ProjetoService extends GenericService<Projeto>{
 	
 	public abstract int getMAXid();
 	public abstract List<Projeto> projetosSubmetidos();  

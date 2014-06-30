@@ -10,7 +10,7 @@ import quixada.ufc.br.repository.GenericRepository;
 import quixada.ufc.br.repository.jpa.JpaGenericRepositoryImpl.QueryType;
 
 @Named
-public class  ProjetoServiceImpl implements ProjetoService {
+public class  ProjetoServiceImpl extends GenericServiceImpl<Projeto> implements ProjetoService{
 	@Inject
 	private GenericRepository<Projeto> genericRepository;
 
