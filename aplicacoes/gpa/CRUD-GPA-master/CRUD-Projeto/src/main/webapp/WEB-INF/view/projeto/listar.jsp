@@ -81,7 +81,7 @@
 								 <sec:authorize  ifAnyGranted="ROLE_DIRETOR"> 
 								<c:if test="${projeto.status == 'SUBMETIDO'}">
 									<a id="atribuirParecerista"
-									href="<c:url value="/${projeto.id}/atribuirParecerista" ></c:url>"
+									href="<c:url value="/diretor/${projeto.id}/atribuirParecerista" ></c:url>"
 									><button
 											class="btn btn-primary">Atribuir Parecerista <span class="glyphicon glyphicon-open"></span></button></a>
 								</c:if>

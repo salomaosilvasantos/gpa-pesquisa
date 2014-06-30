@@ -218,7 +218,7 @@ public class ProjetoController {
 		}
 	}
 	
-	@RequestMapping(value = "{projetoId}/atribuirParecerista", method = RequestMethod.GET)
+	@RequestMapping(value = "diretor/{projetoId}/atribuirParecerista", method = RequestMethod.GET)
 	public String atribuirParecerista(@PathVariable("projetoId") int projetoId, Model model) {
 		
 		Projeto projeto = serviceProjeto.find(Projeto.class, projetoId);
