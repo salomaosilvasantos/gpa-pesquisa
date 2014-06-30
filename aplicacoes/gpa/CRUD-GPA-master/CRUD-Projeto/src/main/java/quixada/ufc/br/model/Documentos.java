@@ -32,7 +32,8 @@ public class Documentos {
 		super();
 	}	
 	
-	public Documentos(String id, String nomeOriginal, String prefixo, String tipo, byte[] arquivo) {
+	public Documentos(String id, String nomeOriginal, String prefixo,
+			String tipo, byte[] arquivo) {
 		super();
 		this.id = id;
 		this.nomeOriginal = nomeOriginal;
