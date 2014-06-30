@@ -1,6 +1,8 @@
 package quixada.ufc.br.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -12,7 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class Documento {
 
 	@Id
-	private String id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 	
 	private String nomeOriginal;
 	
@@ -31,28 +34,19 @@ public class Documento {
 		super();
 	}	
 	
-	public Documento(String id, String nomeOriginal, String prefixo, String tipo, byte[] arquivo) {
+	public Documento(String nomeOriginal, String tipo, byte[] arquivo, Projeto projeto){
 		super();
-		this.id = id;
-		this.nomeOriginal = nomeOriginal;
-		this.prefixo = prefixo;
-		this.tipo = tipo;
-		this.arquivo = arquivo;	
-	}
-	
-	public Documento(String id, String nomeOriginal, String tipo, byte[] arquivo){
-		super();
-		this.id = id;
 		this.nomeOriginal = nomeOriginal;
 		this.tipo = tipo;
 		this.arquivo = arquivo;
+		this.projeto = projeto;
 	}
 	
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
