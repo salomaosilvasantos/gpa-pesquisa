@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
@@ -14,7 +14,7 @@
 
 
 <body>
-		<jsp:include page="../modulos/header-estrutura.jsp" />
+		<jsp:include page="../modulos/header.jsp" />
 
 
 	<ul class="pager">
@@ -33,7 +33,16 @@
 					</button></a>
 			</div>
 			<div class="panel-heading" align="left">
-				<h4">Lista de Projeto</h4>
+			
+			<!-- <sec:authorize  ifAnyGranted="ROLE_DIRETOR">  -->
+				<a href="listarDiretor"><button class="btn btn-primary">
+					Listar Projetos Submetidos <span class="glyphicon glyphicon-list"></span>
+				</button></a>
+			<!--</sec:authorize>  -->
+			
+			</div>
+			<div class="panel-heading" align="left">
+				<h4>Lista de Projeto</h4>
 			</div>
 
 			<!-- Table -->
@@ -49,19 +58,36 @@
 				<tbody>
 					<c:forEach var="projeto" items="${projetos}">
 						<tr class="linha">
-							<td>${projeto.id}</td>
+							<td>${projeto.codigo}</td>
 							<td><a href="<c:url value="/${projeto.id}/informacoesProjeto" ></c:url>">${projeto.nome}</a></td>
 							<td class="status">${projeto.status}</td>
-							<td class="acoes"><a id="editar"
-								href="<c:url value="/${projeto.id}/editarProjeto" ></c:url>"><button  glyphicon glyphicon-trash
-										class="botaoBloqueado btn btn-primary">Editar <span class="glyphicon glyphicon-cog"></span> </button></a> <a
-								id="excluir"
-								href="<c:url value="/${projeto.id}/excluirProjeto" ></c:url>"><button
-										id="deletar" class="botaoBloqueado btn btn-primary"
-										name="deletar">Excluir <span class="glyphicon glyphicon-trash"></span></button></a> <a id="submeter"
-								href="<c:url value="/${projeto.id}/submeterProjeto" ></c:url>"
-								onclick="submeter(${projeto.id});"><button
-										class="botaoBloqueado btn btn-primary">Submeter <span class="glyphicon glyphicon-open"></span></button></a></td>
+							<td>
+									 
+								
+								<c:if test="${projeto.status == 'NOVO'}">
+									<a id="submeter"
+									href="<c:url value="/${projeto.id}/submeterProjeto" ></c:url>"
+									><button
+											class="btn btn-primary">Submeter <span class="glyphicon glyphicon-open"></span></button></a>
+											
+								<a id="editar" href="<c:url value="/${projeto.id}/editarProjeto" ></c:url>"><button  glyphicon glyphicon-trash
+									class="botaoBloqueado btn btn-primary">Editar <span class="glyphicon glyphicon-cog"></span> </button></a> 
+								
+								<a id="excluir"
+									href="<c:url value="/${projeto.id}/excluirProjeto" ></c:url>"><button
+											id="deletar" class="botaoBloqueado btn btn-primary"
+											name="deletar">Excluir <span class="glyphicon glyphicon-trash"></span></button></a>
+								</c:if>
+								<sec:authorize  ifAnyGranted="ROLE_DIRETOR"> 
+								<c:if test="${projeto.status == 'SUBMETIDO'}">
+									<a id="atribuirParecerista"
+									href="<c:url value="/${projeto.id}/atribuirParecerista" ></c:url>"
+									><button
+											class="btn btn-primary">Atribuir Parecerista <span class="glyphicon glyphicon-open"></span></button></a>
+								</c:if>
+								</sec:authorize>
+							</td>
+							
 						</tr>
 					</c:forEach>
 				</tbody>

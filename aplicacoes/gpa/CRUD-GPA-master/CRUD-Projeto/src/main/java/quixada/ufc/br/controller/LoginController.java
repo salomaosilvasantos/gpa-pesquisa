@@ -31,8 +31,8 @@ public class LoginController {
 	@RequestMapping(value = "/loginfailed", method = RequestMethod.GET)
 	public String loginerror(ModelMap model) {
 
-		model.addAttribute("error", "true");
-		return "loginfailed";
+		model.addAttribute("error", "Invalid username and password!");
+		return "login";
 
 	}
 

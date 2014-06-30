@@ -2,14 +2,17 @@ package quixada.ufc.br.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -34,12 +37,17 @@ public class Usuario {
 	@JoinTable(name = "papel_usuario", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "papel_id"))
 	private List<Papel> papeis;
 	
+	@OneToMany(mappedBy = "usuarioCriador", fetch = FetchType.EAGER, cascade = CascadeType.ALL )	
+	private List<Projeto> projetos;
+	
+	@OneToMany(mappedBy="usuario")
+	private List<Servidor> servidores;
+	
 	private Integer cpf;
+	
 	private String nome;
+	
 	private String email;
-	
-	
-	
 	
 	public Usuario(){
 		super();
@@ -52,6 +60,14 @@ public class Usuario {
 		
 		this.email = email;
 		this.password = senha;
+	}
+	
+	
+	public List<Projeto> getProjetos() {
+		return projetos;
+	}
+	public void setProjetos(List<Projeto> projetos) {
+		this.projetos = projetos;
 	}
 	public Integer getCpf() {
 		return cpf;
@@ -101,6 +117,12 @@ public class Usuario {
 	}
 	public void setPapeis(List<Papel> papeis) {
 		this.papeis = papeis;
+	}
+	public List<Servidor> getServidores() {
+		return servidores;
+	}
+	public void setServidores(List<Servidor> servidores) {
+		this.servidores = servidores;
 	}
 	
 }

@@ -5,8 +5,14 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
@@ -14,12 +20,16 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import quixada.ufc.br.enumerator.StatusProjeto;
+
 @Entity
 public class Projeto {
 
 	@Id
-	// @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private String id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+	
+	private String codigo;	
 
 	@Size(min = 2, message = "Mínimo 2 caracteres")
 	private String nome;
@@ -33,47 +43,46 @@ public class Projeto {
 
 	@Size(min = 5, message = "Mínimo 5 caracteres")
 	private String descricao;
-
+	
+	@ManyToOne
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuarioCriador;
+	
 	private String atividades;
 
 	@Min(value = 1, message = "Número de bolsas deve ser maior que 1")
-	private Integer numero_bolsas;
+	private Integer quantidadeBolsa;
 
 	private String local;
-	private String status;
-
+	
+	@Enumerated(EnumType.STRING)
+	private StatusProjeto status;
+	
 	private String participantes;
-
 	
 	@OneToMany(mappedBy = "projeto", fetch = FetchType.EAGER, cascade = CascadeType.ALL )	
-	private List<Documentos> documentos;
+	private List<Documento> documentos;
 
 	public Projeto() {
 		super();
 	}
 
-	public Projeto(String id, String nome, Date inicio, Date termino,
-			String descricao, String atividades, Integer numero_bolsas,
-			String local, String status, String participantes) {
+	public Projeto(int id, String codigo, String nome, Date inicio, Date termino,
+			String descricao, String atividades, Integer quantidadeBolsa,
+			String local, StatusProjeto status, String participantes, Usuario usuarioCriador) {
 		super();
 		this.id = id;
+		this.codigo = codigo;
 		this.nome = nome;
 		this.inicio = inicio;
 		this.termino = termino;
 		this.descricao = descricao;
 		this.atividades = atividades;
-		this.numero_bolsas = numero_bolsas;
+		this.quantidadeBolsa = quantidadeBolsa;
 		this.local = local;
 		this.status = status;
 		this.participantes = participantes;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
+		this.usuarioCriador = usuarioCriador;
 	}
 
 	public String getNome() {
@@ -116,12 +125,12 @@ public class Projeto {
 		this.atividades = atividades;
 	}
 
-	public Integer getNumero_bolsas() {
-		return numero_bolsas;
+	public Integer getQuantidadeBolsa() {
+		return quantidadeBolsa;
 	}
 
-	public void setNumero_bolsas(Integer numero_bolsas) {
-		this.numero_bolsas = numero_bolsas;
+	public void setQuantidadeBolsa(Integer quantidadeBolsa) {
+		this.quantidadeBolsa = quantidadeBolsa;
 	}
 
 	public String getLocal() {
@@ -132,11 +141,11 @@ public class Projeto {
 		this.local = local;
 	}
 
-	public String getStatus() {
+	public StatusProjeto getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(StatusProjeto status) {
 		this.status = status;
 	}
 
@@ -148,21 +157,45 @@ public class Projeto {
 		this.participantes = participantes;
 	}
 
-	public List<Documentos> getDocumentos() {
+	public List<Documento> getDocumentos() {
 		return documentos;
 	}
 
-	public void setDocumentos(List<Documentos> documentos) {
+	public void setDocumentos(List<Documento> documentos) {
 		this.documentos = documentos;
+	}
+	
+	public Usuario getUsuarioCriador() {
+		return usuarioCriador;
+	}
+
+	public void setUsuarioCriador(Usuario usuarioCriador) {
+		this.usuarioCriador = usuarioCriador;
+	}
+	
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public int getId() {
+		return id;
 	}
 
 	@Override
 	public String toString() {
-		return "Projeto [id=" + id + ", nome=" + nome + ", inicio=" + inicio
+		return "Projeto [id=" + id + ", codigo=" + codigo + ", nome=" + nome + ", inicio=" + inicio
 				+ ", termino=" + termino + ", descricao=" + descricao
-				+ ", atividades=" + atividades + ", numero_bolsas="
-				+ numero_bolsas + ", local=" + local + ", status=" + status
-				+ ", participantes=" + participantes + "]";
+				+ ", atividades=" + atividades + ", quantidadeBolsa="
+				+ quantidadeBolsa + ", local=" + local + ", status=" + status
+				+ ", participantes=" + participantes + ", documentos="+ documentos +"]";
 	}
 
 }

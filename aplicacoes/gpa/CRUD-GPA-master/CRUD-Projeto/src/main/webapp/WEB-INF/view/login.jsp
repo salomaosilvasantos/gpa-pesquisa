@@ -28,9 +28,8 @@
 }
 </style>
 </head>
+
 <body onload='document.f.j_username.focus();'>
-
-
 	<div class="center col-md-4">
 		<div style="text-align: center" class="panel panel-default">
 			<div class="panel-heading">

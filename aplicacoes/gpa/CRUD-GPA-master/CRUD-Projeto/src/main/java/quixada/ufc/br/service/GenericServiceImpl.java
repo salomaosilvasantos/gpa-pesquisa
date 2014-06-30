@@ -1,6 +1,7 @@
 package quixada.ufc.br.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -8,6 +9,7 @@ import javax.inject.Named;
 import org.springframework.transaction.annotation.Transactional;
 
 import quixada.ufc.br.repository.GenericRepository;
+import quixada.ufc.br.repository.jpa.JpaGenericRepositoryImpl.QueryType;
 
 @Named
 public class GenericServiceImpl<T> implements GenericService<T> {
@@ -43,5 +45,12 @@ public class GenericServiceImpl<T> implements GenericService<T> {
 	public void delete(T entity) {
 		genericRepository.delete(entity);
 
+	}
+
+	@Override
+	public List<T> find(QueryType type, String query,
+			Map<String, Object> namedParams) {
+		// TODO Auto-generated method stub
+		return genericRepository.find(type, query, namedParams);
 	}
 }
