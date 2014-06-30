@@ -15,7 +15,7 @@ public class Documento {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	private String nomeOriginal;
 	
@@ -42,11 +42,11 @@ public class Documento {
 		this.projeto = projeto;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -81,8 +81,6 @@ public class Documento {
 	public void setArquivo(byte[] arquivo) {
 		this.arquivo = arquivo;
 	}
-	
-	
 	
 }
 
