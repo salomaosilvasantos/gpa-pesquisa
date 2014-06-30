@@ -34,11 +34,11 @@
 			</div>
 			<div class="panel-heading" align="left">
 			
-			<!-- <sec:authorize  ifAnyGranted="ROLE_DIRETOR">  -->
+			 <sec:authorize  ifAnyGranted="ROLE_DIRETOR"> 
 				<a href="listarDiretor"><button class="btn btn-primary">
 					Listar Projetos Submetidos <span class="glyphicon glyphicon-list"></span>
 				</button></a>
-			<!--</sec:authorize>  -->
+			</sec:authorize>
 			
 			</div>
 			<div class="panel-heading" align="left">
@@ -78,13 +78,14 @@
 											id="deletar" class="botaoBloqueado btn btn-primary"
 											name="deletar">Excluir <span class="glyphicon glyphicon-trash"></span></button></a>
 								</c:if>
-								
+								 <sec:authorize  ifAnyGranted="ROLE_DIRETOR"> 
 								<c:if test="${projeto.status == 'SUBMETIDO'}">
 									<a id="atribuirParecerista"
 									href="<c:url value="/${projeto.id}/atribuirParecerista" ></c:url>"
 									><button
 											class="btn btn-primary">Atribuir Parecerista <span class="glyphicon glyphicon-open"></span></button></a>
 								</c:if>
+								</sec:authorize>
 							</td>
 							
 						</tr>
