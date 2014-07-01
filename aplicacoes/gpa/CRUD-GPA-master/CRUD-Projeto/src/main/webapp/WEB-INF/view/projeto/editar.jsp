@@ -191,7 +191,7 @@
 						<c:forEach var="documento" items="${projeto.documentos}">
 					
 					<h5 style="display: inline-block" <c:url value="/files/${documento.id}"></c:url>">${documento.nomeOriginal}</h5>
-					<a href='<c:url value="/files/remover/${documento.id}"></c:url>'><input type="button" value="Remover" class="btn btn-danger" /></a>
+					<a href='<c:url value="/files/remover/${documento.id}/${projeto.id}"></c:url>'><input type="button" value="Remover" class="btn btn-danger" /></a>
 					<br>
 					</c:forEach>
 					

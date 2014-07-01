@@ -134,7 +134,8 @@ public class ProjetoController {
 			@ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result) throws IOException {
 
-						
+		
+		if(!file.isEmpty()){
 		List<Documento> docs = new ArrayList<>();
 		Documento documento = new Documento(file.getOriginalFilename(), file.getContentType(), file.getBytes(),projetoAtualizado);
 		
@@ -142,6 +143,7 @@ public class ProjetoController {
 		docs.add(documento);
 		projetoAtualizado.setDocumentos(docs);
 		System.out.println("NOME DO ARQUIVO: " + documento.getNomeOriginal());
+		}
 		projetoAtualizado.setStatus(StatusProjeto.NOVO);
 		projetoAtualizado.setUsuarioCriador(usuarioLogado());
 		this.serviceProjeto.update(projetoAtualizado);
@@ -275,12 +277,13 @@ public class ProjetoController {
 	}
 	
 	
-	@RequestMapping(value = "/files/remover/{id}", method = RequestMethod.GET)
-	public String deleteFile(@PathVariable("id") int id) {
+	@RequestMapping(value = "/files/remover/{idDoc}/{idProj}", method = RequestMethod.GET)
+	public String deleteFile(@PathVariable("idDoc") int id, @PathVariable("idProj") int idproj) {
 	       	Documento doc = serviceDocumento.find(Documento.class, id);
+	       	Projeto projeto = serviceProjeto.find(Projeto.class, idproj);
 	       	serviceDocumento.delete(doc);
 	       	
-	       	return "redirect:/listar";
+	       	return "redirect:/"+projeto.getId()+"/editarProjeto" ;
 	       	
 	}
 
