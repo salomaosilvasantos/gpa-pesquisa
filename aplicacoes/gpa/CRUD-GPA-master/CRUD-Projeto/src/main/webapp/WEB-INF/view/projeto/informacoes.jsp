@@ -36,67 +36,84 @@
 			<div class="form" align="center" style="margin-bottom: 30px">
 				<h2>Informações do Projeto</h2>
 				<form:form commandName="projeto" id="reg" >
-	
-	
+	<br><br>
+	<table class="table table-bordered">
+					
+					<tr class="success">
+					<td>
 					<form:label path="nome">Nome:</form:label>
-					<br>
 					<label> <c:out value="${projeto.nome }"></c:out> </label>
-					<br>
-					<form:errors class="invalid" path="nome" />
-	
+					</td>
+					</tr>
+					<tr class="success">
+					<td>
 					<form:label path="status">Status:</form:label>
-					<br>
 					<label> <c:out value="${projeto.status }"></c:out> </label>
-					<br>
-					
+					</td>
+					</tr>
+					<tr class="success">
+					<td>
 					<form:label path="descricao">Descrição:</form:label>
-					<br>
 					<label> <c:out value="${projeto.descricao }"></c:out> </label>
-					<br>
-					
+					</td>
+					</tr>
+					<tr class="success">
+					<td>
 					<form:label path="atividades">Atividades:</form:label>
-					<br>
 					<label> <c:out value="${projeto.atividades }"></c:out> </label>
-					<br>
+					</td>
+					</tr>
 					
+					<tr class="success">
+					<td>
 					<form:label path="participantes">Participantes:</form:label>
-					<br>
 					<label> <c:out value="${projeto.participantes }"></c:out> </label>
-					<br>
+					</td>
+					</tr>
 					
+					<tr class="success">
+					<td>
 					<form:label path="local">Local:</form:label>
-					<br>
 					<label> <c:out value="${projeto.local }"></c:out> </label>
-					<br>
-	
+					</td>
+					</tr>
+					
+					<tr class="success">
+					<td>
 					<form:label path="quantidadeBolsa">Número de Bolsas:</form:label>
-					<br>
 					<label> <c:out value="${projeto.quantidadeBolsa }"></c:out> </label>
-					<br>
-					
-					
-					
+					</td>
+					</tr>
+					<tr class="success">
+					<td>		
 					<c:forEach var="documento" items="${projeto.documentos}">
 					<form:label path="documentos">Arquivos:</form:label>
 					<a href="<c:url value="/files/${documento.id}"></c:url>">${documento.nomeOriginal}</a>
 					<br>
 					</c:forEach>
+					</td>
+					</tr>
 					
+					</table>
 					
-					<br>
+					<table class="table table-bordered">
+					<tr class="warning">
+					<td>
 					<form:label path="inicio">Início:</form:label>
-					<br>
-					<label> <c:out value="${projeto.inicio }"></c:out> </label>
-					<br>
-					
+						<label> <c:out value="${projeto.inicio }"></c:out> </label>
+					</td>
+					<td>
 					<form:label path="termino">Término:</form:label>
-					<br>
-					<label> <c:out value="${projeto.termino }"></c:out> </label>
-					<br>
-	
-					<br>
+						<label> <c:out value="${projeto.termino }"></c:out> </label>
+					</td>
+			</tr>
+					
+					</table>
+					
+					
 	
 				</form:form>
+			
 			</div>
 		</div>
 	</div>
