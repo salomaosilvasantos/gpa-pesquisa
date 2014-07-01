@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.management.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -37,7 +36,9 @@ import quixada.ufc.br.model.Projeto;
 import quixada.ufc.br.model.Usuario;
 import quixada.ufc.br.repository.jpa.JpaGenericRepositoryImpl.QueryType;
 import quixada.ufc.br.service.DocumentoService;
-import quixada.ufc.br.service.GenericService;
+import quixada.ufc.br.model.Usuario;
+import quixada.ufc.br.repository.jpa.JpaGenericRepositoryImpl.QueryType;
+import quixada.ufc.br.service.DocumentoService;
 import quixada.ufc.br.service.ParecerService;
 import quixada.ufc.br.service.ProjetoService;
 import quixada.ufc.br.service.UsuarioService;
@@ -71,6 +72,14 @@ public class ProjetoController {
 		log.info("controller: projeto - action: index");
 		return "index";
 	}
+	
+	private Usuario usuarioLogado(){
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put( "login", SecurityContextHolder.getContext().getAuthentication().getName() );
+		Usuario usuariologado = serviceUsuario.find(QueryType.JPQL, "from Usuario where login=:login", params).get(0);
+		return usuariologado;
+	}
 
 	@RequestMapping(value = "cadastro", method = RequestMethod.GET)
 	public String cadastro(Model model) {
@@ -83,14 +92,7 @@ public class ProjetoController {
 			@Valid @ModelAttribute("projeto") Projeto projeto,
 			BindingResult result) {
 		
-		int tamanho = serviceProjeto.getMAXid();
-		String codigo = stringFormatada(tamanho + 1);
-		projeto.setCodigo(codigo );
-		
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put( "login", SecurityContextHolder.getContext().getAuthentication().getName() );
-		List<Usuario> user = serviceUsuario.find(QueryType.JPQL, "from Usuario where login=:login", params);
-		projeto.setUsuarioCriador(user.get(0));
+		projeto.setUsuarioCriador(usuarioLogado());
 		
 		
 		String resultado = projeto.getNome().trim();
@@ -99,6 +101,10 @@ public class ProjetoController {
 		}
 		projeto.setStatus(StatusProjeto.NOVO);
 		this.serviceProjeto.save(projeto);
+		String codigo = stringFormatada(projeto.getId());
+		projeto.setCodigo(codigo);
+		this.serviceProjeto.update(projeto);
+		
 		return "redirect:/listar";
 
 	}
@@ -128,7 +134,8 @@ public class ProjetoController {
 			@RequestParam(value="documentos", required = false) MultipartFile file,
 			@ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result) throws IOException {
-		
+
+						
 		List<Documento> docs = new ArrayList<>();
 		Documento documento = new Documento(file.getOriginalFilename(), file.getContentType(), file.getBytes(),projetoAtualizado);
 		serviceDocumento.save(documento);
@@ -136,6 +143,7 @@ public class ProjetoController {
 		projetoAtualizado.setDocumentos(docs);
 		System.out.println("NOME DO ARQUIVO: " + documento.getNomeOriginal());
 		projetoAtualizado.setStatus(StatusProjeto.NOVO);
+		projetoAtualizado.setUsuarioCriador(usuarioLogado());
 		this.serviceProjeto.update(projetoAtualizado);
 		System.out.println("Projeto do Banco DEPOIS de atualizar: "
 				+ projetoAtualizado.toString());
@@ -170,12 +178,7 @@ public class ProjetoController {
 	@RequestMapping(value = "/listar")
 	public ModelAndView listar() {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put( "login", SecurityContextHolder.getContext().getAuthentication().getName() );
-		List<Usuario> user = serviceUsuario.find(QueryType.JPQL, "from Usuario where login=:login", params); 
-		System.out.println(user.get(0).getNome());
-		
-		params.remove("login");
-		params.put( "usuario", user.get(0).getId());
+		params.put( "usuario", usuarioLogado());
 		ModelAndView modelAndView = new ModelAndView("projeto/listar");
 		List<Projeto> projeto = serviceProjeto.find(QueryType.JPQL, "from Projeto where usuario_id=:usuario", params);
 
@@ -185,7 +188,7 @@ public class ProjetoController {
 		
 	}
 	
-	@RequestMapping(value = "/listarDiretor")
+	@RequestMapping(value = "/diretor/listarDiretor")
 	public ModelAndView listarDiretor() {
 		ModelAndView modelAndView = new ModelAndView("diretor/listarDiretor");
 		List<Projeto> projeto = serviceProjeto.projetosSubmetidos();
@@ -218,7 +221,7 @@ public class ProjetoController {
 		}
 	}
 	
-	@RequestMapping(value = "{projetoId}/atribuirParecerista", method = RequestMethod.GET)
+	@RequestMapping(value = "diretor/{projetoId}/atribuirParecerista", method = RequestMethod.GET)
 	public String atribuirParecerista(@PathVariable("projetoId") int projetoId, Model model) {
 		
 		Projeto projeto = serviceProjeto.find(Projeto.class, projetoId);
@@ -232,7 +235,7 @@ public class ProjetoController {
 		return "diretor/atribuirParecerista";
 	}
 	
-	@RequestMapping(value = "atribuirParecerista", method = RequestMethod.GET)
+	@RequestMapping(value = "diretor/atribuirParecerista", method = RequestMethod.GET)
 	public String atribuirPareceristaNoProjeto(@RequestParam("parecerista") int parecerista, 
 			@RequestParam("projetoId") int projetoId, @RequestParam("comentario_diretor") String comentario_diretor, 
 			@RequestParam("prazo") Date prazo){ 
