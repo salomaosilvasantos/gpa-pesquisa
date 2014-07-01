@@ -61,6 +61,8 @@ public class ProjetoController {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
+	//private int idRetorno = 0;
+	
 	
 	@InitBinder
 	protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
@@ -125,6 +127,7 @@ public class ProjetoController {
 		System.out.println("Projeto do Banco antes de atualizar: "
 				+ projeto.toString());
 		model.addAttribute("projeto", projeto);
+		//	idRetorno = id;
 		return "projeto/editar";
 	}
 
@@ -138,6 +141,7 @@ public class ProjetoController {
 						
 		List<Documento> docs = new ArrayList<>();
 		Documento documento = new Documento(file.getOriginalFilename(), file.getContentType(), file.getBytes(),projetoAtualizado);
+		
 		serviceDocumento.save(documento);
 		docs.add(documento);
 		projetoAtualizado.setDocumentos(docs);
@@ -197,13 +201,13 @@ public class ProjetoController {
 	}
 
 	private boolean validaSubmissao(Projeto projeto) {
-
-		System.out.println("PROJETO:");
+			System.out.println("PROJETO:");
 		if (!projeto.getNome().isEmpty() && !projeto.getLocal().isEmpty()
 				&& !projeto.getParticipantes().isEmpty()
 				&& projeto.getQuantidadeBolsa().intValue() > 0
 				&& !projeto.getAtividades().isEmpty()
-				&& !projeto.getDescricao().isEmpty()) {
+				&& !projeto.getDescricao().isEmpty()
+				) {
 			return true;
 		} else {
 			return false;
@@ -278,5 +282,15 @@ public class ProjetoController {
 
 	}
 	
+	
+	@RequestMapping(value = "/files/remover/{id}", method = RequestMethod.GET)
+	public String deleteFile(@PathVariable("id") int id) {
+	       	Documento doc = serviceDocumento.find(Documento.class, id);
+	       	serviceDocumento.delete(doc);
+	       	
+	       	return "redirect:/listar";
+	       	
+	}
+
 
 }

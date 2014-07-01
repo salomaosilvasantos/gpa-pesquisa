@@ -70,7 +70,9 @@
 				<form:form commandName="projeto" id="reg" action="editarProjetoForm"
 					enctype="multipart/form-data">
 					
-					<form:label  path="codigo" >Codigo:</form:label>
+					<input type="hidden" name="projetoId" value="${projetoId}">
+					
+					<form:label path="codigo" >Codigo:</form:label>
 					<br>
 					<form:input path="codigo" readonly="true" class="form-control"  />
 					<br>
@@ -181,8 +183,17 @@
 					<br>
 					<form:input type="file" class="form-control" path="documentos"
 						name="documentos" />
-
 					<br>
+					<span>Arquivo: </span>
+						<c:forEach var="documento" items="${projeto.documentos}">
+					
+					<h5 style="display: inline-block" <c:url value="/files/${documento.id}"></c:url>">${documento.nomeOriginal}</h5>
+					<a href='<c:url value="/files/remover/${documento.id}"></c:url>'><input type="button" value="Remover" class="btn btn-danger" /></a>
+					<br>
+					</c:forEach>
+					
+					
+					
 					<div class="controls" style="margin-bottom: 80px">
 						<input type="submit" value="Salvar" class="btn btn-primary" /> <a
 							href="<c:url value="/listar" />"><input type="button"
@@ -384,4 +395,5 @@
 										});
 					});
 </script>
+
 </html>
