@@ -37,55 +37,51 @@
 				<h2>Informações do Projeto</h2>
 				<form:form commandName="projeto" id="reg" >
 	
-					<form:label path="id">ID:</form:label>
-					<br>
-					<form:input path="id" readonly="true" class="form-control"/>
-					<br>
 	
 					<form:label path="nome">Nome:</form:label>
 					<br>
-					<form:input path="nome"  readonly="true" class="form-control"/>
+					<label> <c:out value="${projeto.nome }"></c:out> </label>
 					<br>
 					<form:errors class="invalid" path="nome" />
 	
 					<form:label path="status">Status:</form:label>
 					<br>
-					<form:input path="status" readonly="true" class="form-control"/>
+					<label> <c:out value="${projeto.status }"></c:out> </label>
 					<br>
 					
 					<form:label path="descricao">Descrição:</form:label>
 					<br>
-					<form:input path="descricao" readonly="true" class="form-control"/>
+					<label> <c:out value="${projeto.descricao }"></c:out> </label>
 					<br>
 					
 					<form:label path="atividades">Atividades:</form:label>
 					<br>
-					<form:input path="atividades" readonly="true" class="form-control"/>
+					<label> <c:out value="${projeto.atividades }"></c:out> </label>
 					<br>
 					
 					<form:label path="participantes">Participantes:</form:label>
 					<br>
-					<form:input path="participantes" readonly="true" class="form-control"/>
+					<label> <c:out value="${projeto.participantes }"></c:out> </label>
 					<br>
 					
 					<form:label path="local">Local:</form:label>
 					<br>
-					<form:input path="local" readonly="true" class="form-control"/>
+					<label> <c:out value="${projeto.local }"></c:out> </label>
 					<br>
 	
 					<form:label path="quantidadeBolsa">Número de Bolsas:</form:label>
 					<br>
-					<form:input path="quantidadeBolsa" readonly="true" class="form-control"/>
+					<label> <c:out value="${projeto.quantidadeBolsa }"></c:out> </label>
 					<br>
 					
 					<form:label path="inicio">Início:</form:label>
 					<br>
-					<form:input path="inicio" readonly="true" class="form-control"/>
+					<label> <c:out value="${projeto.inicio }"></c:out> </label>
 					<br>
 					
 					<form:label path="termino">Término:</form:label>
 					<br>
-					<form:input path="termino" readonly="true" class="form-control"/>
+					<label> <c:out value="${projeto.termino }"></c:out> </label>
 					<br>
 	
 					<br>

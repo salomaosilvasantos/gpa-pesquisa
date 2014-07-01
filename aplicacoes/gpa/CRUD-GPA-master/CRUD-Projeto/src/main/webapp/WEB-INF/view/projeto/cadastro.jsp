@@ -74,27 +74,25 @@
 							id="descricaoprojeto"></textarea>
 						<div class="controls"></div>
 					</div>
-					<br>
-					<br>
 					<div id="envolve" style="width: 1000px;">
 						<div id="envolve2" style="width: 1000px;">
 							<div id="div1_1"
-								style="width: 200px; margin: 30px 80px 0px 70px; float: left; text-align: center;">
+								style="width: 200px; margin: 0px 80px 0px 70px; float: left; text-align: center;">
 								<h4>Data Início</h4>
 							</div>
 							<div id="div_2_2"
-								style="width: 200px; margin: 30px 80px 0px 50px; float: left; text-align: center;">
+								style="width: 200px; margin: 0px 80px 0px 50px; float: left; text-align: center;">
 								<h4>Data Término</h4>
 							</div>
 							<div id="div_3_3"
-								style="width: 250px; float: left; text-align: center; margin: 35px 0px 0px 30px;">
+								style="width: 250px; float: left; text-align: center; margin: 0px 0px 0px 30px;">
 								<h4>Numero de Bolsas</h4>
 							</div>
 						</div>
 						<div id="clear"></div>
 
 						<div id="div_1" class="input-group date"
-							style="width: 200px; margin: 30px 80px 0px 50px; float: left; text-align: center;">
+							style="width: 200px; margin: 0px 80px 0px 80px; float: left; text-align: center;">
 							<form:label path="inicio" cssClass="control-label"></form:label>
 							<form:input type="text" path="inicio" cssClass="form-control"
 								id="datainicio" />
@@ -104,7 +102,7 @@
 						</div>
 
 						<div id="div_2" class="input-group date"
-							style="width: 200px; margin: 30px 80px 0px 50px; float: left; text-align: center;">
+							style="width: 200px; margin: 0px 80px 0px 40px; float: left; text-align: center;">
 							<form:label path="termino" cssClass="control-label"></form:label>
 							<form:input type="text" path="termino" cssClass="form-control"
 								id="datatermino" />
@@ -115,17 +113,13 @@
 
 
 						<div id="div_3"
-							style="position: relative; width: 250px; float: left; text-align: center; margin: 35px 0px 0px 30px;">
+							style="position: relative; width: 250px; float: left; text-align: center; margin: 0px 0px 0px 30px;">
 							<form:input type="number" placeholder="                    0"
 								path="quantidadeBolsa" />
 						</div>
 					</div>
 
 					<div id="clear"></div>
-					<br>
-					<br>
-					<br>
-
 					<div class="control-group">
 						<form:label path="local" cssClass="control-label">
 							<h4>Local do Projeto:</h4>
@@ -187,12 +181,21 @@
 	$(document)
 			.ready(
 					function() {
+						$.fn.datepicker.dates['pt-BR'] = {
+						        days: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"],
+						        daysShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
+						        daysMin: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"],
+						        months: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+						        monthsShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+						        today: "Hoje"
+						};
 						$('.input-group.date').datepicker({
 							format : "dd/mm/yyyy",
 							startDate : "01-01-2012",
 							endDate : "01-01-2015",
 							todayBtn : "linked",
 							autoclose : true,
+							language: "pt-BR",
 							todayHighlight : true
 						});
 						//Método que valida o dia mês e ano dd/MM/yyyy
