@@ -77,11 +77,7 @@ public class ProjetoController {
 	}
 	
 	private Usuario usuarioLogado(){
-		
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put( "login", SecurityContextHolder.getContext().getAuthentication().getName() );
-		Usuario usuariologado = serviceUsuario.find(QueryType.JPQL, "from Usuario where login=:login", params).get(0);
-		return usuariologado;
+		return serviceUsuario.getUsuarioLogado();
 	}
 
 	@RequestMapping(value = "cadastro", method = RequestMethod.GET)
@@ -181,13 +177,9 @@ public class ProjetoController {
 
 	@RequestMapping(value = "/listar")
 	public ModelAndView listar() {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put( "usuario", usuarioLogado());
-		ModelAndView modelAndView = new ModelAndView("projeto/listar");
-		List<Projeto> projeto = serviceProjeto.find(QueryType.JPQL, "from Projeto where usuario_id=:usuario", params);
 
-		modelAndView.addObject("projetos", projeto);
-		
+		ModelAndView modelAndView = new ModelAndView("projeto/listar");
+		modelAndView.addObject("projetos", serviceProjeto.getProjetosUsuario());
 		return modelAndView;
 		
 	}
@@ -235,7 +227,7 @@ public class ProjetoController {
 		}
 		
 		model.addAttribute("projetoId", projetoId);
-		model.addAttribute("usuarios", serviceUsuario.find(Usuario.class));
+		model.addAttribute("usuarios", serviceUsuario.getPareceristas(projeto.getUsuarioCriador().getId()));
 		return "diretor/atribuirParecerista";
 	}
 	
