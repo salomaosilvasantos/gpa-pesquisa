@@ -81,6 +81,7 @@
 					
 					
 					<c:forEach var="documento" items="${projeto.documentos}">
+					<form:label path="documentos">Arquivos:</form:label>
 					<a href="<c:url value="/files/${documento.id}"></c:url>">${documento.nomeOriginal}</a>
 					<br>
 					</c:forEach>
