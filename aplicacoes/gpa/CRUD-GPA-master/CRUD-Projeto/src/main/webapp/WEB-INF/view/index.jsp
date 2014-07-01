@@ -8,7 +8,7 @@
 
 		<a href="listar"><button class="btn btn-primary">Listar Projetos  <span class="glyphicon glyphicon-list"></span></button></a>
 <!-- sec:authorize USADO PARA LIMITAR UMA OPÇÃO DA PAGINA PARA UM PAPEL		 -->
-	<sec:authorize  ifAnyGranted="ROLE_COORDENADOR">
+	<sec:authorize  ifAnyGranted="ROLE_COORDENADOR,ROLE_DIRETOR">
 		<a href="cadastro"><button class="btn btn-primary">Cadastrar Projeto  <span class="glyphicon glyphicon-plus"></span></button></a>	
 	</sec:authorize>
 		

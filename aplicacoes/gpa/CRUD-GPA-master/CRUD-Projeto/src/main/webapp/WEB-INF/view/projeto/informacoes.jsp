@@ -74,6 +74,16 @@
 					<label> <c:out value="${projeto.quantidadeBolsa }"></c:out> </label>
 					<br>
 					
+					
+					
+					<c:forEach var="documento" items="${projeto.documentos}">
+					<form:label path="documentos">Arquivos:</form:label>
+					<a href="<c:url value="/files/${documento.id}"></c:url>">${documento.nomeOriginal}</a>
+					<br>
+					</c:forEach>
+					
+					
+					<br>
 					<form:label path="inicio">Início:</form:label>
 					<br>
 					<label> <c:out value="${projeto.inicio }"></c:out> </label>

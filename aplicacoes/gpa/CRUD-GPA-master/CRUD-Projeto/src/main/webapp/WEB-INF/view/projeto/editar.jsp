@@ -20,7 +20,6 @@
 	rel="stylesheet">
 <link href="<c:url value="/resources/css/estilo.css" />"
 	rel="stylesheet" />
-	
 <title>Editar Projeto</title>
 </head>
 <body>
@@ -71,6 +70,7 @@
 				<form:form commandName="projeto" id="reg" action="editarProjetoForm"
 					enctype="multipart/form-data">
 					
+
 					<div id="envolve" style="width: 1000px;">
 						<div id="envolve2" style="width: 1000px;">
 							<div id="div1_1"
@@ -93,6 +93,7 @@
 						</div>
 					<div id="clear"></div>
 					
+
 					
 					<div class="control-group">
 						<form:label path="nome" cssClass="control-label">
@@ -114,6 +115,7 @@
 					</div>
 
 					<div id="envolve" style="width: 1000px;">
+						
 						<div id="envolve2" style="width: 1000px;">
 							<div id="div1_1"
 								style="width: 200px; margin: 0px 80px 0px 70px; float: left; text-align: center;">
@@ -184,8 +186,17 @@
 					</div>
 					<form:input type="file" class="form-control" path="documentos"
 						name="documentos" />
-
 					<br>
+					<span>Arquivo: </span>
+						<c:forEach var="documento" items="${projeto.documentos}">
+					
+					<h5 style="display: inline-block" <c:url value="/files/${documento.id}"></c:url>">${documento.nomeOriginal}</h5>
+					<a href='<c:url value="/files/remover/${documento.id}"></c:url>'><input type="button" value="Remover" class="btn btn-danger" /></a>
+					<br>
+					</c:forEach>
+					
+					
+					
 					<div class="controls" style="margin-bottom: 80px">
 						<input type="submit" value="Salvar" class="btn btn-primary" /> <a
 							href="<c:url value="/listar" />"><input type="button"
@@ -396,4 +407,5 @@
 										});
 					});
 </script>
+
 </html>

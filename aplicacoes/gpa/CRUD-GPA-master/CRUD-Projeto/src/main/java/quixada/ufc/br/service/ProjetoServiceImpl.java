@@ -1,34 +1,42 @@
 package quixada.ufc.br.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.springframework.web.servlet.ModelAndView;
+
 import quixada.ufc.br.model.Projeto;
-import quixada.ufc.br.repository.GenericRepository;
+import quixada.ufc.br.repository.ProjetoRepository;
+import quixada.ufc.br.repository.UsuarioRepository;
 import quixada.ufc.br.repository.jpa.JpaGenericRepositoryImpl.QueryType;
 
 @Named
 public class  ProjetoServiceImpl extends GenericServiceImpl<Projeto> implements ProjetoService{
+	
 	@Inject
-	private GenericRepository<Projeto> genericRepository;
-
-	@Override
-	public int getMAXid() {
-		List<Projeto> proj = genericRepository.find(QueryType.JPQL, "from Projeto where id = (select MAX(id) from Projeto)", null);
-		if(proj==null || proj.isEmpty()){
-			return 1;	
-		}
-		return proj.get(0).getId();
-	}
+	private ProjetoRepository projetoRepository;
+	
+	@Inject
+	private UsuarioService usuarioService;
 	
 	@Override
 	public List<Projeto> projetosSubmetidos(){
-		List<Projeto> projeto = genericRepository.find(QueryType.JPQL, "from Projeto as p where p.status='SUBMETIDO' ",null);
+		List<Projeto> projeto = projetoRepository.find(QueryType.JPQL, "from Projeto as p where p.status='SUBMETIDO' ",null);
 		
 		return projeto;
 		
+	}
+
+	@Override
+	public List<Projeto> getProjetosUsuario() {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put( "usuario", usuarioService.getUsuarioLogado());
+		List<Projeto> projeto = projetoRepository.find(QueryType.JPQL, "from Projeto where usuario_id=:usuario", params);
+		return projeto;
 	}
   
 }

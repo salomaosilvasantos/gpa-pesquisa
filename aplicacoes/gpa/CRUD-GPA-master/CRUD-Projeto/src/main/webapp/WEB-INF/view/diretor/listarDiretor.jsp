@@ -18,7 +18,7 @@
 
 
 	<ul class="pager">
-		<li class="previous"><a href="index">&larr; Voltar para
+		<li class="previous"><a href="<c:url value="/index" ></c:url>">&larr; Voltar para
 				Início</a></li>
 	</ul>
 
@@ -28,7 +28,7 @@
 			<!-- Default panel contents -->
 
 			<div class="panel-heading" align="right">
-				<a href="cadastro"><button class="btn btn-primary">
+				<a href='<c:url value="/cadastro"></c:url>'><button class="btn btn-primary">
 						Cadastrar Projeto <span class="glyphicon glyphicon-plus"></span>
 					</button></a>
 			</div>
@@ -69,7 +69,7 @@
 										
 							<c:if test="${projeto.status == 'SUBMETIDO'}">
 									<a id="atribuirParecerista"
-									href="<c:url value="/${projeto.id}/atribuirParecerista" ></c:url>"
+									href="<c:url value="/diretor/${projeto.id}/atribuirParecerista" ></c:url>"
 									><button
 											class="btn btn-primary">Atribuir Parecerista <span class="glyphicon glyphicon-open"></span></button></a>
 							</c:if>
