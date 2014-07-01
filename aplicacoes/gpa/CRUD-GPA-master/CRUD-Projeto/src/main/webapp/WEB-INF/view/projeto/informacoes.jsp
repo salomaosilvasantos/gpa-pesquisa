@@ -78,6 +78,15 @@
 					<form:input path="quantidadeBolsa" readonly="true" class="form-control"/>
 					<br>
 					
+					
+					
+					<c:forEach var="documento" items="${projeto.documentos}">
+					<a href="<c:url value="/files/${documento.id}"></c:url>">${documento.nomeOriginal}</a>
+					<br>
+					</c:forEach>
+					
+					
+					<br>
 					<form:label path="inicio">Início:</form:label>
 					<br>
 					<form:input path="inicio" readonly="true" class="form-control"/>

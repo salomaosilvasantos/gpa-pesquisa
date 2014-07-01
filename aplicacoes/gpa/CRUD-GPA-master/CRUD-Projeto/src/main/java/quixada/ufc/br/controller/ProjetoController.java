@@ -1,6 +1,8 @@
 package quixada.ufc.br.controller;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,8 +12,10 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -252,5 +256,27 @@ public class ProjetoController {
 		
 		return "redirect:/listar";
 	}
+	
+	@RequestMapping(value = "/files/{id}", method = RequestMethod.GET)
+	public void getFile(
+	    @PathVariable("id") int id, 
+	    HttpServletResponse response) {
+	    try {
+	    	Documento doc = serviceDocumento.find(Documento.class, id);
+	    	
+	      InputStream is = new ByteArrayInputStream(doc.getArquivo());
+	      response.setContentType(doc.getTipo());
+	      response.setHeader("Content-Disposition",
+                  "attachment; filename=" + doc.getNomeOriginal().replace(" ", "_"));
+	      IOUtils.copy(is, response.getOutputStream());
+	      
+	      response.flushBuffer();
+	    } catch (IOException ex) {
+	      log.info("Error writing file to output stream. Filename was '" + id+ "'");
+	      throw new RuntimeException("IOError writing file to output stream");
+	    }
+
+	}
+	
 
 }
