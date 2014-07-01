@@ -8,7 +8,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Type;
-import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 public class Documento {

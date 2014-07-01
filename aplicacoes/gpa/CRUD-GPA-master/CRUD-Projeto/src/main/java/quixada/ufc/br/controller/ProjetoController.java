@@ -71,6 +71,14 @@ public class ProjetoController {
 		log.info("controller: projeto - action: index");
 		return "index";
 	}
+	
+	private Usuario usuarioLogado(){
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put( "login", SecurityContextHolder.getContext().getAuthentication().getName() );
+		Usuario usuariologado = serviceUsuario.find(QueryType.JPQL, "from Usuario where login=:login", params).get(0);
+		return usuariologado;
+	}
 
 	@RequestMapping(value = "cadastro", method = RequestMethod.GET)
 	public String cadastro(Model model) {
@@ -87,10 +95,7 @@ public class ProjetoController {
 		String codigo = stringFormatada(tamanho + 1);
 		projeto.setCodigo(codigo );
 		
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put( "login", SecurityContextHolder.getContext().getAuthentication().getName() );
-		List<Usuario> user = serviceUsuario.find(QueryType.JPQL, "from Usuario where login=:login", params);
-		projeto.setUsuarioCriador(user.get(0));
+		projeto.setUsuarioCriador(usuarioLogado());
 		
 		
 		String resultado = projeto.getNome().trim();
@@ -128,7 +133,8 @@ public class ProjetoController {
 			@RequestParam(value="documentos", required = false) MultipartFile file,
 			@ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result) throws IOException {
-		
+
+						
 		List<Documento> docs = new ArrayList<>();
 		Documento documento = new Documento(file.getOriginalFilename(), file.getContentType(), file.getBytes(),projetoAtualizado);
 		serviceDocumento.save(documento);
@@ -136,6 +142,7 @@ public class ProjetoController {
 		projetoAtualizado.setDocumentos(docs);
 		System.out.println("NOME DO ARQUIVO: " + documento.getNomeOriginal());
 		projetoAtualizado.setStatus(StatusProjeto.NOVO);
+		projetoAtualizado.setUsuarioCriador(usuarioLogado());
 		this.serviceProjeto.update(projetoAtualizado);
 		System.out.println("Projeto do Banco DEPOIS de atualizar: "
 				+ projetoAtualizado.toString());
@@ -170,12 +177,7 @@ public class ProjetoController {
 	@RequestMapping(value = "/listar")
 	public ModelAndView listar() {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put( "login", SecurityContextHolder.getContext().getAuthentication().getName() );
-		List<Usuario> user = serviceUsuario.find(QueryType.JPQL, "from Usuario where login=:login", params); 
-		System.out.println(user.get(0).getNome());
-		
-		params.remove("login");
-		params.put( "usuario", user.get(0).getId());
+		params.put( "usuario", usuarioLogado());
 		ModelAndView modelAndView = new ModelAndView("projeto/listar");
 		List<Projeto> projeto = serviceProjeto.find(QueryType.JPQL, "from Projeto where usuario_id=:usuario", params);
 
