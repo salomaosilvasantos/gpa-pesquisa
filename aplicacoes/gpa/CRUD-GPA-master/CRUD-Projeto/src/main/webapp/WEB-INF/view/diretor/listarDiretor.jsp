@@ -28,7 +28,7 @@
 			<!-- Default panel contents -->
 
 			<div class="panel-heading" align="right">
-				<a href="cadastro"><button class="btn btn-primary">
+				<a href='<c:url value="/cadastro"></c:url>'><button class="btn btn-primary">
 						Cadastrar Projeto <span class="glyphicon glyphicon-plus"></span>
 					</button></a>
 			</div>
