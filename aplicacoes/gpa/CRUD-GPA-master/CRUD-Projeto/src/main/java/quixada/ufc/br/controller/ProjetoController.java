@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.management.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -37,7 +36,6 @@ import quixada.ufc.br.model.Projeto;
 import quixada.ufc.br.model.Usuario;
 import quixada.ufc.br.repository.jpa.JpaGenericRepositoryImpl.QueryType;
 import quixada.ufc.br.service.DocumentoService;
-import quixada.ufc.br.service.GenericService;
 import quixada.ufc.br.service.ParecerService;
 import quixada.ufc.br.service.ProjetoService;
 import quixada.ufc.br.service.UsuarioService;
@@ -187,7 +185,7 @@ public class ProjetoController {
 		
 	}
 	
-	@RequestMapping(value = "/listarDiretor")
+	@RequestMapping(value = "/diretor/listarDiretor")
 	public ModelAndView listarDiretor() {
 		ModelAndView modelAndView = new ModelAndView("diretor/listarDiretor");
 		List<Projeto> projeto = serviceProjeto.projetosSubmetidos();
@@ -234,7 +232,7 @@ public class ProjetoController {
 		return "diretor/atribuirParecerista";
 	}
 	
-	@RequestMapping(value = "atribuirParecerista", method = RequestMethod.GET)
+	@RequestMapping(value = "diretor/atribuirParecerista", method = RequestMethod.GET)
 	public String atribuirPareceristaNoProjeto(@RequestParam("parecerista") int parecerista, 
 			@RequestParam("projetoId") int projetoId, @RequestParam("comentario_diretor") String comentario_diretor, 
 			@RequestParam("prazo") Date prazo){ 

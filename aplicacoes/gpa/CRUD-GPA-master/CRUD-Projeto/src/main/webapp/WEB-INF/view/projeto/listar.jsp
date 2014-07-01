@@ -35,7 +35,7 @@
 			<div class="panel-heading" align="left">
 			
 			 <sec:authorize  ifAnyGranted="ROLE_DIRETOR"> 
-				<a href="listarDiretor"><button class="btn btn-primary">
+				<a href="<c:url value="/diretor/listarDiretor" ></c:url>"><button class="btn btn-primary">
 					Listar Projetos Submetidos <span class="glyphicon glyphicon-list"></span>
 				</button></a>
 			</sec:authorize>
