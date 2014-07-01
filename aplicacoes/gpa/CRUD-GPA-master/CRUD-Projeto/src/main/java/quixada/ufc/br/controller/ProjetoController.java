@@ -36,9 +36,6 @@ import quixada.ufc.br.model.Projeto;
 import quixada.ufc.br.model.Usuario;
 import quixada.ufc.br.repository.jpa.JpaGenericRepositoryImpl.QueryType;
 import quixada.ufc.br.service.DocumentoService;
-import quixada.ufc.br.model.Usuario;
-import quixada.ufc.br.repository.jpa.JpaGenericRepositoryImpl.QueryType;
-import quixada.ufc.br.service.DocumentoService;
 import quixada.ufc.br.service.ParecerService;
 import quixada.ufc.br.service.ProjetoService;
 import quixada.ufc.br.service.UsuarioService;
@@ -91,10 +88,9 @@ public class ProjetoController {
 	public String adicionarProjeto(
 			@Valid @ModelAttribute("projeto") Projeto projeto,
 			BindingResult result) {
-		
+
 		projeto.setUsuarioCriador(usuarioLogado());
-		
-		
+
 		String resultado = projeto.getNome().trim();
 		if (result.hasErrors() || resultado.isEmpty()) {
 			return ("projeto/cadastro");

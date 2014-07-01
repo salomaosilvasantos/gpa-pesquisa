@@ -18,7 +18,7 @@
 
 
 	<ul class="pager">
-		<li class="previous"><a href="index">&larr; Voltar para
+		<li class="previous"><a href="<c:url value="/index" ></c:url>">&larr; Voltar para
 				Início</a></li>
 	</ul>
 
@@ -69,7 +69,7 @@
 										
 							<c:if test="${projeto.status == 'SUBMETIDO'}">
 									<a id="atribuirParecerista"
-									href="<c:url value="/${projeto.id}/atribuirParecerista" ></c:url>"
+									href="<c:url value="/diretor/${projeto.id}/atribuirParecerista" ></c:url>"
 									><button
 											class="btn btn-primary">Atribuir Parecerista <span class="glyphicon glyphicon-open"></span></button></a>
 							</c:if>
