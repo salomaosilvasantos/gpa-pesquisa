@@ -18,7 +18,7 @@
 
 
 	<ul class="pager">
-		<li class="previous"><a href="index">&larr; Voltar para
+		<li class="previous"><a href="<c:url value="/index" ></c:url>">&larr; Voltar para
 				Início</a></li>
 	</ul>
 
