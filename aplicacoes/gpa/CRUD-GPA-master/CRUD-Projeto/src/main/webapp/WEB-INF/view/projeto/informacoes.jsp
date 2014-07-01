@@ -100,11 +100,13 @@
 					<tr class="warning">
 					<td>
 					<form:label path="inicio">Início:</form:label>
-						<label> <c:out value="${projeto.inicio }"></c:out> </label>
+						<form:input type="text" path="inicio" 
+								id="datainicio" readonly="true" style="width: 79px;"/>
 					</td>
 					<td>
 					<form:label path="termino">Término:</form:label>
-						<label> <c:out value="${projeto.termino }"></c:out> </label>
+						<form:input type="text" path="termino" 
+								id="datatermino" readonly="true" style="width: 79px;"  />
 					</td>
 			</tr>
 					
