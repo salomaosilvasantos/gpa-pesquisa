@@ -37,10 +37,10 @@ public class Usuario {
 	@JoinTable(name = "papel_usuario", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "papel_id"))
 	private List<Papel> papeis;
 	
-	@OneToMany(mappedBy = "usuarioCriador", fetch = FetchType.EAGER, cascade = CascadeType.ALL )	
+	@OneToMany(mappedBy = "usuarioCriador", fetch = FetchType.EAGER )	
 	private List<Projeto> projetos;
 	
-	@OneToMany(mappedBy="usuario")
+	@OneToMany(mappedBy="usuario",  fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Servidor> servidores;
 	
 	private Integer cpf;
