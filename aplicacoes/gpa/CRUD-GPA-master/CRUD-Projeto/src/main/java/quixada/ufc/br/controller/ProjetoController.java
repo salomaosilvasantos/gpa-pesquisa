@@ -139,19 +139,23 @@ public class ProjetoController {
 	@RequestMapping(value = "/{id}/editarProjeto")
 	public String editar(Projeto p, @PathVariable("id") int id, Model model) {
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
+		Usuario usuario = serviceUsuario.getUsuarioLogado();
 		if(projeto == null){
 			model.addAttribute("erro", "Projeto inexistente");
 			model.addAttribute("projetos", serviceProjeto.getProjetosUsuario());
-			return "projeto/listar";
+			if(serviceUsuario.isDiretor(usuario)){
+				return "diretor/listarDiretor";
+			}else return "projeto/listar";
 		}
 		if(serviceUsuario.getUsuarioLogado().getId() == projeto.getUsuarioCriador().getId()){
 		model.addAttribute("projeto", projeto);
-		//	idRetorno = id;
 		return "projeto/editar";
 		}else{
 			model.addAttribute("erro", "Permissão negada");
 			model.addAttribute("projetos", serviceProjeto.getProjetosUsuario());
-			return "projeto/listar";
+			if(serviceUsuario.isDiretor(usuario)){
+				return "diretor/listarDiretor";
+			}else return "projeto/listar";
 		}
 	}
 
