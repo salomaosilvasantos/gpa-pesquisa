@@ -82,7 +82,7 @@
 						</div>
 						<div id="div_2" class="input-group date"
 							style="width: 200px; float: left; text-align: center;">
-							<input type="text" id="prazo" name="prazo"
+							<input type="text" id="prazo" name="prazo" required="required" 
 								style="width: 159px; height: 34px;" /><span
 								class="input-group-addon" style="width: 09px; height: 09px;"><i
 								class="glyphicon glyphicon-th"></i></span>
