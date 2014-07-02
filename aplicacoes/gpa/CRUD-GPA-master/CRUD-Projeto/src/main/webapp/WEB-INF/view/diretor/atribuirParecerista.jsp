@@ -56,7 +56,7 @@
 				
 
 				<form:form action="/exemplo-jpa-spring-mvc/diretor/atribuirParecerista"
-					method="GET" cssClass="form-horizontal registrationForm">
+					method="POST" cssClass="form-horizontal registrationForm">
 
 					<br>
 					<input type="hidden" name="projetoId" value="${projetoId}">

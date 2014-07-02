@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -26,6 +27,7 @@ public class Parecer {
 	@Enumerated(EnumType.STRING)
 	private StatusParecer status;
 	
+	@Lob
 	private String comentario;
 	
 	private String parecer;

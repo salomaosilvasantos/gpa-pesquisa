@@ -233,7 +233,7 @@ public class ProjetoController {
 		return "diretor/atribuirParecerista";
 	}
 	
-	@RequestMapping(value = "diretor/atribuirParecerista", method = RequestMethod.GET)
+	@RequestMapping(value = "diretor/atribuirParecerista", method = RequestMethod.POST)
 	public String atribuirPareceristaNoProjeto(@RequestParam("parecerista") int parecerista, 
 			@RequestParam("projetoId") int projetoId, @RequestParam("comentario_diretor") String comentario_diretor, 
 			@RequestParam("prazo") Date prazo){ 
