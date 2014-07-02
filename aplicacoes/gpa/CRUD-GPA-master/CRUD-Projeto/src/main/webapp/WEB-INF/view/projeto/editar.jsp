@@ -8,32 +8,15 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <html>
-<head>
-<script type="text/javascript"
-	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
-<meta charset="utf-8">
-<link
-	href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />"
-	rel="stylesheet" />
-<link
-	href="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/css/datepicker3.css"
-	rel="stylesheet">
-<link href="<c:url value="/resources/css/estilo.css" />"
-	rel="stylesheet" />
-<title>Editar Projeto</title>
-</head>
-<body>
-<head>
+	<head>
+		<meta charset="utf-8">
+			<link href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />" rel="stylesheet" />
+			<link href="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/css/datepicker3.css"
+				rel="stylesheet">
+			<link href="<c:url value="/resources/css/estilo.css" />" rel="stylesheet" />
+	<title>Editar Projeto</title>
+	</head>
 
-<link
-	href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />"
-	rel="stylesheet" />
-<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
-<script
-	src="<c:url value="/webjars/jquery-maskedinput/1.3.1/jquery.maskedinput.min.js" />"></script>
-<script
-	src="<c:url value="/webjars/jquery-validation/1.12.0/jquery.validate.min.js" />"></script>
-</head>
 <style>
 #envolve {
 	width: 890px;
@@ -56,6 +39,8 @@
 	clear: both;
 }
 </style>
+
+
 <body>
 	<jsp:include page="../modulos/header.jsp" />
 
@@ -68,7 +53,7 @@
 			<div class="form" align="center">
 				<h2>Editar Projeto</h2>
 				<form:form commandName="projeto" id="reg" action="editarProjetoForm"
-					enctype="multipart/form-data">
+					enctype="multipart/form-data" cssClass="form-horizontal registrationForm">
 					
 
 					<div id="envolve" style="width: 1000px;">
@@ -153,7 +138,7 @@
 						
 						<div id="div_3"
 							style="position: relative; width: 250px; float: left; text-align: center; margin: 0px 0px 0px 30px;">
-							<form:input type="number" placeholder="                    0"
+							<form:input type="number" placeholder="0" id="quantidadeBolsa"
 								path="quantidadeBolsa" />
 						</div>
 					</div>
@@ -229,188 +214,152 @@
 	<jsp:include page="../modulos/footer.jsp" />
 </body>
 
+
 <script type="text/javascript">
-	$(document)
-			.ready(
-					function() {
-						$.fn.datepicker.dates['pt-BR'] = {
-						        days: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"],
-						        daysShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
-						        daysMin: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"],
-						        months: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
-						        monthsShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
-						        today: "Hoje"
-						};
-						$('.input-group.date').datepicker({
-							format : "dd/mm/yyyy",
-							startDate : "01-01-2012",
-							endDate : "01-01-2015",
-							todayBtn : "linked",
-							autoclose : true,
-							language: "pt-BR",
-							todayHighlight : true
-						});
+	$(document).ready(function() {
+		$.fn.datepicker.dates['pt-BR'] = {
+	       days: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"],
+	       daysShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
+	       daysMin: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"],
+	       months: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+	       monthsShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+	       today: "Hoje"
+	};
+	
+		$('.input-group.date').datepicker({
+			format : "dd/mm/yyyy",
+			startDate : "01-01-2012",
+			endDate : "01-01-2015",
+			todayBtn : "linked",
+			autoclose : true,
+			language: "pt-BR",
+			todayHighlight : true
+	});
 						//Método que valida o dia mês e ano dd/MM/yyyy
-						jQuery.validator
-								.addMethod(
-										"dateBR",
-										function(value, element) {
-											if (value.length != 10)
-												return (this.optional(element) || false);
-											var data = value;
-											var dia = data.substr(0, 2);
-											var barra1 = data.substr(2, 1);
-											var mes = data.substr(3, 2);
-											var barra2 = data.substr(5, 1);
-											var ano = data.substr(6, 4);
-											if (data.length != 10
-													|| barra1 != "/"
-													|| barra2 != "/"
-													|| isNaN(dia) || isNaN(mes)
-													|| isNaN(ano) || dia > 31
-													|| mes > 12)
-												return (this.optional(element) || false);
-											if ((mes == 4 || mes == 6
-													|| mes == 9 || mes == 11)
-													&& dia == 31)
-												return (this.optional(element) || false);
-											if (mes == 2
-													&& (dia > 29 || (dia == 29 && ano % 4 != 0)))
-												return (this.optional(element) || false);
-											if (ano < 1900)
-												return (this.optional(element) || false);
-											return (this.optional(element) || true);
-										}, "Informe uma data válida");
+	jQuery.validator.addMethod("dateBR",function(value, element) {
+			if (value.length != 10)
+				return (this.optional(element) || false);
+			var data = value;
+			var dia = data.substr(0, 2);
+			var barra1 = data.substr(2, 1);
+			var mes = data.substr(3, 2);
+			var barra2 = data.substr(5, 1);
+			var ano = data.substr(6, 4);
+			
+			if (data.length != 10 || barra1 != "/" || barra2 != "/" || isNaN(dia) || isNaN(mes)
+				|| isNaN(ano) || dia > 31 || mes > 12)
+					return (this.optional(element) || false);
+			if ((mes == 4 || mes == 6 || mes == 9 || mes == 11)	&& dia == 31)
+				return (this.optional(element) || false);
+			if (mes == 2 && (dia > 29 || (dia == 29 && ano % 4 != 0)))
+				return (this.optional(element) || false);
+			if (ano < 1900)
+				return (this.optional(element) || false);
+			return (this.optional(element) || true);
+	}, "Informe uma data válida");
 
 						//Validando numero de bolsas positivo
-						$.validator.addMethod('positiveNumber',
-								function(value) {
-									return Number(value) >= 0;
-								}, 'Entre com um numero positivo');
+	$.validator.addMethod('positiveNumber',	function(value) {
+			return Number(value) >= 0;
+	}, 'Entre com um numero positivo');
 
-						$("#datatermino,#datainicio").mask("99/99/9999");
 
-						//código para input só ser números
-						var specialKeys = new Array();
-						specialKeys.push(8);
-						$("#numero_bolsas")
-								.bind(
-										"keypress",
-										function(e) {
-											var keyCode = e.which ? e.which
-													: e.keyCode;
-											var ret = ((keyCode >= 48 && keyCode <= 57) || specialKeys
-													.indexOf(keyCode) != -1);
-											return ret;
-										});
-						$("#numero_bolsas").bind("paste", function(e) {
-							return false;
-						});
-						$("#numero_bolsas").bind("drop", function(e) {
-							return false;
-						});
+	//código para input só ser números
+	var specialKeys = new Array();
+		specialKeys.push(8);
+		$("#quantidadeBolsa").bind("keypress",function(e) {
+			var keyCode = e.which ? e.which : e.keyCode;
+			var ret = ((keyCode >= 48 && keyCode <= 57) || specialKeys.indexOf(keyCode) != -1);
+		return ret;
+	});
+		
+	$("#quantidadeBolsa").bind("paste", function(e) {
+		return false;
+	});
+	
+	$("#quantidadeBolsa").bind("drop", function(e) {
+		return false;
+	});
 
-						jQuery.validator.setDefaults({
-							errorPlacement : function(error, element) {
-								// if the input has a prepend or append element, put the validation msg after the parent div
-								if (element.parent().hasClass('input-prepend')
-										|| element.parent().hasClass(
-												'input-append')) {
-									error.insertAfter(element.parent());
-									// else just place the validation message immediatly after the input
-								} else {
-									error.insertAfter(element);
-								}
-							},
-							errorElement : "small", // contain the error msg in a small tag
-							wrapper : "div", // wrap the error message and small tag in a div
-							highlight : function(element) {
-								$(element).closest('.control-group').addClass(
-										'error'); // add the Bootstrap error class to the control group
-							},
-							success : function(element) {
-								$(element).closest('.control-group')
-										.removeClass('error'); // remove the Boostrap error class from the control group
+	jQuery.validator.setDefaults({
+		errorPlacement : function(error, element) {
+		// if the input has a prepend or append element, put the validation msg after the parent div
+		if (element.parent().hasClass('input-prepend')|| element.parent().hasClass('input-append')) {
+			error.insertAfter(element.parent());
+		// else just place the validation message immediatly after the input
+			} else {
+				error.insertAfter(element);
+			}
+	},	errorElement : "small", // contain the error msg in a small tag
+		wrapper : "span", // wrap the error message and small tag in a div
+		highlight : function(element) {
+			$(element).closest('.control-group').addClass('error'); // add the Bootstrap error class to the control group
+		},
+		
+		success : function(element) {
+			$(element).closest('.control-group').removeClass('error'); // remove the Boostrap error class from the control group
 							}
-						});
+		});
 
-						$(".registrationForm")
-								.validate(
-										{
-											rules : {
-												nome : {
-													required : true,
-													minlength : 2
-												},
-												descricao : {
-													required : true,
-													minlength : 5
-												},
-												inicio : {
-													dateBR : {
-														depends : function() {
-															return $(
-																	'input[name="inicio"]')
-																	.val().length > 0
-																	&& $(
-																			'input[name="termino"]')
-																			.val().length > 0;
-														}
-													}
-												},
-												termino : {
-													dateBR : {
-														depends : function() {
-															return $(
-																	'input[name="termino"]')
-																	.val().length > 0
-																	&& $(
-																			'input[name="inicio"]')
-																			.val().length > 0;
-														}
-													}
-												},
-												numero_bolsas : {
-													positiveNumber : true
-												}
-											},
-											messages : {
-												nome : {
-													required : "Campo obrigatório!",
-													minlength : "Campo deve ter no mínimo 2 caracteres!"
-												},
-												descricao : {
-													required : "Campo obrigatório!",
-													minlength : "Campo deve ter no mínimo 5 caracteres!"
-												},
-												inicio : {
-													dateBR : "Data Inválida"
-												},
-												termino : {
-													dateBR : "Data Inválida"
-												},
-												positiveNumber : "Somente números positivos"
-											},
-
-											highlight : function(element) {
-												$(element).closest(
-														'.control-group')
-														.addClass('has-error')
-														.removeClass(
-																'has-success');
-
-											},
-											unhighlight : function(element) {
-												$(element)
-														.closest(
-																'.control-group')
-														.removeClass(
-																'has-error')
-														.addClass('has-success');
-
+		$(".registrationForm").validate({
+			rules : {
+				nome : {
+						required : true,
+						minlength : 2
+						},
+				descricao : {
+						required : true,
+						minlength : 5
+				},
+				inicio : {
+						dateBR : {
+						depends : function() {
+							return $('#datainicio').val().length > 0 
+									&& $('#datatermino').val().length > 0;
 											}
-										});
-					});
+						          }
+						},
+				termino : {
+						dateBR : {
+						depends : function() {
+							return $('#datatermino').val().length > 0
+									&& $('#datainicio').val().length > 0;
+											}
+									}
+						},
+				quantidadeBolsa : {
+						positiveNumber : true
+								}
+			},
+			
+			messages : {
+					nome : {
+						required : "Campo obrigatório!",
+						minlength : "Campo deve ter no mínimo 2 caracteres!"
+							},
+					descricao : {
+						required : "Campo obrigatório!",
+						minlength : "Campo deve ter no mínimo 5 caracteres!"
+							},
+					inicio : {
+						dateBR : "Data Inválida"
+							},
+					termino : {
+						dateBR : "Data Inválida"
+				 			},
+					positiveNumber : "Somente números positivos"
+							},
+
+					highlight : function(element) {
+						$(element).closest('.control-group').addClass('has-error')
+							.removeClass('has-success');
+													},
+					unhighlight : function(element) {
+						$(element).closest('.control-group').removeClass('has-error')
+							.addClass('has-success');
+												}
+							});
+	});
 </script>
 
 </html>
