@@ -11,6 +11,7 @@
 		<title>Informações do Projeto</title>
 		<link href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />" rel="stylesheet" />
 		<link href="<c:url value="/resources/css/estilo.css" />" rel="stylesheet"/>
+	
 	</head>
 
 	
@@ -41,53 +42,53 @@
 					
 					<tr class="success">
 					<td>
-					<form:label path="nome">Nome:</form:label>
-					<label> <c:out value="${projeto.nome }"></c:out> </label>
+					<div id="ui" style=" float: left; text-align: center;"> <form:label path="nome" > <h4> Nome:</h4> </form:label> </div>
+					<div id="uii"  style=" float: left; text-align: center; margin: 10px 0px 0px 10px; " > <label style="font-family: inherit;" ><c:out value="${projeto.nome }"></c:out> </label> </div>
 					</td>
 					</tr>
 					<tr class="success">
 					<td>
-					<form:label path="status">Status:</form:label>
+					<form:label path="status"> <h4> Status: </h4></form:label>
 					<label> <c:out value="${projeto.status }"></c:out> </label>
 					</td>
 					</tr>
 					<tr class="success">
 					<td>
-					<form:label path="descricao">Descrição:</form:label>
+					<form:label path="descricao"> <h4> Descrição: </h4></form:label>
 					<label> <c:out value="${projeto.descricao }"></c:out> </label>
 					</td>
 					</tr>
 					<tr class="success">
 					<td>
-					<form:label path="atividades">Atividades:</form:label>
+					<form:label path="atividades"> <h4> Atividades: </h4></form:label>
 					<label> <c:out value="${projeto.atividades }"></c:out> </label>
 					</td>
 					</tr>
 					
 					<tr class="success">
 					<td>
-					<form:label path="participantes">Participantes:</form:label>
+					<form:label path="participantes"> <h4> Participantes: </h4></form:label>
 					<label> <c:out value="${projeto.participantes }"></c:out> </label>
 					</td>
 					</tr>
 					
 					<tr class="success">
 					<td>
-					<form:label path="local">Local:</form:label>
+					<form:label path="local"> <h4> Local: </h4> </form:label>
 					<label> <c:out value="${projeto.local }"></c:out> </label>
 					</td>
 					</tr>
 					
 					<tr class="success">
 					<td>
-					<form:label path="quantidadeBolsa">Número de Bolsas:</form:label>
+					<form:label path="quantidadeBolsa"> <h4> Número de Bolsas: </h4></form:label>
 					<label> <c:out value="${projeto.quantidadeBolsa }"></c:out> </label>
 					</td>
 					</tr>
 					<tr class="success">
 					<td>		
+					<form:label path="documentos"> <h4> Arquivos: </h4></form:label>
 					<c:forEach var="documento" items="${projeto.documentos}">
-					<form:label path="documentos">Arquivos:</form:label>
 					<a href="<c:url value="/files/${documento.id}"></c:url>">${documento.nomeOriginal}</a>
 					<br>
 					</c:forEach>
