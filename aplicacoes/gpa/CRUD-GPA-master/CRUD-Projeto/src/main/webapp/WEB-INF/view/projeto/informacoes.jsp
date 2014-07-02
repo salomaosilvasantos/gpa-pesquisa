@@ -54,6 +54,12 @@
 					</tr>
 					<tr class="success">
 					<td>
+					<form:label path="nome"> <h4> Criador do Projeto: </h4></form:label>
+					<label> <c:out value="${projeto.usuarioCriador.nome }"></c:out> </label>
+					</td>
+					</tr>
+					<tr class="success">
+					<td>
 					<form:label path="descricao"> <h4> Descrição: </h4></form:label>
 					<label> <c:out value="${projeto.descricao }"></c:out> </label>
 					</td>
