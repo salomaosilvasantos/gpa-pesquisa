@@ -22,7 +22,7 @@ public class  ProjetoServiceImpl extends GenericServiceImpl<Projeto> implements 
 	
 	@Override
 	public List<Projeto> projetosSubmetidos(){
-		List<Projeto> projeto = projetoRepository.find(QueryType.JPQL, "from Projeto as p where p.status='SUBMETIDO' ",null);
+		List<Projeto> projeto = projetoRepository.find(QueryType.JPQL, "from Projeto as p where p.status !='NOVO' ",null);
 		
 		return projeto;
 		
