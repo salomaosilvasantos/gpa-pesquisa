@@ -5,9 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -18,10 +16,8 @@ import javax.validation.Valid;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -36,11 +32,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import quixada.ufc.br.enumerator.StatusProjeto;
 import quixada.ufc.br.model.Documento;
-import quixada.ufc.br.model.Papel;
 import quixada.ufc.br.model.Parecer;
 import quixada.ufc.br.model.Projeto;
 import quixada.ufc.br.model.Usuario;
-import quixada.ufc.br.repository.jpa.JpaGenericRepositoryImpl.QueryType;
 import quixada.ufc.br.service.DocumentoService;
 import quixada.ufc.br.service.ParecerService;
 import quixada.ufc.br.service.ProjetoService;
@@ -147,7 +141,8 @@ public class ProjetoController {
 				return "diretor/listarDiretor";
 			}else return "projeto/listar";
 		}
-		if(serviceUsuario.getUsuarioLogado().getId() == projeto.getUsuarioCriador().getId()){
+		if((serviceUsuario.getUsuarioLogado().getId() == projeto.getUsuarioCriador().getId() 
+				&& !projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER))){
 		model.addAttribute("projeto", projeto);
 		return "projeto/editar";
 		}else{
