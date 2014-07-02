@@ -80,19 +80,13 @@
 								</c:forEach>
 							</select>
 						</div>
-						
-                       <div id="div_2" class="input-group date"
+						<div id="div_2" class="input-group date"
 							style="width: 200px; float: left; text-align: center;">
-							<input type="text" id="prazo" name="prazo" required="required" 
+							<input type="text" id="prazo" name="prazo"
 								style="width: 159px; height: 34px;" /><span
 								class="input-group-addon" style="width: 09px; height: 09px;"><i
 								class="glyphicon glyphicon-th"></i></span>
-								<form:errors path="prazo" />
-								
 						</div>
-						
-						
-						
 					</div>
 
 					<br>
@@ -142,12 +136,21 @@
 	$(document)
 			.ready(
 					function() {
+						$.fn.datepicker.dates['pt-BR'] = {
+						        days: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"],
+						        daysShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
+						        daysMin: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"],
+						        months: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+						        monthsShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+						        today: "Hoje"
+						};
 						$('.input-group.date').datepicker({
 							format : "dd/mm/yyyy",
 							startDate : "01-01-2012",
 							endDate : "01-01-2015",
 							todayBtn : "linked",
 							autoclose : true,
+							language: "pt-BR",
 							todayHighlight : true
 						});
 						//Método que valida o dia mês e ano dd/MM/yyyy
@@ -188,7 +191,27 @@
 									return Number(value) >= 0;
 								}, 'Entre com um numero positivo');
 
-						$("#prazo").mask("99/99/9999");
+						$("#datatermino,#datainicio").mask("99/99/9999");
+
+						//código para input só ser números
+						var specialKeys = new Array();
+						specialKeys.push(8);
+						$("#numero_bolsas")
+								.bind(
+										"keypress",
+										function(e) {
+											var keyCode = e.which ? e.which
+													: e.keyCode;
+											var ret = ((keyCode >= 48 && keyCode <= 57) || specialKeys
+													.indexOf(keyCode) != -1);
+											return ret;
+										});
+						$("#numero_bolsas").bind("paste", function(e) {
+							return false;
+						});
+						$("#numero_bolsas").bind("drop", function(e) {
+							return false;
+						});
 
 						jQuery.validator.setDefaults({
 							errorPlacement : function(error, element) {
