@@ -140,6 +140,7 @@
 								class="glyphicon glyphicon-th"></i></span>
 							<form:errors path="inicio" />
 						</div>
+						
 						<div id="div_2" class="input-group date"
 							style="width: 200px; margin: 0px 80px 0px 40px; float: left; text-align: center;">
 							<form:label path="termino" cssClass="control-label"></form:label>
@@ -149,6 +150,7 @@
 								class="glyphicon glyphicon-th"></i></span>
 							<form:errors path="termino" />
 						</div>
+						
 						<div id="div_3"
 							style="position: relative; width: 250px; float: left; text-align: center; margin: 0px 0px 0px 30px;">
 							<form:input type="number" placeholder="                    0"
@@ -175,12 +177,16 @@
 								id="text" />
 						</div>
 					</div>
+					
+					
 					<div>
-							<h4>Atividades:</h4>
+							
+						<h4>Atividades:</h4>
 						</div>
 						<form:textarea path="atividades" class="form-control" id="text" rows="3"></form:textarea>
 						<div class="controls"></div>
 					</div>
+	
 					<div>
 						<h4>Arquivos</h4>
 					</div>
@@ -205,7 +211,6 @@
 				</form:form>
 			</div>
 		</div>
-	</div>
 
 	<ul class="pager">
 		<li class="previous"><a href="/exemplo-jpa-spring-mvc/listar"
