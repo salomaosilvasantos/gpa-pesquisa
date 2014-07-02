@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -35,6 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import quixada.ufc.br.enumerator.StatusProjeto;
 import quixada.ufc.br.model.Documento;
+import quixada.ufc.br.model.Papel;
 import quixada.ufc.br.model.Parecer;
 import quixada.ufc.br.model.Projeto;
 import quixada.ufc.br.model.Usuario;
@@ -111,8 +113,25 @@ public class ProjetoController {
 	public String informacoes(Projeto p, @PathVariable("id") int id,
 			Model model) {
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
-		model.addAttribute("projeto", projeto);
-		return "projeto/informacoes";
+		Usuario usuario = serviceUsuario.getUsuarioLogado();
+		if(projeto == null){
+			model.addAttribute("erro", "Projeto inexistente");
+			model.addAttribute("projetos", serviceProjeto.getProjetosUsuario());
+			if(serviceUsuario.isDiretor(usuario)){
+				return "diretor/listarDiretor";
+			}else return "projeto/listar";
+		}
+		if(usuario.getId() == projeto.getUsuarioCriador().getId() || 
+		(serviceUsuario.isDiretor(usuario) && !projeto.getStatus().equals(StatusProjeto.NOVO))){		
+				model.addAttribute("projeto", projeto);
+				return "projeto/informacoes";
+		}else{
+			model.addAttribute("erro", "Permissão negada");
+			model.addAttribute("projetos", serviceProjeto.getProjetosUsuario());
+			if(serviceUsuario.isDiretor(usuario)){
+				return "diretor/listarDiretor";
+			}else return "projeto/listar";
+		}
 	}
 	
 	
@@ -120,11 +139,20 @@ public class ProjetoController {
 	@RequestMapping(value = "/{id}/editarProjeto")
 	public String editar(Projeto p, @PathVariable("id") int id, Model model) {
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
-		System.out.println("Projeto do Banco antes de atualizar: "
-				+ projeto.toString());
+		if(projeto == null){
+			model.addAttribute("erro", "Projeto inexistente");
+			model.addAttribute("projetos", serviceProjeto.getProjetosUsuario());
+			return "projeto/listar";
+		}
+		if(serviceUsuario.getUsuarioLogado().getId() == projeto.getUsuarioCriador().getId()){
 		model.addAttribute("projeto", projeto);
 		//	idRetorno = id;
 		return "projeto/editar";
+		}else{
+			model.addAttribute("erro", "Permissão negada");
+			model.addAttribute("projetos", serviceProjeto.getProjetosUsuario());
+			return "projeto/listar";
+		}
 	}
 
 	

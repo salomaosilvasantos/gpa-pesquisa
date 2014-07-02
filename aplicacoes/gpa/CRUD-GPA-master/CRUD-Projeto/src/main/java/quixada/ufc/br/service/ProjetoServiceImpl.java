@@ -7,11 +7,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.springframework.web.servlet.ModelAndView;
-
 import quixada.ufc.br.model.Projeto;
 import quixada.ufc.br.repository.ProjetoRepository;
-import quixada.ufc.br.repository.UsuarioRepository;
 import quixada.ufc.br.repository.jpa.JpaGenericRepositoryImpl.QueryType;
 
 @Named

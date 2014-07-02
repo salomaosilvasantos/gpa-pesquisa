@@ -15,10 +15,11 @@
 
 <body>
 		<jsp:include page="../modulos/header.jsp" />
-
-
+		<c:if test="${not empty erro}">
+		<div class="alert alert-danger" role="alert"><c:out value="${erro}"></c:out></div>
+		</c:if>
 	<ul class="pager">
-		<li class="previous"><a href="index">&larr; Voltar para
+		<li class="previous"><a href="<c:url value="/index"></c:url>">&larr; Voltar para
 				Início</a></li>
 	</ul>
 
