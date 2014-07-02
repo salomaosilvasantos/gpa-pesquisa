@@ -55,6 +55,7 @@
 				<form:form commandName="projeto" id="reg" action="editarProjetoForm"
 					enctype="multipart/form-data" cssClass="form-horizontal registrationForm">
 					
+					
 
 					<div id="envolve" style="width: 1000px;">
 						<div id="envolve2" style="width: 1000px;">
@@ -181,20 +182,21 @@
 					<span>Arquivo: </span>
 						<c:forEach var="documento" items="${projeto.documentos}">
 					
-					<h5 style="display: inline-block" <c:url value="/files/${documento.id}"></c:url>">${documento.nomeOriginal}</h5>
+					<h5 style="display: inline-block" <c:url value="/files/${documento.id}"></c:url>>${documento.nomeOriginal}</h5>
 					<a href='<c:url value="/files/remover/${documento.id}/${projeto.id}"></c:url>'><input type="button" value="Remover" class="btn btn-danger" /></a>
 					<br>
 					</c:forEach>
 					
 					
 					
-					<div class="controls" style="margin-bottom: 80px">
+					<div class="controls" style="margin-left:45%; margin-bottom: 80px">
 						<input type="submit" value="Salvar" class="btn btn-primary" /> <a
 							href="<c:url value="/listar" />"><input type="button"
 							value="Cancelar" class="btn btn-default" /></a>
 					</div>
-				</form:form>
+				
 			</div>
+			</form:form>
 		</div>
 
 	<ul class="pager">
@@ -204,12 +206,8 @@
 
 
 	<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
-	<script
-		src="<c:url value="/webjars/jquery-maskedinput/1.3.1/jquery.maskedinput.min.js" />"></script>
-	<script
-		src="<c:url value="/webjars/jquery-validation/1.12.0/jquery.validate.min.js" />"></script>
-	<script
-		src="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+	<script	src="<c:url value="/webjars/jquery-validation/1.12.0/jquery.validate.min.js" />"></script>
+	<script	src="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 
 	<jsp:include page="../modulos/footer.jsp" />
 </body>
