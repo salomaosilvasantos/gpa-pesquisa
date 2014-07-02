@@ -200,8 +200,8 @@
 		</div>
 
 	<ul class="pager">
-		<li class="previous"><a href="/exemplo-jpa-spring-mvc/listar"
-			style="margin-bottom: 80px">&larr; Voltar para Listagem</a></li>
+		<li class="previous"><a href="/exemplo-jpa-spring-mvc/index"
+			style="margin-bottom: 80px">&larr; Voltar para Inicio</a></li>
 	</ul>
 
 
