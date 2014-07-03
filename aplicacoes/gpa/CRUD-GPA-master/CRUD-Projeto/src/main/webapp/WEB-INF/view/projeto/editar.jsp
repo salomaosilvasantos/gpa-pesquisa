@@ -139,7 +139,7 @@
 						
 						<div id="div_3"
 							style="position: relative; width: 250px; float: left; text-align: center; margin: 0px 0px 0px 30px;">
-							<form:input type="number" min="1	" placeholder="0" id="quantidadeBolsa"  
+							<form:input type="number" min="0" placeholder="0" id="quantidadeBolsa"  
 								path="quantidadeBolsa"  title="Campo obrigatório!" required="true"  />
 						</div>
 					</div>
