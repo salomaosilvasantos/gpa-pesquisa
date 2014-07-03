@@ -1,6 +1,6 @@
 --------- Arquivo server.xml -----------
 
-<Resource auth="Container" driverClassName="org.postgresql.Driver"
+<Resource auth="Container" driverClassName="org.postgresql.Driver" defaultAutoCommit="false"
 			maxActive="10" maxIdle="3" maxWait="10000" name="gpa_pesquisa" password="postgres"
 			type="javax.sql.DataSource" url="jdbc:postgresql://localhost/crud_projeto"
 			username="postgres" />
