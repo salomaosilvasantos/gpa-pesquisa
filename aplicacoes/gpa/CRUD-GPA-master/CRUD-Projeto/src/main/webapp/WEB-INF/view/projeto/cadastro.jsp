@@ -106,6 +106,7 @@
 								id="datatermino" required="true" />
 							<span class="input-group-addon"><i
 								class="glyphicon glyphicon-th"></i></span>
+								<form:errors path="termino"></form:errors>
 							
 						</div>
 
