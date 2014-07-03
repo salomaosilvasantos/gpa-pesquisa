@@ -61,6 +61,9 @@ public class Projeto {
 	
 	@OneToMany(mappedBy = "projeto", fetch = FetchType.EAGER)	
 	private List<Documento> documentos;
+	
+	@OneToMany(mappedBy = "projeto", fetch = FetchType.EAGER)	
+	private List<Parecer> pareceres;
 
 	public Projeto() {
 		super();
@@ -186,6 +189,14 @@ public class Projeto {
 	
 	public int getId() {
 		return id;
+	}
+
+	public List<Parecer> getPareceres() {
+		return pareceres;
+	}
+
+	public void setPareceres(List<Parecer> pareceres) {
+		this.pareceres = pareceres;
 	}
 
 	@Override

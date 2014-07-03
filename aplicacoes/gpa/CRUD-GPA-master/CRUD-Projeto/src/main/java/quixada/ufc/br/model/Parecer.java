@@ -2,9 +2,11 @@ package quixada.ufc.br.model;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import quixada.ufc.br.enumerator.StatusParecer;
@@ -28,6 +29,7 @@ public class Parecer {
 	private StatusParecer status;
 	
 	@Lob
+	@Basic(fetch = FetchType.EAGER)
 	private String comentario;
 	
 	private String parecer;
@@ -66,6 +68,7 @@ public class Parecer {
 		this.prazo = prazo;
 		this.usuario = usuario;
 		this.projeto = projeto;
+		
 	}
 
 	public int getId() {
