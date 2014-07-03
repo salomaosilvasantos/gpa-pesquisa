@@ -225,6 +225,7 @@ public class ProjetoController {
 			System.out.println("PROJETO:");
 		if (!projeto.getNome().isEmpty() && !projeto.getLocal().isEmpty()
 				&& !projeto.getParticipantes().isEmpty()
+				&& projeto.getQuantidadeBolsa()!=null 
 				&& projeto.getQuantidadeBolsa().intValue() > 0
 				&& !projeto.getAtividades().isEmpty()
 				&& !projeto.getDescricao().isEmpty()
