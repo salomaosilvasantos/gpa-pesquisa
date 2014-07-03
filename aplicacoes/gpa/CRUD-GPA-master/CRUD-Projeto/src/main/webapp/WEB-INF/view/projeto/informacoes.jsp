@@ -98,6 +98,12 @@
 					<a href="<c:url value="/files/${documento.id}"></c:url>">${documento.nomeOriginal}</a>
 					<br>
 					</c:forEach>
+					
+					<label> <h4> Pareceres: </h4></label>
+					<c:forEach var="parecer" items="${projeto.pareceres}">
+					<a href="">${parecer.comentario}</a>
+					<br>
+					</c:forEach>
 					</td>
 					</tr>
 					

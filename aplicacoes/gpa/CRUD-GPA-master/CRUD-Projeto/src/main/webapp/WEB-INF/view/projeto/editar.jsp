@@ -176,8 +176,8 @@
 					<div>
 						<h4>Arquivos</h4>
 					</div>
-					<form:input type="file" class="form-control" path="documentos"
-						name="documentos" />
+					<input type="file" class="form-control" 
+						name="doc" />
 					<br>
 					<span>Arquivo: </span>
 						<c:forEach var="documento" items="${projeto.documentos}">
