@@ -228,6 +228,8 @@ public class ProjetoController {
 				&& projeto.getQuantidadeBolsa().intValue() > 0
 				&& !projeto.getAtividades().isEmpty()
 				&& !projeto.getDescricao().isEmpty()
+				&& projeto.getInicio()!=null
+				&& projeto.getTermino()!=null
 				) {
 			return true;
 		} else {
