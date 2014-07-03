@@ -3,6 +3,7 @@ package quixada.ufc.br.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -59,7 +60,7 @@ public class Projeto {
 	
 	private String participantes;
 	
-	@OneToMany(mappedBy = "projeto", fetch = FetchType.EAGER)	
+	@OneToMany(mappedBy = "projeto", cascade= CascadeType.ALL, fetch = FetchType.EAGER)	
 	private List<Documento> documentos;
 	
 	@OneToMany(mappedBy = "projeto", fetch = FetchType.EAGER)	
