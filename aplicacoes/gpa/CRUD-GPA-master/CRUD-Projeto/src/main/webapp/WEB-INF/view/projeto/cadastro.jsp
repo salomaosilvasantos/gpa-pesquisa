@@ -111,9 +111,9 @@
 
 
 					
-						
-							<form:input type="number" placeholder="0" id="quantidadeBolsa"
+						<form:input type="number" min="0" placeholder="0" id="quantidadeBolsa" 
 								path="quantidadeBolsa" />
+							
 						
 					</div>
 
