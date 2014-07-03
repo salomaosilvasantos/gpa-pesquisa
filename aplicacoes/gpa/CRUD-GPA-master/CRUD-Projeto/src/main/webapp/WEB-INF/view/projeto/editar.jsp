@@ -189,7 +189,7 @@
 					
 					
 					
-					<div class="controls" style="margin-left:45%; margin-bottom: 80px">
+					<div class="controls" style="margin-left:45%; margin-top: 5%">
 						<input type="submit" value="Salvar" class="btn btn-primary" /> <a
 							href="<c:url value="/listar" />"><input type="button"
 							value="Cancelar" class="btn btn-default" /></a>
