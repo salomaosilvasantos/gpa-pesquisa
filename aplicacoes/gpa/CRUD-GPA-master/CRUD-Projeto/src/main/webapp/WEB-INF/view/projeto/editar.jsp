@@ -121,7 +121,7 @@
 							style="width: 200px; margin: 0px 80px 0px 80px; float: left; text-align: center;">
 							<form:label path="inicio" cssClass="control-label"></form:label>
 							<form:input type="text" path="inicio" cssClass="form-control"
-								id="datainicio" required="true"/>
+								id="datainicio" required="true" title="Campo obrigatório"/>
 							<span class="input-group-addon"><i
 								class="glyphicon glyphicon-th"></i></span>
 							<form:errors path="inicio" />
@@ -131,7 +131,7 @@
 							style="width: 200px; margin: 0px 80px 0px 40px; float: left; text-align: center;">
 							<form:label path="termino" cssClass="control-label"></form:label>
 							<form:input type="text" path="termino" cssClass="form-control"
-								id="datatermino" required="true"/>
+								id="datatermino" required="true" title="Campo obrigatório"/>
 							<span class="input-group-addon"><i
 								class="glyphicon glyphicon-th"></i></span>
 							<form:errors path="termino" />
@@ -139,8 +139,8 @@
 						
 						<div id="div_3"
 							style="position: relative; width: 250px; float: left; text-align: center; margin: 0px 0px 0px 30px;">
-							<form:input type="number" min="0" placeholder="0" id="quantidadeBolsa" 
-								path="quantidadeBolsa" required="true" />
+							<form:input type="number" min="1	" placeholder="0" id="quantidadeBolsa"  
+								path="quantidadeBolsa" required="true"  />
 						</div>
 					</div>
 					<div id="clear"></div>
