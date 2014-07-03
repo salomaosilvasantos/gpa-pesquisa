@@ -59,8 +59,8 @@
 							<h4>Nome do Projeto:</h4>
 						</form:label>
 						<div class="controls">
-							<form:input path="nome" cssClass="form-control" id="text" />
-							<form:errors path="nome" />
+							<form:input path="nome" cssClass="form-control" id="text" required="true" />
+
 						</div>
 					</div>
 
@@ -69,7 +69,7 @@
 							<h4>Descrição do Projeto:</h4>
 						</div>
 						<textarea name="descricao" class="form-control" id="text" rows="3"
-							id="descricaoprojeto"></textarea>
+							id="descricaoprojeto" ></textarea>
 						<div class="controls"></div>
 					</div>
 					<div id="envolve" style="width: 1000px;">
@@ -96,17 +96,17 @@
 								id="datainicio" />
 							<span class="input-group-addon"><i
 								class="glyphicon glyphicon-th"></i></span>
-							<form:errors path="inicio" />
+						
 						</div>
 
 						<div id="div_2" class="input-group date"
 							style="width: 280px; margin: 0px 80px 0px 40px; float: left; text-align: center;">
 							<form:label path="termino" cssClass="control-label"></form:label>
 							<form:input type="text" path="termino" cssClass="form-control"
-								id="datatermino" />
+								id="datatermino" required="true" />
 							<span class="input-group-addon"><i
 								class="glyphicon glyphicon-th"></i></span>
-							<form:errors path="termino" />
+							
 						</div>
 
 
