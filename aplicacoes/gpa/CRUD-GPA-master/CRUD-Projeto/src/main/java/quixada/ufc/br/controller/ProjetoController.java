@@ -158,9 +158,13 @@ public class ProjetoController {
 	@RequestMapping(value = "/{id}/editarProjetoForm", method = RequestMethod.POST)
 	public String atualizarProjeto(@PathVariable("id") int id,
 			@RequestParam(value="documentos", required = false) MultipartFile file,
-			@ModelAttribute(value = "projeto") Projeto projetoAtualizado,
+			@Valid @ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result) throws IOException {
 
+		
+		if(result.hasErrors()) {
+			return "projeto/editar";
+		}
 		
 		if(!file.isEmpty()){
 		List<Documento> docs = new ArrayList<>();
