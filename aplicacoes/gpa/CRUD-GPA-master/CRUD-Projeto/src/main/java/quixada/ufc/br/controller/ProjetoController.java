@@ -235,6 +235,7 @@ public class ProjetoController {
 				&& !projeto.getDescricao().isEmpty()
 				&& projeto.getInicio()!=null
 				&& projeto.getTermino()!=null
+				&& !projeto.getDocumentos().isEmpty()
 				) {
 			return true;
 		} else {
