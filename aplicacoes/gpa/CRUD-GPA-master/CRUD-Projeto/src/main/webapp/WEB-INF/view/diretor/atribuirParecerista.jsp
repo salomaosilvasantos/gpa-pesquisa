@@ -100,7 +100,7 @@
 							<h4>Comentarios adicionais:</h4>
 						</div>
 						<textarea name="comentario_diretor" class="form-control" id="text"
-							rows="3" id="comentario_diretor" style="width: 800px;"></textarea>
+							rows="3" id="comentario_diretor" style="width: 800px;" required="true" title="Comentario obrigatorio"></textarea>
 						<div class="controls"></div>
 					</div>
 
