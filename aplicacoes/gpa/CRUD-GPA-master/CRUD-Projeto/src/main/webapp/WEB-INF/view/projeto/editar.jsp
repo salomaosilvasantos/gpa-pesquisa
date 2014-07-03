@@ -86,7 +86,7 @@
 							<h4>Nome do Projeto:</h4>
 						</form:label>
 						<div class="controls">
-							<form:input path="nome" cssClass="form-control" id="text" required="true"/>
+							<form:input path="nome" cssClass="form-control" id="text" title="Campo obrigatório!" required="true"/>
 							<form:errors path="nome" />
 						</div>
 					</div>
@@ -96,7 +96,7 @@
 						<div>
 							<h4>Descrição do Projeto:</h4>
 						</div>
-						<form:textarea path="descricao" class="form-control" id="text" rows="3" required="true"></form:textarea>
+						<form:textarea path="descricao" class="form-control" id="text" rows="3"  title="Campo obrigatório!" required="true"></form:textarea>
 						<div class="controls"></div>
 					</div>
 
@@ -140,7 +140,7 @@
 						<div id="div_3"
 							style="position: relative; width: 250px; float: left; text-align: center; margin: 0px 0px 0px 30px;">
 							<form:input type="number" min="1	" placeholder="0" id="quantidadeBolsa"  
-								path="quantidadeBolsa" required="true"  />
+								path="quantidadeBolsa"  title="Campo obrigatório!" required="true"  />
 						</div>
 					</div>
 					<div id="clear"></div>
@@ -150,7 +150,7 @@
 							<h4>Local do Projeto:</h4>
 						</form:label>
 						<div class="controls">
-							<form:input path="local" cssClass="form-control" id="text" required="true"/>
+							<form:input path="local" cssClass="form-control" id="text"  title="Campo obrigatório!" required="true"/>
 						</div>
 					</div>
 
@@ -160,7 +160,7 @@
 						</form:label>
 						<div class="controls">
 							<form:input path="participantes" cssClass="form-control"
-								id="text" required="true" />
+								id="text"  title="Campo obrigatório!" required="true" />
 						</div>
 					</div>
 					
@@ -169,7 +169,7 @@
 							
 						<h4>Atividades:</h4>
 						</div>
-						<form:textarea path="atividades" class="form-control" id="text" rows="3" required="true"></form:textarea>
+						<form:textarea path="atividades" class="form-control" id="text" rows="3"  title="Campo obrigatório!" required="true"></form:textarea>
 						<div class="controls"></div>
 					</div>
 	
