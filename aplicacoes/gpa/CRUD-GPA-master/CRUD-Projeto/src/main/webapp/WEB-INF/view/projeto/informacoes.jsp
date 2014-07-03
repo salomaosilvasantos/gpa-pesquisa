@@ -58,6 +58,17 @@
 					<label> <c:out value="${projeto.usuarioCriador.nome }"></c:out> </label>
 					</td>
 					</tr>
+					<c:if test="${projeto.status == 'AGUARDANDO_PARECER'}">
+					<tr class="success">
+					<td>
+					<form:label path="pareceres"> <h4> Parecerista: </h4></form:label>
+					<c:forEach var="parecerista" items="${projeto.pareceres}">
+					<label> <c:out value="${parecerista.usuario.nome}"/> </label>
+					<br>
+					</c:forEach>
+					</td>
+					</tr>
+					</c:if>
 					<tr class="success">
 					<td>
 					<form:label path="descricao"> <h4> Descrição: </h4></form:label>
