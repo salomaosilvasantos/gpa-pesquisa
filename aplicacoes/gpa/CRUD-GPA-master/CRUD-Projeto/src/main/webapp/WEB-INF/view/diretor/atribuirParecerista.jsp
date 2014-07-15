@@ -9,45 +9,12 @@
 
 <html>
 <head>
-<script type="text/javascript"
-	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js"></script>
-<meta charset="utf-8">
-<link
-	href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />"
-	rel="stylesheet" />
-<link
-	href="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/css/datepicker3.css"
-	rel="stylesheet">
-<link href="<c:url value="/resources/css/estilo.css" />"
-	rel="stylesheet" />
-
-<title>Atribuir Parecerista</title>
+	<jsp:include page="../modulos/header-estrutura.jsp" />
+	<title>Atribuir Parecerista</title>
 </head>
-<style>
-#envolve {
-	width: 890px;
-}
 
-#div_3 {
-	float: left;
-	text-align: center;
-}
-
-#center {
-	background-color: #d0e4fe;
-}
-
-#clear {
-	clear: both;
-}
-</style>
 <body>
 	<jsp:include page="../modulos/header.jsp" />
-
-	<ul class="pager">
-		<li class="previous"><a href="/exemplo-jpa-spring-mvc/index">&larr;
-				Voltar para Inicio</a></li>
-	</ul>
 
 	<div class="container">
 		<div class="atribuirParecerista" align="center">
@@ -55,13 +22,41 @@
 				<h2>Atribuir Parecerista</h2>
 				
 
-				<form:form action="/exemplo-jpa-spring-mvc/diretor/atribuirParecerista"
-					method="POST" cssClass="form-horizontal registrationForm">
+				<form:form servletRelativeAction="/projeto/diretor/atribuirParecerista" method="POST" cssClass="form-horizontal">
 
-					<br>
 					<input type="hidden" name="projetoId" value="${projetoId}">
+					
+					<div class="form-group">
+						<label for="parecerista" class="col-sm-2 control-label">Parecerista:</label>
+						<div class="col-sm-4">
+							<select name="parecerista" class="form-control">
+								<c:forEach items="${usuarios}" var="usuario">
+									<option value="${usuario.id}">${usuario.nome}</option>
+								</c:forEach>
+							</select>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="prazo" class="col-sm-2 control-label">Prazo:</label>
+						<div class="col-sm-2">
+							<input id="prazo" type="text" name="prazo" value="${prazo}" class="form-control data" placeholder="Prazo"/>
+							<c:if test="${not empty error_prazo}">
+								<div class="error-validation">
+									<span>${error_prazo}</span>
+								</div>
+							</c:if>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="comentario" class="col-sm-2 control-label">Comentário:</label>
+						<div class="col-sm-10">
+							<textarea id="comentario" name="comentario" class="form-control" rows="5" placeholder="Comentário" ></textarea>
+						</div>
+					</div>
 
-					<div id="envolve2" style="width: 1000px;">
+					<%-- <div id="envolve2" style="width: 1000px;">
 						<div id="div1_1"
 							style="width: 200px; margin: 30px 80px 0px 170px; float: left; text-align: center;">
 							<h4>Parecerista</h4>
@@ -104,12 +99,11 @@
 						<div class="controls"></div>
 					</div>
 
-					<br>
+					<br> --%>
 
 					<div class="controls">
-						<input name="submit" type="submit" class="btn btn-primary"
-							value="Confirmar" /> <a href='<c:url value="/listar"></c:url>'
-							class="btn btn-default">Cancelar</a>
+						<input name="submit" type="submit" class="btn btn-primary" value="Atribuir" />
+						<a href="<c:url value="/projeto/index"></c:url>" class="btn btn-default">Cancelar</a>
 					</div>
 			</form:form>
 			</div>
@@ -117,24 +111,11 @@
 		</div>
 	</div>
 
-	<ul class="pager">
-		<li class="previous"><a href="/exemplo-jpa-spring-mvc/listar">&larr;
-				Voltar para Listagem</a></li>
-	</ul>
-
-	<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
-	<script
-		src="<c:url value="/webjars/jquery-maskedinput/1.3.1/jquery.maskedinput.min.js" />"></script>
-	<script
-		src="<c:url value="/webjars/jquery-validation/1.12.0/jquery.validate.min.js" />"></script>
-	<script
-		src="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-
 	<jsp:include page="../modulos/footer.jsp"></jsp:include>
 
 </body>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	$(document)
 			.ready(
 					function() {
@@ -316,6 +297,6 @@
 											}
 										});
 					});
-</script>
+</script> -->
 
 </html>

@@ -28,7 +28,7 @@
 	
 	<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true" />
  
-	<context:component-scan base-package="quixada.ufc.br.repository" />
-	<context:component-scan base-package="quixada.ufc.br.service" />
-	<context:component-scan base-package="quixada.ufc.br.controller" />
+	<context:component-scan base-package="br.com.ufc.quixada.npi.gpa.repository" />
+	<context:component-scan base-package="br.com.ufc.quixada.npi.gpa.service" />
+	<context:component-scan base-package="br.com.ufc.quixada.npi.gpa.controller" />
 </beans>

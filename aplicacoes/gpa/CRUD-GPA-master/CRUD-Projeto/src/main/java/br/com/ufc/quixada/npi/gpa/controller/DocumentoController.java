@@ -1,0 +1,83 @@
+package br.com.ufc.quixada.npi.gpa.controller;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.io.IOUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import br.com.ufc.quixada.npi.gpa.model.Documento;
+import br.com.ufc.quixada.npi.gpa.model.Usuario;
+import br.com.ufc.quixada.npi.gpa.service.DocumentoService;
+import br.com.ufc.quixada.npi.gpa.service.UsuarioService;
+import br.com.ufc.quixada.npi.gpa.utils.Constants;
+
+@Controller
+@RequestMapping("documento")
+public class DocumentoController {
+	
+	@Inject
+	private DocumentoService serviceDocumento;
+	
+	@Inject
+	private UsuarioService serviceUsuario;
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public void getFile(@PathVariable("id") Long id, HttpServletResponse response) {
+		try {
+			Documento doc = serviceDocumento.find(Documento.class, id);
+
+			InputStream is = new ByteArrayInputStream(doc.getArquivo());
+			response.setContentType(doc.getTipo());
+			response.setHeader("Content-Disposition", "attachment; filename="
+					+ doc.getNomeOriginal().replace(" ", "_"));
+			IOUtils.copy(is, response.getOutputStream());
+
+			response.flushBuffer();
+		} catch (IOException ex) {
+			throw new RuntimeException("IOError writing file to output stream");
+		}
+
+	}
+	
+	@RequestMapping(value = "/ajax/remover/{id}", method = RequestMethod.POST)
+	public @ResponseBody ModelMap excluirDocumento(@PathVariable("id") Long id, HttpSession session) {
+		ModelMap map = new ModelMap();
+		Documento documento = serviceDocumento.find(Documento.class, id);
+		if(documento == null) {
+			map.addAttribute("result", "erro");
+			map.addAttribute("mensagem", "Documento não existe");
+			return map;
+		}
+		if(!getUsuarioLogado(session).equals(documento.getProjeto().getAutor())) {
+			map.addAttribute("result", "erro");
+			map.addAttribute("mensagem", "Permissão negada");
+			return map;
+		}
+		serviceDocumento.delete(documento);
+		map.addAttribute("result", "ok");
+		return map;
+	}
+	
+	private Usuario getUsuarioLogado(HttpSession session) {
+		if (session.getAttribute(Constants.USUARIO_LOGADO) == null) {
+			Usuario usuario = serviceUsuario
+					.getUsuarioByLogin(SecurityContextHolder.getContext()
+							.getAuthentication().getName());
+			session.setAttribute(Constants.USUARIO_LOGADO, usuario);
+		}
+		return (Usuario) session.getAttribute(Constants.USUARIO_LOGADO);
+	}
+
+}
