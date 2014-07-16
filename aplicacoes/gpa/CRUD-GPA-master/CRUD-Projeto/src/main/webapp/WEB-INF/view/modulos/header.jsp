@@ -38,6 +38,12 @@
 					<li>
 						<a href="<c:url value="/j_spring_security_logout" />">Sair <span class="glyphicon glyphicon-off"></span></a>
 					</li>
+					
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a>Bem vindo, ${sessionScope.usuario.nome}!</a> 
+					</li>
 				</ul>
 			</div>
 		</div>

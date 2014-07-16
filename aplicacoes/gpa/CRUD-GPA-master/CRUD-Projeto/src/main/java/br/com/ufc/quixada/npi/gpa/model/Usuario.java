@@ -2,7 +2,6 @@ package br.com.ufc.quixada.npi.gpa.model;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -37,10 +36,10 @@ public class Usuario {
 	@JoinTable(name = "papel_usuario", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "papel_id"))
 	private List<Papel> papeis;
 	
-	@OneToMany(mappedBy = "autor", fetch = FetchType.EAGER )	
+	@OneToMany(mappedBy = "autor")	
 	private List<Projeto> projetos;
 	
-	@OneToMany(mappedBy="usuario",  fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="usuario")
 	private List<Servidor> servidores;
 	
 	private Integer cpf;

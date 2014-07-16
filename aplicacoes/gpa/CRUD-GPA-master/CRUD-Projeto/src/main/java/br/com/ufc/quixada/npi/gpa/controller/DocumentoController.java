@@ -34,17 +34,19 @@ public class DocumentoController {
 	private UsuarioService serviceUsuario;
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public void getFile(@PathVariable("id") Long id, HttpServletResponse response) {
+	public void getFile(@PathVariable("id") Long id, HttpServletResponse response, HttpSession session) {
 		try {
-			Documento doc = serviceDocumento.find(Documento.class, id);
+			Documento documento = serviceDocumento.find(Documento.class, id);
+			if(documento != null && (getUsuarioLogado(session).equals(documento.getProjeto().getAutor()) || serviceUsuario.isDiretor(getUsuarioLogado(session)))) {
 
-			InputStream is = new ByteArrayInputStream(doc.getArquivo());
-			response.setContentType(doc.getTipo());
-			response.setHeader("Content-Disposition", "attachment; filename="
-					+ doc.getNomeOriginal().replace(" ", "_"));
-			IOUtils.copy(is, response.getOutputStream());
-
-			response.flushBuffer();
+				InputStream is = new ByteArrayInputStream(documento.getArquivo());
+				response.setContentType(documento.getTipo());
+				response.setHeader("Content-Disposition", "attachment; filename="
+						+ documento.getNomeOriginal().replace(" ", "_"));
+				IOUtils.copy(is, response.getOutputStream());
+	
+				response.flushBuffer();
+			}
 		} catch (IOException ex) {
 			throw new RuntimeException("IOError writing file to output stream");
 		}

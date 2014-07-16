@@ -10,7 +10,6 @@
 <html>
 <head>
 	
-<!-- The main application script -->
 	<jsp:include page="../modulos/header-estrutura.jsp" />
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="<c:url value="/resources/css/jquery.fileupload.css" />">
@@ -154,20 +153,12 @@
 						<label for="atividades" class="col-sm-2 control-label">Arquivos:</label>
 						<div class="col-sm-10 files">
 							<input class="btn btn-success" type="file" name="file" title="Adicionar arquivos..." multiple="multiple">
-							<!-- <span class="btn btn-success fileinput-button">
-			                    <i class="glyphicon glyphicon-plus"></i>
-			                    <span>Adicionar arquivos...</span>
-			                    <input type="file" name="files[]" multiple>
-			                </span> -->
 		                    <table id="file-upload" role="presentation" class="table table-striped">
 		                    	<tbody class="files">
 		                    		<c:forEach items="${projeto.documentos }" var="documento">
 		                    			<tr class="template-upload fade in">
 									        <td>
-									            <span class="preview"></span>
-									        </td>
-									        <td>
-									            <p class="name">${documento.nomeOriginal }</p>
+									            <a href="<c:url value="/documento/${documento.id }" />">${documento.nomeOriginal }</a>
 									            <strong class="error text-danger"></strong>
 									        </td>
 									        <td>
@@ -188,23 +179,6 @@
 						</div>
 					</div>
 					
-
-					<%-- <div>
-						<h4>Arquivos</h4>
-					</div>
-					<input type="file" class="form-control" name="doc" />
-					<br>
-					<span>Arquivo: </span>
-					<c:forEach var="documento" items="${projeto.documentos}">
-
-						<h5 style="display: inline-block"
-							<c:url value="/files/${documento.id}"></c:url>>${documento.nomeOriginal}</h5>
-						<a
-							href='<c:url value="/files/remover/${documento.id}/${projeto.id}"></c:url>'><input
-							type="button" value="Remover" class="btn btn-danger" /></a>
-						<br>
-					</c:forEach> --%>
-					
 					<div class="controls">
 						<input name="submit" type="submit" class="btn btn-primary" value="Salvar" />
 						<a href="<c:url value="/projeto/index"></c:url>" class="btn btn-default">Cancelar</a>
@@ -221,7 +195,7 @@
 
 
 <script type="text/javascript">
-	$(document)
+	/* $(document)
 			.ready(
 					function() {
 						$.fn.datepicker.dates['pt-BR'] = {
@@ -411,7 +385,7 @@
 														.addClass('has-success');
 											}
 										});
-					});
+					}); */
 </script>
 
 </html>
