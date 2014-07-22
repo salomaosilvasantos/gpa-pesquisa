@@ -42,7 +42,7 @@
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li>
-						<a>Bem vindo, ${sessionScope.usuario.nome}!</a> 
+						<a style="font-weight: bold;">Bem vindo, ${sessionScope.usuario.nome}!</a> 
 					</li>
 				</ul>
 			</div>
