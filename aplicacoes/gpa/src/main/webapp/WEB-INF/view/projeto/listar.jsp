@@ -8,8 +8,6 @@
 	<jsp:include page="../modulos/header-estrutura.jsp" />
 	<title>Projetos</title>
 </head>
-
-
 <body>
 	
 	<jsp:include page="../modulos/header.jsp" />
@@ -71,13 +69,6 @@
 											<button class="btn btn-danger">Excluir <span class="glyphicon glyphicon-trash"></span></button>
 										</a>
 									</c:if>
-									<sec:authorize ifAnyGranted="ROLE_DIRETOR">
-										<c:if test="${projeto.status == 'SUBMETIDO'}">
-											<a id="atribuirParecerista" href="<c:url value="/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
-												<button class="btn btn-primary"> Atribuir Parecerista <span class="glyphicon glyphicon-open"></span></button>
-											</a>
-										</c:if>
-									</sec:authorize>
 								</td>
 							</tr>
 						</c:forEach>

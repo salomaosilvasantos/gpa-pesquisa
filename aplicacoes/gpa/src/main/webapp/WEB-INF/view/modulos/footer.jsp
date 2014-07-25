@@ -22,11 +22,3 @@
 <script src="<c:url value="/resources/js/bootstrap.file-input.js" />"></script>
 <script src="<c:url value="/resources/js/bootbox.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrapValidator.min.js" />"></script>
-
-
-<!-- Upload de arquivos -->
-<%-- <script src="<c:url value="/resources/js/upload/jquery.ui.widget.js" />"></script>
-<script src="<c:url value="/resources/js/upload/tmpl.min.js" />"></script>
-<script src="<c:url value="/resources/js/upload/jquery.fileupload.js" />"></script>
-<script src="<c:url value="/resources/js/upload/jquery.fileupload-ui.js" />"></script>
-<script src="<c:url value="/resources/js/upload/jquery.fileupload-process.js" />"></script> --%>

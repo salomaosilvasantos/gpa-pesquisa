@@ -7,7 +7,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -58,10 +57,10 @@ public class Projeto {
 
 	private String participantes;
 
-	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Documento> documentos;
 
-	@OneToMany(mappedBy = "projeto", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "projeto")
 	private List<Parecer> pareceres;
 
 	public Projeto() {
