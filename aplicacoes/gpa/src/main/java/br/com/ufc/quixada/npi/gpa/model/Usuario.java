@@ -41,7 +41,7 @@ public class Usuario {
 	@OneToMany(mappedBy="usuario")
 	private List<Servidor> servidores;
 	
-	private Integer cpf;
+	private String cpf;
 	
 	private String nome;
 	
@@ -50,7 +50,7 @@ public class Usuario {
 	public Usuario(){
 		super();
 	}
-	public Usuario(Integer cpf, String nome, String sobrenome,
+	public Usuario(String cpf, String nome, String sobrenome,
 			String email, String senha) {
 		super();
 		this.cpf = cpf;
@@ -67,10 +67,10 @@ public class Usuario {
 	public void setProjetos(List<Projeto> projetos) {
 		this.projetos = projetos;
 	}
-	public Integer getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
-	public void setCpf(Integer cpf) {
+	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 	public String getNome() {
