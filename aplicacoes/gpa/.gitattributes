@@ -1,13 +1,13 @@
 # Autodetect text files
-* text=auto
+* text eof=lf
 
 # Definitively text files 
 *.xml text
 *.java text
 *.properties text
-*.xhtml
-*.jsp
-*.jsf
+*.xhtml text
+*.jsp text
+*.jsf text
 *.txt text
 *.c text
 *.h text
