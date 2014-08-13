@@ -63,7 +63,7 @@
 					</tr>
 					
 					<tr>
-						<td class="head">Arquivos:</td>
+						<td class="head" valign = "top">Arquivos:</td>
 						<c:forEach var="documento" items="${projeto.documentos}">
 						<!--  <a href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a>-->
 						<td class="content"><a href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a></td>
