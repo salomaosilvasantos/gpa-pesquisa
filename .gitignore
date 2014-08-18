@@ -1,8 +1,8 @@
-.metadata
-.settings
-.classpath
-.project
-target
+aplicacoes/gpa/.metadata
+aplicacoes/gpa/.settings
+aplicacoes/gpa/.classpath
+aplicacoes/gpa/.project
+aplicacoes/gpa/target
 *.class
 *.jar
 *.war
