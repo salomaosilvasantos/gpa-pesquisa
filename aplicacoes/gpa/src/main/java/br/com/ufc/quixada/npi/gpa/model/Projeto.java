@@ -60,6 +60,9 @@ public class Projeto {
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Documento> documentos;
 
+	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
+	private List<Comentario> comentarios;
+	
 	@OneToMany(mappedBy = "projeto")
 	private List<Parecer> pareceres;
 
@@ -68,9 +71,10 @@ public class Projeto {
 	}
 
 	public Projeto(Long id, String codigo, String nome, Date inicio,
-			Date termino, String descricao, String atividades,
+			Date termino, String descricao, Usuario autor, String atividades,
 			Integer quantidadeBolsa, String local, StatusProjeto status,
-			String participantes, Usuario usuarioCriador) {
+			String participantes, List<Documento> documentos,
+			List<Comentario> comentarios, List<Parecer> pareceres) {
 		super();
 		this.id = id;
 		this.codigo = codigo;
@@ -78,12 +82,15 @@ public class Projeto {
 		this.inicio = inicio;
 		this.termino = termino;
 		this.descricao = descricao;
+		this.autor = autor;
 		this.atividades = atividades;
 		this.quantidadeBolsa = quantidadeBolsa;
 		this.local = local;
 		this.status = status;
 		this.participantes = participantes;
-		this.autor = usuarioCriador;
+		this.documentos = documentos;
+		this.comentarios = comentarios;
+		this.pareceres = pareceres;
 	}
 
 	public String getNome() {
@@ -209,14 +216,24 @@ public class Projeto {
 		return false;
 	}
 
+	public List<Comentario> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(List<Comentario> comentarios) {
+		this.comentarios = comentarios;
+	}
+
 	@Override
 	public String toString() {
 		return "Projeto [id=" + id + ", codigo=" + codigo + ", nome=" + nome
 				+ ", inicio=" + inicio + ", termino=" + termino
-				+ ", descricao=" + descricao + ", atividades=" + atividades
-				+ ", quantidadeBolsa=" + quantidadeBolsa + ", local=" + local
-				+ ", status=" + status + ", participantes=" + participantes
-				+ ", documentos=" + documentos + "]";
+				+ ", descricao=" + descricao + ", autor=" + autor
+				+ ", atividades=" + atividades + ", quantidadeBolsa="
+				+ quantidadeBolsa + ", local=" + local + ", status=" + status
+				+ ", participantes=" + participantes + ", documentos="
+				+ documentos + ", comentarios=" + comentarios + ", pareceres="
+				+ pareceres + "]";
 	}
 
 }
