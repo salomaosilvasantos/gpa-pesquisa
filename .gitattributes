@@ -24,3 +24,5 @@
 *.ppt binary
 *.pptx binary
 *.odp binary
+*.pdf binary
+*.asta binary
