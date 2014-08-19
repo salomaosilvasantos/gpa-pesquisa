@@ -9,13 +9,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <title>Informações do Projeto</title>
 <link
 	href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />"
 	rel="stylesheet" />
 <link href="<c:url value="/resources/css/estilo.css" />"
 	rel="stylesheet" />
-
 </head>
 
 <body>
@@ -25,7 +25,7 @@
 		<div class="novo-projeto" align="left">
 			<div class="form" align="center">
 				<h2>Detalhes do Projeto</h2>
-				
+
 				<table id="details">
 					<tr>
 						<td class="head">Nome:</td>
@@ -37,13 +37,13 @@
 					</tr>
 					<tr>
 						<td class="head">Início:</td>
-						<td class="content">
-							<fmt:formatDate pattern="dd-MM-yyyy" value="${projeto.inicio }" />
-						</td>
+						<td class="content"><fmt:formatDate pattern="dd-MM-yyyy"
+								value="${projeto.inicio }" /></td>
 					</tr>
 					<tr>
 						<td class="head">Término:</td>
-						<td class="content"><fmt:formatDate pattern="dd-MM-yyyy" value="${projeto.termino }" /></td>
+						<td class="content"><fmt:formatDate pattern="dd-MM-yyyy"
+								value="${projeto.termino }" /></td>
 					</tr>
 					<tr>
 						<td class="head">Bolsas:</td>
@@ -61,22 +61,71 @@
 						<td class="head">Atividades:</td>
 						<td class="content">${projeto.atividades }</td>
 					</tr>
-					
+
 					<tr>
-						<td class="head" valign = "top">Arquivos:</td>
+						<td class="head" valign="top">Arquivos:</td>
 						<c:forEach var="documento" items="${projeto.documentos}">
-						<!--  <a href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a>-->
-						<td class="content"><a href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a></td>
-						
-						<!--  <td class="content">${documento.nomeOriginal }</td>-->			
-						
-					</c:forEach>	
+							<!--  <a href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a>-->
+							<td class="content"><a
+								href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a></td>
+
+							<!--  <td class="content">${documento.nomeOriginal }</td>-->
+
+						</c:forEach>
 					</tr>
 				</table>
-				<div class="controls">
-					<a href="<c:url value="/projeto/index"></c:url>" class="btn btn-default">Voltar</a>
+
+				<div align="center" style="width: 50%">
+					<h3>Comentários do Projeto</h3>
+
+					<c:if test="${empty projeto.comentarios}">
+						<div class="alert alert-warning" role="alert">Não há
+							Comentários cadastrados.</div>
+					</c:if>
+					<c:if test="${not empty projeto.comentarios}">
+						<c:forEach var="comentario" items="${projeto.comentarios}">
+							<div class="well">
+								<p>${comentario.usuario.nome}:
+									<fmt:formatDate pattern="dd-MM-yyyy hh:mm"
+										value="${comentario.dataComentario}" />
+								</p>
+							</div>
+							<blockquote>
+								<p>${comentario.texto}</p>
+							</blockquote>
+						</c:forEach>
+					</c:if>
+
 				</div>
-					<%-- <div class="form-group">
+
+
+
+				<div class="row text-center">
+					<h3>Novo Comentário</h3>
+					<form:form id="comentarProjeto" role="form"
+						commandName="comentario"
+						servletRelativeAction="/comentario/comentarProjeto" method="POST">
+						<input type="hidden" id="projeto" name="projeto"
+							value="${projeto.id}">
+						<input type="hidden" id="usuario" name="usuario"
+							value="${usuario.id}">
+						<textarea name="textocomentario" id="textocomentario"  required="required" 
+							style="max-width: 500px; max-height: 100px; min-width: 500px; min-height: 100px"
+							draggable="true"></textarea>
+							
+						<br></br>
+						<input name="submit" type="submit" class="btn btn-primary"
+							value="Enviar" />
+					</form:form>
+				</div>
+
+
+				<br></br>
+				<div class="controls">
+					<a href="<c:url value="/projeto/index"></c:url>"
+						class="btn btn-default">Voltar</a>
+				</div>
+				<%-- <div class="form-group">
 						<label for="nome" class="col-sm-2 control-label">Nome: <span>${projeto.nome }</span> </label>
 					</div>
 					
