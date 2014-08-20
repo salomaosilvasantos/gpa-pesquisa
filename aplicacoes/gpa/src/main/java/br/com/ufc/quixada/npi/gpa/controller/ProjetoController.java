@@ -71,8 +71,7 @@ public class ProjetoController {
 		if (result.hasErrors()) {
 			return ("projeto/cadastrar");
 		}
-			
-		
+
 		projeto.setAutor(getUsuarioLogado(session));
 		projeto.setStatus(StatusProjeto.NOVO);
 		this.serviceProjeto.save(projeto);
@@ -83,7 +82,6 @@ public class ProjetoController {
 		redirect.addFlashAttribute("info", "Projeto cadastrado com sucesso.");
 
 		return "redirect:/projeto/listar";
-		
 
 	}
 
@@ -113,37 +111,47 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/{id}/emitirParecer", method = RequestMethod.GET)
-	public String getEmitirParecerPage(@PathVariable("id") long id, Model model,
-			HttpSession session, RedirectAttributes redirectAttributes) {
+	public String getEmitirParecerPage(@PathVariable("id") long id,
+			Model model, HttpSession session,
+			RedirectAttributes redirectAttributes) {
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
-			if(projeto == null){
-				redirectAttributes.addFlashAttribute("erro", "Projeto inexistente.");
-		return "redirect:/projeto/listar";
-			}
-			model.addAttribute("projeto", projeto);
+		if (projeto == null) {
+			redirectAttributes
+					.addFlashAttribute("erro", "Projeto Inexistente.");
+			return "redirect:/projeto/listar";
+		}
+
+		if (!projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER)) {
+			redirectAttributes.addFlashAttribute("erro",
+					"Projeto não está aguardando parecer");
+			return "redirect:/projeto/listar";
+		}
+		model.addAttribute("projeto", projeto);
 		return "projeto/emitirParecer";
 	}
-	
+
 	@RequestMapping(value = "/{id}/emitirParecer", method = RequestMethod.POST)
-	public String emitirParecer(HttpServletRequest request, @PathVariable("id") long id, 
-			@RequestParam("file") MultipartFile[] files,
-		Model model,BindingResult result,
-		HttpSession session, RedirectAttributes redirectAttributes) throws IOException {
-		
+	public String emitirParecer(HttpServletRequest request,
+			@PathVariable("id") long id,
+			@RequestParam("file") MultipartFile[] files, Model model,
+			BindingResult result, HttpSession session,
+			RedirectAttributes redirectAttributes) throws IOException {
+
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
-		if(result.hasErrors()){
+		if (result.hasErrors()) {
 			return "redirect:/projeto/listar";
 		}
-		
+
 		Usuario usuario = getUsuarioLogado(session);
-		if(usuario.getId() == projeto.getAutor().getId()){
+		if (usuario.getId() == projeto.getAutor().getId()) {
 			return "";
-			
-		}else{
-			redirectAttributes.addFlashAttribute("erro", "Não tem permissão para acessar o projeto");
+
+		} else {
+			redirectAttributes.addFlashAttribute("erro",
+					"Não tem permissão para acessar o projeto");
 			return "redirect:/projeto/listar";
 		}
-		
+
 	}
 
 	@RequestMapping(value = "/{id}/editar", method = RequestMethod.GET)
@@ -509,6 +517,5 @@ public class ProjetoController {
 			}
 		}
 	}
-
 
 }
