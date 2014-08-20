@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +21,7 @@ import br.com.ufc.quixada.npi.gpa.service.UsuarioService;
 public class ComentarioController {
 	
 	@Inject
-	private UsuarioService serviceUsuario;
+	private UsuarioService usuarioService;
 	
 	@Inject
 	private ProjetoService projetoService;
@@ -32,19 +31,17 @@ public class ComentarioController {
 	 
 	
 	@RequestMapping(value = "/comentarProjeto", method = RequestMethod.POST)
-	public String adicionarComentario(HttpServletRequest request, HttpServletResponse response)
+	public String adicionar(HttpServletRequest request)
 			throws Exception {
 
 		Comentario comentario = new Comentario();
 		
-		String texto = request.getParameter("textocomentario");
-		comentario.setTexto(texto);
+		comentario.setTexto(request.getParameter("textocomentario"));
 		
-		Date dataAtual = new Date(); 
-		comentario.setDataComentario(dataAtual);
+		comentario.setData(new Date());
 		
 		Long idUsuario = Long.parseLong(request.getParameter("usuario"));
-		Usuario usuario = serviceUsuario.find(Usuario.class, idUsuario);
+		Usuario usuario = usuarioService.find(Usuario.class, idUsuario);
 		comentario.setUsuario(usuario);
 		
 		Long idProjeto = Long.parseLong(request.getParameter("projeto"));

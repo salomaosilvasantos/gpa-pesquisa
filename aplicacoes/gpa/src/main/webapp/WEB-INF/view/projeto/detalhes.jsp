@@ -87,7 +87,7 @@
 							<div class="well">
 								<p>${comentario.usuario.nome}:
 									<fmt:formatDate pattern="dd-MM-yyyy hh:mm"
-										value="${comentario.dataComentario}" />
+										value="${comentario.data}" />
 								</p>
 							</div>
 							<blockquote>
