@@ -17,28 +17,36 @@
 	<jsp:include page="../modulos/header.jsp" />
 
 	<div class="container">
-		<div class="atribuirParecerista" align="center">
+		<div class="emitirParecer" align="center">
 			<div class="form" align="center">
 				<h2>Emitir Parecer</h2>
 				
 
-				<form:form servletRelativeAction="/projeto/diretor/atribuirParecerista" method="POST" cssClass="form-horizontal">
+				<form:form servletRelativeAction="/${projeto.id}/emitirParecer" method="POST" cssClass="form-horizontal">
 
-					<input type="hidden" name="projetoId" value="${projetoId}">
+<%-- 					<input type="hidden" name="projetoId" value="${projetoId}"> --%>
 					
+					<div class="form-group">
+						<label for="parecer" class="col-sm-2 control-label">Parecer:</label>
+						<div class="col-sm-10 files">
+							<select>
+								<option id="favoravel" name="favoravel" class="form-control">Favorável</option>
+								<option id="nao-favoravel" name="nao-favoravel" class="form-control">Não Favorável</option>
+							</select>
+						</div>
+					</div>
 		
 					<div class="form-group">
 						<label for="comentario" class="col-sm-2 control-label">Comentário:</label>
 						<div class="col-sm-10">
-							<textarea id="comentario" name="comentario" class="form-control" rows="8" placeholder="Comentário" ></textarea>
+							<textarea id="comentario" name="comentario" class="form-control" rows="8" placeholder="Comentário" required="required" required title="Preencha"></textarea>
 						</div>
 					</div>
 					
 					<div class="form-group">
 						<label for="comentario" class="col-sm-2 control-label">Anexo:</label>
 						<div class="col-sm-10 files">
-							<input class="btn btn-success" type="file" name="file" title="Anexar parecer..." multiple="multiple">
-					</div>
+							<input class="btn btn-success" type="file" name="file" title="Anexar parecer..." multiple="multiple">					</div>
 
 
 					<div class="controls">
