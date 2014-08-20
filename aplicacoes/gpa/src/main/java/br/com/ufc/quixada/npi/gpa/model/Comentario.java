@@ -1,46 +1,39 @@
 package br.com.ufc.quixada.npi.gpa.model;
 
 import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Comentario {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
 	private String texto;
-	
 	@DateTimeFormat(pattern = "dd/mm/yyyy")
-	private Date dataComentario;
-	
+	private Date data;
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
-	
 	@ManyToOne
 	@JoinColumn(name = "projeto_id")
 	private Projeto projeto;
 
-	public Comentario(){
+	public Comentario() {
 		super();
 	}
-	
-	public Comentario(Long id, String texto, Date dataComentario,
-			Usuario usuario, Projeto projeto) {
+
+	public Comentario(Long id, String texto, Date data, Usuario usuario,
+			Projeto projeto) {
 		super();
 		this.id = id;
 		this.texto = texto;
-		this.dataComentario = dataComentario;
+		this.data = data;
 		this.usuario = usuario;
 		this.projeto = projeto;
 	}
@@ -61,12 +54,12 @@ public class Comentario {
 		this.texto = texto;
 	}
 
-	public Date getDataComentario() {
-		return dataComentario;
+	public Date getData() {
+		return data;
 	}
 
-	public void setDataComentario(Date dataComentario) {
-		this.dataComentario = dataComentario;
+	public void setData(Date data) {
+		this.data = data;
 	}
 
 	public Usuario getUsuario() {
@@ -87,8 +80,7 @@ public class Comentario {
 
 	@Override
 	public String toString() {
-		return "Comentario [id=" + id + ", texto=" + texto
-				+ ", dataComentario=" + dataComentario + ", usuario=" + usuario
-				+ ", projeto=" + projeto + "]";
+		return "Comentario [id=" + id + ", texto=" + texto + ", data=" + data
+				+ ", usuario=" + usuario + ", projeto=" + projeto + "]";
 	}
 }
