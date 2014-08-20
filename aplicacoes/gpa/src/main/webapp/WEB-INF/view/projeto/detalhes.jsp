@@ -109,7 +109,7 @@
 							value="${projeto.id}">
 						<input type="hidden" id="usuario" name="usuario"
 							value="${usuario.id}">
-						<textarea name="textocomentario" id="textocomentario"  required="required" 
+						<textarea name="textocomentario" id="textocomentario"  required="required" placeholder="Comentário" oninvalid="this.setCustomValidity('Campo em branco não podem ser enviado')"
 							style="max-width: 500px; max-height: 100px; min-width: 500px; min-height: 100px"
 							draggable="true"></textarea>
 							

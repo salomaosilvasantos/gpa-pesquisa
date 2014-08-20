@@ -29,7 +29,7 @@ public class Projeto {
 
 	private String codigo;
 
-	@Size(min = 2, message = "MínimoW 2 caracteres")
+	@Size(min = 2, message = "Mínimo 2 caracteres")
 	private String nome;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
