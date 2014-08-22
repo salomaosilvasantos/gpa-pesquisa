@@ -9,5 +9,7 @@ public interface ProjetoService extends GenericService<Projeto> {
 	public abstract List<Projeto> getProjetosSubmetidos();
 
 	public abstract List<Projeto> getProjetosByUsuario(Long id);
+	
+	public abstract List<Projeto> getProjetosAguardandoParecer();
 
 }

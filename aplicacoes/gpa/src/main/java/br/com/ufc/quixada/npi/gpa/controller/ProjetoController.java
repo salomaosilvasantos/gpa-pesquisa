@@ -333,6 +333,7 @@ public class ProjetoController {
 	public String listar(ModelMap modelMap, HttpSession session) {
 		modelMap.addAttribute("projetos", serviceProjeto
 				.getProjetosByUsuario(getUsuarioLogado(session).getId()));
+		modelMap.addAttribute("projetosAguardandoParecer", serviceProjeto.getProjetosAguardandoParecer());
 		if (serviceUsuario.isDiretor(getUsuarioLogado(session))) {
 			modelMap.addAttribute("projetosSubmetidos",
 					serviceProjeto.getProjetosSubmetidos());
@@ -452,6 +453,12 @@ public class ProjetoController {
 			model.addAttribute("error_inicio", "Campo obrigatório");
 			valid = false;
 		}
+		
+		if(projeto.getDocumentos().isEmpty()){
+			model.addAttribute("error_documento", "Arquivo não anexado");
+			valid = false;
+		}
+		
 		if (projeto.getTermino() == null) {
 			model.addAttribute("error_termino", "Campo obrigatório");
 			valid = false;

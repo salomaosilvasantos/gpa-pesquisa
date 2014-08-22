@@ -97,10 +97,10 @@
 			
 			<!-- Projetos Aguardando Parecer -->
 			<div class="tab-pane" id="projetos-aguardando-parecer">
-				<c:if test="${empty projetosSubmetidos}">
+				<c:if test="${empty projetosAguardandoParecer}">
 					<div class="alert alert-warning" role="alert">Não há projetos aguardando parecer.</div>
 				</c:if>
-				<c:if test="${not empty projetosSubmetidos}">
+				<c:if test="${not empty projetosAguardandoParecer}">
 					<div class="panel panel-default">
 						<div class="panel-heading" align="center">
 							<h4>Projetos Aguardando Parecer</h4>
@@ -118,16 +118,16 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="projeto" items="${projetosSubmetidos}">
+								<c:forEach var="projeto" items="${projetosAguardandoParecer}">
 									<tr class="linha">
 										<td>${projeto.codigo}</td>
 										<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
 										<td>${projeto.autor.nome}</td>
 										<td class="status">${projeto.status.descricao}</td>
 										<td>
-											<c:if test="${projeto.status == 'SUBMETIDO'}">
-												<a id="atribuirParecerista" href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
-													<button class="btn btn-primary"> Atribuir Parecerista <span class="glyphicon glyphicon-user"></span></button>
+											<c:if test="${projeto.status == 'AGUARDANDO_PARECER'}">
+												<a id="emitirParecer" href="<c:url value="/projeto/${projeto.id}/emitirParecer" ></c:url>">
+													<button class="btn btn-primary"> Emitir Parecer <span class="glyphicon glyphicon-exclamation-sign"></span></button>
 												</a>
 											</c:if>
 										</td>

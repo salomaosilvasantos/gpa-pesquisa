@@ -30,5 +30,10 @@ public class ProjetoServiceImpl extends GenericServiceImpl<Projeto> implements
 		params.put("id", id);
 		return projetoRepository.find(QueryType.JPQL, "from Projeto where usuario_id = :id", params);
 	}
+	
+	@Override
+	public List<Projeto> getProjetosAguardandoParecer() {
+		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where p.status = 'AGUARDANDO_PARECER'", null);
+	}
 
 }
