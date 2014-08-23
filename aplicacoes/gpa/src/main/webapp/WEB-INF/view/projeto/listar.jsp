@@ -105,7 +105,7 @@
 						<div class="panel-heading" align="center">
 							<h4>Projetos Aguardando Parecer</h4>
 						</div>
-			
+			<input type="hidden" name="parecerId" value="${parecerId}">
 						<!-- Table -->
 						<table class="table" id="table">
 							<thead>
@@ -126,9 +126,11 @@
 										<td class="status">${projeto.status.descricao}</td>
 										<td>
 											<c:if test="${projeto.status == 'AGUARDANDO_PARECER'}">
-												<a id="emitirParecer" href="<c:url value="/projeto/${projeto.id}/emitirParecer" ></c:url>">
+											<c:forEach var="parecer" items="${projeto.pareceres}">
+												<a id="emitirParecer" href="<c:url value="/projeto/${projeto.id}/emitirParecer/${parecer.id}" ></c:url>">
 													<button class="btn btn-primary"> Emitir Parecer <span class="glyphicon glyphicon-exclamation-sign"></span></button>
 												</a>
+											</c:forEach>	
 											</c:if>
 										</td>
 									</tr>

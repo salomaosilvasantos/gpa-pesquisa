@@ -110,11 +110,13 @@ public class ProjetoController {
 		}
 	}
 
-	@RequestMapping(value = "/{id}/emitirParecer", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}/emitirParecer/{parecerId}", method = RequestMethod.GET)
 	public String getEmitirParecerPage(@PathVariable("id") long id,
+			@PathVariable("parecerId") long parecerId,
 			Model model, HttpSession session,
 			RedirectAttributes redirectAttributes) {
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
+		Parecer parecer = serviceParecer.find(Parecer.class, parecerId);
 		if (projeto == null) {
 			redirectAttributes
 					.addFlashAttribute("erro", "Projeto Inexistente.");
@@ -126,6 +128,13 @@ public class ProjetoController {
 					"Projeto não está aguardando parecer");
 			return "redirect:/projeto/listar";
 		}
+		
+		if(getUsuarioLogado(session).getId() != parecer.getUsuario().getId()){
+			redirectAttributes.addFlashAttribute("erro",
+					"Parecer não atribuído a você");
+			return "redirect:/projeto/listar";
+		}
+			
 		model.addAttribute("projeto", projeto);
 		return "projeto/emitirParecer";
 	}
