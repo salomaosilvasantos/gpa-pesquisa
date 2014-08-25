@@ -258,6 +258,12 @@ public class ProjetoController {
 			modelMap.addAttribute("projetosSubmetidos", serviceProjeto.getProjetosSubmetidos());
 			return "diretor/listarProjetos";
 		}
+		if (serviceUsuario.isDiretor(getUsuarioLogado(session))) {
+			System.out.println("###########################################################################");
+			modelMap.addAttribute("projetosAtribuidos", serviceProjeto.getProjetosAtribuidos());
+			System.out.println("###########################################################################");
+			return "diretor/listarProjetos";
+		}
 		return "projeto/listar";
 
 	}
