@@ -2,7 +2,6 @@ package br.com.ufc.quixada.npi.gpa.model;
 
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,51 +14,37 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
-
 import org.springframework.format.annotation.DateTimeFormat;
-
 import br.com.ufc.quixada.npi.gpa.enumerator.StatusProjeto;
 
 @Entity
 public class Projeto {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
 	private String codigo;
-
-	@Size(min = 2, message = "Mínimo 2 caracteres")
+	@Size(min = 2, message = "MínimoW 2 caracteres")
 	private String nome;
-
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date inicio;
-
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date termino;
-
 	@Size(min = 5, message = "Mínimo 5 caracteres")
 	private String descricao;
-
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario autor;
-
 	private String atividades;
-
 	@Min(value = 1, message = "Número de bolsas deve ser maior que 1")
 	private Integer quantidadeBolsa;
-
 	private String local;
-
 	@Enumerated(EnumType.STRING)
 	private StatusProjeto status;
-
 	private String participantes;
-
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Documento> documentos;
-
+	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
+	private List<Comentario> comentarios;
 	@OneToMany(mappedBy = "projeto")
 	private List<Parecer> pareceres;
 
@@ -68,9 +53,10 @@ public class Projeto {
 	}
 
 	public Projeto(Long id, String codigo, String nome, Date inicio,
-			Date termino, String descricao, String atividades,
+			Date termino, String descricao, Usuario autor, String atividades,
 			Integer quantidadeBolsa, String local, StatusProjeto status,
-			String participantes, Usuario usuarioCriador) {
+			String participantes, List<Documento> documentos,
+			List<Comentario> comentarios, List<Parecer> pareceres) {
 		super();
 		this.id = id;
 		this.codigo = codigo;
@@ -78,12 +64,15 @@ public class Projeto {
 		this.inicio = inicio;
 		this.termino = termino;
 		this.descricao = descricao;
+		this.autor = autor;
 		this.atividades = atividades;
 		this.quantidadeBolsa = quantidadeBolsa;
 		this.local = local;
 		this.status = status;
 		this.participantes = participantes;
-		this.autor = usuarioCriador;
+		this.documentos = documentos;
+		this.comentarios = comentarios;
+		this.pareceres = pareceres;
 	}
 
 	public String getNome() {
@@ -197,26 +186,36 @@ public class Projeto {
 	public void setPareceres(List<Parecer> pareceres) {
 		this.pareceres = pareceres;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof Projeto) {
+		if (obj instanceof Projeto) {
 			Projeto other = (Projeto) obj;
-			if (other != null && other.getId() != null && this.id != null && other.getId().equals(this.id)) {
+			if (other != null && other.getId() != null && this.id != null
+					&& other.getId().equals(this.id)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
+	public List<Comentario> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(List<Comentario> comentarios) {
+		this.comentarios = comentarios;
+	}
+
 	@Override
 	public String toString() {
 		return "Projeto [id=" + id + ", codigo=" + codigo + ", nome=" + nome
 				+ ", inicio=" + inicio + ", termino=" + termino
-				+ ", descricao=" + descricao + ", atividades=" + atividades
-				+ ", quantidadeBolsa=" + quantidadeBolsa + ", local=" + local
-				+ ", status=" + status + ", participantes=" + participantes
-				+ ", documentos=" + documentos + "]";
+				+ ", descricao=" + descricao + ", autor=" + autor
+				+ ", atividades=" + atividades + ", quantidadeBolsa="
+				+ quantidadeBolsa + ", local=" + local + ", status=" + status
+				+ ", participantes=" + participantes + ", documentos="
+				+ documentos + ", comentarios=" + comentarios + ", pareceres="
+				+ pareceres + "]";
 	}
-
 }
