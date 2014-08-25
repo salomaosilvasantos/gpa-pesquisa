@@ -95,6 +95,14 @@ public class Parecer {
 		return comentario;
 	}
 
+	public Documento getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(Documento documento) {
+		this.documento = documento;
+	}
+
 	public void setComentario(String comentario) {
 		this.comentario = comentario;
 	}

@@ -22,14 +22,20 @@
 				<h2>Emitir Parecer</h2>
 				
 
-				<form:form servletRelativeAction="/${projeto.id}/emitirParecer" method="POST" cssClass="form-horizontal">
+				
 
-<%-- 					<input type="hidden" name="projetoId" value="${projetoId}"> --%>
+			<c:forEach var="parecer" items="${projeto.pareceres}">
+			<c:set var="url" value="${parecer.id}"></c:set>		
+<%-- 			<input type="hidden" name="parecerId" value="${parecer.id}"> --%>
+			</c:forEach>
+			<form:form servletRelativeAction="/projeto/${projeto.id}/emitirParecer/${url}" 
+			commandName="parecer" 	enctype="multipart/form-data" method="POST" cssClass="form-horizontal">
+					
 					
 					<div class="form-group">
 						<label for="parecer" class="col-sm-2 control-label">Parecer:</label>
 						<div class="col-sm-10 files">
-							<select>
+							<select name="statusParecer">
 								<option id="favoravel" name="favoravel" class="form-control">Favorável</option>
 								<option id="nao-favoravel" name="nao-favoravel" class="form-control">Não Favorável</option>
 							</select>

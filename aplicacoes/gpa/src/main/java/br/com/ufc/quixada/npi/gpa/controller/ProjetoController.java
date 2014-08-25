@@ -139,27 +139,56 @@ public class ProjetoController {
 		return "projeto/emitirParecer";
 	}
 
-	@RequestMapping(value = "/{id}/emitirParecer", method = RequestMethod.POST)
+	@RequestMapping(value = "/{id}/emitirParecer/{parecerId}", method = RequestMethod.POST)
 	public String emitirParecer(HttpServletRequest request,
 			@PathVariable("id") long id,
-			@RequestParam("file") MultipartFile[] files, Model model,
+			@PathVariable("parecerId") long parecerId,
+			@RequestParam("file") MultipartFile[] files,
+			@RequestParam("comentario") String comentario,
+			@RequestParam("statusParecer") String status,
+			@ModelAttribute(value = "parecer") Parecer parecer,
 			BindingResult result, HttpSession session,
 			RedirectAttributes redirectAttributes) throws IOException {
+		
+		System.out.println("LOG: Entrou no método NPI");
+		System.out.println("LOG: Entrou no método NPI"+ status);
 
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
+		parecer = serviceParecer.find(Parecer.class, parecerId);
 		if (result.hasErrors()) {
 			return "redirect:/projeto/listar";
 		}
-
-		Usuario usuario = getUsuarioLogado(session);
-		if (usuario.getId() == projeto.getAutor().getId()) {
-			return "";
-
-		} else {
-			redirectAttributes.addFlashAttribute("erro",
-					"Não tem permissão para acessar o projeto");
-			return "redirect:/projeto/listar";
+		
+		if(comentario.isEmpty()){
+			redirectAttributes.addAttribute("erro", "Comentário não pode estar vazio");
+			return "redirect:/projeto/"+id+"/emitirParecer"+parecerId;
 		}
+
+		
+		for (MultipartFile mpf : files) {
+			if (mpf.getBytes().length > 0) {
+				Documento documento = new Documento();
+				documento.setNomeOriginal(mpf.getOriginalFilename());
+				documento.setTipo(mpf.getContentType());
+				documento.setProjeto(projeto);
+				documento.setArquivo(mpf.getBytes());
+
+				serviceDocumento.save(documento);
+				parecer.setDocumento(documento);
+			}
+			
+		}
+		if(status.equals("favorável")){
+			parecer.setStatus(StatusParecer.FAVORAVEL);	
+		}else{
+			parecer.setStatus(StatusParecer.NAO_FAVORAVEL);
+		}
+		parecer.setComentario(comentario);
+		serviceParecer.update(parecer);
+		projeto.setStatus(StatusProjeto.AGUARDANDO_AVALIACAO);
+		serviceProjeto.update(projeto);
+		return "redirect:/projeto/listar";
+
 
 	}
 
