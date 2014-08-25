@@ -45,5 +45,18 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario> implements U
 		}
 		return false;
 	}
+	
+	@Override
+	public Usuario getDiretor() {		
+		Usuario diretor = new Usuario();		
+		List<Usuario> usuarios = find(Usuario.class);		
+		for (Usuario u: usuarios){
+			if(isDiretor(u)){
+				diretor = u;
+				break;
+			}			
+		}			
+		return diretor;
+	}
 
 }

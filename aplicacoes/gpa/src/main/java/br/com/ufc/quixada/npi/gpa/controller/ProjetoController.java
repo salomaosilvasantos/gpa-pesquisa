@@ -12,8 +12,6 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -59,7 +57,7 @@ public class ProjetoController {
 	private ParecerService serviceParecer;
 
 	@Inject
-	EmailServiceImpl serviceEmail;
+	private EmailServiceImpl serviceEmail;
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index() {
@@ -225,6 +223,7 @@ public class ProjetoController {
 			HttpSession session, RedirectAttributes redirectAttributes) {
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		Usuario usuario = getUsuarioLogado(session);
+		Usuario diretor = serviceUsuario.getDiretor();
 		if (projeto == null) {
 			redirectAttributes
 					.addFlashAttribute("erro", "Projeto inexistente.");
@@ -235,32 +234,14 @@ public class ProjetoController {
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
 			if (validaSubmissao(projeto, model)) {
 
-				// enviar email
-
-				// Create the application context
+				// enviar email				
 				ApplicationContext context = new FileSystemXmlApplicationContext(
 						"/git/gpa-pesquisa/aplicacoes/gpa/src/main/webapp/WEB-INF/applicationContext.xml");
-
-				// Get the mailer instance
 				EmailServiceImpl mailer = (EmailServiceImpl) context
-						.getBean("mailService");
-
-				// Send a composed mail
-				mailer.sendMail(usuario.getEmail(), "Test Subject",
-						"Testing body");
+						.getBean("mailService");;
 				
-				mailer.sendMail("cleitoncdsb@hotmail.com", "Test", "body");
-
-				/*
-				 * ConfigurableApplicationContext context = new
-				 * ClassPathXmlApplicationContext ("/applicationContext.xml");
-				 * 
-				 * EmailServiceImpl mailer = (EmailServiceImpl)
-				 * context.getBean("mailService");
-				 * 
-				 * mailer.sendMail("sergiofffilho@gmail.com", "teste",
-				 * "Testando"); context.close();
-				 */
+				mailer.sendMail(usuario.getEmail(), "Test", "body");
+				mailer.sendMail(diretor.getEmail(), "Test", "body");
 
 				projeto.setStatus(StatusProjeto.SUBMETIDO);
 				this.serviceProjeto.update(projeto);
@@ -406,15 +387,16 @@ public class ProjetoController {
 		parecer.setComentario(comentario);
 		parecer.setPrazo(prazo);
 		
+		Usuario diretor = serviceUsuario.getDiretor();		
+		
 		// enviar email
-		// Create the application context
 		ApplicationContext context = new FileSystemXmlApplicationContext(
-				"/git/gpa-pesquisa/aplicacoes/gpa/src/main/webapp/WEB-INF/applicationContext.xml");
-		// Get the mailer instance
-		EmailServiceImpl mailer = (EmailServiceImpl) context
-				.getBean("mailService");
-		// Send a composed mail
+				"/git/gpa-pesquisa/aplicacoes/gpa/src/main/webapp/WEB-INF/applicationContext.xml");		
+		EmailServiceImpl mailer = (EmailServiceImpl) context.getBean("mailService");
+		
 		mailer.sendMail(usuario.getEmail(), "Test", "body");
+		mailer.sendMail(projeto.getAutor().getEmail(), "Test", "body");
+		mailer.sendMail(diretor.getEmail(), "Test", "body");
 
 		serviceParecer.save(parecer);
 		projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);
