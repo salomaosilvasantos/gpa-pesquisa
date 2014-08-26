@@ -13,8 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.ufc.quixada.npi.gpa.enumerator.QueryType;
 import br.com.ufc.quixada.npi.gpa.repository.GenericRepository;
+import br.com.ufc.quixada.npi.gpa.repository.QueryType;
 
 
 @Named
