@@ -3,7 +3,7 @@ package br.com.ufc.quixada.npi.gpa.service;
 import java.util.List;
 import java.util.Map;
 
-import br.com.ufc.quixada.npi.gpa.enumerator.QueryType;
+import br.com.ufc.quixada.npi.gpa.repository.QueryType;
 
 public interface GenericService<T> {
 	
