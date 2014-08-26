@@ -23,6 +23,11 @@ public class ProjetoServiceImpl extends GenericServiceImpl<Projeto> implements
 	public List<Projeto> getProjetosSubmetidos() {
 		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where p.status != 'NOVO' ", null);
 	}
+	
+	@Override
+	public List<Projeto> getProjetosAtribuidos() {
+		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where p.status = 'AGUARDANDO_PARECER' ", null);
+	}
 
 	@Override
 	public List<Projeto> getProjetosByUsuario(Long id) {
