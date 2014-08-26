@@ -24,10 +24,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.com.ufc.quixada.npi.gpa.enumerator.StatusProjeto;
 import br.com.ufc.quixada.npi.gpa.model.Documento;
 import br.com.ufc.quixada.npi.gpa.model.Parecer;
 import br.com.ufc.quixada.npi.gpa.model.Projeto;
+import br.com.ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import br.com.ufc.quixada.npi.gpa.model.Usuario;
 import br.com.ufc.quixada.npi.gpa.service.DocumentoService;
 import br.com.ufc.quixada.npi.gpa.service.ParecerService;

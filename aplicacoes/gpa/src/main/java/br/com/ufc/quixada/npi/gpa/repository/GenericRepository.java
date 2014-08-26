@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 
-import br.com.ufc.quixada.npi.gpa.enumerator.QueryType;
 
 
 public interface GenericRepository<T> {
