@@ -17,8 +17,6 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import br.com.ufc.quixada.npi.gpa.enumerator.StatusParecer;
-
 @Entity
 public class Parecer {
 	
@@ -164,4 +162,10 @@ public class Parecer {
 				+ ", dataRealizacao=" + dataRealizacao + ", prazo=" + prazo
 				+ ", usuario=" + usuario + ", projeto=" + projeto + "]";
 	}
+
+	public enum StatusParecer {
+		FAVORAVEL , NAO_FAVORAVEL;
+	}
 }
+
+

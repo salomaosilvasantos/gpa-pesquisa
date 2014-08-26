@@ -2,6 +2,7 @@ package br.com.ufc.quixada.npi.gpa.model;
 
 import java.util.Date;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,37 +15,51 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+
 import org.springframework.format.annotation.DateTimeFormat;
-import br.com.ufc.quixada.npi.gpa.enumerator.StatusProjeto;
 
 @Entity
 public class Projeto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	private String codigo;
+	
 	@Size(min = 2, message = "MínimoW 2 caracteres")
 	private String nome;
+	
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date inicio;
+	
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date termino;
+	
 	@Size(min = 5, message = "Mínimo 5 caracteres")
 	private String descricao;
+	
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario autor;
+	
 	private String atividades;
+	
 	@Min(value = 1, message = "Número de bolsas deve ser maior que 1")
 	private Integer quantidadeBolsa;
+	
 	private String local;
+	
 	@Enumerated(EnumType.STRING)
 	private StatusProjeto status;
+	
 	private String participantes;
+	
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Documento> documentos;
+	
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Comentario> comentarios;
+	
 	@OneToMany(mappedBy = "projeto")
 	private List<Parecer> pareceres;
 
@@ -218,4 +233,21 @@ public class Projeto {
 				+ documentos + ", comentarios=" + comentarios + ", pareceres="
 				+ pareceres + "]";
 	}
+	
+	public enum StatusProjeto {
+		
+		NOVO("NOVO"), SUBMETIDO("SUBMETIDO"), AGUARDANDO_PARECER("AGUARDANDO PARECER"), 
+		AGUARDANDO_AVALIACAO("AGUARDANDO AVALIAÇÃO"), ACEITO("ACEITO"), NAO_ACEITO("NÃO ACEITO");
+		
+		private String descricao;
+		
+		private StatusProjeto(String descricao) {
+			this.descricao = descricao;
+		}
+		
+		public String getDescricao() {
+			return this.descricao;
+		}
+	}
+
 }
