@@ -8,3 +8,4 @@ aplicacoes/gpa/target
 *.war
 *.ear
 *.log
+*.project
