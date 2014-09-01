@@ -1,4 +1,4 @@
-package br.com.ufc.quixada.npi.gpa.service.impl;
+package br.com.ufc.quixada.npi.gpa.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service("mailService")
-public class EmailServiceImpl{
+public class EmailController{
 	@Autowired
 	private MailSender mailSender;
 

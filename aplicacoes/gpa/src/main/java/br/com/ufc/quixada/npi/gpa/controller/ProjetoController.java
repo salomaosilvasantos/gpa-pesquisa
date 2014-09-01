@@ -38,7 +38,6 @@ import br.com.ufc.quixada.npi.gpa.service.DocumentoService;
 import br.com.ufc.quixada.npi.gpa.service.ParecerService;
 import br.com.ufc.quixada.npi.gpa.service.ProjetoService;
 import br.com.ufc.quixada.npi.gpa.service.UsuarioService;
-import br.com.ufc.quixada.npi.gpa.service.impl.EmailServiceImpl;
 import br.com.ufc.quixada.npi.gpa.utils.Constants;
 
 @Component
@@ -57,9 +56,6 @@ public class ProjetoController {
 
 	@Inject
 	private ParecerService serviceParecer;
-
-	@Inject
-	private EmailServiceImpl serviceEmail;
 
 	public static Properties getProp() throws IOException {
 		Properties props = new Properties();
@@ -251,7 +247,7 @@ public class ProjetoController {
 				// enviar email
 				ApplicationContext context = new FileSystemXmlApplicationContext(
 						"/git/gpa-pesquisa/aplicacoes/gpa/src/main/webapp/WEB-INF/applicationContext.xml");
-				EmailServiceImpl mailer = (EmailServiceImpl) context
+				EmailController mailer = (EmailController) context
 						.getBean("mailService");
 				
 				
@@ -417,7 +413,7 @@ public class ProjetoController {
 		// enviar email
 		ApplicationContext context = new FileSystemXmlApplicationContext(
 				"/git/gpa-pesquisa/aplicacoes/gpa/src/main/webapp/WEB-INF/applicationContext.xml");
-		EmailServiceImpl mailer = (EmailServiceImpl) context
+		EmailController mailer = (EmailController) context
 				.getBean("mailService");
 
 		if (serviceUsuario.isDiretor(projeto.getAutor())) {
