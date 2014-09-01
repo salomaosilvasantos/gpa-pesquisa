@@ -1,6 +1,7 @@
 package br.com.ufc.quixada.npi.gpa.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,10 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import br.com.ufc.quixada.npi.gpa.enumerator.StatusParecer;
 
 @Entity
 public class Parecer {
@@ -39,6 +40,10 @@ public class Parecer {
 	
 	@DateTimeFormat(pattern = "dd/mm/yyyy")
 	private Date prazo;
+	
+	@ManyToOne
+	@JoinColumn(name="documento_id")
+	private Documento documento;
 	
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
@@ -86,6 +91,14 @@ public class Parecer {
 
 	public String getComentario() {
 		return comentario;
+	}
+
+	public Documento getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(Documento documento) {
+		this.documento = documento;
 	}
 
 	public void setComentario(String comentario) {
@@ -140,6 +153,7 @@ public class Parecer {
 		this.projeto = projeto;
 	}
 
+
 	@Override
 	public String toString() {
 		return "Parecer [id=" + id + ", statusParecer=" + status
@@ -148,4 +162,10 @@ public class Parecer {
 				+ ", dataRealizacao=" + dataRealizacao + ", prazo=" + prazo
 				+ ", usuario=" + usuario + ", projeto=" + projeto + "]";
 	}
+
+	public enum StatusParecer {
+		FAVORAVEL , NAO_FAVORAVEL;
+	}
 }
+
+

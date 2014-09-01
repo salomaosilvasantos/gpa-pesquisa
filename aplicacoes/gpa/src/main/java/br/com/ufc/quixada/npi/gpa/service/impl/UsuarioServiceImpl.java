@@ -7,9 +7,9 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.com.ufc.quixada.npi.gpa.enumerator.QueryType;
 import br.com.ufc.quixada.npi.gpa.model.Papel;
 import br.com.ufc.quixada.npi.gpa.model.Usuario;
+import br.com.ufc.quixada.npi.gpa.repository.QueryType;
 import br.com.ufc.quixada.npi.gpa.repository.UsuarioRepository;
 import br.com.ufc.quixada.npi.gpa.service.UsuarioService;
 

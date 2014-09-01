@@ -29,10 +29,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.com.ufc.quixada.npi.gpa.enumerator.StatusProjeto;
 import br.com.ufc.quixada.npi.gpa.model.Documento;
 import br.com.ufc.quixada.npi.gpa.model.Parecer;
+import br.com.ufc.quixada.npi.gpa.model.Parecer.StatusParecer;
 import br.com.ufc.quixada.npi.gpa.model.Projeto;
+import br.com.ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import br.com.ufc.quixada.npi.gpa.model.Usuario;
 import br.com.ufc.quixada.npi.gpa.service.DocumentoService;
 import br.com.ufc.quixada.npi.gpa.service.ParecerService;
@@ -143,6 +144,83 @@ public class ProjetoController {
 
 		redirectAttributes.addFlashAttribute("erro", "Permissão negada.");
 		return "redirect:/projeto/listar";
+	}
+
+	@RequestMapping(value = "/{id}/emitirParecer/{parecerId}", method = RequestMethod.GET)
+	public String getEmitirParecerPage(@PathVariable("id") long id,
+			@PathVariable("parecerId") long parecerId, Model model,
+			HttpSession session, RedirectAttributes redirectAttributes) {
+		Projeto projeto = serviceProjeto.find(Projeto.class, id);
+		Parecer parecer = serviceParecer.find(Parecer.class, parecerId);
+		if (projeto == null) {
+			redirectAttributes
+					.addFlashAttribute("erro", "Projeto Inexistente.");
+			return "redirect:/projeto/listar";
+		}
+		if (!projeto.getStatus().equals(StatusProjeto.AGUARDANDO_PARECER)) {
+			redirectAttributes.addFlashAttribute("erro",
+					"Projeto não está aguardando parecer");
+			return "redirect:/projeto/listar";
+		}
+		if (getUsuarioLogado(session).getId() != parecer.getUsuario().getId()) {
+			redirectAttributes.addFlashAttribute("erro",
+					"Parecer não atribuído a você");
+			return "redirect:/projeto/listar";
+		}
+		model.addAttribute("projeto", projeto);
+		return "projeto/emitirParecer";
+	}
+
+	@RequestMapping(value = "/{id}/emitirParecer/{parecerId}", method = RequestMethod.POST)
+	public String emitirParecer(HttpServletRequest request,
+			@PathVariable("id") long id,
+			@PathVariable("parecerId") long parecerId,
+			@RequestParam("file") MultipartFile[] files,
+			@RequestParam("comentario") String comentario,
+			@RequestParam("statusParecer") String status,
+			@ModelAttribute(value = "parecer") Parecer parecer,
+			BindingResult result, HttpSession session,
+			RedirectAttributes redirectAttributes) throws IOException {
+
+		Projeto projeto = serviceProjeto.find(Projeto.class, id);
+		parecer = serviceParecer.find(Parecer.class, parecerId);
+
+		if (result.hasErrors()) {
+			return "redirect:/projeto/listar";
+		}
+
+		if (comentario.isEmpty()) {
+			redirectAttributes.addAttribute("erro",
+					"Comentário não pode estar vazio");
+			return "redirect:/projeto/" + id + "/emitirParecer" + parecerId;
+		}
+
+		for (MultipartFile mpf : files) {
+			if (mpf.getBytes().length > 0) {
+				Documento documento = new Documento();
+				documento.setNomeOriginal(mpf.getOriginalFilename());
+				documento.setTipo(mpf.getContentType());
+				documento.setProjeto(projeto);
+				documento.setArquivo(mpf.getBytes());
+				serviceDocumento.save(documento);
+				parecer.setDocumento(documento);
+			}
+
+		}
+
+		if (status.equals("favorável")) {
+			parecer.setStatus(StatusParecer.FAVORAVEL);
+		} else {
+			parecer.setStatus(StatusParecer.NAO_FAVORAVEL);
+		}
+
+		parecer.setComentario(comentario);
+		serviceParecer.update(parecer);
+		projeto.setStatus(StatusProjeto.AGUARDANDO_AVALIACAO);
+		serviceProjeto.update(projeto);
+
+		return "redirect:/projeto/listar";
+
 	}
 
 	@RequestMapping(value = "/{id}/editar", method = RequestMethod.POST)
@@ -325,6 +403,8 @@ public class ProjetoController {
 	public String listar(ModelMap modelMap, HttpSession session) {
 		modelMap.addAttribute("projetos", serviceProjeto
 				.getProjetosByUsuario(getUsuarioLogado(session).getId()));
+		modelMap.addAttribute("projetosAguardandoParecer",
+				serviceProjeto.getProjetosAguardandoParecer());
 		if (serviceUsuario.isDiretor(getUsuarioLogado(session))) {
 			modelMap.addAttribute("projetosSubmetidos",
 					serviceProjeto.getProjetosSubmetidos());
