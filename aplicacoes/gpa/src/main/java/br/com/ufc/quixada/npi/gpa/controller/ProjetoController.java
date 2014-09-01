@@ -207,6 +207,39 @@ public class ProjetoController {
 			}
 
 		}
+		
+		Usuario diretor = serviceUsuario.getDiretor();
+		
+		Properties prop = getProp();
+
+		// enviar email
+		ApplicationContext context = new FileSystemXmlApplicationContext(
+				"/git/gpa-pesquisa/aplicacoes/gpa/src/main/webapp/WEB-INF/applicationContext.xml");
+		EmailController mailer = (EmailController) context
+				.getBean("mailService");
+
+		if (serviceUsuario.isDiretor(projeto.getAutor())) {
+			mailer.sendMail(parecer.getUsuario().getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+					(prop.getProperty("corpoEmitirParecer") +" "+projeto.getNome() +" "+ prop.getProperty("corpoEmitirParecer2")));
+			mailer.sendMail(diretor.getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+					(prop.getProperty("corpoEmitirParecer") +" "+projeto.getNome() +" "+ prop.getProperty("corpoEmitirParecer2")));
+		} else if(projeto.getAutor().equals(parecer.getUsuario())){
+			mailer.sendMail(parecer.getUsuario().getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+					(prop.getProperty("corpoEmitirParecer") +" "+projeto.getNome() +" "+ prop.getProperty("corpoEmitirParecer2")));
+			
+			mailer.sendMail(diretor.getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+					(prop.getProperty("corpoEmitirParecer") +" "+projeto.getNome() +" "+ prop.getProperty("corpoEmitirParecer2")));
+		}else{
+			mailer.sendMail(parecer.getUsuario().getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+					(prop.getProperty("corpoEmitirParecer") +" "+projeto.getNome() +" "+ prop.getProperty("corpoEmitirParecer2")));
+			
+			mailer.sendMail(diretor.getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+					(prop.getProperty("corpoEmitirParecer") +" "+projeto.getNome() +" "+ prop.getProperty("corpoEmitirParecer2")));
+			
+			mailer.sendMail(projeto.getAutor().getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+					(prop.getProperty("corpoEmitirParecer") +" "+projeto.getNome() +" "+ prop.getProperty("corpoEmitirParecer2")));
+		}
+		
 
 		if (status.equals("favorável")) {
 			parecer.setStatus(StatusParecer.FAVORAVEL);
