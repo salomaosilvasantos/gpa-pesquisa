@@ -7,9 +7,9 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.com.ufc.quixada.npi.gpa.enumerator.QueryType;
 import br.com.ufc.quixada.npi.gpa.model.Papel;
 import br.com.ufc.quixada.npi.gpa.model.Usuario;
+import br.com.ufc.quixada.npi.gpa.repository.QueryType;
 import br.com.ufc.quixada.npi.gpa.repository.UsuarioRepository;
 import br.com.ufc.quixada.npi.gpa.service.UsuarioService;
 
@@ -44,6 +44,19 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario> implements U
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public Usuario getDiretor() {		
+		Usuario diretor = new Usuario();		
+		List<Usuario> usuarios = find(Usuario.class);		
+		for (Usuario u: usuarios){
+			if(isDiretor(u)){
+				diretor = u;
+				break;
+			}			
+		}			
+		return diretor;
 	}
 
 }

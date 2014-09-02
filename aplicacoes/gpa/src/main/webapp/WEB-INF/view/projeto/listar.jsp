@@ -5,12 +5,12 @@
 
 <html>
 <head>
-	<jsp:include page="../modulos/header-estrutura.jsp" />
-	<title>Projetos</title>
+<jsp:include page="../modulos/header-estrutura.jsp" />
+<title>Projetos</title>
 </head>
 <body>
-	
 	<jsp:include page="../modulos/header.jsp" />
+
 	<div class="container">
 		<c:if test="${not empty erro}">
 			<div class="alert alert-danger alert-dismissible" role="alert">
@@ -29,56 +29,119 @@
 				<button class="btn btn-primary">Novo Projeto <span class="glyphicon glyphicon-plus"></span></button>
 			</a>
 		</div>
-		<c:if test="${empty projetos}">
-			<div class="alert alert-warning" role="alert">Não há projetos cadastrados.</div>
-		</c:if>
-		<c:if test="${not empty projetos}">
-			<div class="panel panel-default">
+		
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs" role="tablist">
+			<li class="active"><a href="#meus-projetos" role="tab" data-toggle="tab">Meus Projetos</a></li>
+			<li><a href="#projetos-aguardando-parecer" role="tab" data-toggle="tab">Aguardando Parecer</a></li>
+		</ul>
 
-				<div class="panel-heading" align="center">
-					<h4>Projetos</h4>
-				</div>
-
-				<!-- Table -->
-				<table class="table" id="table">
-					<thead>
-						<tr>
-							<th id="teste">Identificador</th>
-							<th>Nome</th>
-							<th>Status</th>
-							<th id="acoes">Ações</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="projeto" items="${projetos}">
-							<tr class="linha">
-								<td>${projeto.codigo}</td>
-								<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
-								<td class="status">${projeto.status.descricao}</td>
-								<td>
-									<c:if test="${projeto.status == 'NOVO'}">
-										<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#" data-href="<c:url value="/projeto/${projeto.id}/submeter" ></c:url>">
-											<button class="btn btn-primary">Submeter <span class="glyphicon glyphicon-upload"></span></button>
-										</a>
-
-										<a id="editar" href="<c:url value="/projeto/${projeto.id}/editar" ></c:url>">
-											<button class="btn btn-info">Editar <span class="glyphicon glyphicon-pencil"></span></button>
-										</a>
-
-										<a id="excluir" data-toggle="modal" data-target="#confirm-delete" href="#" data-href="<c:url value="/projeto/${projeto.id}/excluir" ></c:url>">
-											<button class="btn btn-danger">Excluir <span class="glyphicon glyphicon-trash"></span></button>
-										</a>
-									</c:if>
-								</td>
-							</tr>
-						</c:forEach>
-					</tbody>
-
-				</table>
+		<div class="tab-content">
+		
+			<!-- Meus Projetos -->
+			<div class="tab-pane active" id="meus-projetos">
+				<c:if test="${empty projetos}">
+					<div class="alert alert-warning" role="alert">Não há projetos cadastrados.</div>
+				</c:if>
+				<c:if test="${not empty projetos}">
+					<div class="panel panel-default">
+						<div class="panel-heading" align="center">
+							<h4>Meus Projetos</h4>
+						</div>
+			
+						<!-- Table -->
+						<table class="table" id="table">
+							<thead>
+								<tr>
+									<th id="teste">Identificador</th>
+									<th>Nome</th>
+									<th>Status</th>
+									<th id="acoes">Ações</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="projeto" items="${projetos}">
+									<tr class="linha">
+										<td>${projeto.codigo}</td>
+										<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
+										<td class="status">${projeto.status.descricao}</td>
+										<td>
+											<c:if test="${projeto.status == 'NOVO'}">
+												<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#" data-href="<c:url value="/projeto/${projeto.id}/submeter" ></c:url>">
+													<button class="btn btn-primary">Submeter <span class="glyphicon glyphicon-upload"></span></button>
+												</a>
+		
+												<a id="editar" href="<c:url value="/projeto/${projeto.id}/editar" ></c:url>">
+													<button class="btn btn-info">Editar <span class="glyphicon glyphicon-pencil"></span></button>
+												</a>
+		
+												<a id="excluir" data-toggle="modal" data-target="#confirm-delete" href="#" data-href="<c:url value="/projeto/${projeto.id}/excluir" ></c:url>">
+													<button class="btn btn-danger">Excluir <span class="glyphicon glyphicon-trash"></span></button>
+												</a>
+											</c:if>
+											<sec:authorize ifAnyGranted="ROLE_DIRETOR">
+												<c:if test="${projeto.status == 'SUBMETIDO'}">
+													<a id="atribuirParecerista" href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
+														<button class="btn btn-primary"> Atribuir Parecerista <span class="glyphicon glyphicon-user"></span></button>
+													</a>
+												</c:if>
+											</sec:authorize>
+										</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+				</c:if>
 			</div>
-		</c:if>
+			
+			<!-- Projetos Aguardando Parecer -->
+			<div class="tab-pane" id="projetos-aguardando-parecer">
+				<c:if test="${empty projetosAguardandoParecer}">
+					<div class="alert alert-warning" role="alert">Não há projetos aguardando parecer.</div>
+				</c:if>
+				<c:if test="${not empty projetosAguardandoParecer}">
+					<div class="panel panel-default">
+						<div class="panel-heading" align="center">
+							<h4>Projetos Aguardando Parecer</h4>
+						</div>
+			<input type="hidden" name="parecerId" value="${parecerId}">
+						<!-- Table -->
+						<table class="table" id="table">
+							<thead>
+								<tr>
+									<th id="teste">Identificador</th>
+									<th>Nome</th>
+									<th>Autor</th>
+									<th>Status</th>
+									<th id="acoes">Ações</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="projeto" items="${projetosAguardandoParecer}">
+									<tr class="linha">
+										<td>${projeto.codigo}</td>
+										<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
+										<td>${projeto.autor.nome}</td>
+										<td class="status">${projeto.status.descricao}</td>
+										<td>
+											<c:if test="${projeto.status == 'AGUARDANDO_PARECER'}">
+											<c:forEach var="parecer" items="${projeto.pareceres}">
+												<a id="emitirParecer" href="<c:url value="/projeto/${projeto.id}/emitirParecer/${parecer.id}" ></c:url>">
+													<button class="btn btn-primary"> Emitir Parecer <span class="glyphicon glyphicon-exclamation-sign"></span></button>
+												</a>
+											</c:forEach>	
+											</c:if>
+										</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+				</c:if>
+			</div>
+		</div>
 	</div>
-	<jsp:include page="../modulos/footer.jsp" />
 	
 	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	    <div class="modal-dialog">
@@ -114,6 +177,8 @@
 	    </div>
 	</div>
 
-
+	<jsp:include page="../modulos/footer.jsp" />
+	
 </body>
 </html>
+

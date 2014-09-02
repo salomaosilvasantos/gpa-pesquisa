@@ -170,6 +170,12 @@
 		                    		</c:forEach>
 		                    	</tbody>
 		                    </table>
+
+		                    <c:if test="${not empty error_documento}">
+									<div class="error-validation">
+										<span>${error_documento}</span>
+									</div>
+							</c:if>
 						</div>
 					</div>
 					<div class="form-group">
