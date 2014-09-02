@@ -1,17 +1,22 @@
 package br.com.ufc.quixada.npi.gpa.controller;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -36,6 +41,7 @@ import br.com.ufc.quixada.npi.gpa.service.ProjetoService;
 import br.com.ufc.quixada.npi.gpa.service.UsuarioService;
 import br.com.ufc.quixada.npi.gpa.utils.Constants;
 
+@Component
 @Controller
 @RequestMapping("projeto")
 public class ProjetoController {
@@ -51,6 +57,15 @@ public class ProjetoController {
 
 	@Inject
 	private ParecerService serviceParecer;
+
+/*	public static Properties getProp() throws IOException {
+		Properties props = new Properties();
+
+		FileInputStream file = new FileInputStream("./git/gpa-pesquisa/aplicacoes/gpa/src/main/resources/notification.properties");
+		props.load(file);
+		return props;
+
+	}*/
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index() {
@@ -192,6 +207,39 @@ public class ProjetoController {
 			}
 
 		}
+		
+		Usuario diretor = serviceUsuario.getDiretor();
+		
+/*		Properties prop = getProp();
+
+		// enviar email
+		ApplicationContext context = new FileSystemXmlApplicationContext(
+				"/git/gpa-pesquisa/aplicacoes/gpa/src/main/webapp/WEB-INF/applicationContext.xml");
+		EmailController mailer = (EmailController) context
+				.getBean("mailService");
+
+		if (serviceUsuario.isDiretor(projeto.getAutor())) {
+			mailer.sendMail(parecer.getUsuario().getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+					(prop.getProperty("corpoEmitirParecer") +" "+projeto.getNome() +" "+ prop.getProperty("corpoEmitirParecer2")));
+			mailer.sendMail(diretor.getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+					(prop.getProperty("corpoEmitirParecer") +" "+projeto.getNome() +" "+ prop.getProperty("corpoEmitirParecer2")));
+		} else if(projeto.getAutor().equals(parecer.getUsuario())){
+			mailer.sendMail(parecer.getUsuario().getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+					(prop.getProperty("corpoEmitirParecer") +" "+projeto.getNome() +" "+ prop.getProperty("corpoEmitirParecer2")));
+			
+			mailer.sendMail(diretor.getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+					(prop.getProperty("corpoEmitirParecer") +" "+projeto.getNome() +" "+ prop.getProperty("corpoEmitirParecer2")));
+		}else{
+			mailer.sendMail(parecer.getUsuario().getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+					(prop.getProperty("corpoEmitirParecer") +" "+projeto.getNome() +" "+ prop.getProperty("corpoEmitirParecer2")));
+			
+			mailer.sendMail(diretor.getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+					(prop.getProperty("corpoEmitirParecer") +" "+projeto.getNome() +" "+ prop.getProperty("corpoEmitirParecer2")));
+			
+			mailer.sendMail(projeto.getAutor().getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+					(prop.getProperty("corpoEmitirParecer") +" "+projeto.getNome() +" "+ prop.getProperty("corpoEmitirParecer2")));
+		}*/
+		
 
 		if (status.equals("favorável")) {
 			parecer.setStatus(StatusParecer.FAVORAVEL);
@@ -290,9 +338,11 @@ public class ProjetoController {
 
 	@RequestMapping(value = "{id}/submeter", method = RequestMethod.GET)
 	public String submeterProjetoForm(@PathVariable("id") Long id, Model model,
-			HttpSession session, RedirectAttributes redirectAttributes) {
+			HttpSession session, RedirectAttributes redirectAttributes) throws IOException {
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		Usuario usuario = getUsuarioLogado(session);
+		Usuario diretor = serviceUsuario.getDiretor();
+		
 		if (projeto == null) {
 			redirectAttributes
 					.addFlashAttribute("erro", "Projeto inexistente.");
@@ -302,6 +352,28 @@ public class ProjetoController {
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
 			if (validaSubmissao(projeto, model)) {
+
+/*				Properties prop = getProp();
+
+				
+				// enviar email
+				ApplicationContext context = new FileSystemXmlApplicationContext(
+						"/git/gpa-pesquisa/aplicacoes/gpa/src/main/webapp/WEB-INF/applicationContext.xml");
+				EmailController mailer = (EmailController) context
+						.getBean("mailService");
+				
+				
+				 
+				if (serviceUsuario.isDiretor(projeto.getAutor())) {
+					mailer.sendMail(diretor.getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+							(prop.getProperty("corpoSubmeter") +" "+projeto.getNome() +" "+ prop.getProperty("corpoSubmeter2")));
+				} else {
+					mailer.sendMail(usuario.getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+							(prop.getProperty("corpoSubmeter") + " "+projeto.getNome() +" "+ prop.getProperty("corpoSubmeter2")));
+					mailer.sendMail(diretor.getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+							(prop.getProperty("corpoSubmeter") + " "+projeto.getNome() + " "+prop.getProperty("corpoSubmeter2")));
+				}*/
+
 				projeto.setStatus(StatusProjeto.SUBMETIDO);
 				this.serviceProjeto.update(projeto);
 				redirectAttributes.addFlashAttribute("info",
@@ -402,7 +474,7 @@ public class ProjetoController {
 
 	@RequestMapping(value = "diretor/atribuirParecerista", method = RequestMethod.POST)
 	public String atribuirPareceristaNoProjeto(HttpServletRequest request,
-			Model model, RedirectAttributes redirect) {
+			Model model, RedirectAttributes redirect) throws IOException {
 
 		Long projetoId = Long.parseLong(request.getParameter("projetoId"));
 		Long parecerista = Long.parseLong(request.getParameter("parecerista"));
@@ -447,6 +519,32 @@ public class ProjetoController {
 		parecer.setDataAtribuicao(new Date());
 		parecer.setComentario(comentario);
 		parecer.setPrazo(prazo);
+
+		Usuario diretor = serviceUsuario.getDiretor();
+		
+/*		Properties prop = getProp();
+
+		// enviar email
+		ApplicationContext context = new FileSystemXmlApplicationContext(
+				"/git/gpa-pesquisa/aplicacoes/gpa/src/main/webapp/WEB-INF/applicationContext.xml");
+		EmailController mailer = (EmailController) context
+				.getBean("mailService");
+
+		if (serviceUsuario.isDiretor(projeto.getAutor())) {
+			mailer.sendMail(usuario.getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+					(prop.getProperty("corpoSubmeter") +" "+projeto.getNome() +" "+ prop.getProperty("corpoSubmeter2")));
+			mailer.sendMail(diretor.getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+					(prop.getProperty("corpoSubmeter") +" "+projeto.getNome() +" "+ prop.getProperty("corpoSubmeter2")));
+		} else {
+			mailer.sendMail(usuario.getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+					(prop.getProperty("corpoSubmeter") +" "+projeto.getNome() +" "+ prop.getProperty("corpoSubmeter2")));
+			
+			mailer.sendMail(diretor.getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+					(prop.getProperty("corpoSubmeter") +" "+projeto.getNome() +" "+ prop.getProperty("corpoSubmeter2")));
+			
+			mailer.sendMail(projeto.getAutor().getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
+					(prop.getProperty("corpoSubmeter") +" "+projeto.getNome() +" "+ prop.getProperty("corpoSubmeter2")));
+		}*/
 
 		serviceParecer.save(parecer);
 		projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);
