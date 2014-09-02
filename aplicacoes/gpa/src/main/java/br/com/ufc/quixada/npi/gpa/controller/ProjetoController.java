@@ -58,14 +58,14 @@ public class ProjetoController {
 	@Inject
 	private ParecerService serviceParecer;
 
-	public static Properties getProp() throws IOException {
+/*	public static Properties getProp() throws IOException {
 		Properties props = new Properties();
 
 		FileInputStream file = new FileInputStream("./git/gpa-pesquisa/aplicacoes/gpa/src/main/resources/notification.properties");
 		props.load(file);
 		return props;
 
-	}
+	}*/
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index() {
@@ -210,7 +210,7 @@ public class ProjetoController {
 		
 		Usuario diretor = serviceUsuario.getDiretor();
 		
-		Properties prop = getProp();
+/*		Properties prop = getProp();
 
 		// enviar email
 		ApplicationContext context = new FileSystemXmlApplicationContext(
@@ -238,7 +238,7 @@ public class ProjetoController {
 			
 			mailer.sendMail(projeto.getAutor().getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
 					(prop.getProperty("corpoEmitirParecer") +" "+projeto.getNome() +" "+ prop.getProperty("corpoEmitirParecer2")));
-		}
+		}*/
 		
 
 		if (status.equals("favorável")) {
@@ -343,8 +343,6 @@ public class ProjetoController {
 		Usuario usuario = getUsuarioLogado(session);
 		Usuario diretor = serviceUsuario.getDiretor();
 		
-		Properties prop = getProp();
-
 		if (projeto == null) {
 			redirectAttributes
 					.addFlashAttribute("erro", "Projeto inexistente.");
@@ -355,6 +353,9 @@ public class ProjetoController {
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
 			if (validaSubmissao(projeto, model)) {
 
+/*				Properties prop = getProp();
+
+				
 				// enviar email
 				ApplicationContext context = new FileSystemXmlApplicationContext(
 						"/git/gpa-pesquisa/aplicacoes/gpa/src/main/webapp/WEB-INF/applicationContext.xml");
@@ -371,7 +372,7 @@ public class ProjetoController {
 							(prop.getProperty("corpoSubmeter") + " "+projeto.getNome() +" "+ prop.getProperty("corpoSubmeter2")));
 					mailer.sendMail(diretor.getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
 							(prop.getProperty("corpoSubmeter") + " "+projeto.getNome() + " "+prop.getProperty("corpoSubmeter2")));
-				}
+				}*/
 
 				projeto.setStatus(StatusProjeto.SUBMETIDO);
 				this.serviceProjeto.update(projeto);
@@ -521,7 +522,7 @@ public class ProjetoController {
 
 		Usuario diretor = serviceUsuario.getDiretor();
 		
-		Properties prop = getProp();
+/*		Properties prop = getProp();
 
 		// enviar email
 		ApplicationContext context = new FileSystemXmlApplicationContext(
@@ -543,7 +544,7 @@ public class ProjetoController {
 			
 			mailer.sendMail(projeto.getAutor().getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
 					(prop.getProperty("corpoSubmeter") +" "+projeto.getNome() +" "+ prop.getProperty("corpoSubmeter2")));
-		}
+		}*/
 
 		serviceParecer.save(parecer);
 		projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);
