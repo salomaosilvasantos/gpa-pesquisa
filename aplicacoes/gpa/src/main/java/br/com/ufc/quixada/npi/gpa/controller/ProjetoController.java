@@ -1,6 +1,5 @@
 package br.com.ufc.quixada.npi.gpa.controller;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,8 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -39,6 +39,7 @@ import br.com.ufc.quixada.npi.gpa.service.DocumentoService;
 import br.com.ufc.quixada.npi.gpa.service.ParecerService;
 import br.com.ufc.quixada.npi.gpa.service.ProjetoService;
 import br.com.ufc.quixada.npi.gpa.service.UsuarioService;
+import br.com.ufc.quixada.npi.gpa.service.impl.EmailService;
 import br.com.ufc.quixada.npi.gpa.utils.Constants;
 
 @Component
@@ -57,13 +58,15 @@ public class ProjetoController {
 
 	@Inject
 	private ParecerService serviceParecer;
+	@Inject
+	EmailService mailer;
 
 	public static Properties getProp() throws IOException {
-		Properties props = new Properties();
-
-		FileInputStream file = new FileInputStream("./git/gpa-pesquisa/aplicacoes/gpa/src/main/resources/notification.properties");
-		props.load(file);
+		
+		Resource resource = new ClassPathResource("/notification.properties"); 
+		Properties props = PropertiesLoaderUtils.loadProperties(resource);
 		return props;
+
 
 	}
 
@@ -212,12 +215,6 @@ public class ProjetoController {
 		
 		Properties prop = getProp();
 
-		// enviar email
-		ApplicationContext context = new FileSystemXmlApplicationContext(
-				"/git/gpa-pesquisa/aplicacoes/gpa/src/main/webapp/WEB-INF/applicationContext.xml");
-		EmailController mailer = (EmailController) context
-				.getBean("mailService");
-
 		if (serviceUsuario.isDiretor(projeto.getAutor())) {
 			mailer.sendMail(parecer.getUsuario().getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
 					(prop.getProperty("corpoEmitirParecer") +" "+projeto.getNome() +" "+ prop.getProperty("corpoEmitirParecer2")));
@@ -238,7 +235,7 @@ public class ProjetoController {
 			
 			mailer.sendMail(projeto.getAutor().getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
 					(prop.getProperty("corpoEmitirParecer") +" "+projeto.getNome() +" "+ prop.getProperty("corpoEmitirParecer2")));
-		}
+		}		
 		
 
 		if (status.equals("favorável")) {
@@ -354,15 +351,7 @@ public class ProjetoController {
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
 			if (validaSubmissao(projeto, model)) {
-
-				// enviar email
-				ApplicationContext context = new FileSystemXmlApplicationContext(
-						"/git/gpa-pesquisa/aplicacoes/gpa/src/main/webapp/WEB-INF/applicationContext.xml");
-				EmailController mailer = (EmailController) context
-						.getBean("mailService");
-				
-				
-				 
+							 
 				if (serviceUsuario.isDiretor(projeto.getAutor())) {
 					mailer.sendMail(diretor.getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 
 							(prop.getProperty("corpoSubmeter") +" "+projeto.getNome() +" "+ prop.getProperty("corpoSubmeter2")));
@@ -522,12 +511,6 @@ public class ProjetoController {
 		Usuario diretor = serviceUsuario.getDiretor();
 		
 		Properties prop = getProp();
-
-		// enviar email
-		ApplicationContext context = new FileSystemXmlApplicationContext(
-				"/git/gpa-pesquisa/aplicacoes/gpa/src/main/webapp/WEB-INF/applicationContext.xml");
-		EmailController mailer = (EmailController) context
-				.getBean("mailService");
 
 		if (serviceUsuario.isDiretor(projeto.getAutor())) {
 			mailer.sendMail(usuario.getEmail(), (prop.getProperty("assunto")+" "+projeto.getNome()), 

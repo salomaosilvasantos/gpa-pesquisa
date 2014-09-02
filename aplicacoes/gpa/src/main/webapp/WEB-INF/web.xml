@@ -13,9 +13,7 @@
     <servlet-name>mvc-dispatcher</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
-  <listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
+  
   <jsp-config>
 	    <jsp-property-group>
 	        <url-pattern>*.jsp</url-pattern>
@@ -42,6 +40,10 @@ see here: http://static.springsource.org/spring/docs/current/spring-framework-re
  		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring-security.xml, /WEB-INF/applicationContext.xml</param-value>
  	</context-param>    
+ 	
+ 	<listener>
+	    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	 </listener>
 	
 	<!-- Spring Security -->
  	<filter>

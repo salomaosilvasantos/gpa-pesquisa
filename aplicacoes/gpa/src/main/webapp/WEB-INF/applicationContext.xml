@@ -12,18 +12,6 @@
 	<context:property-placeholder location="classpath:notification.properties" 
 		/> 
 
-	<!-- <bean id="myProperty"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location">
-			<value>classpath:notification.properties</value>
-		</property>
-	</bean> -->
-
-	<!-- <bean id="email">
-		<property name="assunto" value="${notification.assunto}" />
-		<property name="corpo" value="${notification.corpo}" />
-	</bean> -->
-
 	<bean id="emf"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="persistenceUnitName" value="dev" />
