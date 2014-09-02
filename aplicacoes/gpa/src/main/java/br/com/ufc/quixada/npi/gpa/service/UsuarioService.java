@@ -11,4 +11,6 @@ public interface UsuarioService extends GenericService<Usuario> {
 	public abstract List<Usuario> getPareceristas(Long id);
 
 	public abstract boolean isDiretor(Usuario usuario);
+	
+	public abstract Usuario getDiretor();
 }
