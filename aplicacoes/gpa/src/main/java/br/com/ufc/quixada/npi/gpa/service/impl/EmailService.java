@@ -1,16 +1,17 @@
-package br.com.ufc.quixada.npi.gpa.controller;
+package br.com.ufc.quixada.npi.gpa.service.impl;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.stereotype.Service;
 
-
-@Service("mailService")
-public class EmailController{
-	@Autowired
-	private MailSender mailSender;
+@Named
+public class EmailService{
+	
+	@Inject
+	public MailSender mailSender;
 
 	public void sendMail(String to, String subject, String body) {
 		SimpleMailMessage message = new SimpleMailMessage();
