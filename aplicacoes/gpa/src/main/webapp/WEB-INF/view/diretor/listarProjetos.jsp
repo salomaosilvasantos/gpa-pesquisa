@@ -204,8 +204,8 @@
 											<td><a
 												href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
 											<td>${projeto.autor.nome}</td>
-											<td></td>
-											<td></td>
+											<td>${projeto.pareceres[0].usuario.nome}</td>
+											<td><fmt:formatDate pattern="dd-MM-yyyy" value="${projeto.pareceres[0].prazo}" /></td>
 										</tr>
 									</c:if>
 								</c:forEach>
