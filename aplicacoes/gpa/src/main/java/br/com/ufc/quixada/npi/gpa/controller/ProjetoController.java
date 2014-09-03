@@ -632,16 +632,26 @@ public class ProjetoController {
 		if (projeto.getTermino() == null) {
 			model.addAttribute("error_termino", "Campo obrigatório");
 			valid = false;
+			
 		} else if (comparaDatas(new Date(), projeto.getTermino()) > 0) {
 			model.addAttribute("error_termino", "Somente data futura");
 			valid = false;
 		}
+		
+		
 		if (projeto.getInicio() != null && projeto.getTermino() != null
 				&& comparaDatas(projeto.getInicio(), projeto.getTermino()) > 0) {
 			model.addAttribute("error_inicio",
 					"A data de início deve ser antes da data de término");
 			valid = false;
 		}
+		
+		if (projeto.getDocumentos().isEmpty()) {
+			model.addAttribute("error_documento", "Anexo Obrigatório");
+			valid = false;
+			
+		}
+		
 		if (projeto.getDescricao().isEmpty()) {
 			model.addAttribute("error_descricao", "Campo obrigatório");
 			valid = false;
