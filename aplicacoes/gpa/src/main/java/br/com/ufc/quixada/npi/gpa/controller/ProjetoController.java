@@ -219,50 +219,43 @@ public class ProjetoController {
 			mailer.sendMail(
 					parecer.getUsuario().getEmail(),
 					(prop.getProperty("assunto") + " " + projeto.getNome()),
-					(prop.getProperty("corpoEmitirParecer") + " "
+					(prop.getProperty("corpoEmitirParecerParecerista") + " "
 							+ projeto.getNome() + " " + prop
-							.getProperty("corpoEmitirParecer2")));
+							.getProperty("corpoEmitirParecerParecerista2")));
 			mailer.sendMail(
 					diretor.getEmail(),
 					(prop.getProperty("assunto") + " " + projeto.getNome()),
-					(prop.getProperty("corpoEmitirParecer") + " "
+					(prop.getProperty("corpoEmitirParecerDiretor") + " "
 							+ projeto.getNome() + " " + prop
-							.getProperty("corpoEmitirParecer2")));
-		} else if (projeto.getAutor().equals(parecer.getUsuario())) {
-			mailer.sendMail(
-					parecer.getUsuario().getEmail(),
-					(prop.getProperty("assunto") + " " + projeto.getNome()),
-					(prop.getProperty("corpoEmitirParecer") + " "
-							+ projeto.getNome() + " " + prop
-							.getProperty("corpoEmitirParecer2")));
-
-			mailer.sendMail(
-					diretor.getEmail(),
-					(prop.getProperty("assunto") + " " + projeto.getNome()),
-					(prop.getProperty("corpoEmitirParecer") + " "
-							+ projeto.getNome() + " " + prop
-							.getProperty("corpoEmitirParecer2")));
+							.getProperty("corpoEmitirParecerDiretor2")+" "
+							+parecer.getUsuario().getNome()+" "+prop
+							.getProperty("corpoEmitirParecerDiretor3")));
+			
 		} else {
 			mailer.sendMail(
 					parecer.getUsuario().getEmail(),
 					(prop.getProperty("assunto") + " " + projeto.getNome()),
-					(prop.getProperty("corpoEmitirParecer") + " "
+					(prop.getProperty("corpoEmitirParecerParecerista") + " "
 							+ projeto.getNome() + " " + prop
-							.getProperty("corpoEmitirParecer2")));
+							.getProperty("corpoEmitirParecerParecerista2")));
 
 			mailer.sendMail(
 					diretor.getEmail(),
 					(prop.getProperty("assunto") + " " + projeto.getNome()),
-					(prop.getProperty("corpoEmitirParecer") + " "
+					(prop.getProperty("corpoEmitirParecerDiretor") + " "
 							+ projeto.getNome() + " " + prop
-							.getProperty("corpoEmitirParecer2")));
+							.getProperty("corpoEmitirParecerDiretor2")+" "
+							+parecer.getUsuario().getNome()+" "+prop
+							.getProperty("corpoEmitirParecerDiretor3")));
 
 			mailer.sendMail(
 					projeto.getAutor().getEmail(),
 					(prop.getProperty("assunto") + " " + projeto.getNome()),
-					(prop.getProperty("corpoEmitirParecer") + " "
+					(prop.getProperty("corpoEmitirParecerCoordenador") + " "
 							+ projeto.getNome() + " " + prop
-							.getProperty("corpoEmitirParecer2")));
+							.getProperty("corpoEmitirParecerCoordenador2")+" "
+							+parecer.getUsuario().getNome()+" "+prop
+							.getProperty("corpoEmitirParecerCoordenador3")));
 		}
 
 		if (status.equals("favorável")) {
@@ -387,7 +380,8 @@ public class ProjetoController {
 									.getNome()),
 							(prop.getProperty("corpoSubmeter") + " "
 									+ projeto.getNome() + " " + prop
-									.getProperty("corpoSubmeter2")));
+									.getProperty("corpoSubmeter2"))+" "+projeto.getAutor().getNome()+" "
+									+prop.getProperty("corpoSubmeter3"));
 				} else {
 					mailer.sendMail(
 							usuario.getEmail(),
@@ -395,14 +389,16 @@ public class ProjetoController {
 									.getNome()),
 							(prop.getProperty("corpoSubmeter") + " "
 									+ projeto.getNome() + " " + prop
-									.getProperty("corpoSubmeter2")));
+									.getProperty("corpoSubmeter2"))+" "+projeto.getAutor().getNome()+" "
+									+prop.getProperty("corpoSubmeter3"));
 					mailer.sendMail(
 							diretor.getEmail(),
 							(prop.getProperty("assunto") + " " + projeto
 									.getNome()),
 							(prop.getProperty("corpoSubmeter") + " "
 									+ projeto.getNome() + " " + prop
-									.getProperty("corpoSubmeter2")));
+									.getProperty("corpoSubmeter2"))+" "+projeto.getAutor().getNome()+" "
+									+prop.getProperty("corpoSubmeter3"));
 				}
 
 				projeto.setStatus(StatusProjeto.SUBMETIDO);
@@ -559,36 +555,42 @@ public class ProjetoController {
 			mailer.sendMail(
 					usuario.getEmail(),
 					(prop.getProperty("assunto") + " " + projeto.getNome()),
-					(prop.getProperty("corpoSubmeter") + " "
+					(prop.getProperty("corpoAtribuirPareceristaParecerista") + " "
 							+ projeto.getNome() + " " + prop
-							.getProperty("corpoSubmeter2")));
+							.getProperty("corpoAtribuirPareceristaParecerista2")+ " "
+							+parecer.getPrazo()));
 			mailer.sendMail(
 					diretor.getEmail(),
 					(prop.getProperty("assunto") + " " + projeto.getNome()),
-					(prop.getProperty("corpoSubmeter") + " "
+					(prop.getProperty("corpoAtribuirPareceristaDiretor") + " "
 							+ projeto.getNome() + " " + prop
-							.getProperty("corpoSubmeter2")));
+							.getProperty("corpoAtribuirPareceristaDiretor2") + " "
+							+usuario.getNome()+" "
+							+prop.getProperty("corpoAtribuirPareceristaDiretor3")));
 		} else {
 			mailer.sendMail(
 					usuario.getEmail(),
 					(prop.getProperty("assunto") + " " + projeto.getNome()),
-					(prop.getProperty("corpoSubmeter") + " "
+					(prop.getProperty("corpoAtribuirPareceristaParecerista") + " "
 							+ projeto.getNome() + " " + prop
-							.getProperty("corpoSubmeter2")));
+							.getProperty("corpoAtribuirPareceristaParecerista2")+ " "
+							+parecer.getPrazo()));
 
 			mailer.sendMail(
 					diretor.getEmail(),
 					(prop.getProperty("assunto") + " " + projeto.getNome()),
-					(prop.getProperty("corpoSubmeter") + " "
+					(prop.getProperty("corpoAtribuirPareceristaDiretor") + " "
 							+ projeto.getNome() + " " + prop
-							.getProperty("corpoSubmeter2")));
+							.getProperty("corpoAtribuirPareceristaDiretor2") + " "
+							+usuario.getNome()+" "
+							+prop.getProperty("corpoAtribuirPareceristaDiretor3")));
 
 			mailer.sendMail(
 					projeto.getAutor().getEmail(),
 					(prop.getProperty("assunto") + " " + projeto.getNome()),
-					(prop.getProperty("corpoSubmeter") + " "
+					(prop.getProperty("corpoAtribuirPareceristaCoordenador") + " "
 							+ projeto.getNome() + " " + prop
-							.getProperty("corpoSubmeter2")));
+							.getProperty("corpoAtribuirPareceristaCoordenador2")));
 		}
 
 		serviceParecer.save(parecer);
