@@ -1,4 +1,3 @@
-
 package br.com.ufc.quixada.npi.gpa.controller;
 
 import java.io.IOException;
@@ -32,7 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.ufc.quixada.npi.gpa.model.Documento;
 import br.com.ufc.quixada.npi.gpa.model.Parecer;
-import br.com.ufc.quixada.npi.gpa.model.Parecer.StatusParecer;
+import br.com.ufc.quixada.npi.gpa.model.Parecer.StatusPosicionamento;
 import br.com.ufc.quixada.npi.gpa.model.Projeto;
 import br.com.ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import br.com.ufc.quixada.npi.gpa.model.Usuario;
@@ -267,9 +266,9 @@ public class ProjetoController {
 		}
 
 		if (status.equals("favorável")) {
-			parecer.setStatus(StatusParecer.FAVORAVEL);
+			parecer.setStatus(StatusPosicionamento.FAVORAVEL);
 		} else {
-			parecer.setStatus(StatusParecer.NAO_FAVORAVEL);
+			parecer.setStatus(StatusPosicionamento.NAO_FAVORAVEL);
 		}
 
 		parecer.setComentario(comentario);
@@ -701,6 +700,5 @@ public class ProjetoController {
 			}
 		}
 	}
-
 }
 

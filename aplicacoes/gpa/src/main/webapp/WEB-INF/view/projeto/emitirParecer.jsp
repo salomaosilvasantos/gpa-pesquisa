@@ -33,7 +33,7 @@
 					
 					
 					<div class="form-group">
-						<label for="parecer" class="col-sm-2 control-label">Parecer:</label>
+						<label for="posicionamento" class="col-sm-2 control-label">Posicionamento:</label>
 						<div class="col-sm-10 files">
 							<select name="statusParecer">
 								<option id="favoravel" name="favoravel" class="form-control">Favorável</option>
@@ -43,9 +43,9 @@
 					</div>
 		
 					<div class="form-group">
-						<label for="comentario" class="col-sm-2 control-label">Comentário:</label>
+						<label for="parecer" class="col-sm-2 control-label">Parecer:</label>
 						<div class="col-sm-10">
-							<textarea id="comentario" name="comentario" class="form-control" rows="8" placeholder="Comentário" required="required" required title="Preencha"></textarea>
+							<textarea id="parecer" name="parecer" class="form-control" rows="8" placeholder="Parecer" required="required" required title="Preencha"></textarea>
 						</div>
 					</div>
 					
