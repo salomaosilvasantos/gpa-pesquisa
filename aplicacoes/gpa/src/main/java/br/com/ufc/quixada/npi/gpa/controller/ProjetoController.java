@@ -643,6 +643,12 @@ public class ProjetoController {
 					"A data de início deve ser antes da data de término");
 			valid = false;
 		}
+		
+		if (projeto.getDocumentos().isEmpty()) {
+			model.addAttribute("error_documento", "Arquivo obrigatório");
+			valid = false;
+		}
+		
 		if (projeto.getDescricao().isEmpty()) {
 			model.addAttribute("error_descricao", "Campo obrigatório");
 			valid = false;
