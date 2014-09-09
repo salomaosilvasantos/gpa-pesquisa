@@ -14,8 +14,6 @@ import javax.persistence.ManyToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import br.com.ufc.quixada.npi.gpa.enumerator.StatusParecer;
-
 @Entity
 public class Parecer {
 	
@@ -24,12 +22,12 @@ public class Parecer {
 	private Long id;
 	
 	@Enumerated(EnumType.STRING)
-	private StatusParecer status;
+	private StatusPosicionamento status;
 	
 	@Lob
 	private String comentario;
 	
-	private String parecer;
+	private String posicionamento;
 	
 	@DateTimeFormat(pattern = "dd/mm/yyyy")
 	private Date dataAtribuicao;
@@ -39,6 +37,10 @@ public class Parecer {
 	
 	@DateTimeFormat(pattern = "dd/mm/yyyy")
 	private Date prazo;
+	
+	@ManyToOne
+	@JoinColumn(name="documento_id")
+	private Documento documento;
 	
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
@@ -51,22 +53,23 @@ public class Parecer {
 	public Parecer(){
 		super();
 	}
-	
-	public Parecer(Long id, StatusParecer status,
-			String comentario, String parecer, Date dataAtribuicao,
-			Date dataRealizacao, Date prazo, Usuario usuario, Projeto projeto) {
+
+	public Parecer(Long id, StatusPosicionamento status, String comentario,
+			String posicionamento, Date dataAtribuicao, Date dataRealizacao,
+			Date prazo, Documento documento, Usuario usuario, Projeto projeto) {
 		super();
 		this.id = id;
 		this.status = status;
 		this.comentario = comentario;
-		this.parecer = parecer;
+		this.posicionamento = posicionamento;
 		this.dataAtribuicao = dataAtribuicao;
 		this.dataRealizacao = dataRealizacao;
 		this.prazo = prazo;
+		this.documento = documento;
 		this.usuario = usuario;
 		this.projeto = projeto;
-		
 	}
+
 
 	public Long getId() {
 		return id;
@@ -76,28 +79,28 @@ public class Parecer {
 		this.id = id;
 	}
 
-	public StatusParecer getStatus() {
+	public StatusPosicionamento getStatus() {
 		return status;
 	}
 
-	public void setStatus(StatusParecer status) {
+	public void setStatus(StatusPosicionamento status) {
 		this.status = status;
 	}
 
 	public String getComentario() {
 		return comentario;
 	}
+	
+	public Documento getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(Documento documento) {
+		this.documento = documento;
+	}
 
 	public void setComentario(String comentario) {
 		this.comentario = comentario;
-	}
-
-	public String getParecer() {
-		return parecer;
-	}
-
-	public void setParecer(String parecer) {
-		this.parecer = parecer;
 	}
 
 	public Date getDataAtribuicao() {
@@ -140,12 +143,27 @@ public class Parecer {
 		this.projeto = projeto;
 	}
 
+	public String getPosicionamento() {
+		return posicionamento;
+	}
+
+	public void setPosicionamento(String posicionamento) {
+		this.posicionamento = posicionamento;
+	}
+
 	@Override
 	public String toString() {
-		return "Parecer [id=" + id + ", statusParecer=" + status
-				+ ", comentarioDiretor=" + comentario + ", parecer="
-				+ parecer + ", dataAtribuicao=" + dataAtribuicao
-				+ ", dataRealizacao=" + dataRealizacao + ", prazo=" + prazo
-				+ ", usuario=" + usuario + ", projeto=" + projeto + "]";
+		return "Parecer [id=" + id + ", status=" + status + ", comentario="
+				+ comentario + ", posicionamento=" + posicionamento
+				+ ", dataAtribuicao=" + dataAtribuicao + ", dataRealizacao="
+				+ dataRealizacao + ", prazo=" + prazo + ", documento="
+				+ documento + ", usuario=" + usuario + ", projeto=" + projeto
+				+ "]";
+	}
+
+
+
+	public enum StatusPosicionamento {
+		FAVORAVEL , NAO_FAVORAVEL;
 	}
 }
