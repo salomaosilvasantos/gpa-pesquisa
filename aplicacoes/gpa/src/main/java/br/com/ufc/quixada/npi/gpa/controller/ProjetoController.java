@@ -89,6 +89,22 @@ public class ProjetoController {
 		if (result.hasErrors()) {
 			return ("projeto/cadastrar");
 		}
+		
+		if (projeto.getTermino() != null
+				&& comparaDatas(new Date(), projeto.getTermino()) > 0) {
+			result.rejectValue("termino", "error.projeto",
+					"Somente data futura");
+			return "projeto/editar";
+		}
+		if (projeto.getTermino() != null
+				&& projeto.getInicio() != null
+				&& comparaDatas(projeto.getInicio(),
+						projeto.getTermino()) > 0) {
+			result.rejectValue("inicio", "error.projeto",
+					"A data de início deve ser antes da data de término.");
+			return "projeto/editar";
+		}		
+		
 		projeto.setAutor(getUsuarioLogado(session));
 		projeto.setStatus(StatusProjeto.NOVO);
 		this.serviceProjeto.save(projeto);

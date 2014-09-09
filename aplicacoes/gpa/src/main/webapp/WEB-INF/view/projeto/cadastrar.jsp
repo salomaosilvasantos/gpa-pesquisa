@@ -49,6 +49,11 @@
 							<div class="error-validation">
 								<form:errors path="inicio"></form:errors>
 							</div>
+							<c:if test="${not empty error_inicio}">
+								<div class="error-validation">
+									<span>${error_inicio}</span>
+								</div>
+							</c:if>
 						</div>
 						
 						<label for="termino" class="col-sm-2 control-label">Término:</label>
@@ -57,6 +62,11 @@
 							<div class="error-validation">
 								<form:errors path="termino"></form:errors>
 							</div>
+							<c:if test="${not empty error_termino}">
+								<div class="error-validation">
+									<span>${error_termino}</span>
+								</div>
+							</c:if>							
 						</div>
 						
 						<label for="bolsas" class="col-sm-2 control-label">Número de bolsas:</label>
