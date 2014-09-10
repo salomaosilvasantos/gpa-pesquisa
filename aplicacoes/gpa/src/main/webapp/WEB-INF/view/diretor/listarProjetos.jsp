@@ -45,8 +45,7 @@
 				data-toggle="tab">Meus Projetos</a></li>
 			<li><a href="#projetos-submetidos" role="tab" data-toggle="tab">Projetos
 					Submetidos</a></li>
-			<li><a href="#pareceres-atribuidos" role="tab" data-toggle="tab">Pareceres
-					Atribuidos</a></li>
+			<!-- <li><a href="#pareceres-atribuidos" role="tab" data-toggle="tab">Aguardando Parecer</a></li>-->
 		</ul>
 
 		<div class="tab-content">
@@ -142,18 +141,26 @@
 									<th>Nome</th>
 									<th>Autor</th>
 									<th>Status</th>
+									
+									<th>Atribuição</th>
+									<th>Prazo</th>
+									
 									<th id="acoes">Ações</th>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach var="projeto" items="${projetosSubmetidos}">
-									<c:if test="${projeto.status == 'SUBMETIDO'}">
 										<tr class="linha">
 											<td>${projeto.codigo}</td>
 											<td><a
 												href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
 											<td>${projeto.autor.nome}</td>
 											<td class="status">${projeto.status.descricao}</td>
+											
+											<td>${projeto.pareceres[0].usuario.nome}</td>
+											
+											<td><fmt:formatDate pattern="dd-MM-yyyy" value="${projeto.pareceres[0].prazo}" /></td>
+											
 											<td><c:if test="${projeto.status == 'SUBMETIDO'}">
 													<a id="atribuirParecerista"
 														href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
@@ -165,7 +172,6 @@
 												</c:if></td>
 										</tr>
 
-									</c:if>
 								</c:forEach>
 							</tbody>
 						</table>
@@ -173,7 +179,7 @@
 				</c:if>
 			</div>
 
-			<!-- Pareceres Atribuidos -->
+			<!-- Aguardando Parecer
 			<div class="tab-pane" id="pareceres-atribuidos">
 				<c:if test="${empty projetosSubmetidos}">
 					<div class="alert alert-warning" role="alert">Não há
@@ -185,7 +191,7 @@
 							<h4>Pareceres Atribuidos</h4>
 						</div>
 
-						<!-- Table -->
+						
 						<table class="table" id="table">
 							<thead>
 								<tr>
@@ -213,7 +219,7 @@
 						</table>
 					</div>
 				</c:if>
-			</div>
+			</div> -->
 
 		</div>
 	</div>
