@@ -442,8 +442,9 @@ public class ProjetoController {
 	@RequestMapping(value = "submeter", method = RequestMethod.POST)
 	public String submeterProjeto(
 			@ModelAttribute(value = "projeto") Projeto proj,
+			@RequestParam("file") MultipartFile[] files,
 			BindingResult result, Model model, HttpSession session,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes) throws IOException {
 		Projeto projeto = serviceProjeto.find(Projeto.class, proj.getId());
 		Pessoa usuario = getUsuarioLogado(session);
 		if (projeto == null) {
@@ -454,7 +455,21 @@ public class ProjetoController {
 
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
-			if (validaSubmissao(proj, model)) {
+			
+			for (MultipartFile mpf : files) {
+				if (mpf.getBytes().length > 0) {
+					Documento documento = new Documento();
+					documento.setNomeOriginal(mpf.getOriginalFilename());
+					documento.setTipo(mpf.getContentType());
+					documento.setProjeto(projeto);
+					documento.setArquivo(mpf.getBytes());
+					serviceDocumento.save(documento);
+			
+				}
+
+			}
+			
+			if (validaSubmissao(projeto, model)) {
 				projeto.setNome(proj.getNome());
 				projeto.setDescricao(proj.getDescricao());
 				projeto.setInicio(proj.getInicio());
