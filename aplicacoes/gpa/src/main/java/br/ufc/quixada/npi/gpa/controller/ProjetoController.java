@@ -195,7 +195,7 @@ public class ProjetoController {
 			@PathVariable("id") long id,
 			@PathVariable("parecerId") long parecerId,
 			@RequestParam("file") MultipartFile[] files,
-			@RequestParam("comentario") String comentario,
+			@RequestParam("parecer") String comentario,
 			@RequestParam("statusParecer") String status,
 			@ModelAttribute(value = "parecer") Parecer parecer,
 			BindingResult result, HttpSession session,
@@ -486,6 +486,9 @@ public class ProjetoController {
 				.getProjetosByUsuario(getUsuarioLogado(session).getId()));
 		modelMap.addAttribute("projetosAguardandoParecer",
 				serviceProjeto.getProjetosAguardandoParecer());
+		
+		modelMap.addAttribute("projetosAvaliados", serviceProjeto.getProjetosAvaliados());
+		
 		if (serviceUsuario.isDiretor(getUsuarioLogado(session))) {
 			modelMap.addAttribute("projetosSubmetidos",
 					serviceProjeto.getProjetosSubmetidos());
