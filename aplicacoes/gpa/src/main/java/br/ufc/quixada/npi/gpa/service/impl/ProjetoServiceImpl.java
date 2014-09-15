@@ -41,4 +41,9 @@ public class ProjetoServiceImpl extends GenericServiceImpl<Projeto> implements
 		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where p.status = 'AGUARDANDO_PARECER'", null);
 	}
 
+
+	@Override
+	public List<Projeto> getProjetosAvaliados() {
+		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where (p.status = 'APROVADO') OR (p.status = 'REPROVADO') OR (p.status = 'APROVADO_COM_RESTRICAO')" , null);
+}
 }
