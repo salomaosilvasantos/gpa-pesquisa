@@ -89,22 +89,20 @@ public class ProjetoController {
 		if (result.hasErrors()) {
 			return ("projeto/cadastrar");
 		}
-		
+
 		if (projeto.getTermino() != null
 				&& comparaDatas(new Date(), projeto.getTermino()) > 0) {
 			result.rejectValue("termino", "error.projeto",
 					"Somente data futura");
 			return "projeto/editar";
 		}
-		if (projeto.getTermino() != null
-				&& projeto.getInicio() != null
-				&& comparaDatas(projeto.getInicio(),
-						projeto.getTermino()) > 0) {
+		if (projeto.getTermino() != null && projeto.getInicio() != null
+				&& comparaDatas(projeto.getInicio(), projeto.getTermino()) > 0) {
 			result.rejectValue("inicio", "error.projeto",
 					"A data de início deve ser antes da data de término.");
 			return "projeto/editar";
-		}		
-		
+		}
+
 		projeto.setAutor(getUsuarioLogado(session));
 		projeto.setStatus(StatusProjeto.NOVO);
 		this.serviceProjeto.save(projeto);
@@ -396,29 +394,29 @@ public class ProjetoController {
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
 			if (validaSubmissao(projeto, model)) {
 
-				if (serviceUsuario.isDiretor(projeto.getAutor())) {
-					mailer.sendMail(
-							diretor.getEmail(),
-							(prop.getProperty("assunto") + " " + projeto
-									.getNome()),
-							(prop.getProperty("corpoSubmeter") + " "
-									+ projeto.getNome() + " " + prop
-									.getProperty("corpoSubmeter2")));
-				} else {
-					mailer.sendMail(
-							usuario.getEmail(),
-							(prop.getProperty("assunto") + " " + projeto
-									.getNome()),
-							(prop.getProperty("corpoSubmeter") + " "
-									+ projeto.getNome() + " " + prop
-									.getProperty("corpoSubmeter2")));
-					mailer.sendMail(
-							diretor.getEmail(),
-							(prop.getProperty("assunto") + " " + projeto
-									.getNome()),
-							(prop.getProperty("corpoSubmeter") + " "
-									+ projeto.getNome() + " " + prop
-									.getProperty("corpoSubmeter2")));
+				if (prop.getProperty("enviarEmail").equals("true")) {
+
+					if (serviceUsuario.isDiretor(projeto.getAutor())) {
+						mailer.sendMail(diretor.getEmail(),
+								(prop.getProperty("assunto") + " " + projeto
+										.getNome()),
+								(prop.getProperty("corpoSubmeter") + " "
+										+ projeto.getNome() + " " + prop
+										.getProperty("corpoSubmeter2")));
+					} else {
+						mailer.sendMail(usuario.getEmail(),
+								(prop.getProperty("assunto") + " " + projeto
+										.getNome()),
+								(prop.getProperty("corpoSubmeter") + " "
+										+ projeto.getNome() + " " + prop
+										.getProperty("corpoSubmeter2")));
+						mailer.sendMail(diretor.getEmail(),
+								(prop.getProperty("assunto") + " " + projeto
+										.getNome()),
+								(prop.getProperty("corpoSubmeter") + " "
+										+ projeto.getNome() + " " + prop
+										.getProperty("corpoSubmeter2")));
+					}
 				}
 
 				projeto.setStatus(StatusProjeto.SUBMETIDO);
@@ -486,9 +484,10 @@ public class ProjetoController {
 				.getProjetosByUsuario(getUsuarioLogado(session).getId()));
 		modelMap.addAttribute("projetosAguardandoParecer",
 				serviceProjeto.getProjetosAguardandoParecer());
-		
-		modelMap.addAttribute("projetosAvaliados", serviceProjeto.getProjetosAvaliados());
-		
+
+		modelMap.addAttribute("projetosAvaliados",
+				serviceProjeto.getProjetosAvaliados());
+
 		if (serviceUsuario.isDiretor(getUsuarioLogado(session))) {
 			modelMap.addAttribute("projetosSubmetidos",
 					serviceProjeto.getProjetosSubmetidos());
@@ -661,12 +660,12 @@ public class ProjetoController {
 					"A data de início deve ser antes da data de término");
 			valid = false;
 		}
-		
+
 		if (projeto.getDocumentos().isEmpty()) {
 			model.addAttribute("error_documento", "Arquivo obrigatório");
 			valid = false;
 		}
-		
+
 		if (projeto.getDescricao().isEmpty()) {
 			model.addAttribute("error_descricao", "Campo obrigatório");
 			valid = false;
@@ -720,4 +719,3 @@ public class ProjetoController {
 		}
 	}
 }
-
