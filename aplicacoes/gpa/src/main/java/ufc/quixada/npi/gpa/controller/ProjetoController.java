@@ -1,5 +1,6 @@
 package ufc.quixada.npi.gpa.controller;
 
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,9 +32,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.gpa.model.Documento;
 import ufc.quixada.npi.gpa.model.Parecer;
+import ufc.quixada.npi.gpa.model.Parecer.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
-import ufc.quixada.npi.gpa.model.Parecer.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.DocumentoService;
 import ufc.quixada.npi.gpa.service.ParecerService;
@@ -41,6 +42,7 @@ import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.UsuarioService;
 import ufc.quixada.npi.gpa.service.impl.EmailService;
 import ufc.quixada.npi.gpa.utils.Constants;
+
 
 @Component
 @Controller
@@ -442,8 +444,9 @@ public class ProjetoController {
 	@RequestMapping(value = "submeter", method = RequestMethod.POST)
 	public String submeterProjeto(
 			@ModelAttribute(value = "projeto") Projeto proj,
+			@RequestParam("file") MultipartFile[] files,
 			BindingResult result, Model model, HttpSession session,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes) throws IOException {
 		Projeto projeto = serviceProjeto.find(Projeto.class, proj.getId());
 		Pessoa usuario = getUsuarioLogado(session);
 		if (projeto == null) {
@@ -454,7 +457,27 @@ public class ProjetoController {
 
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
-			if (validaSubmissao(proj, model)) {
+			
+			if (validaSubmissao(projeto, model) || !files.equals(null)) {
+				
+				
+			for (MultipartFile mpf : files) {
+				if (mpf.getBytes().length > 0) {
+					Documento documento = new Documento();
+					documento.setNomeOriginal(mpf.getOriginalFilename());
+					documento.setTipo(mpf.getContentType());
+					documento.setProjeto(projeto);
+					documento.setArquivo(mpf.getBytes());
+					serviceDocumento.save(documento);
+			
+				} else{
+					redirectAttributes.addFlashAttribute("error_documento", "Arquivo obrigatório");
+					return "redirect:/projeto/"+projeto.getId()+"/submeter";
+				}
+
+			}
+			
+
 				projeto.setNome(proj.getNome());
 				projeto.setDescricao(proj.getDescricao());
 				projeto.setInicio(proj.getInicio());
