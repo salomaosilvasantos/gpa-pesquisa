@@ -128,12 +128,22 @@
 					<div class="form-group">
 						<label for="participantes" class="col-sm-2 control-label">Participantes:</label>
 						<div class="col-sm-10">
-							<form:input id="participantes" path="participantes" cssClass="form-control" placeholder="Participantes do projeto"/>
 							<c:if test="${not empty error_participantes}">
 								<div class="error-validation">
 									<span>${error_participantes}</span>
-								</div>
+								</div>	
 							</c:if>
+					
+				    <form:input id="participantes" list="listaParticipantes" path="" cssClass="form-control" placeholder="Participantes do projeto"/>
+					
+					<datalist id = "listaParticipantes">
+					
+					<c:forEach items="${participantes}" var="participante">
+							<option value="${participante.nome}">
+		            </c:forEach>
+					
+					</datalist>
+				
 						</div>
 					</div>
 					

@@ -81,13 +81,15 @@
 							<form:input id="local" path="local" cssClass="form-control" placeholder="Local do projeto"/>
 						</div>
 					</div>
-					
+					<!--  
 					<div class="form-group">
 						<label for="participantes" class="col-sm-2 control-label">Participantes:</label>
 						<div class="col-sm-10">
 							<form:input id="participantes" path="participantes" cssClass="form-control" placeholder="Participantes do projeto"/>
 						</div>
 					</div>
+					-->
+					
 					
 					<div class="form-group">
 						<label for="atividades" class="col-sm-2 control-label">Atividades:</label>

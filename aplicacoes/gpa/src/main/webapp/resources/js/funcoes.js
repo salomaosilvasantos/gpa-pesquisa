@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	
 	$('div.error-validation:has(span)').find('span').css('color', '#a94442');
 	$('div.error-validation:has(span)').find('span').parent().parent().parent().addClass('has-error has-feedback');
 	
@@ -64,5 +65,11 @@ $(document).ready(function() {
 	$('.delete-file').click(function(){
 		alert($(this).attr('id'));
 	});
+	
+	$( "#participantes" ).autocomplete({
+		  source: [ "c++", "java", "php", "coldfusion", "javascript", "asp", "ruby" ]
+		});
+	
+	
 	
 });

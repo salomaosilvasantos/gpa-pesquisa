@@ -22,7 +22,6 @@ public class Pessoa {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	
 	@Column(nullable = false)
 	private String login;
 	
@@ -47,6 +46,10 @@ public class Pessoa {
 	private String nome;
 	
 	private String email;
+	
+	@ManyToMany
+	@JoinColumn(name = "projeto_id")
+	private List<Projeto> projetoParticipante;
 	
 	public Pessoa(){
 		super();
@@ -79,6 +82,13 @@ public class Pessoa {
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	
+	public List<Projeto> getProjetoParticipante() {
+		return projetoParticipante;
+	}
+	public void setProjetoParticipante(List<Projeto> projetoParticipante) {
+		this.projetoParticipante = projetoParticipante;
 	}
 	
 	public String getEmail() {

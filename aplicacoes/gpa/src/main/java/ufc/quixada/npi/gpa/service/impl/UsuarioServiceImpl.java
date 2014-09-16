@@ -59,4 +59,12 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Pessoa> implements Us
 		return diretor;
 	}
 
+	@Override
+	public List<Pessoa> getParticipantes() {
+		
+		List<Pessoa> participantes = usuarioRepository.find(Pessoa.class);
+		
+		return participantes;
+	}
+
 }

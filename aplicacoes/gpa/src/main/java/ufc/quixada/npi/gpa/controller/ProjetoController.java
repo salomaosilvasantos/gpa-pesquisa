@@ -84,6 +84,7 @@ public class ProjetoController {
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
 	public String adicionarProjeto(
 			@Valid @ModelAttribute("projeto") Projeto projeto,
+			//@RequestParam("participantes") String[] pessoasParticipantes,
 			BindingResult result, HttpSession session,
 			RedirectAttributes redirect) {
 		if (result.hasErrors()) {
@@ -157,7 +158,9 @@ public class ProjetoController {
 				&& !projeto.getStatus()
 						.equals(StatusProjeto.AGUARDANDO_PARECER)) {
 			model.addAttribute("projeto", projeto);
+			model.addAttribute("participantes", serviceUsuario.getParticipantes());
 			model.addAttribute("action", "editar");
+			
 			return "projeto/editar";
 		}
 
