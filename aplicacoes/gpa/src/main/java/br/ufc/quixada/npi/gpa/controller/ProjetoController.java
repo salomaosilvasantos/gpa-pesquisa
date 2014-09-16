@@ -456,7 +456,9 @@ public class ProjetoController {
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
 			
-			if (validaSubmissao(projeto, model)) {	
+			if (validaSubmissao(projeto, model) || !files.equals(null)) {
+				
+				
 			for (MultipartFile mpf : files) {
 				if (mpf.getBytes().length > 0) {
 					Documento documento = new Documento();
