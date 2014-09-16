@@ -525,11 +525,11 @@ public class ProjetoController {
 
 		Long projetoId = Long.parseLong(request.getParameter("projetoId"));
 		Long parecerista = Long.parseLong(request.getParameter("parecerista"));
-		String comentario = request.getParameter("comentario");
+		String observacao = request.getParameter("observacao");
 
 		Projeto projeto = serviceProjeto.find(Projeto.class, projetoId);
 		redirect.addFlashAttribute("parecerista", parecerista);
-		redirect.addFlashAttribute("comentario", comentario);
+		redirect.addFlashAttribute("observacao", observacao);
 		redirect.addFlashAttribute("projetoId", projetoId);
 		redirect.addFlashAttribute("usuarios",
 				serviceUsuario.getPareceristas(projeto.getAutor().getId()));
@@ -564,7 +564,7 @@ public class ProjetoController {
 		parecer.setProjeto(projeto);
 		parecer.setUsuario(usuario);
 		parecer.setDataAtribuicao(new Date());
-		parecer.setComentario(comentario);
+		parecer.setComentario(observacao);
 		parecer.setPrazo(prazo);
 
 		Usuario diretor = serviceUsuario.getDiretor();
