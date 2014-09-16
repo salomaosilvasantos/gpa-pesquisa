@@ -3,8 +3,10 @@ package ufc.quixada.npi.gpa.controller;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.inject.Inject;
@@ -136,6 +138,14 @@ public class ProjetoController {
 				|| (serviceUsuario.isDiretor(usuario) && !projeto.getStatus()
 						.equals(StatusProjeto.NOVO))) {
 			model.addAttribute("projeto", projeto);
+			//teste
+			List<String> participantes = new ArrayList<String>();
+			participantes.add("Pessoa 1");
+			participantes.add("Pessoa 2");
+			participantes.add("Pessoa 3");
+			participantes.add("dd");
+			model.addAttribute("participantes", participantes);
+			//teste
 			return "projeto/detalhes";
 		} else {
 			redirectAttributes.addFlashAttribute("erro", "Permissão negada.");
