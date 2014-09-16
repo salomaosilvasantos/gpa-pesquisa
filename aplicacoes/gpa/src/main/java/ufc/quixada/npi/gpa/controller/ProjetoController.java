@@ -458,7 +458,7 @@ public class ProjetoController {
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
 			
-			if (validaSubmissao(projeto, model) || !files.equals(null)) {
+			if (validaSubmissao(projeto, model) || files != null) {
 				
 			try{
 				for (MultipartFile mpf : files) {
