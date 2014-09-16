@@ -446,7 +446,7 @@ public class ProjetoController {
 			@ModelAttribute(value = "projeto") Projeto proj,
 			@RequestParam("file") MultipartFile[] files,
 			BindingResult result, Model model, HttpSession session,
-			RedirectAttributes redirectAttributes) throws IOException {
+			RedirectAttributes redirectAttributes) {
 		Projeto projeto = serviceProjeto.find(Projeto.class, proj.getId());
 		Pessoa usuario = getUsuarioLogado(session);
 		if (projeto == null) {
@@ -460,22 +460,27 @@ public class ProjetoController {
 			
 			if (validaSubmissao(projeto, model) || !files.equals(null)) {
 				
-				
-			for (MultipartFile mpf : files) {
-				if (mpf.getBytes().length > 0) {
-					Documento documento = new Documento();
-					documento.setNomeOriginal(mpf.getOriginalFilename());
-					documento.setTipo(mpf.getContentType());
-					documento.setProjeto(projeto);
-					documento.setArquivo(mpf.getBytes());
-					serviceDocumento.save(documento);
+			try{
+				for (MultipartFile mpf : files) {
+					if (mpf.getBytes().length > 0) {
+						Documento documento = new Documento();
+						documento.setNomeOriginal(mpf.getOriginalFilename());
+						documento.setTipo(mpf.getContentType());
+						documento.setProjeto(projeto);
+						documento.setArquivo(mpf.getBytes());
+						serviceDocumento.save(documento);
 			
 				} else{
 					redirectAttributes.addFlashAttribute("error_documento", "Arquivo obrigatório");
 					return "redirect:/projeto/"+projeto.getId()+"/submeter";
-				}
+						}
 
+				}
+			}catch(IOException e){
+				redirectAttributes.addFlashAttribute("error_documento", "Ocorreu um erro ao processar o arquivo, tente novamente.");
+				return "redirect:/projeto/"+projeto.getId()+"/submeter";
 			}
+				
 			
 
 				projeto.setNome(proj.getNome());
