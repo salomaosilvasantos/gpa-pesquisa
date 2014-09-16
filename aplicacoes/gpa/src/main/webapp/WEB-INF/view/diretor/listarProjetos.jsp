@@ -178,49 +178,6 @@
 					</div>
 				</c:if>
 			</div>
-
-			<!-- Aguardando Parecer
-			<div class="tab-pane" id="pareceres-atribuidos">
-				<c:if test="${empty projetosSubmetidos}">
-					<div class="alert alert-warning" role="alert">Não há
-						pareceres atribuidos.</div>
-				</c:if>
-				<c:if test="${not empty projetosSubmetidos}">
-					<div class="panel panel-default">
-						<div class="panel-heading" align="center">
-							<h4>Pareceres Atribuidos</h4>
-						</div>
-
-						
-						<table class="table" id="table">
-							<thead>
-								<tr>
-									<th id="teste">Identificador</th>
-									<th>Nome</th>
-									<th>Autor</th>
-									<th>Atribuição</th>
-									<th>Prazo</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach var="projeto" items="${projetosSubmetidos}">
-									<c:if test="${projeto.status == 'AGUARDANDO_PARECER'}">
-										<tr class="linha">
-											<td>${projeto.codigo}</td>
-											<td><a
-												href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
-											<td>${projeto.autor.nome}</td>
-											<td></td>
-											<td></td>
-										</tr>
-									</c:if>
-								</c:forEach>
-							</tbody>
-						</table>
-					</div>
-				</c:if>
-			</div> -->
-
 		</div>
 	</div>
 
