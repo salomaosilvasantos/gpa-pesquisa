@@ -465,7 +465,7 @@ public class ProjetoController {
 		modelMap.addAttribute("projetos", serviceProjeto
 				.getProjetosByUsuario(getUsuarioLogado(session).getId()));
 		modelMap.addAttribute("projetosAguardandoParecer",
-				serviceProjeto.getProjetosAguardandoParecer());
+				serviceProjeto.getProjetosAguardandoParecer(getUsuarioLogado(session).getId()));
 		if (serviceUsuario.isDiretor(getUsuarioLogado(session))) {
 			modelMap.addAttribute("projetosSubmetidos",
 					serviceProjeto.getProjetosSubmetidos());
@@ -696,5 +696,4 @@ public class ProjetoController {
 			}
 		}
 	}
-
 }
