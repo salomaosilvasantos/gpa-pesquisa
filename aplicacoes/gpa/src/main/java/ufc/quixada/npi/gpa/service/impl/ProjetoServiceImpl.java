@@ -36,10 +36,6 @@ public class ProjetoServiceImpl extends GenericServiceImpl<Projeto> implements
 		return projetoRepository.find(QueryType.JPQL, "from Projeto where autor.id = :id", params);
 	}
 	
-	@Override
-	public List<Projeto> getProjetosAguardandoParecer() {
-		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where p.status = 'AGUARDANDO_PARECER'", null);
-	}
 
 	@Override
 	public List<Projeto> getProjetosAvaliadosDoUsuario(Long id) {
@@ -51,5 +47,12 @@ public class ProjetoServiceImpl extends GenericServiceImpl<Projeto> implements
 	@Override
 	public List<Projeto> getProjetosAvaliados() {
 		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where (p.status = 'APROVADO') OR (p.status = 'REPROVADO') OR (p.status = 'APROVADO_COM_RESTRICAO')" , null);
+	}
+
+	@Override
+	public List<Projeto> getProjetosAguardandoParecer(Long id) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		return projetoRepository.find(QueryType.JPQL, "Select p from Projeto as p, Parecer as pa where p.id = pa.id and pa.usuario.id = :id and p.status = 'AGUARDANDO_PARECER'" , params);
 	}
 }

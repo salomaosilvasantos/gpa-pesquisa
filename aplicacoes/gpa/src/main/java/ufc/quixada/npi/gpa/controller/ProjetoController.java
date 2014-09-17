@@ -513,7 +513,7 @@ public class ProjetoController {
 		modelMap.addAttribute("projetos", serviceProjeto
 				.getProjetosByUsuario(getUsuarioLogado(session).getId()));
 		modelMap.addAttribute("projetosAguardandoParecer",
-				serviceProjeto.getProjetosAguardandoParecer());
+				serviceProjeto.getProjetosAguardandoParecer(getUsuarioLogado(session).getId()));
 		
 		modelMap.addAttribute("projetosAvaliados", serviceProjeto.getProjetosAvaliadosDoUsuario(getUsuarioLogado(session).getId()));
 		
