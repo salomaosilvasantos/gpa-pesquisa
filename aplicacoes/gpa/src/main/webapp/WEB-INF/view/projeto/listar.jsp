@@ -174,11 +174,11 @@
 
 			<!-- Projetos Avaliados -->
 			<div class="tab-pane" id="projetos-avaliados">
-				<c:if test="${empty projetos}">
+				<c:if test="${empty projetosAvaliados}">
 					<div class="alert alert-warning" role="alert">Não há projetos
 						Avaliados.</div>
 				</c:if>
-				<c:if test="${not empty projetos}">
+				<c:if test="${not empty projetosAvaliados}">
 					<div class="panel panel-default">
 						<div class="panel-heading" align="center">
 							<h4>Projetos Avaliados</h4>

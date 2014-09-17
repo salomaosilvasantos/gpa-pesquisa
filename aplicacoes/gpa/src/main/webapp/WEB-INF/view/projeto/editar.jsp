@@ -43,7 +43,7 @@
 					<div class="form-group">
 						<label for="nome" class="col-sm-2 control-label">Nome:</label>
 						<div class="col-sm-10">
-							<form:input id="nome" path="nome" cssClass="form-control" placeholder="Nome do projeto"/>
+							<form:input id="nome" path="nome" onchange="TrimNome()" cssClass="form-control" placeholder="Nome do projeto"/>
 							<div class="error-validation">
 								<form:errors path="nome"></form:errors>
 							</div>
@@ -58,7 +58,7 @@
 					<div class="form-group">
 						<label for="descricao" class="col-sm-2 control-label">Descrição:</label>
 						<div class="col-sm-10">
-							<form:textarea id="descricao" path="descricao" name="descricao" class="form-control" rows="5" placeholder="Descrição" ></form:textarea>
+							<form:textarea id="descricao" path="descricao" onchange="TrimDescricao()" name="descricao" class="form-control" rows="5" placeholder="Descrição" ></form:textarea>
 							<div class="error-validation">
 								<form:errors path="descricao"></form:errors>
 							</div>
@@ -198,7 +198,16 @@
 	<jsp:include page="../modulos/footer.jsp" />
 
 </body>
-
+<script>
+	function TrimNome() {
+		var nome = document.getElementById('nome');
+		nome.value = nome.value.trim();
+	}
+	function TrimDescricao() {
+		var descricao = document.getElementById('descricao');
+		descricao.value = descricao.value.trim();
+	}	
+</script>
 
 <script type="text/javascript">
 	/* $(document)
