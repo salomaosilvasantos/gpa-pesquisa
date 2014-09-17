@@ -67,4 +67,14 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Pessoa> implements Us
 		return participantes;
 	}
 
+	@Override
+	public Pessoa getPessoaByNome(String nome) {
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put( "nome", nome);
+		Pessoa pessoa = usuarioRepository.find(QueryType.JPQL, "from Pessoa where nome = :nome", params).get(0);
+		return pessoa;
+	
+	}
+
 }

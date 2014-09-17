@@ -3,8 +3,10 @@ package ufc.quixada.npi.gpa.controller;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.inject.Inject;
@@ -84,28 +86,26 @@ public class ProjetoController {
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
 	public String adicionarProjeto(
 			@Valid @ModelAttribute("projeto") Projeto projeto,
-			//@RequestParam("participantes") String[] pessoasParticipantes,
+			// @RequestParam("participantes") String[] pessoasParticipantes,
 			BindingResult result, HttpSession session,
 			RedirectAttributes redirect) {
 		if (result.hasErrors()) {
 			return ("projeto/cadastrar");
 		}
-		
+
 		if (projeto.getTermino() != null
 				&& comparaDatas(new Date(), projeto.getTermino()) > 0) {
 			result.rejectValue("termino", "error.projeto",
 					"Somente data futura");
 			return "projeto/editar";
 		}
-		if (projeto.getTermino() != null
-				&& projeto.getInicio() != null
-				&& comparaDatas(projeto.getInicio(),
-						projeto.getTermino()) > 0) {
+		if (projeto.getTermino() != null && projeto.getInicio() != null
+				&& comparaDatas(projeto.getInicio(), projeto.getTermino()) > 0) {
 			result.rejectValue("inicio", "error.projeto",
 					"A data de início deve ser antes da data de término.");
 			return "projeto/editar";
-		}		
-		
+		}
+
 		projeto.setAutor(getUsuarioLogado(session));
 		projeto.setStatus(StatusProjeto.NOVO);
 		this.serviceProjeto.save(projeto);
@@ -158,9 +158,10 @@ public class ProjetoController {
 				&& !projeto.getStatus()
 						.equals(StatusProjeto.AGUARDANDO_PARECER)) {
 			model.addAttribute("projeto", projeto);
-			model.addAttribute("participantes", serviceUsuario.getParticipantes());
+			model.addAttribute("participantes",
+					serviceUsuario.getParticipantes());
 			model.addAttribute("action", "editar");
-			
+
 			return "projeto/editar";
 		}
 
@@ -303,10 +304,14 @@ public class ProjetoController {
 	public String atualizarProjeto(
 			@PathVariable("id") Long id,
 			@RequestParam("file") MultipartFile[] files,
+			@RequestParam("participanteSelecionado") String[] listaParticipantes,
 			@Valid @ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result, Model model, HttpSession session,
 			RedirectAttributes redirect) throws IOException {
+		
 
+		System.out.println("LISTA TAMANHO ------------------------------------------ " +listaParticipantes.length);
+		
 		if (result.hasErrors()) {
 			model.addAttribute("action", "editar");
 			return "projeto/editar";
@@ -342,6 +347,21 @@ public class ProjetoController {
 			}
 		}
 
+		List<Pessoa> participantes = new ArrayList<Pessoa>();
+
+		// verificar se todas as pessoas que vem do formulario estao no BD
+		for (String nomePessoa : listaParticipantes) {
+
+			Pessoa p = serviceUsuario.getPessoaByNome(nomePessoa);
+			
+			if (p != null) {
+
+				System.out.println("PESSOA ENCONTRADA ------------------------------------------ " +p);
+				participantes.add(p);
+
+			}
+		}
+
 		projeto.setNome(projetoAtualizado.getNome());
 		projeto.setDescricao(projetoAtualizado.getDescricao());
 		projeto.setInicio(projetoAtualizado.getInicio());
@@ -349,7 +369,7 @@ public class ProjetoController {
 		projeto.setAtividades(projetoAtualizado.getAtividades());
 		projeto.setQuantidadeBolsa(projetoAtualizado.getQuantidadeBolsa());
 		projeto.setLocal(projetoAtualizado.getLocal());
-		projeto.setParticipantes(projetoAtualizado.getParticipantes());
+		if(participantes.size() > 0) projeto.setParticipantes(participantes);
 
 		this.serviceProjeto.update(projeto);
 		redirect.addFlashAttribute("info", "Projeto atualizado com sucesso.");
@@ -489,9 +509,10 @@ public class ProjetoController {
 				.getProjetosByUsuario(getUsuarioLogado(session).getId()));
 		modelMap.addAttribute("projetosAguardandoParecer",
 				serviceProjeto.getProjetosAguardandoParecer());
-		
-		modelMap.addAttribute("projetosAvaliados", serviceProjeto.getProjetosAvaliados());
-		
+
+		modelMap.addAttribute("projetosAvaliados",
+				serviceProjeto.getProjetosAvaliados());
+
 		if (serviceUsuario.isDiretor(getUsuarioLogado(session))) {
 			modelMap.addAttribute("projetosSubmetidos",
 					serviceProjeto.getProjetosSubmetidos());
@@ -664,12 +685,12 @@ public class ProjetoController {
 					"A data de início deve ser antes da data de término");
 			valid = false;
 		}
-		
+
 		if (projeto.getDocumentos().isEmpty()) {
 			model.addAttribute("error_documento", "Arquivo obrigatório");
 			valid = false;
 		}
-		
+
 		if (projeto.getDescricao().isEmpty()) {
 			model.addAttribute("error_descricao", "Campo obrigatório");
 			valid = false;
@@ -723,4 +744,3 @@ public class ProjetoController {
 		}
 	}
 }
-

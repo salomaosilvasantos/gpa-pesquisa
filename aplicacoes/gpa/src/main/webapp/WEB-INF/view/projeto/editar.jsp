@@ -125,7 +125,7 @@
 						</div>
 					</div>
 					
-					<div class="form-group">
+					<div class="form-group" id = "containerParticipantes">
 						<label for="participantes" class="col-sm-2 control-label">Participantes:</label>
 						<div class="col-sm-10">
 							<c:if test="${not empty error_participantes}">
@@ -134,12 +134,13 @@
 								</div>	
 							</c:if>
 					
-				    <form:input id="participantes" list="listaParticipantes" path="" cssClass="form-control" placeholder="Participantes do projeto"/>
+				    <form:input name="participantes" id="participantes" list="listaParticipantes" path="" cssClass="form-control" placeholder="Participantes do projeto"/>
+					<button type = "button" name = "addParticipante" id = "addParticipante">Add Participante</button>					
 					
 					<datalist id = "listaParticipantes">
 					
 					<c:forEach items="${participantes}" var="participante">
-							<option value="${participante.nome}">
+							<option value="${participante.nome}" label="CPF : ${participante.cpf}">
 		            </c:forEach>
 					
 					</datalist>

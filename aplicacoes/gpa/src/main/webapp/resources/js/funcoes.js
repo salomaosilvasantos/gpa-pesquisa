@@ -66,10 +66,15 @@ $(document).ready(function() {
 		alert($(this).attr('id'));
 	});
 	
-	$( "#participantes" ).autocomplete({
-		  source: [ "c++", "java", "php", "coldfusion", "javascript", "asp", "ruby" ]
-		});
+	$('#addParticipante').click(function adicionarParticipante(){
+		//alert('adicionado com sucesso')
 	
-	
+			var nomeParticipante = $("#participantes").val();
+		
+		    $("#containerParticipantes").append('<br>' +nomeParticipante
+		    	+'<input type="checkbox" name="participanteSelecionado" value = "' +nomeParticipante
+		    	+'" checked="checked" "> <br>');
+			 
+	});
 	
 });
