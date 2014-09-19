@@ -248,5 +248,9 @@ public class Projeto {
 			return this.descricao;
 		}
 	}
+	
+	public enum Evento {
+		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO
+	}
 
 }
