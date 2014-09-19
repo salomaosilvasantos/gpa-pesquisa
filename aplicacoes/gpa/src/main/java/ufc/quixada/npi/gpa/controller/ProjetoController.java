@@ -226,60 +226,6 @@ public class ProjetoController {
 
 		}
 
-		/*Pessoa diretor = serviceUsuario.getDiretor();
-
-		Properties prop = getProp();
-		if (prop.getProperty("enviarEmail").equals("true")) {
-			if (serviceUsuario.isDiretor(projeto.getAutor())) {
-				mailer.sendMail(
-						parecer.getUsuario().getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoEmitirParecerParecerista")
-								+ " " + projeto.getNome() + " " + prop
-								.getProperty("corpoEmitirParecerParecerista2")));
-				mailer.sendMail(
-						diretor.getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoEmitirParecerDiretor")
-								+ " "
-								+ projeto.getNome()
-								+ " "
-								+ prop.getProperty("corpoEmitirParecerDiretor2")
-								+ " " + parecer.getUsuario().getNome() + " " + prop
-								.getProperty("corpoEmitirParecerDiretor3")));
-
-			} else {
-				mailer.sendMail(
-						parecer.getUsuario().getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoEmitirParecerParecerista")
-								+ " " + projeto.getNome() + " " + prop
-								.getProperty("corpoEmitirParecerParecerista2")));
-
-				mailer.sendMail(
-						diretor.getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoEmitirParecerDiretor")
-								+ " "
-								+ projeto.getNome()
-								+ " "
-								+ prop.getProperty("corpoEmitirParecerDiretor2")
-								+ " " + parecer.getUsuario().getNome() + " " + prop
-								.getProperty("corpoEmitirParecerDiretor3")));
-
-				mailer.sendMail(
-						projeto.getAutor().getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoEmitirParecerCoordenador")
-								+ " "
-								+ projeto.getNome()
-								+ " "
-								+ prop.getProperty("corpoEmitirParecerCoordenador2")
-								+ " " + parecer.getUsuario().getNome() + " " + prop
-								.getProperty("corpoEmitirParecerCoordenador3")));
-			}
-		}*/
-
 		if (status.equals("favorável")) {
 			parecer.setStatus(StatusPosicionamento.FAVORAVEL);
 		} else {
@@ -581,61 +527,6 @@ public class ProjetoController {
 		parecer.setDataAtribuicao(new Date());
 		parecer.setComentario(comentario);
 		parecer.setPrazo(prazo);
-
-		/*Pessoa diretor = serviceUsuario.getDiretor();
-
-		Properties prop = getProp();
-		if (prop.getProperty("enviarEmail").equals("true")) {
-			if (serviceUsuario.isDiretor(projeto.getAutor())) {
-				mailer.sendMail(
-						usuario.getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoAtribuirPareceristaParecerista")
-								+ " "
-								+ projeto.getNome()
-								+ " "
-								+ prop.getProperty("corpoAtribuirPareceristaParecerista2")
-								+ " " + parecer.getPrazo()));
-				mailer.sendMail(
-						diretor.getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoAtribuirPareceristaDiretor")
-								+ " "
-								+ projeto.getNome()
-								+ " "
-								+ prop.getProperty("corpoAtribuirPareceristaDiretor2")
-								+ " " + usuario.getNome() + " " + prop
-								.getProperty("corpoAtribuirPareceristaDiretor3")));
-			} else {
-				mailer.sendMail(
-						usuario.getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoAtribuirPareceristaParecerista")
-								+ " "
-								+ projeto.getNome()
-								+ " "
-								+ prop.getProperty("corpoAtribuirPareceristaParecerista2")
-								+ " " + parecer.getPrazo()));
-
-				mailer.sendMail(
-						diretor.getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoAtribuirPareceristaDiretor")
-								+ " "
-								+ projeto.getNome()
-								+ " "
-								+ prop.getProperty("corpoAtribuirPareceristaDiretor2")
-								+ " " + usuario.getNome() + " " + prop
-								.getProperty("corpoAtribuirPareceristaDiretor3")));
-
-				mailer.sendMail(
-						projeto.getAutor().getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoAtribuirPareceristaCoordenador")
-								+ " " + projeto.getNome() + " " + prop
-								.getProperty("corpoAtribuirPareceristaCoordenador2")));
-			}
-		}*/
 
 		serviceParecer.save(parecer);
 		projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);
