@@ -89,17 +89,15 @@ public class ProjetoController {
 		if (result.hasErrors()) {
 			return ("projeto/cadastrar");
 		}
-		
+
 		if (projeto.getTermino() != null
 				&& comparaDatas(new Date(), projeto.getTermino()) > 0) {
 			result.rejectValue("termino", "error.projeto",
 					"Somente data futura");
 			return "projeto/editar";
 		}
-		if (projeto.getTermino() != null
-				&& projeto.getInicio() != null
-				&& comparaDatas(projeto.getInicio(),
-						projeto.getTermino()) > 0) {
+		if (projeto.getTermino() != null && projeto.getInicio() != null
+				&& comparaDatas(projeto.getInicio(), projeto.getTermino()) > 0) {
 			result.rejectValue("inicio", "error.projeto",
 					"A data de início deve ser antes da data de término.");
 			return "projeto/editar";
@@ -499,6 +497,7 @@ public class ProjetoController {
 					return "redirect:/projeto/" + projeto.getId() + "/submeter";
 				}
 
+
 				projeto.setNome(proj.getNome());
 				projeto.setDescricao(proj.getDescricao());
 				projeto.setInicio(proj.getInicio());
@@ -537,11 +536,14 @@ public class ProjetoController {
 				serviceProjeto.getProjetosAvaliadosDoUsuario(getUsuarioLogado(
 						session).getId()));
 
+
 		if (serviceUsuario.isDiretor(getUsuarioLogado(session))) {
 			modelMap.addAttribute("projetosSubmetidos",
 					serviceProjeto.getProjetosSubmetidos());
+
 			modelMap.addAttribute("projetosAvaliados",
 					serviceProjeto.getProjetosAvaliados());
+
 			return "diretor/listarProjetos";
 		}
 		return "projeto/listar";
