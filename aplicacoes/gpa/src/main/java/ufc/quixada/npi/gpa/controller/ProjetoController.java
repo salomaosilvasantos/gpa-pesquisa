@@ -89,6 +89,19 @@ public class ProjetoController {
 		if (result.hasErrors()) {
 			return ("projeto/cadastrar");
 		}
+		if (projeto.getTermino() != null
+				&& comparaDatas(new Date(), projeto.getTermino()) > 0) {
+			result.rejectValue("termino", "error.projeto",
+					"Somente data futura");
+			return "projeto/editar";
+		}
+		if (projeto.getTermino() != null && projeto.getInicio() != null
+				&& comparaDatas(projeto.getInicio(), projeto.getTermino()) > 0) {
+			result.rejectValue("inicio", "error.projeto",
+					"A data de início deve ser antes da data de término.");
+			return "projeto/editar";
+		}
+
 		projeto.setAutor(getUsuarioLogado(session));
 		projeto.setStatus(StatusProjeto.NOVO);
 		this.serviceProjeto.save(projeto);
@@ -440,6 +453,7 @@ public class ProjetoController {
 	@RequestMapping(value = "submeter", method = RequestMethod.POST)
 	public String submeterProjeto(
 			@ModelAttribute(value = "projeto") Projeto proj,
+			@RequestParam("file") MultipartFile[] files,
 			BindingResult result, Model model, HttpSession session,
 			RedirectAttributes redirectAttributes) {
 		Projeto projeto = serviceProjeto.find(Projeto.class, proj.getId());
@@ -452,7 +466,36 @@ public class ProjetoController {
 
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
-			if (validaSubmissao(proj, model)) {
+
+			if (validaSubmissao(projeto, model) || files != null) {
+
+				try {
+					for (MultipartFile mpf : files) {
+						if (mpf.getBytes().length > 0) {
+							Documento documento = new Documento();
+							documento
+									.setNomeOriginal(mpf.getOriginalFilename());
+							documento.setTipo(mpf.getContentType());
+							documento.setProjeto(projeto);
+							documento.setArquivo(mpf.getBytes());
+							serviceDocumento.save(documento);
+
+						} else {
+							redirectAttributes.addFlashAttribute(
+									"error_documento", "Arquivo obrigatório");
+							return "redirect:/projeto/" + projeto.getId()
+									+ "/submeter";
+						}
+
+					}
+				} catch (IOException e) {
+					redirectAttributes
+							.addFlashAttribute("error_documento",
+									"Ocorreu um erro ao processar o arquivo, tente novamente.");
+					return "redirect:/projeto/" + projeto.getId() + "/submeter";
+				}
+
+
 				projeto.setNome(proj.getNome());
 				projeto.setDescricao(proj.getDescricao());
 				projeto.setInicio(proj.getInicio());
@@ -484,9 +527,20 @@ public class ProjetoController {
 				.getProjetosByUsuario(getUsuarioLogado(session).getId()));
 		modelMap.addAttribute("projetosAguardandoParecer",
 				serviceProjeto.getProjetosAguardandoParecer(getUsuarioLogado(session).getId()));
+
+		modelMap.addAttribute(
+				"projetosAvaliados",
+				serviceProjeto.getProjetosAvaliadosDoUsuario(getUsuarioLogado(
+						session).getId()));
+
+
 		if (serviceUsuario.isDiretor(getUsuarioLogado(session))) {
 			modelMap.addAttribute("projetosSubmetidos",
 					serviceProjeto.getProjetosSubmetidos());
+
+			modelMap.addAttribute("projetosAvaliados",
+					serviceProjeto.getProjetosAvaliados());
+
 			return "diretor/listarProjetos";
 		}
 		return "projeto/listar";
@@ -671,6 +725,12 @@ public class ProjetoController {
 					"A data de início deve ser antes da data de término");
 			valid = false;
 		}
+		
+		if (projeto.getDocumentos().isEmpty()) {
+			model.addAttribute("error_documento", "Arquivo obrigatório");
+			valid = false;
+		}
+		
 		if (projeto.getDescricao().isEmpty()) {
 			model.addAttribute("error_descricao", "Campo obrigatório");
 			valid = false;
