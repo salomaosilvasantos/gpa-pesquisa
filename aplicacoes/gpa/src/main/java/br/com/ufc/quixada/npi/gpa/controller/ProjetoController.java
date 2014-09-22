@@ -1,6 +1,7 @@
 package br.com.ufc.quixada.npi.gpa.controller;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -420,8 +421,9 @@ public class ProjetoController {
 									+ projeto.getNome() + " " + prop
 									.getProperty("corpoSubmeter2")));
 				}
-
+			
 				projeto.setStatus(StatusProjeto.SUBMETIDO);
+				projeto.setSubmissao(new Date(System.currentTimeMillis()));
 				this.serviceProjeto.update(projeto);
 				redirectAttributes.addFlashAttribute("info",
 						"Projeto submetido com sucesso.");

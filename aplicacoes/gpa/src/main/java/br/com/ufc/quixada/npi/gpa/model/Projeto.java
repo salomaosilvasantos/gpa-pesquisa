@@ -35,7 +35,10 @@ public class Projeto {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date termino;
 	
-	@Size(min = 5, message = "Mínimo 5 caracteres")
+    private Date submissao = null;
+	
+
+    @Size(min = 5, message = "Mínimo 5 caracteres")
 	private String descricao;
 	
 	@ManyToOne
@@ -201,6 +204,14 @@ public class Projeto {
 	public void setPareceres(List<Parecer> pareceres) {
 		this.pareceres = pareceres;
 	}
+	
+	public Date getSubmissao() {
+        return submissao;
+    }
+
+    public void setSubmissao(Date submissao) {
+        this.submissao = submissao;
+    }
 
 	@Override
 	public boolean equals(Object obj) {

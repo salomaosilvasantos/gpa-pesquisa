@@ -41,6 +41,17 @@
 						<td class="content"><fmt:formatDate pattern="dd-MM-yyyy"
 								value="${projeto.termino }" /></td>
 					</tr>
+
+					<tr>
+						<td class="head">Submissão:</td>
+
+						<c:if test="${not empty projeto.submissao}">					
+							<td class="content"> <fmt:formatDate pattern="dd-MM-yyyy"
+									value="${projeto.submissao }" /> às <fmt:formatDate
+									pattern="HH:mm" value="${projeto.submissao }" /></td> 
+						</c:if>						
+
+					</tr>
 					<tr>
 						<td class="head">Bolsas:</td>
 						<td class="content">${projeto.quantidadeBolsa }</td>
