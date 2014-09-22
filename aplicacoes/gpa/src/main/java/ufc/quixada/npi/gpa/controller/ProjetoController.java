@@ -393,7 +393,8 @@ public class ProjetoController {
 
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
-			if (validaSubmissao(projeto, model)) {
+			if (validaSubmissao(projeto, model)
+					&& validaSubmissaoAnexo(projeto, model)) {
 
 				if (prop.getProperty("enviarEmail").equals("true")) {
 					if (serviceUsuario.isDiretor(projeto.getAutor())) {
@@ -469,35 +470,6 @@ public class ProjetoController {
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
 
-			if (validaSubmissao(projeto, model) || files != null) {
-
-				try {
-					for (MultipartFile mpf : files) {
-						if (mpf.getBytes().length > 0) {
-							Documento documento = new Documento();
-							documento
-									.setNomeOriginal(mpf.getOriginalFilename());
-							documento.setTipo(mpf.getContentType());
-							documento.setProjeto(projeto);
-							documento.setArquivo(mpf.getBytes());
-							serviceDocumento.save(documento);
-
-						} else {
-							redirectAttributes.addFlashAttribute(
-									"error_documento", "Arquivo obrigatório");
-							return "redirect:/projeto/" + projeto.getId()
-									+ "/submeter";
-						}
-
-					}
-				} catch (IOException e) {
-					redirectAttributes
-							.addFlashAttribute("error_documento",
-									"Ocorreu um erro ao processar o arquivo, tente novamente.");
-					return "redirect:/projeto/" + projeto.getId() + "/submeter";
-				}
-
-
 				projeto.setNome(proj.getNome());
 				projeto.setDescricao(proj.getDescricao());
 				projeto.setInicio(proj.getInicio());
@@ -506,16 +478,54 @@ public class ProjetoController {
 				projeto.setQuantidadeBolsa(proj.getQuantidadeBolsa());
 				projeto.setLocal(proj.getLocal());
 				projeto.setParticipantes(proj.getParticipantes());
-				projeto.setStatus(StatusProjeto.SUBMETIDO);
 				this.serviceProjeto.update(projeto);
-				redirectAttributes.addFlashAttribute("info",
-						"Projeto submetido com sucesso.");
-				return "redirect:/projeto/listar";
-			} else {
+				
+				
+			 
+				if (validaSubmissao(projeto, model)) {
+					
+					try {
+						for (MultipartFile mpf : files) {
+							if (mpf.getBytes().length > 0) {
+								Documento documento = new Documento();
+								documento.setNomeOriginal(mpf.getOriginalFilename());
+								documento.setTipo(mpf.getContentType());
+								documento.setProjeto(projeto);
+								documento.setArquivo(mpf.getBytes());
+								serviceDocumento.save(documento);
+							
+
+							} else {
+								redirectAttributes.addFlashAttribute(
+										"error_documento", "Arquivo obrigatório");
+								return "redirect:/projeto/" + projeto.getId()
+										+ "/submeter";
+							}
+
+						}
+					} catch (IOException e) {
+						redirectAttributes
+								.addFlashAttribute("error_documento",
+										"Ocorreu um erro ao processar o arquivo, tente novamente.");
+						return "redirect:/projeto/" + projeto.getId() + "/submeter";
+					}
+						if(validaSubmissaoAnexo(projeto, model)){
+							projeto.setStatus(StatusProjeto.SUBMETIDO);
+							serviceProjeto.update(projeto);
+							redirectAttributes.addFlashAttribute("info",
+									"Projeto submetido com sucesso.");
+							return "redirect:/projeto/listar";	
+						}else{
+							model.addAttribute("action", "submeter");
+							return "projeto/editar";
+						}
+					
+						
+					} else {
 				model.addAttribute("action", "submeter");
 				return "projeto/editar";
-			}
-
+				}
+				
 		} else {
 			redirectAttributes.addFlashAttribute("erro", "Permissão negada.");
 			return "redirect:/projeto/listar";
@@ -728,12 +738,7 @@ public class ProjetoController {
 					"A data de início deve ser antes da data de término");
 			valid = false;
 		}
-		
-		if (projeto.getDocumentos().isEmpty()) {
-			model.addAttribute("error_documento", "Arquivo obrigatório");
-			valid = false;
-		}
-		
+
 		if (projeto.getDescricao().isEmpty()) {
 			model.addAttribute("error_descricao", "Campo obrigatório");
 			valid = false;
@@ -752,6 +757,16 @@ public class ProjetoController {
 		}
 		if (projeto.getParticipantes().isEmpty()) {
 			model.addAttribute("error_participantes", "Campo obrigatório");
+			valid = false;
+		}
+
+		return valid;
+	}
+
+	private boolean validaSubmissaoAnexo(Projeto projeto, Model model) {
+		boolean valid = true;
+		if (projeto.getDocumentos().size() == 0) {
+			model.addAttribute("error_documento", "Arquivo obrigatório");
 			valid = false;
 		}
 
