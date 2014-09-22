@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -34,6 +35,7 @@ public class Projeto {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date termino;
 	
+	@Column(columnDefinition="TEXT")
 	@Size(min = 5, message = "Mínimo 5 caracteres")
 	private String descricao;
 	
