@@ -31,9 +31,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.gpa.model.Documento;
 import ufc.quixada.npi.gpa.model.Parecer;
-import ufc.quixada.npi.gpa.model.Parecer.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
+import ufc.quixada.npi.gpa.model.Parecer.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.DocumentoService;
 import ufc.quixada.npi.gpa.service.ParecerService;
@@ -101,8 +101,8 @@ public class ProjetoController {
 			result.rejectValue("inicio", "error.projeto",
 					"A data de início deve ser antes da data de término.");
 			return "projeto/editar";
-		}
-
+		}		
+		
 		projeto.setAutor(getUsuarioLogado(session));
 		projeto.setStatus(StatusProjeto.NOVO);
 		this.serviceProjeto.save(projeto);
@@ -277,7 +277,8 @@ public class ProjetoController {
 								+ " " + parecer.getUsuario().getNome() + " " + prop
 								.getProperty("corpoEmitirParecerCoordenador3")));
 			}
-		}
+			}
+		
 
 		if (status.equals("favorável")) {
 			parecer.setStatus(StatusPosicionamento.FAVORAVEL);
@@ -468,7 +469,7 @@ public class ProjetoController {
 
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
-			
+
 				projeto.setNome(proj.getNome());
 				projeto.setDescricao(proj.getDescricao());
 				projeto.setInicio(proj.getInicio());
@@ -545,11 +546,14 @@ public class ProjetoController {
 				serviceProjeto.getProjetosAvaliadosDoUsuario(getUsuarioLogado(
 						session).getId()));
 
+
 		if (serviceUsuario.isDiretor(getUsuarioLogado(session))) {
 			modelMap.addAttribute("projetosSubmetidos",
 					serviceProjeto.getProjetosSubmetidos());
+
 			modelMap.addAttribute("projetosAvaliados",
 					serviceProjeto.getProjetosAvaliados());
+
 			return "diretor/listarProjetos";
 		}
 		return "projeto/listar";
@@ -586,11 +590,11 @@ public class ProjetoController {
 
 		Long projetoId = Long.parseLong(request.getParameter("projetoId"));
 		Long parecerista = Long.parseLong(request.getParameter("parecerista"));
-		String comentario = request.getParameter("comentario");
+		String observacao = request.getParameter("observacao");
 
 		Projeto projeto = serviceProjeto.find(Projeto.class, projetoId);
 		redirect.addFlashAttribute("parecerista", parecerista);
-		redirect.addFlashAttribute("comentario", comentario);
+		redirect.addFlashAttribute("observacao", observacao);
 		redirect.addFlashAttribute("projetoId", projetoId);
 		redirect.addFlashAttribute("usuarios",
 				serviceUsuario.getPareceristas(projeto.getAutor().getId()));
@@ -625,7 +629,7 @@ public class ProjetoController {
 		parecer.setProjeto(projeto);
 		parecer.setUsuario(usuario);
 		parecer.setDataAtribuicao(new Date());
-		parecer.setComentario(comentario);
+		parecer.setComentario(observacao);
 		parecer.setPrazo(prazo);
 
 		Pessoa diretor = serviceUsuario.getDiretor();
@@ -797,5 +801,5 @@ public class ProjetoController {
 			}
 		}
 	}
-
 }
+
