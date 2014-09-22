@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
@@ -47,6 +47,8 @@
 					Submetidos</a></li>
 			<li><a href="#pareceres-atribuidos" role="tab" data-toggle="tab">Pareceres
 					Atribuidos</a></li>
+			<li><a href="#projetos-avaliados" role="tab" data-toggle="tab">Projetos
+					Avaliados</a></li>
 		</ul>
 
 		<div class="tab-content">
@@ -214,6 +216,47 @@
 					</div>
 				</c:if>
 			</div>
+
+
+			<!-- Projetos Avaliados -->
+			<div class="tab-pane" id="projetos-avaliados">
+				<c:if test="${empty projetosAvaliados}">
+					<div class="alert alert-warning" role="alert">Não há projetos
+						Avaliados.</div>
+				</c:if>
+				<c:if test="${not empty projetosAvaliados}">
+					<div class="panel panel-default">
+						<div class="panel-heading" align="center">
+							<h4>Projetos Avaliados</h4>
+						</div>
+						<input type="hidden" name="parecerId" value="${parecerId}">
+						<!-- Table -->
+						<table class="table" id="table">
+							<thead>
+								<tr>
+									<th id="teste">Identificador</th>
+									<th>Nome</th>
+									<th>Autor</th>
+									<th>Status</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="projeto" items="${projetosAvaliados}">
+									<tr class="linha">
+										<td>${projeto.codigo}</td>
+										<td><a
+											href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
+										<td>${projeto.autor.nome}</td>
+										<td class="status">${projeto.status.descricao}</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+				</c:if>
+			</div>
+
+
 
 		</div>
 	</div>
