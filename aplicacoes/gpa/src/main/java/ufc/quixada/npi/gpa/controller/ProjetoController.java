@@ -89,7 +89,6 @@ public class ProjetoController {
 		if (result.hasErrors()) {
 			return ("projeto/cadastrar");
 		}
-
 		if (projeto.getTermino() != null
 				&& comparaDatas(new Date(), projeto.getTermino()) > 0) {
 			result.rejectValue("termino", "error.projeto",
@@ -193,7 +192,7 @@ public class ProjetoController {
 			@PathVariable("id") long id,
 			@PathVariable("parecerId") long parecerId,
 			@RequestParam("file") MultipartFile[] files,
-			@RequestParam("parecer") String comentario,
+			@RequestParam("comentario") String comentario,
 			@RequestParam("statusParecer") String status,
 			@ModelAttribute(value = "parecer") Parecer parecer,
 			BindingResult result, HttpSession session,
@@ -454,8 +453,8 @@ public class ProjetoController {
 	@RequestMapping(value = "submeter", method = RequestMethod.POST)
 	public String submeterProjeto(
 			@ModelAttribute(value = "projeto") Projeto proj,
-			@RequestParam("file") MultipartFile[] files, BindingResult result,
-			Model model, HttpSession session,
+			@RequestParam("file") MultipartFile[] files,
+			BindingResult result, Model model, HttpSession session,
 			RedirectAttributes redirectAttributes) {
 		Projeto projeto = serviceProjeto.find(Projeto.class, proj.getId());
 		Pessoa usuario = getUsuarioLogado(session);
@@ -496,6 +495,7 @@ public class ProjetoController {
 					return "redirect:/projeto/" + projeto.getId() + "/submeter";
 				}
 
+
 				projeto.setNome(proj.getNome());
 				projeto.setDescricao(proj.getDescricao());
 				projeto.setInicio(proj.getInicio());
@@ -525,20 +525,22 @@ public class ProjetoController {
 	public String listar(ModelMap modelMap, HttpSession session) {
 		modelMap.addAttribute("projetos", serviceProjeto
 				.getProjetosByUsuario(getUsuarioLogado(session).getId()));
-		modelMap.addAttribute(
-				"projetosAguardandoParecer",
-				serviceProjeto.getProjetosAguardandoParecer(getUsuarioLogado(
-						session).getId()));
+		modelMap.addAttribute("projetosAguardandoParecer",
+				serviceProjeto.getProjetosAguardandoParecer(getUsuarioLogado(session).getId()));
+
 		modelMap.addAttribute(
 				"projetosAvaliados",
 				serviceProjeto.getProjetosAvaliadosDoUsuario(getUsuarioLogado(
 						session).getId()));
 
+
 		if (serviceUsuario.isDiretor(getUsuarioLogado(session))) {
 			modelMap.addAttribute("projetosSubmetidos",
 					serviceProjeto.getProjetosSubmetidos());
+
 			modelMap.addAttribute("projetosAvaliados",
 					serviceProjeto.getProjetosAvaliados());
+
 			return "diretor/listarProjetos";
 		}
 		return "projeto/listar";
