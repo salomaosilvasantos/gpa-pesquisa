@@ -14,6 +14,7 @@ import org.springframework.mail.SimpleMailMessage;
 
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.Evento;
+import ufc.quixada.npi.gpa.service.ProjetoObserver;
 import ufc.quixada.npi.gpa.service.UsuarioService;
 
 

@@ -4,7 +4,6 @@ import java.util.List;
 
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.Evento;
-import ufc.quixada.npi.gpa.observer.ProjetoObserver;
 
 public class NotificationService {
 	
