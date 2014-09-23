@@ -1,8 +1,8 @@
-aplicacoes/gpa/.metadata
-aplicacoes/gpa/.settings
-aplicacoes/gpa/.classpath
-aplicacoes/gpa/.project
-aplicacoes/gpa/target
+aplicacoes/gpa-pesquisa/.metadata
+aplicacoes/gpa-pesquisa/.settings
+aplicacoes/gpa-pesquisa/.classpath
+aplicacoes/gpa-pesquisa/.project
+aplicacoes/gpa-pesquisa/target
 *.class
 *.jar
 *.war
