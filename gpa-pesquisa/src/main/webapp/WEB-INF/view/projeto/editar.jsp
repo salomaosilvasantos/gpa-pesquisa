@@ -134,9 +134,13 @@
 								</div>	
 							</c:if>
 					
-				    <form:input name="participantes" id="participantes" list="listaParticipantes" path="" cssClass="form-control" placeholder="Participantes do projeto"/>
-					<button type = "button" name = "addParticipante" id = "addParticipante">Add Participante</button>					
+				    <input name="participantes1" id="participantes1" list="listaParticipantes"  cssClass="form-control" placeholder="Participantes do projeto"/>
+					<div class="error-validation">
+									<form:errors name="participantes1"></form:errors>
+					</div>
+			
 					
+					<button type = "button" name = "addParticipante" id = "addParticipante">Add Participante</button>					
 					<datalist id = "listaParticipantes">
 					
 					<c:forEach items="${participantes}" var="participante">
@@ -144,7 +148,13 @@
 		            </c:forEach>
 					
 					</datalist>
-				
+					
+					<c:forEach items="${projeto.participantes}" var="participante">
+					
+					<br>${participante.nome}<input type="checkbox" name="participanteSelecionado" value = "${participante.nome}"  checked="checked"> <br>
+							
+		            </c:forEach>
+		            
 						</div>
 					</div>
 					

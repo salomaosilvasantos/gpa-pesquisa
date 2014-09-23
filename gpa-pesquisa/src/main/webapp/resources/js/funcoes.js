@@ -69,7 +69,7 @@ $(document).ready(function() {
 	$('#addParticipante').click(function adicionarParticipante(){
 		//alert('adicionado com sucesso')
 	
-			var nomeParticipante = $("#participantes").val();
+			var nomeParticipante = $("#participantes1").val();
 		
 		    $("#containerParticipantes").append('<br>' +nomeParticipante
 		    	+'<input type="checkbox" name="participanteSelecionado" value = "' +nomeParticipante

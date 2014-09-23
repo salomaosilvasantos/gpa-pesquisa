@@ -304,30 +304,14 @@ public class ProjetoController {
 	public String atualizarProjeto(
 			@PathVariable("id") Long id,
 			@RequestParam("file") MultipartFile[] files,
-			@RequestParam("participanteSelecionado") String[] listaParticipantes,
+			@RequestParam("participanteSelecionado") List<String> listaParticipantes,
+			@RequestParam("participantes1") String[] participantes1,
 			@Valid @ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result, Model model, HttpSession session,
 			RedirectAttributes redirect) throws IOException {
-		
-
-		System.out.println("LISTA TAMANHO ------------------------------------------ " +listaParticipantes.length);
-		
-		List<Pessoa> participantes = new ArrayList<Pessoa>();
-		
-		// verificar se todas as pessoas que vem do formulario estao no BD
-		for (String nomePessoa : listaParticipantes) {
-
-			Pessoa p = serviceUsuario.getPessoaByNome(nomePessoa);
-			
-			if (p != null) {
-
-				System.out.println("PESSOA ENCONTRADA ------------------------------------------ " +p);
-				participantes.add(p);
-				
-			}
-		}
 
 		if (result.hasErrors()) {
+			System.out.println("ALGUM TIPO DE ERRO --------------" +result.getAllErrors().get(0).getDefaultMessage());
 			model.addAttribute("action", "editar");
 			return "projeto/editar";
 		}
@@ -347,6 +331,26 @@ public class ProjetoController {
 			model.addAttribute("action", "editar");
 			return "projeto/editar";
 		}
+		
+		List<Pessoa> participantes = new ArrayList<Pessoa>();
+
+		// verificar se todas as pessoas que vem do formulario estao no BD
+		for (String nomePessoa : listaParticipantes) {
+
+			Pessoa p = serviceUsuario.getPessoaByNome(nomePessoa);
+
+			System.out.println("entrou no loop-----------" +p);
+			if (p == null){
+				System.out.println("OBJETO NULO-----------" +p);
+				result.rejectValue("participantes1", "error_participantes",
+						"A pessoa "+ nomePessoa+" não se encontra na base de dados.");
+				model.addAttribute("action", "editar");
+				return "projeto/editar";
+							
+			}else participantes.add(p);	
+			
+
+		}
 
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 
@@ -361,7 +365,7 @@ public class ProjetoController {
 				serviceDocumento.save(documento);
 			}
 		}
-	
+
 		projeto.setNome(projetoAtualizado.getNome());
 		projeto.setDescricao(projetoAtualizado.getDescricao());
 		projeto.setInicio(projetoAtualizado.getInicio());
@@ -369,7 +373,8 @@ public class ProjetoController {
 		projeto.setAtividades(projetoAtualizado.getAtividades());
 		projeto.setQuantidadeBolsa(projetoAtualizado.getQuantidadeBolsa());
 		projeto.setLocal(projetoAtualizado.getLocal());
-		if(participantes.size() > 0) projeto.setParticipantes(participantes);
+		if (participantes.size() > 0)
+			projeto.setParticipantes(participantes);
 
 		this.serviceProjeto.update(projeto);
 		redirect.addFlashAttribute("info", "Projeto atualizado com sucesso.");
