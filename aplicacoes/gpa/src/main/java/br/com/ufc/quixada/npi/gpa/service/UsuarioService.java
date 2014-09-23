@@ -6,11 +6,11 @@ import br.com.ufc.quixada.npi.gpa.model.Usuario;
 
 public interface UsuarioService extends GenericService<Usuario> {
 
-	public abstract Usuario getUsuarioByLogin(String login);
+	 Usuario getUsuarioByLogin(String login);
 
-	public abstract List<Usuario> getPareceristas(Long id);
+	 List<Usuario> getPareceristas(Long id);
 
-	public abstract boolean isDiretor(Usuario usuario);
+	 boolean isDiretor(Usuario usuario);
 	
-	public abstract Usuario getDiretor();
+	 Usuario getDiretor();
 }

@@ -9,21 +9,21 @@ import javax.persistence.EntityManager;
 
 public interface GenericRepository<T> {
 
-	 abstract void setEntityManager(EntityManager em);
+	  void setEntityManager(EntityManager em);
 
-	 abstract void save(T entity);
+	  void save(T entity);
 	
-	 abstract void update(T entity);
+	  void update(T entity);
 
-	 abstract void delete(T entity);
+	  void delete(T entity);
 
-	 abstract T find(Class<T> entityClass, Object id);
+	  T find(Class<T> entityClass, Object id);
 
-	 abstract List<T> find(Class<T> entityClass);
+	  List<T> find(Class<T> entityClass);
 
-	 abstract List<T> find(Class<T> entityClass, int firstResult, int maxResults);
+	  List<T> find(Class<T> entityClass, int firstResult, int maxResults);
 
-	 abstract List<T> find(String queryName,
+	  List<T> find(String queryName,
 			Map<String, Object> namedParams);
 
 	/**
