@@ -304,14 +304,15 @@ public class ProjetoController {
 	public String atualizarProjeto(
 			@PathVariable("id") Long id,
 			@RequestParam("file") MultipartFile[] files,
-			@RequestParam("participanteSelecionado") List<String> listaParticipantes,
+			@RequestParam(value = "participanteSelecionado", required = false) List<String> listaParticipantes,
 			@RequestParam("participantes1") String[] participantes1,
 			@Valid @ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result, Model model, HttpSession session,
 			RedirectAttributes redirect) throws IOException {
 
 		if (result.hasErrors()) {
-			System.out.println("ALGUM TIPO DE ERRO --------------" +result.getAllErrors().get(0).getDefaultMessage());
+			System.out.println("ALGUM TIPO DE ERRO --------------"
+					+ result.getAllErrors().get(0).getDefaultMessage());
 			model.addAttribute("action", "editar");
 			return "projeto/editar";
 		}
@@ -331,7 +332,13 @@ public class ProjetoController {
 			model.addAttribute("action", "editar");
 			return "projeto/editar";
 		}
-		
+		if(listaParticipantes == null){
+			redirect.addFlashAttribute("error_participantes",
+					"Por favor, selecione ao menos um participante.");
+			model.addAttribute("action", "editar");
+			return "redirect:/projeto/" + id + "/editar";
+		}
+
 		List<Pessoa> participantes = new ArrayList<Pessoa>();
 
 		// verificar se todas as pessoas que vem do formulario estao no BD
@@ -339,16 +346,15 @@ public class ProjetoController {
 
 			Pessoa p = serviceUsuario.getPessoaByNome(nomePessoa);
 
-			System.out.println("entrou no loop-----------" +p);
-			if (p == null){
-				System.out.println("OBJETO NULO-----------" +p);
-				result.rejectValue("participantes1", "error_participantes",
-						"A pessoa "+ nomePessoa+" não se encontra na base de dados.");
+			System.out.println("entrou no loop-----------" + p);
+			if (p == null) {
+				redirect.addFlashAttribute("error_participantes",
+						"A pessoa '"+nomePessoa +"' não se encontra na base de dados");
 				model.addAttribute("action", "editar");
-				return "projeto/editar";
-							
-			}else participantes.add(p);	
-			
+				return "redirect:/projeto/" + id + "/editar";
+
+			} else
+				participantes.add(p);
 
 		}
 

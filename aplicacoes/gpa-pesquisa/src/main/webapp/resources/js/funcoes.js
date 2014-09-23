@@ -67,14 +67,19 @@ $(document).ready(function() {
 	});
 	
 	$('#addParticipante').click(function adicionarParticipante(){
-		//alert('adicionado com sucesso')
 	
 			var nomeParticipante = $("#participantes1").val();
-		
-		    $("#containerParticipantes").append('<br>' +nomeParticipante
-		    	+'<input type="checkbox" name="participanteSelecionado" value = "' +nomeParticipante
-		    	+'" checked="checked" "> <br>');
-			 
+			
+			if(!nomeParticipante || 0 === nomeParticipante.length){
+				
+				 $("#participantes1").css({'border' : '#a94442 solid 1px','box-shadow' : '1px 1px rgba(0,0,0,.075)'}); 
+				 $("#labelParticipante").css("color","#a94442");
+			}else{
+				 $("#listaParticipantesCadastrados").append(' <label class="participanteSelecionado" for="participanteSelecionado" style="margin-left:20px">'+nomeParticipante+'</label>' 
+					    	+'<input type="checkbox" class = "participanteSelecionado" name="participanteSelecionado" value = "' +nomeParticipante
+					    	+'" checked="checked" ">, ');
+			}
+			
 	});
 	
 });

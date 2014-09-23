@@ -126,21 +126,20 @@
 					</div>
 					
 					<div class="form-group" id = "containerParticipantes">
-						<label for="participantes" class="col-sm-2 control-label">Participantes:</label>
+						<label id = "labelParticipante" for="participantes" class="col-sm-2 control-label">Participantes:</label>
 						<div class="col-sm-10">
-							<c:if test="${not empty error_participantes}">
-								<div class="error-validation">
-									<span>${error_participantes}</span>
-								</div>	
-							</c:if>
+							
 					
-				    <input name="participantes1" id="participantes1" list="listaParticipantes"  cssClass="form-control" placeholder="Participantes do projeto"/>
-					<div class="error-validation">
-									<form:errors name="participantes1"></form:errors>
-					</div>
-			
+				    <form:input path="" name="participantes1" id="participantes1" list="listaParticipantes"  cssClass="form-control" placeholder="Participantes do projeto"/>
 					
-					<button type = "button" name = "addParticipante" id = "addParticipante">Add Participante</button>					
+					<button type = "button" name = "addParticipante" id = "addParticipante">Adicionar Participante</button>					
+					
+					<c:if test="${not empty error_participantes}">
+						<div class="error-validation">
+							<span>${error_participantes}</span>
+						</div>	
+					</c:if>
+							
 					<datalist id = "listaParticipantes">
 					
 					<c:forEach items="${participantes}" var="participante">
@@ -148,13 +147,14 @@
 		            </c:forEach>
 					
 					</datalist>
-					
+					<div id = "listaParticipantesCadastrados">
 					<c:forEach items="${projeto.participantes}" var="participante">
+				
+						<label class="participanteSelecionado" for="participanteSelecionado">${participante.nome}</label>
+						<input type="checkbox" class="participanteSelecionado" id = "participanteSelecionado" name="participanteSelecionado" value = "${participante.nome}"  checked="checked"> 
 					
-					<br>${participante.nome}<input type="checkbox" name="participanteSelecionado" value = "${participante.nome}"  checked="checked"> <br>
-							
 		            </c:forEach>
-		            
+		            </div>
 						</div>
 					</div>
 					
