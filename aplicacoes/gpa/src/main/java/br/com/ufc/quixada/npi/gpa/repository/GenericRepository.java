@@ -33,10 +33,10 @@ public interface GenericRepository<T> {
 	 * @param namedParams
 	 * @return
 	 */
-	public abstract List<T> find(QueryType type, String query,
+	 List<T> find(QueryType type, String query,
 			Map<String, Object> namedParams);
 
-	public abstract List<T> find(String queryName,
+	 List<T> find(String queryName,
 			Map<String, Object> namedParams, int firstResult, int maxResults);
 
 	/**
@@ -48,7 +48,7 @@ public interface GenericRepository<T> {
 	 * @param maxResults
 	 * @return
 	 */
-	public abstract List<T> find(QueryType type, String query,
+	 List<T> find(QueryType type, String query,
 			Map<String, Object> namedParams, int firstResult, int maxResults);
 
 	/**
@@ -57,7 +57,7 @@ public interface GenericRepository<T> {
 	 * @param namedParams
 	 * @return
 	 */
-	public abstract T findFirst(String query, Map<String, Object> namedParams);
+	 T findFirst(String query, Map<String, Object> namedParams);
 
 	/**
 	 * 
@@ -67,7 +67,7 @@ public interface GenericRepository<T> {
 	 * @param maxResults
 	 * @return
 	 */
-	public abstract T findFirst(String query, Map<String, Object> namedParams,
+	 T findFirst(String query, Map<String, Object> namedParams,
 			int firstResult, int maxResults);
 
 	/**
@@ -79,7 +79,7 @@ public interface GenericRepository<T> {
 	 * @param maxResults
 	 * @return
 	 */
-	public abstract T findFirst(QueryType type, String query,
+	 T findFirst(QueryType type, String query,
 			Map<String, Object> namedParams, int firstResult, int maxResults);
 
 	
