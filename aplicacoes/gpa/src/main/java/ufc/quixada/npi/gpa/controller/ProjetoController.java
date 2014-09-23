@@ -31,9 +31,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ufc.quixada.npi.gpa.model.Documento;
 import ufc.quixada.npi.gpa.model.Parecer;
-import ufc.quixada.npi.gpa.model.Parecer.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
+import ufc.quixada.npi.gpa.model.Parecer.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.DocumentoService;
 import ufc.quixada.npi.gpa.service.ParecerService;
@@ -89,6 +89,7 @@ public class ProjetoController {
 		if (result.hasErrors()) {
 			return ("projeto/cadastrar");
 		}
+
 		if (projeto.getTermino() != null
 				&& comparaDatas(new Date(), projeto.getTermino()) > 0) {
 			result.rejectValue("termino", "error.projeto",
@@ -100,8 +101,8 @@ public class ProjetoController {
 			result.rejectValue("inicio", "error.projeto",
 					"A data de início deve ser antes da data de término.");
 			return "projeto/editar";
-		}
-
+		}		
+		
 		projeto.setAutor(getUsuarioLogado(session));
 		projeto.setStatus(StatusProjeto.NOVO);
 		this.serviceProjeto.save(projeto);
@@ -192,7 +193,7 @@ public class ProjetoController {
 			@PathVariable("id") long id,
 			@PathVariable("parecerId") long parecerId,
 			@RequestParam("file") MultipartFile[] files,
-			@RequestParam("comentario") String comentario,
+			@RequestParam("parecer") String comentario,
 			@RequestParam("statusParecer") String status,
 			@ModelAttribute(value = "parecer") Parecer parecer,
 			BindingResult result, HttpSession session,
@@ -276,7 +277,8 @@ public class ProjetoController {
 								+ " " + parecer.getUsuario().getNome() + " " + prop
 								.getProperty("corpoEmitirParecerCoordenador3")));
 			}
-		}
+			}
+		
 
 		if (status.equals("favorável")) {
 			parecer.setStatus(StatusPosicionamento.FAVORAVEL);
@@ -419,7 +421,8 @@ public class ProjetoController {
 
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
-			if (validaSubmissao(projeto, model)) {
+			if (validaSubmissao(projeto, model)
+					&& validaSubmissaoAnexo(projeto, model)) {
 
 				if (prop.getProperty("enviarEmail").equals("true")) {
 					if (serviceUsuario.isDiretor(projeto.getAutor())) {
@@ -481,8 +484,8 @@ public class ProjetoController {
 	@RequestMapping(value = "submeter", method = RequestMethod.POST)
 	public String submeterProjeto(
 			@ModelAttribute(value = "projeto") Projeto proj,
-			@RequestParam("file") MultipartFile[] files,
-			BindingResult result, Model model, HttpSession session,
+			@RequestParam("file") MultipartFile[] files, BindingResult result,
+			Model model, HttpSession session,
 			RedirectAttributes redirectAttributes) {
 		Projeto projeto = serviceProjeto.find(Projeto.class, proj.getId());
 		Pessoa usuario = getUsuarioLogado(session);
@@ -495,35 +498,6 @@ public class ProjetoController {
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
 
-			if (validaSubmissao(projeto, model) || files != null) {
-
-				try {
-					for (MultipartFile mpf : files) {
-						if (mpf.getBytes().length > 0) {
-							Documento documento = new Documento();
-							documento
-									.setNomeOriginal(mpf.getOriginalFilename());
-							documento.setTipo(mpf.getContentType());
-							documento.setProjeto(projeto);
-							documento.setArquivo(mpf.getBytes());
-							serviceDocumento.save(documento);
-
-						} else {
-							redirectAttributes.addFlashAttribute(
-									"error_documento", "Arquivo obrigatório");
-							return "redirect:/projeto/" + projeto.getId()
-									+ "/submeter";
-						}
-
-					}
-				} catch (IOException e) {
-					redirectAttributes
-							.addFlashAttribute("error_documento",
-									"Ocorreu um erro ao processar o arquivo, tente novamente.");
-					return "redirect:/projeto/" + projeto.getId() + "/submeter";
-				}
-
-
 				projeto.setNome(proj.getNome());
 				projeto.setDescricao(proj.getDescricao());
 				projeto.setInicio(proj.getInicio());
@@ -532,16 +506,54 @@ public class ProjetoController {
 				projeto.setQuantidadeBolsa(proj.getQuantidadeBolsa());
 				projeto.setLocal(proj.getLocal());
 				projeto.setParticipantes(proj.getParticipantes());
-				projeto.setStatus(StatusProjeto.SUBMETIDO);
 				this.serviceProjeto.update(projeto);
-				redirectAttributes.addFlashAttribute("info",
-						"Projeto submetido com sucesso.");
-				return "redirect:/projeto/listar";
-			} else {
+				
+				
+			 
+				if (validaSubmissao(projeto, model)) {
+					
+					try {
+						for (MultipartFile mpf : files) {
+							if (mpf.getBytes().length > 0) {
+								Documento documento = new Documento();
+								documento.setNomeOriginal(mpf.getOriginalFilename());
+								documento.setTipo(mpf.getContentType());
+								documento.setProjeto(projeto);
+								documento.setArquivo(mpf.getBytes());
+								serviceDocumento.save(documento);
+							
+
+							} else {
+								redirectAttributes.addFlashAttribute(
+										"error_documento", "Arquivo obrigatório");
+								return "redirect:/projeto/" + projeto.getId()
+										+ "/submeter";
+							}
+
+						}
+					} catch (IOException e) {
+						redirectAttributes
+								.addFlashAttribute("error_documento",
+										"Ocorreu um erro ao processar o arquivo, tente novamente.");
+						return "redirect:/projeto/" + projeto.getId() + "/submeter";
+					}
+						if(validaSubmissaoAnexo(projeto, model)){
+							projeto.setStatus(StatusProjeto.SUBMETIDO);
+							serviceProjeto.update(projeto);
+							redirectAttributes.addFlashAttribute("info",
+									"Projeto submetido com sucesso.");
+							return "redirect:/projeto/listar";	
+						}else{
+							model.addAttribute("action", "submeter");
+							return "projeto/editar";
+						}
+					
+						
+					} else {
 				model.addAttribute("action", "submeter");
 				return "projeto/editar";
-			}
-
+				}
+				
 		} else {
 			redirectAttributes.addFlashAttribute("erro", "Permissão negada.");
 			return "redirect:/projeto/listar";
@@ -553,9 +565,10 @@ public class ProjetoController {
 	public String listar(ModelMap modelMap, HttpSession session) {
 		modelMap.addAttribute("projetos", serviceProjeto
 				.getProjetosByUsuario(getUsuarioLogado(session).getId()));
-		modelMap.addAttribute("projetosAguardandoParecer",
-				serviceProjeto.getProjetosAguardandoParecer(getUsuarioLogado(session).getId()));
-
+		modelMap.addAttribute(
+				"projetosAguardandoParecer",
+				serviceProjeto.getProjetosAguardandoParecer(getUsuarioLogado(
+						session).getId()));
 		modelMap.addAttribute(
 				"projetosAvaliados",
 				serviceProjeto.getProjetosAvaliadosDoUsuario(getUsuarioLogado(
@@ -605,11 +618,11 @@ public class ProjetoController {
 
 		Long projetoId = Long.parseLong(request.getParameter("projetoId"));
 		Long parecerista = Long.parseLong(request.getParameter("parecerista"));
-		String comentario = request.getParameter("comentario");
+		String observacao = request.getParameter("observacao");
 
 		Projeto projeto = serviceProjeto.find(Projeto.class, projetoId);
 		redirect.addFlashAttribute("parecerista", parecerista);
-		redirect.addFlashAttribute("comentario", comentario);
+		redirect.addFlashAttribute("observacao", observacao);
 		redirect.addFlashAttribute("projetoId", projetoId);
 		redirect.addFlashAttribute("usuarios",
 				serviceUsuario.getPareceristas(projeto.getAutor().getId()));
@@ -644,7 +657,7 @@ public class ProjetoController {
 		parecer.setProjeto(projeto);
 		parecer.setUsuario(usuario);
 		parecer.setDataAtribuicao(new Date());
-		parecer.setComentario(comentario);
+		parecer.setComentario(observacao);
 		parecer.setPrazo(prazo);
 
 		Pessoa diretor = serviceUsuario.getDiretor();
@@ -753,12 +766,7 @@ public class ProjetoController {
 					"A data de início deve ser antes da data de término");
 			valid = false;
 		}
-		
-		if (projeto.getDocumentos().isEmpty()) {
-			model.addAttribute("error_documento", "Arquivo obrigatório");
-			valid = false;
-		}
-		
+
 		if (projeto.getDescricao().isEmpty()) {
 			model.addAttribute("error_descricao", "Campo obrigatório");
 			valid = false;
@@ -777,6 +785,16 @@ public class ProjetoController {
 		}
 		if (projeto.getParticipantes().isEmpty()) {
 			model.addAttribute("error_participantes", "Campo obrigatório");
+			valid = false;
+		}
+
+		return valid;
+	}
+
+	private boolean validaSubmissaoAnexo(Projeto projeto, Model model) {
+		boolean valid = true;
+		if (projeto.getDocumentos().size() == 0) {
+			model.addAttribute("error_documento", "Arquivo obrigatório");
 			valid = false;
 		}
 
@@ -811,5 +829,5 @@ public class ProjetoController {
 			}
 		}
 	}
-
 }
+
