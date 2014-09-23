@@ -36,59 +36,15 @@
 						<td class="content"><fmt:formatDate pattern="dd-MM-yyyy"
 								value="${projeto.pareceres[0].prazo}" /></td>
 					</tr>
-					
+
 					<tr>
 						<td class="head" valign="top">Arquivos:</td>
 						<c:forEach var="documento" items="${projeto.documentos}">
-							<!-- <a href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a>-->
 							<td class="content"><a
 								href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a></td>
-							<!-- <td class="content">${documento.nomeOriginal }</td>-->
 						</c:forEach>
 					</tr>
 				</table>
-				
-				<%-- <div class="form-group">
-<label for="nome" class="col-sm-2 control-label">Nome: <span>${projeto.nome }</span> </label>
-</div>
-<div class="form-group">
-<label for="descricao" class="col-sm-2 control-label">Descrição:</label>
-<div class="col-sm-10">
-<label>${projeto.descricao }</label>
-</div>
-</div>
-<div class="form-group">
-<label for="inicio" class="col-sm-2 control-label">Início:</label>
-<div class="col-sm-2">
-<label>${projeto.inicio }</label>
-</div>
-<label for="termino" class="col-sm-2 control-label">Término:</label>
-<div class="col-sm-2">
-<label>${projeto.termino }</label>
-</div>
-<label for="bolsas" class="col-sm-2 control-label">Número de bolsas:</label>
-<div class="col-sm-2">
-<label>${projeto.quantidadeBolsa }</label>
-</div>
-</div>
-<div class="form-group">
-<label for="local" class="col-sm-2 control-label">Local:</label>
-<div class="col-sm-10">
-<label>${projeto.local }</label>
-</div>
-</div>
-<div class="form-group">
-<label for="participantes" class="col-sm-2 control-label">Participantes:</label>
-<div class="col-sm-10">
-<label>${projeto.participantes }</label>
-</div>
-</div>
-<div class="form-group">
-<label for="atividades" class="col-sm-2 control-label">Atividades:</label>
-<div class="col-sm-10">
-<label>${projeto.atividades }</label>
-</div>
-</div> --%>
 			</div>
 		</div>
 	</div>
