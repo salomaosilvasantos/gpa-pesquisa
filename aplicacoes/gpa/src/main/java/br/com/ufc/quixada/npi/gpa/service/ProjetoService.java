@@ -6,12 +6,12 @@ import br.com.ufc.quixada.npi.gpa.model.Projeto;
 
 public interface ProjetoService extends GenericService<Projeto> {
 
-	public abstract List<Projeto> getProjetosSubmetidos();
+	 abstract List<Projeto> getProjetosSubmetidos();
 	
-	public List<Projeto> getProjetosAtribuidos();
+	 List<Projeto> getProjetosAtribuidos();
 
-	public abstract List<Projeto> getProjetosByUsuario(Long id);
+	 abstract List<Projeto> getProjetosByUsuario(Long id);
 	
-	public abstract List<Projeto> getProjetosAguardandoParecer();
+	 abstract List<Projeto> getProjetosAguardandoParecer();
 
 }

@@ -54,7 +54,7 @@ public class DocumentoController {
 	}
 	
 	@RequestMapping(value = "/ajax/remover/{id}", method = RequestMethod.POST)
-	public @ResponseBody ModelMap excluirDocumento(@PathVariable("id") Long id, HttpSession session) {
+	@ResponseBody public  ModelMap excluirDocumento(@PathVariable("id") Long id, HttpSession session) {
 		ModelMap map = new ModelMap();
 		Documento documento = serviceDocumento.find(Documento.class, id);
 		if(documento == null) {
