@@ -290,9 +290,37 @@ public class ProjetoController {
 		serviceProjeto.update(projeto);
 
 		return "redirect:/projeto/listar";
-
+		
 	}
-
+	
+	@RequestMapping(value = "/{id}/verParecer", method = RequestMethod.GET)
+	public String verParecer(@PathVariable("id") long id,
+			Model model,
+			HttpSession session, RedirectAttributes redirectAttributes) {
+		
+		Projeto projeto = serviceProjeto.find(Projeto.class, id);
+		Pessoa usuario = getUsuarioLogado(session);
+		Parecer parecer = serviceParecer.find(Parecer.class, id);
+		// Verifica se o projeto existe
+		if (projeto == null) {
+			redirectAttributes
+					.addFlashAttribute("erro", "Projeto inexistente.");
+			return "redirect:/projeto/listar";
+		}
+		// Verifica se o usuário logado é o autor do projeto ou se é o diretor e
+		// o projeto já foi submetido
+		if (usuario.getId() == projeto.getAutor().getId()
+				|| (serviceUsuario.isDiretor(usuario))){
+			model.addAttribute("projeto", projeto);
+			return "diretor/verParecer";
+		} else {
+			redirectAttributes.addFlashAttribute("erro", "Permissão negada.");
+			return "redirect:/projeto/listar";
+		}
+		
+	}
+	
+	
 	@RequestMapping(value = "/{id}/editar", method = RequestMethod.POST)
 	public String atualizarProjeto(
 			@PathVariable("id") Long id,
