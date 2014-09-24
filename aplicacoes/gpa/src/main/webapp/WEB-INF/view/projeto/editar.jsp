@@ -125,15 +125,36 @@
 						</div>
 					</div>
 					
-					<div class="form-group">
-						<label for="participantes" class="col-sm-2 control-label">Participantes:</label>
+					<div class="form-group" id = "containerParticipantes">
+						<label id = "labelParticipante" for="participantes" class="col-sm-2 control-label">Participantes:</label>
 						<div class="col-sm-10">
-							<form:input id="participantes" path="participantes" cssClass="form-control" placeholder="Participantes do projeto"/>
-							<c:if test="${not empty error_participantes}">
-								<div class="error-validation">
-									<span>${error_participantes}</span>
-								</div>
-							</c:if>
+							
+					
+				    <form:input path="" name="participanteEscolhido" id="participanteEscolhido" list="listaParticipantes"  cssClass="form-control" placeholder="Participantes do projeto"/>
+					
+					<button type = "button" name = "addParticipante" id = "addParticipante">Adicionar Participante</button>					
+					
+					<c:if test="${not empty error_participantes}">
+						<div class="error-validation">
+							<span>${error_participantes}</span>
+						</div>	
+					</c:if>
+							
+					<datalist id = "listaParticipantes">
+					
+					<c:forEach items="${participantes}" var="participante">
+							<option value="${participante.nome}" label="CPF : ${participante.cpf}">
+		            </c:forEach>
+					
+					</datalist>
+					<div id = "listaParticipantesCadastrados">
+					<c:forEach items="${projeto.participantes}" var="participante">
+				
+						<label class="participanteSelecionado" for="participanteSelecionado">${participante.nome}</label>
+						<input type="checkbox" class="participanteSelecionado" id = "participanteSelecionado" name="participanteSelecionado" value = "${participante.nome}"  checked="checked"> ,
+					
+		            </c:forEach>
+		            </div>
 						</div>
 					</div>
 					

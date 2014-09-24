@@ -4,22 +4,22 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
-import ufc.quixada.npi.gpa.model.Comentario;
-import ufc.quixada.npi.gpa.model.Documento;
-import ufc.quixada.npi.gpa.model.Parecer;
 
 @Entity
 public class Projeto {
@@ -40,7 +40,7 @@ public class Projeto {
 	
     private Date submissao ;
 	
-
+    @Column(columnDefinition="TEXT")
     @Size(min = 5, message = "Mínimo 5 caracteres")
 	private String descricao;
 	
@@ -57,7 +57,9 @@ public class Projeto {
 	@Enumerated(EnumType.STRING)
 	private StatusProjeto status;
 	
-	private String participantes;
+	@ManyToMany
+    @JoinTable(joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="pessoa_id", referencedColumnName="id")})
+    private List<Pessoa> participantes;
 	
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Documento> documentos;
@@ -75,7 +77,7 @@ public class Projeto {
 	public Projeto(Long id, String codigo, String nome, Date inicio,
 			Date termino, String descricao, Pessoa autor, String atividades,
 			Integer quantidadeBolsa, String local, StatusProjeto status,
-			String participantes, List<Documento> documentos,
+			List<Pessoa> participantes, List<Documento> documentos,
 			List<Comentario> comentarios, List<Parecer> pareceres) {
 		super();
 		this.id = id;
@@ -159,13 +161,13 @@ public class Projeto {
 		this.status = status;
 	}
 
-	public String getParticipantes() {
-		return participantes;
-	}
+	public List<Pessoa> getParticipantes() {
+        return participantes;
+    }
 
-	public void setParticipantes(String participantes) {
-		this.participantes = participantes;
-	}
+    public void setParticipantes(List<Pessoa> participantes) {
+        this.participantes = participantes;
+    }
 
 	public List<Documento> getDocumentos() {
 		return documentos;

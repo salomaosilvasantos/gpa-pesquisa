@@ -50,9 +50,9 @@
 					</div>
 					
 					<div class="form-group">
-						<label for="comentario" class="col-sm-2 control-label">Comentário:</label>
+						<label for="observacao" class="col-sm-2 control-label">Observações:</label>
 						<div class="col-sm-10">
-							<textarea id="comentario" name="comentario" class="form-control" rows="5" placeholder="Comentário" ></textarea>
+							<textarea id="observacao" name="observacao" class="form-control" rows="5" placeholder="Observação" ></textarea>
 						</div>
 					</div>
 
