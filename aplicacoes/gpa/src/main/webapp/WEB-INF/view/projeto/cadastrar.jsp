@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -9,36 +8,18 @@
 
 <html>
 <head>
-	
 	<jsp:include page="../modulos/header-estrutura.jsp" />
-	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="<c:url value="/resources/css/jquery.fileupload.css" />">
-	<link rel="stylesheet" href="<c:url value="/resources/css/jquery.fileupload-ui.css" />">
-	<title>Editar Projeto</title>
+	<title>Cadastro de Projetos</title>
 </head>
-
 <body>
+
 	<jsp:include page="../modulos/header.jsp" />
 	
-	<div class="container">
-		<c:if test="${action == 'submeter'}">
-			<div class="alert alert-warning alert-dismissible" role="alert">
-				<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<c:out value="É necessário preencher todas as informações do projeto para submetê-lo."></c:out>
-			</div>
-		</c:if>
+	 <div class="container">
 		<div class="novo-projeto" align="left">
 			<div class="form" align="center">
-				<c:if test="${action == 'editar'}">
-					<c:set var="url" value="/projeto/${projeto.id}/editar"></c:set>
-					<h2>Editar Projeto</h2>
-				</c:if>
-				<c:if test="${action == 'submeter'}">
-					<c:set var="url" value="/projeto/submeter"></c:set>
-					<h2>Submeter Projeto</h2>
-				</c:if>
-				<form:form id="editar" commandName="projeto" servletRelativeAction="${url }" enctype="multipart/form-data" cssClass="form-horizontal" method="POST">
-					<input type="hidden" name="id" value="${projeto.id }"/>
+				<h2>Novo Projeto</h2>
+				<form:form id="adicionarProjetoForm" role="form" commandName="projeto" servletRelativeAction="/projeto/cadastrar" method="POST" cssClass="form-horizontal">
 
 					<div class="form-group">
 						<label for="nome" class="col-sm-2 control-label">Nome:</label>
@@ -47,69 +28,50 @@
 							<div class="error-validation">
 								<form:errors path="nome"></form:errors>
 							</div>
-							<c:if test="${not empty error_nome}">
-								<div class="error-validation">
-									<span>${error_nome}</span>
-								</div>
-							</c:if>
 						</div>
 					</div>
 					
 					<div class="form-group">
 						<label for="descricao" class="col-sm-2 control-label">Descrição:</label>
 						<div class="col-sm-10">
-							<form:textarea id="descricao" path="descricao" name="descricao" class="form-control" rows="5" placeholder="Descrição" ></form:textarea>
+							<form:textarea id="descricao" path="descricao" class="form-control" rows="5" placeholder="Descrição" ></form:textarea>
 							<div class="error-validation">
 								<form:errors path="descricao"></form:errors>
 							</div>
-							<c:if test="${not empty error_descricao}">
-								<div class="error-validation">
-									<span>${error_descricao}</span>
-								</div>
-							</c:if>
 						</div>
 						
 					</div>
 
 					<div class="form-group">
-						<div>
-							<label for="inicio" class="col-sm-2 control-label">Início:</label>
-							<div class="col-sm-2">
-								<form:input id="inicio" type="text" path="inicio" cssClass="form-control data" placeholder="Data de Início"/>
+						<label for="inicio" class="col-sm-2 control-label">Início:</label>
+						<div class="col-sm-2">
+							<form:input id="inicio" type="text" path="inicio" cssClass="form-control data" placeholder="Data de Início"/>
+							<div class="error-validation">
+								<form:errors path="inicio"></form:errors>
+							</div>
+							<c:if test="${not empty error_inicio}">
 								<div class="error-validation">
-									<form:errors path="inicio"></form:errors>
+									<span>${error_inicio}</span>
 								</div>
-								<c:if test="${not empty error_inicio}">
-									<div class="error-validation">
-										<span>${error_inicio}</span>
-									</div>
-								</c:if>
-							</div>
+							</c:if>
 						</div>
-						<div>
-							<label for="termino" class="col-sm-2 control-label">Término:</label>
-							<div class="col-sm-2">
-								<form:input id="termino" type="text" path="termino" cssClass="form-control data" placeholder="Data de Término"/>
+						
+						<label for="termino" class="col-sm-2 control-label">Término:</label>
+						<div class="col-sm-2">
+							<form:input id="termino" type="text" path="termino" cssClass="form-control data" placeholder="Data de Término"/>
+							<div class="error-validation">
+								<form:errors path="termino"></form:errors>
+							</div>
+							<c:if test="${not empty error_termino}">
 								<div class="error-validation">
-									<form:errors path="termino"></form:errors>
+									<span>${error_termino}</span>
 								</div>
-								<c:if test="${not empty error_termino}">
-									<div class="error-validation">
-										<span>${error_termino}</span>
-									</div>
-								</c:if>
-							</div>
+							</c:if>							
 						</div>
-						<div>
-							<label for="bolsas" class="col-sm-2 control-label">Número de bolsas:</label>
-							<div class="col-sm-2">
-								<form:input id="bolsas" type="number" min="0" placeholder="0" path="quantidadeBolsa" cssClass="form-control"/>
-								<c:if test="${not empty error_quantidadeBolsa}">
-									<div class="error-validation">
-										<span>${error_quantidadeBolsa}</span>
-									</div>
-								</c:if>
-							</div>
+						
+						<label for="bolsas" class="col-sm-2 control-label">Número de bolsas:</label>
+						<div class="col-sm-2">
+							<form:input id="bolsas" type="number" min="0" placeholder="0" path="quantidadeBolsa" cssClass="form-control"/>
 						</div>
 					</div>
 					
@@ -117,97 +79,27 @@
 						<label for="local" class="col-sm-2 control-label">Local:</label>
 						<div class="col-sm-10">
 							<form:input id="local" path="local" cssClass="form-control" placeholder="Local do projeto"/>
-							<c:if test="${not empty error_local}">
-								<div class="error-validation">
-									<span>${error_local}</span>
-								</div>
-							</c:if>
 						</div>
 					</div>
-					
-					<div class="form-group" id = "containerParticipantes">
-						<label id = "labelParticipante" for="participantes" class="col-sm-2 control-label">Participantes:</label>
+					<!--  
+					<div class="form-group">
+						<label for="participantes" class="col-sm-2 control-label">Participantes:</label>
 						<div class="col-sm-10">
-							
-					
-				    <form:input path="" name="participantes1" id="participantes1" list="listaParticipantes"  cssClass="form-control" placeholder="Participantes do projeto"/>
-					
-					<button type = "button" name = "addParticipante" id = "addParticipante">Adicionar Participante</button>					
-					
-					<c:if test="${not empty error_participantes}">
-						<div class="error-validation">
-							<span>${error_participantes}</span>
-						</div>	
-					</c:if>
-							
-					<datalist id = "listaParticipantes">
-					
-					<c:forEach items="${participantes}" var="participante">
-							<option value="${participante.nome}" label="CPF : ${participante.cpf}">
-		            </c:forEach>
-					
-					</datalist>
-					<div id = "listaParticipantesCadastrados">
-					<c:forEach items="${projeto.participantes}" var="participante">
-				
-						<label class="participanteSelecionado" for="participanteSelecionado">${participante.nome}</label>
-						<input type="checkbox" class="participanteSelecionado" id = "participanteSelecionado" name="participanteSelecionado" value = "${participante.nome}"  checked="checked"> ,
-					
-		            </c:forEach>
-		            </div>
+							<form:input id="participantes" path="participantes" cssClass="form-control" placeholder="Participantes do projeto"/>
 						</div>
 					</div>
+					-->
+					
 					
 					<div class="form-group">
 						<label for="atividades" class="col-sm-2 control-label">Atividades:</label>
 						<div class="col-sm-10">
 							<form:textarea id="atividades" path="atividades" name="atividades" class="form-control" rows="5" placeholder="Atividades" ></form:textarea>
-							<c:if test="${not empty error_atividades}">
-								<div class="error-validation">
-									<span>${error_atividades}</span>
-								</div>
-							</c:if>
-						</div>
-					</div>
-					
-					<div class="form-group">
-						<label for="atividades" class="col-sm-2 control-label">Arquivos:</label>
-						<div class="col-sm-10 files">
-							<input class="btn btn-success" type="file" name="file" title="Adicionar arquivos..." multiple="multiple">
-		                    <table id="file-upload" role="presentation" class="table table-striped">
-		                    	<tbody class="files">
-		                    		<c:forEach items="${projeto.documentos }" var="documento">
-		                    			<tr class="template-upload fade in">
-									        <td>
-									            <a href="<c:url value="/documento/${documento.id }" />">${documento.nomeOriginal }</a>
-									            <strong class="error text-danger"></strong>
-									        </td>
-									        <td>
-								                <a id="${documento.id}" href="#" class="delete-document">
-													<button type="button" class="btn btn-danger">Excluir <span class="glyphicon glyphicon-trash"></span></button>
-												</a>
-									        </td>
-									    </tr>	
-		                    		</c:forEach>
-		                    	</tbody>
-		                    </table>
-
-		                    <c:if test="${not empty error_documento}">
-									<div class="error-validation">
-										<span>${error_documento}</span>
-									</div>
-							</c:if>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="atividades" class="col-sm-2 control-label"></label>
-						<div class="col-sm-10">
-							
 						</div>
 					</div>
 					
 					<div class="controls">
-						<input name="submit" type="submit" class="btn btn-primary" value="Salvar" />
+						<input name="submit" type="submit" class="btn btn-primary" value="Cadastrar" />
 						<a href="<c:url value="/projeto/index"></c:url>" class="btn btn-default">Cancelar</a>
 					</div>
 
@@ -222,10 +114,49 @@
 
 
 <script type="text/javascript">
-	/* $(document)
+	$(document)
 			.ready(
-					function() {
-						$.fn.datepicker.dates['pt-BR'] = {
+					function($) {
+						/* $('form').validate({
+					        rules: {
+					            nome: {
+					                minlength: 2,
+					                required: true
+					            },
+					            descricao: {
+					                minlength: 5,
+					                required: true
+					            }
+					        },
+					        messages : {
+								nome : {
+									required : "Campo obrigatório",
+									minlength : "O campo deve ter no mínimo 2 caracteres"
+								},
+								descricao : {
+									required : "Campo obrigatório",
+									minlength : "O campo deve ter no mínimo 5 caracteres"
+								}
+							},
+					        highlight: function(element) {
+					            $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+					        },
+					        unhighlight: function(element) {
+					            $(element).closest('.form-group').removeClass('has-error').addClass('has-success');;
+					        },
+					        errorElement: 'span',
+					        errorClass: 'help-block',
+					        errorPlacement: function(error, element) {
+					            if(element.parent('.input-group').length) {
+					                error.insertAfter(element.parent());
+					            } else {
+					                error.insertAfter(element);
+					            }
+					        }
+					    }); */
+						/* $('div.error-validation:has(span)').find('span').css('color', '#a94442');
+						$('div.error-validation:has(span)').find('span').parent().parent().parent().addClass('has-error has-feedback'); */
+						/* $.fn.datepicker.dates['pt-BR'] = {
 							days : [ "Domingo", "Segunda", "Terça", "Quarta",
 									"Quinta", "Sexta", "Sábado", "Domingo" ],
 							daysShort : [ "Dom", "Seg", "Ter", "Qua", "Qui",
@@ -240,19 +171,17 @@
 									"Jun", "Jul", "Ago", "Set", "Out", "Nov",
 									"Dez" ],
 							today : "Hoje"
-						};
+						}; */
 
-						$('.input-group.date').datepicker({
+						/* $("input.data").datepicker({
 							format : "dd/mm/yyyy",
-							startDate : "01-01-2012",
-							endDate : "01-01-2015",
 							todayBtn : "linked",
 							autoclose : true,
 							language : "pt-BR",
 							todayHighlight : true
-						});
+						}); */
 						//Método que valida o dia mês e ano dd/MM/yyyy
-						jQuery.validator
+						/* jQuery.validator
 								.addMethod(
 										"dateBR",
 										function(value, element) {
@@ -282,10 +211,10 @@
 											if (ano < 1900)
 												return (this.optional(element) || false);
 											return (this.optional(element) || true);
-										}, "Informe uma data válida");
+										}, "Informe uma data válida"); */
 
 						//Validando numero de bolsas positivo
-						$.validator.addMethod('positiveNumber',
+						/* $.validator.addMethod('positiveNumber',
 								function(value) {
 									return Number(value) >= 0;
 								}, 'Entre com um numero positivo');
@@ -310,9 +239,9 @@
 
 						$("#quantidadeBolsa").bind("drop", function(e) {
 							return false;
-						});
+						}); */
 
-						jQuery.validator.setDefaults({
+						/* jQuery.validator.setDefaults({
 							errorPlacement : function(error, element) {
 								// if the input has a prepend or append element, put the validation msg after the parent div
 								if (element.parent().hasClass('input-prepend')
@@ -335,9 +264,9 @@
 								$(element).closest('.control-group')
 										.removeClass('error'); // remove the Boostrap error class from the control group
 							}
-						});
+						}); */
 
-						$(".registrationForm")
+						/* $(".registrationForm")
 								.validate(
 										{
 											rules : {
@@ -411,8 +340,8 @@
 																'has-error')
 														.addClass('has-success');
 											}
-										});
-					}); */
+										});*/
+					}(jQuery));
 </script>
 
 </html>

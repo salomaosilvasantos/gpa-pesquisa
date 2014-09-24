@@ -43,7 +43,7 @@
 					<div class="form-group">
 						<label for="nome" class="col-sm-2 control-label">Nome:</label>
 						<div class="col-sm-10">
-							<form:input id="nome" path="nome" cssClass="form-control" placeholder="Nome do projeto"/>
+							<form:input id="nome" path="nome" onchange="TrimNome()" cssClass="form-control" placeholder="Nome do projeto"/>
 							<div class="error-validation">
 								<form:errors path="nome"></form:errors>
 							</div>
@@ -58,7 +58,7 @@
 					<div class="form-group">
 						<label for="descricao" class="col-sm-2 control-label">Descrição:</label>
 						<div class="col-sm-10">
-							<form:textarea id="descricao" path="descricao" name="descricao" class="form-control" rows="5" placeholder="Descrição" ></form:textarea>
+							<form:textarea id="descricao" path="descricao" onchange="TrimDescricao()" name="descricao" class="form-control" rows="5" placeholder="Descrição" ></form:textarea>
 							<div class="error-validation">
 								<form:errors path="descricao"></form:errors>
 							</div>
@@ -125,36 +125,15 @@
 						</div>
 					</div>
 					
-					<div class="form-group" id = "containerParticipantes">
-						<label id = "labelParticipante" for="participantes" class="col-sm-2 control-label">Participantes:</label>
+					<div class="form-group">
+						<label for="participantes" class="col-sm-2 control-label">Participantes:</label>
 						<div class="col-sm-10">
-							
-					
-				    <form:input path="" name="participantes1" id="participantes1" list="listaParticipantes"  cssClass="form-control" placeholder="Participantes do projeto"/>
-					
-					<button type = "button" name = "addParticipante" id = "addParticipante">Adicionar Participante</button>					
-					
-					<c:if test="${not empty error_participantes}">
-						<div class="error-validation">
-							<span>${error_participantes}</span>
-						</div>	
-					</c:if>
-							
-					<datalist id = "listaParticipantes">
-					
-					<c:forEach items="${participantes}" var="participante">
-							<option value="${participante.nome}" label="CPF : ${participante.cpf}">
-		            </c:forEach>
-					
-					</datalist>
-					<div id = "listaParticipantesCadastrados">
-					<c:forEach items="${projeto.participantes}" var="participante">
-				
-						<label class="participanteSelecionado" for="participanteSelecionado">${participante.nome}</label>
-						<input type="checkbox" class="participanteSelecionado" id = "participanteSelecionado" name="participanteSelecionado" value = "${participante.nome}"  checked="checked"> ,
-					
-		            </c:forEach>
-		            </div>
+							<form:input id="participantes" path="participantes" cssClass="form-control" placeholder="Participantes do projeto"/>
+							<c:if test="${not empty error_participantes}">
+								<div class="error-validation">
+									<span>${error_participantes}</span>
+								</div>
+							</c:if>
 						</div>
 					</div>
 					
@@ -219,7 +198,16 @@
 	<jsp:include page="../modulos/footer.jsp" />
 
 </body>
-
+<script>
+	function TrimNome() {
+		var nome = document.getElementById('nome');
+		nome.value = nome.value.trim();
+	}
+	function TrimDescricao() {
+		var descricao = document.getElementById('descricao');
+		descricao.value = descricao.value.trim();
+	}	
+</script>
 
 <script type="text/javascript">
 	/* $(document)
