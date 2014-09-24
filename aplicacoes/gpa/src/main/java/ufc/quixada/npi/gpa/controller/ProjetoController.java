@@ -551,8 +551,6 @@ public class ProjetoController {
 				projeto.setQuantidadeBolsa(proj.getQuantidadeBolsa());
 				projeto.setLocal(proj.getLocal());
 				projeto.setParticipantes(proj.getParticipantes());
-
-				projeto.setStatus(StatusProjeto.SUBMETIDO);
 				Date data = new Date(System.currentTimeMillis());
 				projeto.setSubmissao(data);
 
