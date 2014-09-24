@@ -1,3 +1,4 @@
+
 package ufc.quixada.npi.gpa.model;
 
 import java.util.Date;
@@ -11,6 +12,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
@@ -52,7 +56,9 @@ public class Projeto {
 	@Enumerated(EnumType.STRING)
 	private StatusProjeto status;
 	
-	private String participantes;
+	@ManyToMany
+	@JoinTable(joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="pessoa_id", referencedColumnName="id")})
+	private List<Pessoa> participantes;
 	
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Documento> documentos;
@@ -70,7 +76,7 @@ public class Projeto {
 	public Projeto(Long id, String codigo, String nome, Date inicio,
 			Date termino, String descricao, Pessoa autor, String atividades,
 			Integer quantidadeBolsa, String local, StatusProjeto status,
-			String participantes, List<Documento> documentos,
+			List<Pessoa> participantes, List<Documento> documentos,
 			List<Comentario> comentarios, List<Parecer> pareceres) {
 		super();
 		this.id = id;
@@ -154,11 +160,12 @@ public class Projeto {
 		this.status = status;
 	}
 
-	public String getParticipantes() {
+
+	public List<Pessoa> getParticipantes() {
 		return participantes;
 	}
 
-	public void setParticipantes(String participantes) {
+	public void setParticipantes(List<Pessoa> participantes) {
 		this.participantes = participantes;
 	}
 
@@ -250,5 +257,4 @@ public class Projeto {
 			return this.descricao;
 		}
 	}
-
 }

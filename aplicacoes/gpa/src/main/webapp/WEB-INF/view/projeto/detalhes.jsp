@@ -50,8 +50,10 @@
 						<td class="content">${projeto.local }</td>
 					</tr>
 					<tr>
-						<td class="head">Participantes:</td>
-						<td class="content">${projeto.participantes }</td>
+						<td class="head" valign="top">Participantes:</td>
+							<c:forEach items="${projeto.participantes}" var="participante">
+								<td class="content">${participante.nome}</td>
+		           		    </c:forEach>
 					</tr>
 					<tr>
 						<td class="head">Atividades:</td>

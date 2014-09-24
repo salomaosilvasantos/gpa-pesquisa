@@ -15,13 +15,12 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(uniqueConstraints=@UniqueConstraint(columnNames = {"id", "login"}))
+@Table(name = "pessoa", uniqueConstraints=@UniqueConstraint(columnNames = {"id", "login"}))
 public class Pessoa {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
 	
 	@Column(nullable = false)
 	private String login;
@@ -47,7 +46,7 @@ public class Pessoa {
 	private String nome;
 	
 	private String email;
-	
+
 	public Pessoa(){
 		super();
 	}
@@ -80,7 +79,14 @@ public class Pessoa {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
+	/*
+	public List<Projeto> getProjetoParticipante() {
+		return projeto;
+	}
+	public void setProjetoParticipante(List<Projeto> projetoParticipante) {
+		this.projeto = projetoParticipante;
+	}
+	*/
 	public String getEmail() {
 		return email;
 	}

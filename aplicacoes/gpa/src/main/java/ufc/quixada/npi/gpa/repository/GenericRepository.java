@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 
+import ufc.quixada.npi.gpa.model.Pessoa;
+
 
 
 public interface GenericRepository<T> {

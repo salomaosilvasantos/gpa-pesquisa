@@ -3,8 +3,10 @@ package ufc.quixada.npi.gpa.controller;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.inject.Inject;
@@ -101,8 +103,8 @@ public class ProjetoController {
 			result.rejectValue("inicio", "error.projeto",
 					"A data de início deve ser antes da data de término.");
 			return "projeto/editar";
-		}		
-		
+		}
+
 		projeto.setAutor(getUsuarioLogado(session));
 		projeto.setStatus(StatusProjeto.NOVO);
 		this.serviceProjeto.save(projeto);
@@ -155,7 +157,10 @@ public class ProjetoController {
 				&& !projeto.getStatus()
 						.equals(StatusProjeto.AGUARDANDO_PARECER)) {
 			model.addAttribute("projeto", projeto);
+			model.addAttribute("participantes",
+					serviceUsuario.getParticipantes());
 			model.addAttribute("action", "editar");
+
 			return "projeto/editar";
 		}
 
@@ -327,6 +332,7 @@ public class ProjetoController {
 	public String atualizarProjeto(
 			@PathVariable("id") Long id,
 			@RequestParam("file") MultipartFile[] files,
+			@RequestParam(value = "participanteSelecionado", required = false) List<String> listaParticipantes,
 			@Valid @ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result, Model model, HttpSession session,
 			RedirectAttributes redirect) throws IOException {
@@ -351,8 +357,43 @@ public class ProjetoController {
 			model.addAttribute("action", "editar");
 			return "projeto/editar";
 		}
+		if(listaParticipantes == null){
+			redirect.addFlashAttribute("error_participantes",
+					"Por favor, selecione ao menos um participante.");
+			model.addAttribute("action", "editar");
+			return "redirect:/projeto/" + id + "/editar";
+		}
 
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
+		List<Pessoa> participantes = new ArrayList<Pessoa>();
+		Boolean pessoaJaCadastrada = false;
+
+		// verificar se todas as pessoas que vem do formulario estao no BD
+		for (String nomePessoa : listaParticipantes) {
+
+			Pessoa pessoa = serviceUsuario.getPessoaByNome(nomePessoa);
+
+			if (pessoa == null) {
+				redirect.addFlashAttribute("error_participantes",
+						"A pessoa '"+nomePessoa +"' não se encontra na base de dados");
+				model.addAttribute("action", "editar");
+				return "redirect:/projeto/" + id + "/editar";
+
+			} else {
+
+				for (Pessoa participante : participantes) {
+					if(pessoa.equals(participante)){
+						System.out.println("A pessoa "+participante.getNome()+" ja se encontra cadastrada no projeto");
+						pessoaJaCadastrada = true;
+					}
+				}
+				if(pessoaJaCadastrada == false) {
+					
+					participantes.add(pessoa);
+				}
+			}
+
+		}
 
 		for (MultipartFile mpf : files) {
 			if (mpf.getBytes().length > 0) {
@@ -373,7 +414,8 @@ public class ProjetoController {
 		projeto.setAtividades(projetoAtualizado.getAtividades());
 		projeto.setQuantidadeBolsa(projetoAtualizado.getQuantidadeBolsa());
 		projeto.setLocal(projetoAtualizado.getLocal());
-		projeto.setParticipantes(projetoAtualizado.getParticipantes());
+		if (participantes.size() > 0)
+			projeto.setParticipantes(participantes);
 
 		this.serviceProjeto.update(projeto);
 		redirect.addFlashAttribute("info", "Projeto atualizado com sucesso.");
@@ -565,15 +607,13 @@ public class ProjetoController {
 	public String listar(ModelMap modelMap, HttpSession session) {
 		modelMap.addAttribute("projetos", serviceProjeto
 				.getProjetosByUsuario(getUsuarioLogado(session).getId()));
-		modelMap.addAttribute(
-				"projetosAguardandoParecer",
+
+		modelMap.addAttribute("projetosAguardandoParecer",
 				serviceProjeto.getProjetosAguardandoParecer(getUsuarioLogado(
 						session).getId()));
-		modelMap.addAttribute(
-				"projetosAvaliados",
+		modelMap.addAttribute("projetosAvaliados",
 				serviceProjeto.getProjetosAvaliadosDoUsuario(getUsuarioLogado(
 						session).getId()));
-
 
 		if (serviceUsuario.isDiretor(getUsuarioLogado(session))) {
 			modelMap.addAttribute("projetosSubmetidos",
@@ -830,4 +870,3 @@ public class ProjetoController {
 		}
 	}
 }
-
