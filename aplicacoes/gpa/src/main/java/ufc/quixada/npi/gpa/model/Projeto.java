@@ -1,4 +1,3 @@
-
 package ufc.quixada.npi.gpa.model;
 
 import java.util.Date;
@@ -39,8 +38,10 @@ public class Projeto {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date termino;
 	
-	@Column(columnDefinition="TEXT")
-	@Size(min = 5, message = "Mínimo 5 caracteres")
+    private Date submissao ;
+	
+    @Column(columnDefinition="TEXT")
+    @Size(min = 5, message = "Mínimo 5 caracteres")
 	private String descricao;
 	
 	@ManyToOne
@@ -57,8 +58,8 @@ public class Projeto {
 	private StatusProjeto status;
 	
 	@ManyToMany
-	@JoinTable(joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="pessoa_id", referencedColumnName="id")})
-	private List<Pessoa> participantes;
+    @JoinTable(joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="pessoa_id", referencedColumnName="id")})
+    private List<Pessoa> participantes;
 	
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Documento> documentos;
@@ -160,14 +161,13 @@ public class Projeto {
 		this.status = status;
 	}
 
-
 	public List<Pessoa> getParticipantes() {
-		return participantes;
-	}
+        return participantes;
+    }
 
-	public void setParticipantes(List<Pessoa> participantes) {
-		this.participantes = participantes;
-	}
+    public void setParticipantes(List<Pessoa> participantes) {
+        this.participantes = participantes;
+    }
 
 	public List<Documento> getDocumentos() {
 		return documentos;
@@ -208,6 +208,14 @@ public class Projeto {
 	public void setPareceres(List<Parecer> pareceres) {
 		this.pareceres = pareceres;
 	}
+	
+	public Date getSubmissao() {
+        return submissao;
+    }
+
+    public void setSubmissao(Date submissao) {
+        this.submissao = submissao;
+    }
 
 	@Override
 	public boolean equals(Object obj) {
@@ -257,4 +265,5 @@ public class Projeto {
 			return this.descricao;
 		}
 	}
+
 }
