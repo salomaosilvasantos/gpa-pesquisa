@@ -38,7 +38,7 @@ public class Projeto {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date termino;
 	
-    private Date submissao = null;
+    private Date submissao ;
 	
 
     @Size(min = 5, message = "Mínimo 5 caracteres")

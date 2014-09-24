@@ -293,10 +293,10 @@ public class ProjetoController {
 		parecer.setComentario(comentario);
 		serviceParecer.update(parecer);
 		projeto.setStatus(StatusProjeto.AGUARDANDO_AVALIACAO);
-		serviceProjeto.update(projeto);
-
+		
+		serviceProjeto.update(projeto);	
+		
 		return "redirect:/projeto/listar";
-
 	}
 
 	@RequestMapping(value = "/{id}/editar", method = RequestMethod.POST)
@@ -439,7 +439,7 @@ public class ProjetoController {
 				}
 			
 				projeto.setStatus(StatusProjeto.SUBMETIDO);
-				projeto.setSubmissao(new Date(System.currentTimeMillis()));
+				
 				this.serviceProjeto.update(projeto);
 				redirectAttributes.addFlashAttribute("info",
 						"Projeto submetido com sucesso.");
@@ -511,6 +511,8 @@ public class ProjetoController {
 				projeto.setLocal(proj.getLocal());
 				projeto.setParticipantes(proj.getParticipantes());
 				projeto.setStatus(StatusProjeto.SUBMETIDO);
+				Date data = new Date(System.currentTimeMillis());
+				projeto.setSubmissao(data);
 				this.serviceProjeto.update(projeto);
 				redirectAttributes.addFlashAttribute("info",
 						"Projeto submetido com sucesso.");
