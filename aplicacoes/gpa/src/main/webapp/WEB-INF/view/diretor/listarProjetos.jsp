@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
@@ -45,8 +45,8 @@
 				data-toggle="tab">Meus Projetos</a></li>
 			<li><a href="#projetos-submetidos" role="tab" data-toggle="tab">Projetos
 					Submetidos</a></li>
-			<li><a href="#pareceres-atribuidos" role="tab" data-toggle="tab">Pareceres
-					Atribuidos</a></li>
+			<li><a href="#projetos-avaliados" role="tab" data-toggle="tab">Projetos
+					Avaliados</a></li>
 		</ul>
 
 		<div class="tab-content">
@@ -112,8 +112,29 @@
 																class="glyphicon glyphicon-user"></span>
 														</button>
 													</a>
+												</c:if></sec:authorize>
+												<c:if test="${projeto.status == 'AGUARDANDO_AVALIACAO'}">
+													<a id="verParecer" data-toggle="modal"
+														href="<c:url value="/projeto/${projeto.id}/verParecer" ></c:url>">
+														<button class="btn btn-primary">
+															Ver Parecer <span class="glyphicon glyphicon-upload"></span>
+														</button>
+													</a>
+
+													<a id="comentario"
+														href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">
+														<button class="btn btn-info">
+															Comentario <span class="glyphicon glyphicon-pencil"></span>
+														</button>
+													</a>
+
+													<a id="avaliarProjeto" data-toggle="modal"	>
+														<button class="btn btn-danger">
+															Avaliar Projeto <span class="glyphicon glyphicon-trash"></span>
+														</button>
+													</a>
 												</c:if>
-											</sec:authorize></td>
+											</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -142,49 +163,77 @@
 									<th>Nome</th>
 									<th>Autor</th>
 									<th>Status</th>
+
+									<th>Atribuição</th>
+									<th>Prazo</th>
+
 									<th id="acoes">Ações</th>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach var="projeto" items="${projetosSubmetidos}">
-									<c:if test="${projeto.status == 'SUBMETIDO'}">
-										<tr class="linha">
-											<td>${projeto.codigo}</td>
-											<td><a
-												href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
-											<td>${projeto.autor.nome}</td>
-											<td class="status">${projeto.status.descricao}</td>
-											<td><c:if test="${projeto.status == 'SUBMETIDO'}">
-													<a id="atribuirParecerista"
-														href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
+									<tr class="linha">
+										<td>${projeto.codigo}</td>
+										<td><a
+											href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
+										<td>${projeto.autor.nome}</td>
+										<td class="status">${projeto.status.descricao}</td>
+
+										<td>${projeto.pareceres[0].usuario.nome}</td>
+
+										<td><fmt:formatDate pattern="dd-MM-yyyy"
+												value="${projeto.pareceres[0].prazo}" /></td>
+
+										<td><c:if test="${projeto.status == 'SUBMETIDO'}">
+												<a id="atribuirParecerista"
+													href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
+													<button class="btn btn-primary">
+														Atribuir Parecerista <span
+															class="glyphicon glyphicon-user"></span>
+													</button>
+												</a>
+											</c:if>
+											<c:if test="${projeto.status == 'AGUARDANDO_AVALIACAO'}">
+													<a id="verParecer" data-toggle="modal"
+														href="<c:url value="/projeto/${projeto.id}/verParecer" ></c:url>">
 														<button class="btn btn-primary">
-															Atribuir Parecerista <span
-																class="glyphicon glyphicon-user"></span>
+															Ver Parecer <span class="glyphicon glyphicon-upload"></span>
+														</button>
+													</a>
+
+													<a id="comentario"
+														href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">
+														<button class="btn btn-info">
+															Comentario <span class="glyphicon glyphicon-pencil"></span>
+														</button>
+													</a>
+
+													<a id="avaliarProjeto" data-toggle="modal"	>													
+															<button class="btn btn-danger">
+															Avaliar Projeto <span class="glyphicon glyphicon-trash"></span>
 														</button>
 													</a>
 												</c:if></td>
-										</tr>
+									</tr>
 
-									</c:if>
 								</c:forEach>
 							</tbody>
 						</table>
 					</div>
 				</c:if>
 			</div>
-
-			<!-- Pareceres Atribuidos -->
-			<div class="tab-pane" id="pareceres-atribuidos">
-				<c:if test="${empty projetosSubmetidos}">
-					<div class="alert alert-warning" role="alert">Não há
-						pareceres atribuidos.</div>
+			<!-- Projetos Avaliados -->
+			<div class="tab-pane" id="projetos-avaliados">
+				<c:if test="${empty projetosAvaliados}">
+					<div class="alert alert-warning" role="alert">Não há projetos
+						Avaliados.</div>
 				</c:if>
-				<c:if test="${not empty projetosSubmetidos}">
+				<c:if test="${not empty projetosAvaliados}">
 					<div class="panel panel-default">
 						<div class="panel-heading" align="center">
-							<h4>Pareceres Atribuidos</h4>
+							<h4>Projetos Avaliados</h4>
 						</div>
-
+						<input type="hidden" name="parecerId" value="${parecerId}">
 						<!-- Table -->
 						<table class="table" id="table">
 							<thead>
@@ -192,22 +241,18 @@
 									<th id="teste">Identificador</th>
 									<th>Nome</th>
 									<th>Autor</th>
-									<th>Atribuição</th>
-									<th>Prazo</th>
+									<th>Status</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="projeto" items="${projetosSubmetidos}">
-									<c:if test="${projeto.status == 'AGUARDANDO_PARECER'}">
-										<tr class="linha">
-											<td>${projeto.codigo}</td>
-											<td><a
-												href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
-											<td>${projeto.autor.nome}</td>
-											<td></td>
-											<td></td>
-										</tr>
-									</c:if>
+								<c:forEach var="projeto" items="${projetosAvaliados}">
+									<tr class="linha">
+										<td>${projeto.codigo}</td>
+										<td><a
+											href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
+										<td>${projeto.autor.nome}</td>
+										<td class="status">${projeto.status.descricao}</td>
+									</tr>
 								</c:forEach>
 							</tbody>
 						</table>
