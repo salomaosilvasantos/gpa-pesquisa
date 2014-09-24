@@ -99,3 +99,40 @@ table#file-upload {
 .content{
 	display:block;
 }
+
+
+.nome_pessoa {
+	text-decoration: underline;
+	font-weight: bold;
+}
+
+.formatacao_data {
+	text-align: right;
+	font-weight: bold;
+}
+
+.ca-menu>li {
+	list-style: none;
+	text-align: left;
+	margin-bottom: 5px;
+}
+
+.corpo_texto {
+	font-size: 1.25em;
+	word-break: break-all;
+}
+
+#textocomentarioInput {
+	max-width: 500px;
+	max-height: 100px;
+	min-width: 500px;
+	min-height: 100px;
+	border-radius: 4px;
+}
+.input-group{
+	margin: auto;
+}
+
+#first_cabecalho:first-child{
+	
+}
