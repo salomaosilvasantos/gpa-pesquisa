@@ -12,6 +12,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
@@ -37,8 +40,10 @@ public class Projeto implements Serializable {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date termino;
 	
-	@Column(columnDefinition="TEXT")
-	@Size(min = 5, message = "Mínimo 5 caracteres")
+    private Date submissao ;
+	
+    @Column(columnDefinition="TEXT")
+    @Size(min = 5, message = "Mínimo 5 caracteres")
 	private String descricao;
 	
 	@ManyToOne
@@ -54,7 +59,9 @@ public class Projeto implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private StatusProjeto status;
 	
-	private String participantes;
+	@ManyToMany
+    @JoinTable(joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="pessoa_id", referencedColumnName="id")})
+    private List<Pessoa> participantes;
 	
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Documento> documentos;
@@ -73,7 +80,7 @@ public class Projeto implements Serializable {
 	public Projeto(Long id, String codigo, String nome, Date inicio,
 			Date termino, String descricao, Pessoa autor, String atividades,
 			Integer quantidadeBolsa, String local, StatusProjeto status,
-			String participantes, List<Documento> documentos,
+			List<Pessoa> participantes, List<Documento> documentos,
 			List<Comentario> comentarios, List<Parecer> pareceres) {
 		super();
 		this.id = id;
@@ -157,13 +164,13 @@ public class Projeto implements Serializable {
 		this.status = status;
 	}
 
-	public String getParticipantes() {
-		return participantes;
-	}
+	public List<Pessoa> getParticipantes() {
+        return participantes;
+    }
 
-	public void setParticipantes(String participantes) {
-		this.participantes = participantes;
-	}
+    public void setParticipantes(List<Pessoa> participantes) {
+        this.participantes = participantes;
+    }
 
 	public List<Documento> getDocumentos() {
 		return documentos;
@@ -204,6 +211,14 @@ public class Projeto implements Serializable {
 	public void setPareceres(List<Parecer> pareceres) {
 		this.pareceres = pareceres;
 	}
+	
+	public Date getSubmissao() {
+        return submissao;
+    }
+
+    public void setSubmissao(Date submissao) {
+        this.submissao = submissao;
+    }
 
 	@Override
 	public boolean equals(Object obj) {

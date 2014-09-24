@@ -45,6 +45,17 @@
 						<td class="content"><fmt:formatDate pattern="dd-MM-yyyy"
 								value="${projeto.termino }" /></td>
 					</tr>
+
+					<tr>
+						<td class="head">Submissão:</td>
+
+						<c:if test="${not empty projeto.submissao}">					
+							<td class="content"> <fmt:formatDate pattern="dd-MM-yyyy"
+									value="${projeto.submissao }" /> às <fmt:formatDate
+									pattern="HH:mm" value="${projeto.submissao }" /></td> 
+						</c:if>						
+
+					</tr>
 					<tr>
 						<td class="head">Bolsas:</td>
 						<td class="content">${projeto.quantidadeBolsa }</td>
@@ -54,8 +65,10 @@
 						<td class="content">${projeto.local }</td>
 					</tr>
 					<tr>
-						<td class="head">Participantes:</td>
-						<td class="content">${projeto.participantes }</td>
+						<td class="head" valign="top">Participantes:</td>
+							<c:forEach items="${projeto.participantes}" var="participante">
+								<td class="content">${participante.nome}</td>
+		           		    </c:forEach>
 					</tr>
 					<tr>
 						<td class="head">Atividades:</td>

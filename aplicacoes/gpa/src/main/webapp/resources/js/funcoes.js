@@ -3,7 +3,7 @@ $(document).ready(function() {
 	$("#formularioCadastroComentario").validate({		
 		submitHandler: function(form) {
 			var idProjeto = $('#projeto').val();
-			var idPessoa = $('#pessoa').val();			
+			var idPessoa = $('#pessoa').val();
 			var nomePessoa = $('#pessoa_nome').val();
 			var cabecalho = "Comentários do Projeto";
 			var textoComentario = $('#textocomentarioInput').val();
@@ -137,12 +137,3 @@ $(document).ready(function() {
 	});
 	
 });
-
-
-function verificarSeExisteUlNaPagina() {
-	var verificaSeListaEstaVazia = $("#comentarioList li").length;
-	if (verificaSeListaEstaVazia == 0) {
-		$("#headComentarios").hide();
-	}
-
-}

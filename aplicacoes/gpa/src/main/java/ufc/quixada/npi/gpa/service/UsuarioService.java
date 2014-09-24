@@ -13,4 +13,9 @@ public interface UsuarioService extends GenericService<Pessoa> {
 	public abstract boolean isDiretor(Pessoa usuario);
 	
 	public abstract Pessoa getDiretor();
+	
+	public abstract List<Pessoa> getParticipantes();
+	
+	public abstract Pessoa getPessoaByNome(String nome);
+	
 }
