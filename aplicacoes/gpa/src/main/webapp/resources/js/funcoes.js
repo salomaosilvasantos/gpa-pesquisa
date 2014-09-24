@@ -69,11 +69,11 @@ $(document).ready(function() {
 	
 	$('#addParticipante').click(function adicionarParticipante(){
 		
-				var nomeParticipante = $("#participantes1").val();
+				var nomeParticipante = $("#participanteEscolhido").val();
 				
 				if(!nomeParticipante || 0 === nomeParticipante.length){
 					
-					 $("#participantes1").css({'border' : '#a94442 solid 1px','box-shadow' : '1px 1px rgba(0,0,0,.075)'}); 
+					 $("#participanteEscolhido").css({'border' : '#a94442 solid 1px','box-shadow' : '1px 1px rgba(0,0,0,.075)'}); 
 					 $("#labelParticipante").css("color","#a94442");
 				}else{
 					

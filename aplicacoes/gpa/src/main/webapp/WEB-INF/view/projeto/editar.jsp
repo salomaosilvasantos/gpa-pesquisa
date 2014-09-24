@@ -130,7 +130,7 @@
 						<div class="col-sm-10">
 							
 					
-				    <form:input path="" name="participantes1" id="participantes1" list="listaParticipantes"  cssClass="form-control" placeholder="Participantes do projeto"/>
+				    <form:input path="" name="participanteEscolhido" id="participanteEscolhido" list="listaParticipantes"  cssClass="form-control" placeholder="Participantes do projeto"/>
 					
 					<button type = "button" name = "addParticipante" id = "addParticipante">Adicionar Participante</button>					
 					

@@ -46,10 +46,7 @@ public class Pessoa {
 	private String nome;
 	
 	private String email;
-	/*
-	@ManyToMany(mappedBy="participantes")
-	private List<Projeto> projeto;
-	*/
+
 	public Pessoa(){
 		super();
 	}

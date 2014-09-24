@@ -333,7 +333,6 @@ public class ProjetoController {
 			@PathVariable("id") Long id,
 			@RequestParam("file") MultipartFile[] files,
 			@RequestParam(value = "participanteSelecionado", required = false) List<String> listaParticipantes,
-			@RequestParam("participantes1") String[] participantes1,
 			@Valid @ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result, Model model, HttpSession session,
 			RedirectAttributes redirect) throws IOException {
@@ -367,7 +366,7 @@ public class ProjetoController {
 
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		List<Pessoa> participantes = new ArrayList<Pessoa>();
-		String pessoaJaCadastrada = "nao";
+		Boolean pessoaJaCadastrada = false;
 
 		// verificar se todas as pessoas que vem do formulario estao no BD
 		for (String nomePessoa : listaParticipantes) {
@@ -380,15 +379,18 @@ public class ProjetoController {
 				model.addAttribute("action", "editar");
 				return "redirect:/projeto/" + id + "/editar";
 
-			} else if(pessoa != null){
+			} else {
 
 				for (Pessoa participante : participantes) {
 					if(pessoa.equals(participante)){
 						System.out.println("A pessoa "+participante.getNome()+" ja se encontra cadastrada no projeto");
-						pessoaJaCadastrada = "sim";
+						pessoaJaCadastrada = true;
 					}
 				}
-				if(pessoaJaCadastrada.equalsIgnoreCase("nao")) participantes.add(pessoa);
+				if(pessoaJaCadastrada == false) {
+					
+					participantes.add(pessoa);
+				}
 			}
 
 		}
