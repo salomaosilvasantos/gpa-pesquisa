@@ -5,27 +5,25 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 
-import ufc.quixada.npi.gpa.model.Pessoa;
-
 
 
 public interface GenericRepository<T> {
 
-	public abstract void setEntityManager(EntityManager em);
+	  void setEntityManager(EntityManager em);
 
-	public abstract void save(T entity);
+	  void save(T entity);
 	
-	public abstract void update(T entity);
+	  void update(T entity);
 
-	public abstract void delete(T entity);
+	  void delete(T entity);
 
-	public abstract T find(Class<T> entityClass, Object id);
+	  T find(Class<T> entityClass, Object id);
 
-	public abstract List<T> find(Class<T> entityClass);
+	  List<T> find(Class<T> entityClass);
 
-	public abstract List<T> find(Class<T> entityClass, int firstResult, int maxResults);
+	  List<T> find(Class<T> entityClass, int firstResult, int maxResults);
 
-	public abstract List<T> find(String queryName,
+	  List<T> find(String queryName,
 			Map<String, Object> namedParams);
 
 	/**
@@ -35,10 +33,10 @@ public interface GenericRepository<T> {
 	 * @param namedParams
 	 * @return
 	 */
-	public abstract List<T> find(QueryType type, String query,
+	 List<T> find(QueryType type, String query,
 			Map<String, Object> namedParams);
 
-	public abstract List<T> find(String queryName,
+	 List<T> find(String queryName,
 			Map<String, Object> namedParams, int firstResult, int maxResults);
 
 	/**
@@ -50,7 +48,7 @@ public interface GenericRepository<T> {
 	 * @param maxResults
 	 * @return
 	 */
-	public abstract List<T> find(QueryType type, String query,
+	 List<T> find(QueryType type, String query,
 			Map<String, Object> namedParams, int firstResult, int maxResults);
 
 	/**
@@ -59,7 +57,7 @@ public interface GenericRepository<T> {
 	 * @param namedParams
 	 * @return
 	 */
-	public abstract T findFirst(String query, Map<String, Object> namedParams);
+	 T findFirst(String query, Map<String, Object> namedParams);
 
 	/**
 	 * 
@@ -69,7 +67,7 @@ public interface GenericRepository<T> {
 	 * @param maxResults
 	 * @return
 	 */
-	public abstract T findFirst(String query, Map<String, Object> namedParams,
+	 T findFirst(String query, Map<String, Object> namedParams,
 			int firstResult, int maxResults);
 
 	/**
@@ -81,7 +79,7 @@ public interface GenericRepository<T> {
 	 * @param maxResults
 	 * @return
 	 */
-	public abstract T findFirst(QueryType type, String query,
+	 T findFirst(QueryType type, String query,
 			Map<String, Object> namedParams, int firstResult, int maxResults);
 
 	
