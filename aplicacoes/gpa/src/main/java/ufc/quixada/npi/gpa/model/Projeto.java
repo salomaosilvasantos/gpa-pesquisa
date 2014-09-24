@@ -1,16 +1,28 @@
+
 package ufc.quixada.npi.gpa.model;
 
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name = "projeto" , uniqueConstraints = @UniqueConstraint(columnNames = { "id" }))
 public class Projeto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +39,7 @@ public class Projeto {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date termino;
 	
+	@Column(columnDefinition="TEXT")
 	@Size(min = 5, message = "Mínimo 5 caracteres")
 	private String descricao;
 	
@@ -244,5 +257,4 @@ public class Projeto {
 			return this.descricao;
 		}
 	}
-
 }
