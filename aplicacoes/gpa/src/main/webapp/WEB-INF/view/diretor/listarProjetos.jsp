@@ -112,8 +112,29 @@
 																class="glyphicon glyphicon-user"></span>
 														</button>
 													</a>
+												</c:if></sec:authorize>
+												<c:if test="${projeto.status == 'AGUARDANDO_AVALIACAO'}">
+													<a id="verParecer" data-toggle="modal"
+														href="<c:url value="/projeto/${projeto.id}/verParecer" ></c:url>">
+														<button class="btn btn-primary">
+															Ver Parecer <span class="glyphicon glyphicon-upload"></span>
+														</button>
+													</a>
+
+													<a id="comentario"
+														href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">
+														<button class="btn btn-info">
+															Comentario <span class="glyphicon glyphicon-pencil"></span>
+														</button>
+													</a>
+
+													<a id="avaliarProjeto" data-toggle="modal"	>
+														<button class="btn btn-danger">
+															Avaliar Projeto <span class="glyphicon glyphicon-trash"></span>
+														</button>
+													</a>
 												</c:if>
-											</sec:authorize></td>
+											</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -171,7 +192,28 @@
 															class="glyphicon glyphicon-user"></span>
 													</button>
 												</a>
-											</c:if></td>
+											</c:if>
+											<c:if test="${projeto.status == 'AGUARDANDO_AVALIACAO'}">
+													<a id="verParecer" data-toggle="modal"
+														href="<c:url value="/projeto/${projeto.id}/verParecer" ></c:url>">
+														<button class="btn btn-primary">
+															Ver Parecer <span class="glyphicon glyphicon-upload"></span>
+														</button>
+													</a>
+
+													<a id="comentario"
+														href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">
+														<button class="btn btn-info">
+															Comentario <span class="glyphicon glyphicon-pencil"></span>
+														</button>
+													</a>
+
+													<a id="avaliarProjeto" data-toggle="modal"	>													
+															<button class="btn btn-danger">
+															Avaliar Projeto <span class="glyphicon glyphicon-trash"></span>
+														</button>
+													</a>
+												</c:if></td>
 									</tr>
 
 								</c:forEach>
