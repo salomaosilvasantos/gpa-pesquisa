@@ -9,6 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <title>Informações do Projeto</title>
 <link
 	href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />"
@@ -16,12 +17,15 @@
 <link href="<c:url value="/resources/css/estilo.css" />"
 	rel="stylesheet" />
 </head>
+
 <body onload="verificarSeExisteUlNaPagina()">
 	<jsp:include page="../modulos/header.jsp" />
+
 	<div class="container" style="margin-bottom: 70px;">
 		<div class="novo-projeto" align="left">
 			<div class="form" align="center">
 				<h2>Detalhes do Projeto</h2>
+
 				<table id="details">
 					<tr>
 						<td class="head">Nome:</td>
@@ -57,17 +61,23 @@
 						<td class="head">Atividades:</td>
 						<td class="content">${projeto.atividades }</td>
 					</tr>
+
 					<tr>
 						<td class="head" valign="top">Arquivos:</td>
 						<c:forEach var="documento" items="${projeto.documentos}">
-							<!-- <a href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a>-->
+							<!--  <a href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a>-->
 							<td class="content"><a
 								href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a></td>
-							<!-- <td class="content">${documento.nomeOriginal }</td>-->
+
+							<!--  <td class="content">${documento.nomeOriginal }</td>-->
+
 						</c:forEach>
 					</tr>
 				</table>
+
 				<div>
+
+
 					<div class="container ">
 						<h3 id="headComentarios">Comentários do Projeto</h3>
 						<ul id="comentarioList" class="ca-menu">
@@ -87,36 +97,39 @@
 				</div>
 
 				<div class="row text-center">
+
+
 					<form id="formularioCadastroComentario" role="form" method="POST"
 						class="form-horizontal">
 						<input type="hidden" id="projeto" name="projeto"
-							value="${projeto.id}"> 							
-							 <input type="hidden"
-							id="pessoa_nome" name="pessoa" value="${pessoa.nome}"> 
-							<input type="hidden" id="pessoa"
-							name="pessoa" value="${pessoa.id}">
-							<label
-							class="control-label" for="textocomentarioInput">
-							<h3>Novo Comentário</h3>
-						</label>
+							value="${projeto.id}"> <input type="hidden" id="pessoa"
+							name="pessoa" value="${usuario.id}"> <input
+							type="hidden" id="pessoa_nome" name="pessoa"
+							value="${usuario.nome}"> <label class="control-label"
+							for="textocomentarioInput"><h3>Novo Comentário</h3></label>
 						<div class="form-group">
 							<div class="input-group">
 								<textarea id="textocomentarioInput" name="texto"
 									class="form-control" placeholder="Comentário"></textarea>
 							</div>
 						</div>
-						<br> <input name="botao" id="botaoEnviarComentario"
-							type="submit" class="btn btn-primary" value="Enviar" /> <a
+						<br> <input name="botao" id="botaoEnviarComentario" type="submit"
+							class="btn btn-primary" value="Enviar" /> <a
 							href="<c:url value="/projeto/index"></c:url>"
 							class="btn btn-default">Voltar</a>
 					</form>
 				</div>
 
+
 			</div>
 		</div>
 	</div>
+
 	<jsp:include page="../modulos/footer.jsp" />
+
+
 	<script
 		src="<c:url value="/webjars/jquery-maskedinput/1.3.1/jquery.maskedinput.min.js" />"></script>
+
 </body>
 </html>
