@@ -339,26 +339,33 @@ public class ProjetoController {
 			return "redirect:/projeto/" + id + "/editar";
 		}
 
+		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		List<Pessoa> participantes = new ArrayList<Pessoa>();
+		String pessoaJaCadastrada = "nao";
 
 		// verificar se todas as pessoas que vem do formulario estao no BD
 		for (String nomePessoa : listaParticipantes) {
 
 			Pessoa p = serviceUsuario.getPessoaByNome(nomePessoa);
 
-			System.out.println("entrou no loop-----------" + p);
 			if (p == null) {
 				redirect.addFlashAttribute("error_participantes",
 						"A pessoa '"+nomePessoa +"' não se encontra na base de dados");
 				model.addAttribute("action", "editar");
 				return "redirect:/projeto/" + id + "/editar";
 
-			} else
-				participantes.add(p);
+			} else if(p != null){
+
+				for (Pessoa pessoa : participantes) {
+					if(pessoa.equals(p)){
+						System.out.println("A pessoa "+p.getNome()+" ja se encontra cadastrada no projeto");
+						pessoaJaCadastrada = "sim";
+					}
+				}
+				if(pessoaJaCadastrada.equalsIgnoreCase("nao")) participantes.add(p);
+			}
 
 		}
-
-		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 
 		for (MultipartFile mpf : files) {
 			if (mpf.getBytes().length > 0) {

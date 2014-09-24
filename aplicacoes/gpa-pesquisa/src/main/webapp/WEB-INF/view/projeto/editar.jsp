@@ -151,7 +151,7 @@
 					<c:forEach items="${projeto.participantes}" var="participante">
 				
 						<label class="participanteSelecionado" for="participanteSelecionado">${participante.nome}</label>
-						<input type="checkbox" class="participanteSelecionado" id = "participanteSelecionado" name="participanteSelecionado" value = "${participante.nome}"  checked="checked"> 
+						<input type="checkbox" class="participanteSelecionado" id = "participanteSelecionado" name="participanteSelecionado" value = "${participante.nome}"  checked="checked"> ,
 					
 		            </c:forEach>
 		            </div>
