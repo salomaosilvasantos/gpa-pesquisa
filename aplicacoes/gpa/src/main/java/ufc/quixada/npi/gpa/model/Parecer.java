@@ -43,7 +43,7 @@ public class Parecer {
 	private Documento documento;
 	
 	@ManyToOne
-	@JoinColumn(name = "usuario_id")
+	@JoinColumn(name = "pessoa_id")
 	private Pessoa usuario;
 	
 	@ManyToOne
