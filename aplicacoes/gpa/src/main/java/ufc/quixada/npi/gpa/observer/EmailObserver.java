@@ -9,19 +9,18 @@ import javax.inject.Inject;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
 
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.Evento;
-import ufc.quixada.npi.gpa.service.ProjetoObserver;
+import ufc.quixada.npi.gpa.service.Observer;
 import ufc.quixada.npi.gpa.service.UsuarioService;
+import ufc.quixada.npi.gpa.service.impl.EmailService;
 
 
-public class EmailObserver implements ProjetoObserver {
+public class EmailObserver implements Observer {
 	
 	@Inject
-	private MailSender mailSender;
+	private EmailService emailService;
 	
 	@Inject
 	private UsuarioService usuarioService;
@@ -71,43 +70,43 @@ public class EmailObserver implements ProjetoObserver {
 						case SUBMISSAO:
 							String body = properties.getProperty(CORPO_SUBMISSAO).replaceAll(NOME_PROJETO, nomeProjeto)
 									.replaceAll(NOME_COORDENADOR, nomeCoordenador);
-							sendMail(emailCoordenador, subject, body);
-							sendMail(emailDiretor, subject, body);
+							emailService.sendMail(emailCoordenador, subject, body);
+							emailService.sendMail(emailDiretor, subject, body);
 							break;
 						
 						case ATRIBUICAO_PARECERISTA:
 							body = properties.getProperty(CORPO_ATRIBUICAO_PARECERISTA_COORDENADOR).replaceAll(NOME_PROJETO, nomeProjeto);
-							sendMail(emailCoordenador, subject, body);
+							emailService.sendMail(emailCoordenador, subject, body);
 							
 							body = properties.getProperty(CORPO_ATRIBUICAO_PARECERISTA_PARECERISTA).replaceAll(NOME_PROJETO, nomeProjeto)
 									.replaceAll(PRAZO, prazo);
-							sendMail(emailParecerista, subject, body);
+							emailService.sendMail(emailParecerista, subject, body);
 							
 							body = properties.getProperty(CORPO_ATRIBUICAO_PARECERISTA_DIRETOR).replaceAll(NOME_PROJETO, nomeProjeto)
 									.replaceAll(NOME_PARECERISTA, nomeParecerista);
-							sendMail(emailDiretor, subject, body);
+							emailService.sendMail(emailDiretor, subject, body);
 							
 							break;
 							
 						case EMISSAO_PARECER:
 							body = properties.getProperty(CORPO_EMISSAO_PARECER_COORDENADOR).replaceAll(NOME_PROJETO, nomeProjeto)
 									.replaceAll(NOME_PARECERISTA, nomeParecerista);
-							sendMail(emailCoordenador, subject, body);
+							emailService.sendMail(emailCoordenador, subject, body);
 							
 							body = properties.getProperty(CORPO_EMISSAO_PARECER_PARECERISTA).replaceAll(NOME_PROJETO, nomeProjeto);
-							sendMail(emailParecerista, subject, body);
+							emailService.sendMail(emailParecerista, subject, body);
 							
 							body = properties.getProperty(CORPO_EMISSAO_PARECER_DIRETOR).replaceAll(NOME_PROJETO, nomeProjeto)
 									.replaceAll(NOME_PARECERISTA, nomeParecerista);
-							sendMail(emailDiretor, subject, body);
+							emailService.sendMail(emailDiretor, subject, body);
 							
 							break;
 							
 						case AVALIACAO:
 							body = properties.getProperty(CORPO_AVALIACAO_DIRETOR).replaceAll(NOME_PROJETO, nomeProjeto)
 									.replaceAll(STATUS_AVALIACAO, "Status da avaliação");
-							sendMail(emailCoordenador, subject, body);
-							sendMail(emailDiretor, subject, body);
+							emailService.sendMail(emailCoordenador, subject, body);
+							emailService.sendMail(emailDiretor, subject, body);
 							break;
 					}
 						
@@ -122,14 +121,6 @@ public class EmailObserver implements ProjetoObserver {
 			
 		}
 		
-	}
-	
-	private void sendMail(String to, String subject, String body) {
-		SimpleMailMessage message = new SimpleMailMessage();
-		message.setTo(to);
-		message.setSubject(subject);
-		message.setText(body);
-		mailSender.send(message);
 	}
 
 }

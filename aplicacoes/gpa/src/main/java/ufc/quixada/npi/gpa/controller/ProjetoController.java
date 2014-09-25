@@ -37,10 +37,10 @@ import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.Evento;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.DocumentoService;
-import ufc.quixada.npi.gpa.service.NotificationService;
 import ufc.quixada.npi.gpa.service.ParecerService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.UsuarioService;
+import ufc.quixada.npi.gpa.service.impl.NotificationService;
 import ufc.quixada.npi.gpa.utils.Constants;
 
 @Component
@@ -236,7 +236,7 @@ public class ProjetoController {
 		serviceParecer.update(parecer);
 		projeto.setStatus(StatusProjeto.AGUARDANDO_AVALIACAO);
 		serviceProjeto.update(projeto);
-		
+
 		notificationService.notificar(projeto, Evento.EMISSAO_PARECER);
 
 		return "redirect:/projeto/listar";
@@ -414,9 +414,9 @@ public class ProjetoController {
 				projeto.setParticipantes(proj.getParticipantes());
 				projeto.setStatus(StatusProjeto.SUBMETIDO);
 				this.serviceProjeto.update(projeto);
-				
+
 				notificationService.notificar(projeto, Evento.SUBMISSAO);
-				
+
 				redirectAttributes.addFlashAttribute("info",
 						"Projeto submetido com sucesso.");
 				return "redirect:/projeto/listar";
@@ -531,9 +531,9 @@ public class ProjetoController {
 		serviceParecer.save(parecer);
 		projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);
 		serviceProjeto.update(projeto);
-		
+
 		notificationService.notificar(projeto, Evento.ATRIBUICAO_PARECERISTA);
-		
+
 		redirect.addFlashAttribute("info",
 				"O parecerista foi atribuído ao projeto com sucesso.");
 
@@ -582,12 +582,12 @@ public class ProjetoController {
 					"A data de início deve ser antes da data de término");
 			valid = false;
 		}
-		
+
 		if (projeto.getDocumentos().isEmpty()) {
 			model.addAttribute("error_documento", "Arquivo obrigatório");
 			valid = false;
 		}
-		
+
 		if (projeto.getDescricao().isEmpty()) {
 			model.addAttribute("error_descricao", "Campo obrigatório");
 			valid = false;
