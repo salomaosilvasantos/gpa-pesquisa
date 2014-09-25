@@ -268,5 +268,9 @@ public class Projeto implements Serializable {
 			return this.descricao;
 		}
 	}
+	
+	public enum Evento {
+		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO
+	}
 
 }
