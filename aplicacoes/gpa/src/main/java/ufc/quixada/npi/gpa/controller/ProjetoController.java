@@ -238,8 +238,6 @@ public class ProjetoController {
 
 		}
 
-		Pessoa diretor = serviceUsuario.getDiretor();
-
 		if (status.equals("favorável")) {
 			parecer.setStatus(StatusPosicionamento.FAVORAVEL);
 		} else {
