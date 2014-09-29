@@ -67,6 +67,41 @@ $(document).ready(function() {
 														}
 													});
 	
+	$("#formularioCadastroComentario")[0]
+													.reset();
+											return false;
+										},
+										rules : {
+											texto : {
+												required : true,
+											}
+										},
+										messages : {
+											texto : {
+												required : "Campo Obrigatório",
+											}
+										},
+										highlight : function(element) {
+											$(element).closest('.form-group')
+													.addClass('has-error');
+										},
+										unhighlight : function(element) {
+											$(element).closest('.form-group')
+													.removeClass('has-error');
+										},
+										errorElement : 'span',
+										errorClass : 'help-block',
+										errorPlacement : function(error,
+												element) {
+											if (element.parent('.input-group').length) {
+												error.insertAfter(element
+														.parent());
+											} else {
+												error.insertAfter(element);
+											}
+										}
+									});
+	
 	$('div.error-validation:has(span)').find('span').css('color', '#a94442');
 	$('div.error-validation:has(span)').find('span').parent().parent().parent().addClass('has-error has-feedback');
 	
