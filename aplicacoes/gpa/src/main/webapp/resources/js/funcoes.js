@@ -241,3 +241,10 @@ $(document)
 
 									});
 				});
+function verificarSeExisteUlNaPagina() {
+	var verificaSeListaEstaVazia = $("#comentarioList li").length;
+	if (verificaSeListaEstaVazia == 0) {
+		$("#headComentarios").hide();
+	}
+
+}
