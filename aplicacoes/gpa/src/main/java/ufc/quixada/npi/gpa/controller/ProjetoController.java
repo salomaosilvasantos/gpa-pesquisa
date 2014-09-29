@@ -321,7 +321,11 @@ public class ProjetoController {
 		
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		
-		
+		if (observacao.isEmpty()) {
+			redirect.addAttribute("erro",
+					"Comentário não pode estar vazio");
+			return "redirect:/projeto/" + id + "/avaliarProjeto";
+		}
 		
 		for (MultipartFile mpf : files) {
 			if (mpf.getBytes().length > 0) {
