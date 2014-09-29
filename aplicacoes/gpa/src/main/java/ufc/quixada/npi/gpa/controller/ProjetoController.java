@@ -262,7 +262,6 @@ public class ProjetoController {
 		
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		Pessoa usuario = getUsuarioLogado(session);
-		Parecer parecer = serviceParecer.find(Parecer.class, id);
 		// Verifica se o projeto existe
 		if (projeto == null) {
 			redirectAttributes
@@ -280,6 +279,75 @@ public class ProjetoController {
 			return "redirect:/projeto/listar";
 		}
 		
+	}
+	
+	@RequestMapping(value = "/{id}/avaliarProjeto", method = RequestMethod.GET)
+	public String avaliarProjeto(@PathVariable("id") long id,
+			 Model model,HttpSession session,
+			RedirectAttributes redirect) {
+		
+		Projeto projeto = serviceProjeto.find(Projeto.class, id);
+		if (projeto == null) {
+			redirect
+					.addFlashAttribute("erro", "Projeto Inexistente.");
+			return "redirect:/projeto/listar";
+		}
+		
+		
+		
+		if (!projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)) {
+			redirect.addFlashAttribute("erro",
+					"Projeto não está aguardando avaliação");
+			return "redirect:/projeto/listar";
+		}
+		if (!(serviceUsuario.isDiretor(getUsuarioLogado(session)))) {
+			redirect.addFlashAttribute("erro",
+					"Permissão para avaliar projeto negada");
+			return "redirect:/projeto/listar";
+		}
+		model.addAttribute("projeto", projeto);
+		return "diretor/avaliarProjeto";
+	}
+	
+	@RequestMapping(value = "/{id}/avaliarProjeto", method = RequestMethod.POST)
+	public String avaliarProjeto(HttpServletRequest request,
+			@PathVariable("id") long id,
+			@RequestParam("file") MultipartFile[] files,
+			@RequestParam("observacao") String observacao,
+			@RequestParam("opcoesAvaliacao") String status,
+			 HttpSession session,
+			RedirectAttributes redirect) throws IOException  {
+		
+		Projeto projeto = serviceProjeto.find(Projeto.class, id);
+		
+		
+		
+		for (MultipartFile mpf : files) {
+			if (mpf.getBytes().length > 0) {
+				Documento documento = new Documento();
+				documento.setNomeOriginal(mpf.getOriginalFilename());
+				documento.setTipo(mpf.getContentType());
+				documento.setProjeto(projeto);
+				documento.setArquivo(mpf.getBytes());
+				serviceDocumento.save(documento);
+			}
+
+		}
+		if (status.equals("Aprovado")) {
+			projeto.setStatus(StatusProjeto.APROVADO);
+		} else if(status.equals("Aprovado com restrição")) {
+			projeto.setStatus(StatusProjeto.APROVADO_COM_RESTRICAO);		
+		}else{
+			projeto.setStatus(StatusProjeto.REPROVADO);
+		}
+		
+		this.serviceProjeto.save(projeto);
+
+		this.serviceProjeto.update(projeto);
+		redirect.addFlashAttribute("info", "Projeto avaliado.");
+
+		return "redirect:/projeto/listar";
+
 	}
 	
 	
