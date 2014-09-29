@@ -9,6 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <title>Informações do Projeto</title>
 <link
 	href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />"
@@ -16,12 +17,15 @@
 <link href="<c:url value="/resources/css/estilo.css" />"
 	rel="stylesheet" />
 </head>
-<body>
+
+<body onload="verificarSeExisteUlNaPagina()">
 	<jsp:include page="../modulos/header.jsp" />
+
 	<div class="container" style="margin-bottom: 70px;">
 		<div class="novo-projeto" align="left">
 			<div class="form" align="center">
 				<h2>Detalhes do Projeto</h2>
+
 				<table id="details">
 					<tr>
 						<td class="head">Nome:</td>
@@ -41,6 +45,17 @@
 						<td class="content"><fmt:formatDate pattern="dd-MM-yyyy"
 								value="${projeto.termino }" /></td>
 					</tr>
+
+					<tr>
+						<td class="head">Submissão:</td>
+
+						<c:if test="${not empty projeto.submissao}">					
+							<td class="content"> <fmt:formatDate pattern="dd-MM-yyyy"
+									value="${projeto.submissao }" /> às <fmt:formatDate
+									pattern="HH:mm" value="${projeto.submissao }" /></td> 
+						</c:if>						
+
+					</tr>
 					<tr>
 						<td class="head">Bolsas:</td>
 						<td class="content">${projeto.quantidadeBolsa }</td>
@@ -59,109 +74,75 @@
 						<td class="head">Atividades:</td>
 						<td class="content">${projeto.atividades }</td>
 					</tr>
+
 					<tr>
 						<td class="head" valign="top">Arquivos:</td>
 						<c:forEach var="documento" items="${projeto.documentos}">
-							<!-- <a href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a>-->
+							<!--  <a href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a>-->
 							<td class="content"><a
 								href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a></td>
-							<!-- <td class="content">${documento.nomeOriginal }</td>-->
+
+							<!--  <td class="content">${documento.nomeOriginal }</td>-->
+
 						</c:forEach>
 					</tr>
 				</table>
-				<div align="center" style="width: 50%">
-					<h3>Comentários do Projeto</h3>
-					<c:if test="${empty projeto.comentarios}">
-						<div class="alert alert-warning" role="alert">Não há
-							Comentários cadastrados.</div>
-					</c:if>
-					<c:if test="${not empty projeto.comentarios}">
-						<c:forEach var="comentario" items="${projeto.comentarios}">
-							<div class="well">
-								<p>${comentario.usuario.nome}:
-									<fmt:formatDate pattern="dd-MM-yyyy hh:mm"
-										value="${comentario.data}" />
-								</p>
-							</div>
-							<blockquote>
-								<p>${comentario.texto}</p>
-							</blockquote>
-						</c:forEach>
-					</c:if>
+
+				<div>
+
+
+					<div class="container ">
+						<h3 id="headComentarios">Comentários do Projeto</h3>
+						<ul id="comentarioList" class="ca-menu">
+							<c:forEach var="comentario" items="${projeto.comentarios}">
+								<li id="novoComentario" class="well">
+									<div class="nome_pessoa">${comentario.pessoa.nome}</div>
+									<div class="corpo_texto">${comentario.texto}</div>
+									<div class="formatacao_data">
+										<fmt:formatDate pattern="dd/MM/yyyy hh:mm"
+											value="${comentario.data}" />
+									</div>
+								</li>
+							</c:forEach>
+						</ul>
+					</div>
+
 				</div>
+
 				<div class="row text-center">
-					<h3>Novo Comentário</h3>
-					<form:form id="comentarProjeto" role="form"
-						commandName="comentario"
-						servletRelativeAction="/comentario/comentarProjeto" method="POST">
+
+
+					<form id="formularioCadastroComentario" role="form" method="POST"
+						class="form-horizontal">
 						<input type="hidden" id="projeto" name="projeto"
-							value="${projeto.id}">
-						<input type="hidden" id="usuario" name="usuario"
-							value="${usuario.id}">
-						<textarea name="textocomentario" id="textocomentario"
-							required="required" placeholder="Comentário"
-							oninvalid="this.setCustomValidity('Campo em branco não podem ser enviado')"
-							style="max-width: 500px; max-height: 100px; min-width: 500px; min-height: 100px"
-							draggable="true"></textarea>
-						<br></br>
-						<input name="submit" type="submit" class="btn btn-primary"
-							value="Enviar" />
-					</form:form>
+							value="${projeto.id}"> <input type="hidden" id="pessoa"
+							name="pessoa" value="${usuario.id}"> <input
+							type="hidden" id="pessoa_nome" name="pessoa"
+							value="${usuario.nome}"> <label class="control-label"
+							for="textocomentarioInput"><h3>Novo Comentário</h3></label>
+						<div class="form-group">
+							<div class="input-group">
+								<textarea id="textocomentarioInput" name="texto"
+									class="form-control" placeholder="Comentário"></textarea>
+							</div>
+						</div>
+						<br> <input name="botao" id="botaoEnviarComentario" type="submit"
+							class="btn btn-primary" value="Enviar" /> <a
+							href="<c:url value="/projeto/index"></c:url>"
+							class="btn btn-default">Voltar</a>
+					</form>
 				</div>
-				<br></br>
-				<div class="controls">
-					<a href="<c:url value="/projeto/index"></c:url>"
-						class="btn btn-default">Voltar</a>
-				</div>
-				<%-- <div class="form-group">
-<label for="nome" class="col-sm-2 control-label">Nome: <span>${projeto.nome }</span> </label>
-</div>
-<div class="form-group">
-<label for="descricao" class="col-sm-2 control-label">Descrição:</label>
-<div class="col-sm-10">
-<label>${projeto.descricao }</label>
-</div>
-</div>
-<div class="form-group">
-<label for="inicio" class="col-sm-2 control-label">Início:</label>
-<div class="col-sm-2">
-<label>${projeto.inicio }</label>
-</div>
-<label for="termino" class="col-sm-2 control-label">Término:</label>
-<div class="col-sm-2">
-<label>${projeto.termino }</label>
-</div>
-<label for="bolsas" class="col-sm-2 control-label">Número de bolsas:</label>
-<div class="col-sm-2">
-<label>${projeto.quantidadeBolsa }</label>
-</div>
-</div>
-<div class="form-group">
-<label for="local" class="col-sm-2 control-label">Local:</label>
-<div class="col-sm-10">
-<label>${projeto.local }</label>
-</div>
-</div>
-<div class="form-group">
-<label for="participantes" class="col-sm-2 control-label">Participantes:</label>
-<div class="col-sm-10">
-<label>${projeto.participantes }</label>
-</div>
-</div>
-<div class="form-group">
-<label for="atividades" class="col-sm-2 control-label">Atividades:</label>
-<div class="col-sm-10">
-<label>${projeto.atividades }</label>
-</div>
-</div> --%>
+
+
 			</div>
 		</div>
 	</div>
+
 	<jsp:include page="../modulos/footer.jsp" />
-	<script src="<c:url value="/webjars/jquery/2.1.0/jquery.min.js" />"></script>
+
+
 	<script
 		src="<c:url value="/webjars/jquery-maskedinput/1.3.1/jquery.maskedinput.min.js" />"></script>
-	<script
-		src="<c:url value="/webjars/jquery-validation/1.12.0/jquery.validate.min.js" />"></script>
+
 </body>
 </html>

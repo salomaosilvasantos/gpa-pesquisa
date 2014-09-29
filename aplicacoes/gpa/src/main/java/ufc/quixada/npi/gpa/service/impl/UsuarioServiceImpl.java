@@ -71,12 +71,12 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Pessoa> implements
 	}
 
 	@Override
-	public Pessoa getPessoaById(String id) {
+	public Pessoa getPessoaByNome(String nome) {
 
 		Pessoa pessoa = null;
 
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("nome", id);
+		params.put("nome", nome);
 		List<Pessoa> listaPessoas = usuarioRepository.find(QueryType.JPQL,
 				"from Pessoa where nome = :nome", params);
 
