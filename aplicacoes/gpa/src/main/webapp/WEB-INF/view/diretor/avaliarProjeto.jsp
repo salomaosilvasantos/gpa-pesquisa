@@ -43,7 +43,7 @@
 						<label for="observacao" class="col-sm-2 control-label">Observação:</label>
 						<div class="col-sm-10">
 							<textarea id="observacao" name="observacao" class="form-control"
-								rows="8" placeholder="Observação"></textarea>
+								rows="8" placeholder="Observação" required="required" required title="Preencha"></textarea>
 						</div>
 					</div>
 
