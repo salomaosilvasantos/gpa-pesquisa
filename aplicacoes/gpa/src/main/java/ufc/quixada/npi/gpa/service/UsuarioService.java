@@ -6,15 +6,16 @@ import ufc.quixada.npi.gpa.model.Pessoa;
 
 public interface UsuarioService extends GenericService<Pessoa> {
 
-	 Pessoa getUsuarioByLogin(String login);
+	Pessoa getUsuarioByLogin(String login);
 
-	 List<Pessoa> getPareceristas(Long id);
+	List<Pessoa> getPareceristas(Long id);
 
-	 boolean isDiretor(Pessoa usuario);
-	
-	 Pessoa getDiretor();
-	 
-	 List<Pessoa> getParticipantes();
-	    
-	  Pessoa getPessoaByNome(String nome);
+	boolean isDiretor(Pessoa usuario);
+
+	Pessoa getDiretor();
+
+	List<Pessoa> getParticipantes();
+
+	Pessoa getPessoaByNome(String nome);
+
 }
