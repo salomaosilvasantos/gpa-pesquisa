@@ -765,10 +765,10 @@ public class ProjetoController {
 			model.addAttribute("error_local", "Campo obrigatório");
 			valid = false;
 		}
-		if (projeto.getParticipantes().isEmpty()) {
+		/*if (projeto.getParticipantes().isEmpty()) {
 			model.addAttribute("error_participantes", "Campo obrigatório");
 			valid = false;
-		}
+		}*/
 
 		return valid;
 	}

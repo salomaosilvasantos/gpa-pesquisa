@@ -21,7 +21,7 @@ public class ProjetoServiceImpl extends GenericServiceImpl<Projeto> implements
 
 	@Override
 	public List<Projeto> getProjetosSubmetidos() {
-		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where p.status = 'SUBMETIDO' or p.status = 'AGUARDANDO_PARECER' ", null);
+		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where p.status = 'SUBMETIDO' or p.status = 'AGUARDANDO_PARECER' or p.status = 'AGUARDANDO_AVALIACAO'", null);
 	}
 	
 	@Override
@@ -53,6 +53,6 @@ public class ProjetoServiceImpl extends GenericServiceImpl<Projeto> implements
 	public List<Projeto> getProjetosAguardandoParecer(Long id) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
-		return projetoRepository.find(QueryType.JPQL, "Select p from Projeto as p, Parecer as pa where p.id = pa.id and pa.usuario.id = :id and p.status = 'AGUARDANDO_PARECER'" , params);
+		return projetoRepository.find(QueryType.JPQL, "Select p from Projeto as p, Parecer as pa where p.id = pa.projeto.id and pa.usuario.id = :id and p.status = 'AGUARDANDO_PARECER'" , params);
 	}
 }
