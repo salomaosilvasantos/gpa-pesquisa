@@ -1,5 +1,6 @@
 package ufc.quixada.npi.gpa.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -19,17 +20,18 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
+import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-public class Projeto {
+public class Projeto implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	private String codigo;
 	
-	@Size(min = 2, message = "MínimoW 2 caracteres")
+	@Size(min = 2, message = "Mínimo 2 caracteres")
 	private String nome;
 	
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -65,6 +67,7 @@ public class Projeto {
 	private List<Documento> documentos;
 	
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
+	@JsonManagedReference
 	private List<Comentario> comentarios;
 	
 	@OneToMany(mappedBy = "projeto")
@@ -264,6 +267,10 @@ public class Projeto {
 		public String getDescricao() {
 			return this.descricao;
 		}
+	}
+	
+	public enum Evento {
+		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO
 	}
 
 }
