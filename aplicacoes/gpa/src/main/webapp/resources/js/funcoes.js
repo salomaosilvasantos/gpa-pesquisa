@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	
 	$('div.error-validation:has(span)').find('span').css('color', '#a94442');
 	$('div.error-validation:has(span)').find('span').parent().parent().parent().addClass('has-error has-feedback');
 	
@@ -64,5 +65,37 @@ $(document).ready(function() {
 	$('.delete-file').click(function(){
 		alert($(this).attr('id'));
 	});
+	
+	
+	$('#addParticipante').click(function adicionarParticipante(){
+		
+				var nomeParticipante = $("#participanteEscolhido").val();
+				
+				if(!nomeParticipante || 0 === nomeParticipante.length){
+					
+					 $("#participanteEscolhido").css({'border' : '#a94442 solid 1px','box-shadow' : '1px 1px rgba(0,0,0,.075)'}); 
+					 $("#labelParticipante").css("color","#a94442");
+				}else{
+					
+					var participantesSelecionados = $('input[name=participanteSelecionado]:checked');
+					var selecionado = "nao";	
+					
+					for (i = 0; i < participantesSelecionados.length; i++) { 
+
+							if(participantesSelecionados[i].value === nomeParticipante){
+								alert("Você selecionou o usuario '" +nomeParticipante +"' mais de uma vez.");
+								selecionado = "sim";
+							}
+							
+						}
+					if(selecionado === "nao"){
+						 $("#listaParticipantesCadastrados").append(' <label class="participanteSelecionado" for="participanteSelecionado" style="margin-left:20px">'+nomeParticipante+'</label>' 
+							    	+'<input type="checkbox" class = "participanteSelecionado"  id = "participanteSelecionado" name="participanteSelecionado" value = "' +nomeParticipante
+							    	+'" checked="checked" ">, ');
+					}
+					
+				}
+				
+		});
 	
 });
