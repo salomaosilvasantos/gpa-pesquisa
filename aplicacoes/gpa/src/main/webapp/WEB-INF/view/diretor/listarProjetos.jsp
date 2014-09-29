@@ -208,8 +208,10 @@
 													</button>
 												</a>
 
-												<a id="avaliarProjeto" data-toggle="modal">
+												<a id="avaliarProjeto" data-toggle="modal"
+													href="<c:url value="/projeto/${projeto.id}/avaliarProjeto" ></c:url>">
 													<button class="btn btn-danger">
+
 														Avaliar Projeto <span class="glyphicon glyphicon-trash"></span>
 													</button>
 												</a>

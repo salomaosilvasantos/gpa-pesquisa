@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.Vector;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -396,13 +397,13 @@ public class ProjetoController {
 		Boolean pessoaJaCadastrada = false;
 
 		// verificar se todas as pessoas que vem do formulario estao no BD
-		for (String nomePessoa : listaParticipantes) {
+		for (String identificador : listaParticipantes) {
 
-			Pessoa pessoa = serviceUsuario.getPessoaByNome(nomePessoa);
+			Pessoa pessoa = serviceUsuario.getPessoaByNome(identificador);
 
 			if (pessoa == null) {
 				redirect.addFlashAttribute("error_participantes",
-						"A pessoa '"+nomePessoa +"' não se encontra na base de dados");
+						"A pessoa '"+identificador +"' não se encontra na base de dados");
 				model.addAttribute("action", "editar");
 				return "redirect:/projeto/" + id + "/editar";
 
@@ -764,10 +765,10 @@ public class ProjetoController {
 			model.addAttribute("error_local", "Campo obrigatório");
 			valid = false;
 		}
-		if (projeto.getParticipantes().isEmpty()) {
+		/*if (projeto.getParticipantes().isEmpty()) {
 			model.addAttribute("error_participantes", "Campo obrigatório");
 			valid = false;
-		}
+		}*/
 
 		return valid;
 	}
