@@ -78,17 +78,17 @@ $(document).ready(function() {
 				}else{
 					
 					var participantesSelecionados = $('input[name=participanteSelecionado]:checked');
-					var selecionado = "nao";	
+					var selecionado = false;	
 					
 					for (i = 0; i < participantesSelecionados.length; i++) { 
 
 							if(participantesSelecionados[i].value === nomeParticipante){
 								alert("Você selecionou o usuario '" +nomeParticipante +"' mais de uma vez.");
-								selecionado = "sim";
+								selecionado = true;
 							}
 							
 						}
-					if(selecionado === "nao"){
+					if(selecionado == false){
 						 $("#listaParticipantesCadastrados").append(' <label class="participanteSelecionado" for="participanteSelecionado" style="margin-left:20px">'+nomeParticipante+'</label>' 
 							    	+'<input type="checkbox" class = "participanteSelecionado"  id = "participanteSelecionado" name="participanteSelecionado" value = "' +nomeParticipante
 							    	+'" checked="checked" ">, ');

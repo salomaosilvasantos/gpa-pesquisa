@@ -16,6 +16,6 @@ public interface UsuarioService extends GenericService<Pessoa> {
 	
 	public abstract List<Pessoa> getParticipantes();
 	
-	public abstract Pessoa getPessoaByNome(String nome);
+	public abstract Pessoa getPessoaById(String id);
 	
 }
