@@ -515,16 +515,51 @@ public class ProjetoController {
 	public String submeterProjeto(
 			@ModelAttribute(value = "projeto") Projeto proj,
 			@RequestParam("file") MultipartFile[] files, BindingResult result,
+			@RequestParam(value = "participanteSelecionado", required = false) List<String> listaParticipantes,
 			Model model, HttpSession session,
 			RedirectAttributes redirectAttributes) {
+		
 		Projeto projeto = serviceProjeto.find(Projeto.class, proj.getId());
 		Pessoa usuario = getUsuarioLogado(session);
+		
 		if (projeto == null) {
 			redirectAttributes
 					.addFlashAttribute("erro", "Projeto inexistente.");
 			return "redirect:/projeto/listar";
 		}
 
+		List<Pessoa> participantes = new ArrayList<Pessoa>();
+		Boolean pessoaJaCadastrada = false;
+
+		// verificar se todas as pessoas que vem do formulario estao no BD
+		for (String identificador : listaParticipantes) {
+
+			Pessoa pessoa = serviceUsuario.getPessoaByNome(identificador);
+
+			if (pessoa == null) {
+				redirectAttributes.addFlashAttribute("error_participantes",
+						"A pessoa '"+identificador +"' não se encontra na base de dados");
+				model.addAttribute("action", "editar");
+				return "redirect:/projeto/" + proj.getId() + "/editar";
+
+			} else {
+
+				for (Pessoa participante : participantes) {
+					
+					if(pessoa.equals(participante)){
+						System.out.println("A pessoa "+participante.getNome()+" ja se encontra cadastrada no projeto");
+						pessoaJaCadastrada = true;
+					}
+				}
+				if(pessoaJaCadastrada == false) {
+					
+					participantes.add(pessoa);
+				}
+			}
+
+		}
+		
+		
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
 
@@ -535,7 +570,7 @@ public class ProjetoController {
 				projeto.setAtividades(proj.getAtividades());
 				projeto.setQuantidadeBolsa(proj.getQuantidadeBolsa());
 				projeto.setLocal(proj.getLocal());
-				projeto.setParticipantes(proj.getParticipantes());
+				if(participantes.size() > 0) projeto.setParticipantes(participantes);
 
 				projeto.setStatus(StatusProjeto.SUBMETIDO);
 				Date data = new Date(System.currentTimeMillis());

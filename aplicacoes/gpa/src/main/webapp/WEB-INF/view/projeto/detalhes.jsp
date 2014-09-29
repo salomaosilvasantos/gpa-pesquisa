@@ -82,8 +82,6 @@
 							<td class="content"><a
 								href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a></td>
 
-							<!--  <td class="content">${documento.nomeOriginal }</td>-->
-
 						</c:forEach>
 					</tr>
 				</table>
