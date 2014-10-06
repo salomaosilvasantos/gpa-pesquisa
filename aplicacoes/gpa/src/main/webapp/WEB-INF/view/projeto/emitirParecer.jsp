@@ -23,7 +23,7 @@
 				
 
 				
-
+<!-- TODO: Mostrar um único parecer -->
 			<c:forEach var="parecer" items="${projeto.pareceres}">
 			<c:set var="url" value="${parecer.id}"></c:set>		
 <%-- 			<input type="hidden" name="parecerId" value="${parecer.id}"> --%>

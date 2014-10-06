@@ -8,14 +8,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-import java.util.Vector;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -60,7 +58,7 @@ public class ProjetoController {
 	@Inject
 	private UsuarioService serviceUsuario;
 
-	@Autowired
+	@Inject
 	private ComentarioService comentarioService;
 	
 	@Inject
@@ -71,7 +69,11 @@ public class ProjetoController {
 
 	@Inject
 	private NotificationService notificationService;
+	
+	// TODO: padronizar nome dos atributos iniciando com 'entidadeService'
+	// TODO: utilizar nomenclatura em português
 
+	// TODO: método não está sendo utilizado
 	public static Properties getProp() throws IOException {
 
 		Resource resource = new ClassPathResource("/notification.properties");
@@ -82,14 +84,17 @@ public class ProjetoController {
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index() {
+		// TODO: utilizar constantes finais para armazenar os redirecionamentos
 		return "redirect:/projeto/listar";
 	}
 
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.GET)
+	// TODO: utilizar verbos para nomear métodos
 	public String cadastro(Model model) {
 		model.addAttribute("projeto", new Projeto());
 		return "projeto/cadastrar";
 	}
+	
 
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
 	public String adicionarProjeto(
@@ -100,6 +105,7 @@ public class ProjetoController {
 			return ("projeto/cadastrar");
 		}
 		
+		// TODO: validação deve ser feita no modelo
 		if (projeto.getTermino() != null
 				&& comparaDatas(new Date(), projeto.getTermino()) > 0) {
 			result.rejectValue("termino", "error.projeto",
@@ -114,6 +120,7 @@ public class ProjetoController {
 		}
 
 		projeto.setAutor(getUsuarioLogado(session));
+		// TODO: extrair a criação do projeto para o service (até linha 129)
 		projeto.setStatus(StatusProjeto.NOVO);
 		this.serviceProjeto.save(projeto);
 
@@ -140,6 +147,7 @@ public class ProjetoController {
 		}
 		// Verifica se o usuário logado é o autor do projeto ou se é o diretor e
 		// o projeto já foi submetido
+		// TODO: criar método para verificação de regra de negócio (no service)
 		if (usuario.getId() == projeto.getAutor().getId()
 				|| (serviceUsuario.isDiretor(usuario) && !projeto.getStatus()
 						.equals(StatusProjeto.NOVO))) {
@@ -162,6 +170,7 @@ public class ProjetoController {
 					.addFlashAttribute("erro", "Projeto inexistente.");
 			return "redirect:/projeto/listar";
 		}
+		// TODO: criar método para verificação de regra de negócio (no service)
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& !projeto.getStatus()
 						.equals(StatusProjeto.AGUARDANDO_PARECER)) {
@@ -177,10 +186,13 @@ public class ProjetoController {
 		return "redirect:/projeto/listar";
 	}
 
+	// TODO: usar padrão para nomeação dos métodos (ex: getEmitirParecer) 
 	@RequestMapping(value = "/{id}/emitirParecer/{parecerId}", method = RequestMethod.GET)
 	public String getEmitirParecerPage(@PathVariable("id") long id,
 			@PathVariable("parecerId") long parecerId, Model model,
 			HttpSession session, RedirectAttributes redirectAttributes) {
+		
+		// TODO: avaliar necessidade de manipulação da entidade projeto
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		Parecer parecer = serviceParecer.find(Parecer.class, parecerId);
 		if (projeto == null) {
@@ -193,6 +205,7 @@ public class ProjetoController {
 					"Projeto não está aguardando parecer");
 			return "redirect:/projeto/listar";
 		}
+		// TODO: criar método para verificação de regra de negócio (no service)
 		if (getUsuarioLogado(session).getId() != parecer.getUsuario().getId()) {
 			redirectAttributes.addFlashAttribute("erro",
 					"Parecer não atribuído a você");
@@ -203,14 +216,17 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/{id}/emitirParecer/{parecerId}", method = RequestMethod.POST)
+	// TODO: enviar a entidade parecer ao invés dos atributos separados
 	public String emitirParecer(HttpServletRequest request,
 			@PathVariable("id") long id,
 			@PathVariable("parecerId") long parecerId,
 			@RequestParam("file") MultipartFile[] files,
+			// TODO: renomear parâmetro comentario para parecer
 			@RequestParam("parecer") String comentario,
 			@RequestParam("statusParecer") String status,
 			@ModelAttribute(value = "parecer") Parecer parecer,
 			BindingResult result, HttpSession session,
+			// TODO: tratar a exceção
 			RedirectAttributes redirectAttributes) throws IOException {
 
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
@@ -226,6 +242,7 @@ public class ProjetoController {
 			return "redirect:/projeto/" + id + "/emitirParecer" + parecerId;
 		}
 
+		// TODO: criar método para criação de documento 
 		for (MultipartFile mpf : files) {
 			if (mpf.getBytes().length > 0) {
 				Documento documento = new Documento();
@@ -239,12 +256,14 @@ public class ProjetoController {
 
 		}
 
+		// TODO: utilizar constantes
 		if (status.equals("favorável")) {
 			parecer.setStatus(StatusPosicionamento.FAVORAVEL);
 		} else {
 			parecer.setStatus(StatusPosicionamento.NAO_FAVORAVEL);
 		}
 
+		// TODO: extrair para o service
 		parecer.setComentario(comentario);
 		serviceParecer.update(parecer);
 		projeto.setStatus(StatusProjeto.AGUARDANDO_AVALIACAO);
@@ -725,6 +744,7 @@ public class ProjetoController {
 	}
 
 	private boolean validaSubmissao(Projeto projeto, Model model) {
+		// TODO: realizar validações das entidades dentros dos seus próprios modelos
 		boolean valid = true;
 
 		if (projeto.getNome().isEmpty()) {
