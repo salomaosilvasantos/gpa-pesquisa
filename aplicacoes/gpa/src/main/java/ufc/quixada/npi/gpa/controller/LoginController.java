@@ -24,6 +24,7 @@ public class LoginController {
 		}
 
 		if (logout != null) {
+			// TODO: traduzir mensagem
 			model.addObject("msg", "You've been logged out successfully.");
 		}
 		model.setViewName("login");

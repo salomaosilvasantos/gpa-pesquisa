@@ -48,6 +48,7 @@ public class DocumentoController {
 				response.flushBuffer();
 			}
 		} catch (IOException ex) {
+			// TODO: tratar a exceção
 			throw new RuntimeException("IOError writing file to output stream");
 		}
 
@@ -72,6 +73,7 @@ public class DocumentoController {
 		return map;
 	}
 	
+	// TODO: unificar método de busca do usuário logado em um único local
 	private Pessoa getUsuarioLogado(HttpSession session) {
 		if (session.getAttribute(Constants.USUARIO_LOGADO) == null) {
 			Pessoa usuario = serviceUsuario

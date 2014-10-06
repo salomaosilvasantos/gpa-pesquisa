@@ -103,6 +103,10 @@
 
 </body>
 
+<!-- Remover código javascript não utilizado  e adicionar os utilizados no arquivo javascript-->
+<!-- Não utilizar CSS inline. Todo o estilo deve ficar no arquivo CSS. -->
+<!-- Padronizar nomes de id e classes css -->
+
 <script>
 	function TrimNome() {
 		var nome = document.getElementById('nome');

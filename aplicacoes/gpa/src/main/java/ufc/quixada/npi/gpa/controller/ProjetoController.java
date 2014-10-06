@@ -282,6 +282,8 @@ public class ProjetoController {
 		
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		Pessoa usuario = getUsuarioLogado(session);
+		
+		// TODO: realizar validações no service
 		// Verifica se o projeto existe
 		if (projeto == null) {
 			redirectAttributes
@@ -307,13 +309,13 @@ public class ProjetoController {
 			RedirectAttributes redirect) {
 		
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
+		
+		// TODO: realizar validações no service
 		if (projeto == null) {
 			redirect
 					.addFlashAttribute("erro", "Projeto Inexistente.");
 			return "redirect:/projeto/listar";
 		}
-		
-		
 		
 		if (!projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)) {
 			redirect.addFlashAttribute("erro",
@@ -340,12 +342,14 @@ public class ProjetoController {
 		
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		
+		
 		if (observacao.isEmpty()) {
 			redirect.addAttribute("erro",
 					"Comentário não pode estar vazio");
 			return "redirect:/projeto/" + id + "/avaliarProjeto";
 		}
 		
+		// TODO: criar método para criação de documento 
 		for (MultipartFile mpf : files) {
 			if (mpf.getBytes().length > 0) {
 				Documento documento = new Documento();
@@ -357,6 +361,8 @@ public class ProjetoController {
 			}
 
 		}
+		
+		// TODO: realizar validações e extrair regras de negócio para o service
 		if (status.equals("Aprovado")) {
 			projeto.setStatus(StatusProjeto.APROVADO);
 		} else if(status.equals("Aprovado com restrição")) {
@@ -388,6 +394,8 @@ public class ProjetoController {
 			model.addAttribute("action", "editar");
 			return "projeto/editar";
 		}
+		
+		// TODO: realizar validações no service
 		if (projetoAtualizado.getTermino() != null
 				&& comparaDatas(new Date(), projetoAtualizado.getTermino()) > 0) {
 			result.rejectValue("termino", "error.projeto",
@@ -416,6 +424,7 @@ public class ProjetoController {
 		Boolean pessoaJaCadastrada = false;
 
 		// verificar se todas as pessoas que vem do formulario estao no BD
+		// TODO: utilizar o id do participantes ao invés do nome
 		for (String identificador : listaParticipantes) {
 
 			Pessoa pessoa = serviceUsuario.getPessoaByNome(identificador);
@@ -442,6 +451,7 @@ public class ProjetoController {
 
 		}
 
+		// TODO: criar método para criação de documento
 		for (MultipartFile mpf : files) {
 			if (mpf.getBytes().length > 0) {
 				Documento documento = new Documento();
@@ -454,6 +464,7 @@ public class ProjetoController {
 			}
 		}
 
+		// TODO: salvar o "projetoAtualizado" ao invés de atualizar cada campo no "projeto"
 		projeto.setNome(projetoAtualizado.getNome());
 		projeto.setDescricao(projetoAtualizado.getDescricao());
 		projeto.setInicio(projetoAtualizado.getInicio());
@@ -474,6 +485,8 @@ public class ProjetoController {
 			HttpSession session, RedirectAttributes redirectAttributes,
 			Model model) {
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
+		
+		// TODO: realizar as verificações no service
 		if (projeto == null) {
 			redirectAttributes
 					.addFlashAttribute("erro", "Projeto inexistente.");
@@ -499,6 +512,7 @@ public class ProjetoController {
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		Pessoa usuario = getUsuarioLogado(session);
 
+		// TODO: realizar as verificações no service
 		if (projeto == null) {
 			redirectAttributes
 					.addFlashAttribute("erro", "Projeto inexistente.");
@@ -538,6 +552,8 @@ public class ProjetoController {
 			RedirectAttributes redirectAttributes) {
 		Projeto projeto = serviceProjeto.find(Projeto.class, proj.getId());
 		Pessoa usuario = getUsuarioLogado(session);
+		
+		// TODO: realizar as verificações no service
 		if (projeto == null) {
 			redirectAttributes
 					.addFlashAttribute("erro", "Projeto inexistente.");
@@ -547,7 +563,8 @@ public class ProjetoController {
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
 
-				projeto.setNome(proj.getNome());
+			// TODO: salvar diretamente o objeto projeto que é passado como parâmetro	
+			projeto.setNome(proj.getNome());
 				projeto.setDescricao(proj.getDescricao());
 				projeto.setInicio(proj.getInicio());
 				projeto.setTermino(proj.getTermino());
@@ -560,9 +577,10 @@ public class ProjetoController {
 				Date data = new Date(System.currentTimeMillis());
 				projeto.setSubmissao(data);
 
+				// TODO: atualizar o projeto após fazer as validações
 				this.serviceProjeto.update(projeto);
 
-				
+				// TODO: criar método para fazer validação da submissão (todos os campos)
 				if (validaSubmissao(projeto, model)) {
 					
 					try {
@@ -648,6 +666,7 @@ public class ProjetoController {
 
 		Projeto projeto = serviceProjeto.find(Projeto.class, projetoId);
 
+		// TODO: realizar verificações no service
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro",
 					"O projeto não existe!");
@@ -680,6 +699,7 @@ public class ProjetoController {
 		redirect.addFlashAttribute("usuarios",
 				serviceUsuario.getPareceristas(projeto.getAutor().getId()));
 
+		// TODO: realizar verificações no service
 		if (request.getParameter("prazo") == null
 				|| request.getParameter("prazo").isEmpty()) {
 			redirect.addFlashAttribute("error_prazo", "Campo obrigatório");
@@ -713,6 +733,7 @@ public class ProjetoController {
 		parecer.setComentario(observacao);
 		parecer.setPrazo(prazo);
 
+		// TODO: extrair lógica de negócio para o service
 		serviceParecer.save(parecer);
 		projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);
 		serviceProjeto.update(projeto);
@@ -725,6 +746,7 @@ public class ProjetoController {
 		return "redirect:/projeto/listar";
 	}
 
+	// TODO: verificar uso de métodos utilitários no controller
 	private Pessoa getUsuarioLogado(HttpSession session) {
 		if (session.getAttribute(Constants.USUARIO_LOGADO) == null) {
 			Pessoa usuario = serviceUsuario
