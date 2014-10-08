@@ -62,14 +62,12 @@ public class ProjetoController {
 	private ParecerService serviceParecer;
 
 	@Inject
-	EmailService mailer;
+	private EmailService mailer;
 
 	public static Properties getProp() throws IOException {
 
 		Resource resource = new ClassPathResource("/notification.properties");
-		Properties props = PropertiesLoaderUtils.loadProperties(resource);
-		return props;
-
+		return PropertiesLoaderUtils.loadProperties(resource);
 	}
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
@@ -383,11 +381,10 @@ public class ProjetoController {
 
 				for (Pessoa participante : participantes) {
 					if(pessoa.equals(participante)){
-						System.out.println("A pessoa "+participante.getNome()+" ja se encontra cadastrada no projeto");
 						pessoaJaCadastrada = true;
 					}
 				}
-				if(pessoaJaCadastrada == false) {
+				if(!pessoaJaCadastrada) {
 					
 					participantes.add(pessoa);
 				}
@@ -414,8 +411,9 @@ public class ProjetoController {
 		projeto.setAtividades(projetoAtualizado.getAtividades());
 		projeto.setQuantidadeBolsa(projetoAtualizado.getQuantidadeBolsa());
 		projeto.setLocal(projetoAtualizado.getLocal());
-		if (participantes.size() > 0)
+		if (participantes.size() > 0){
 			projeto.setParticipantes(participantes);
+		}
 
 		this.serviceProjeto.update(projeto);
 		redirect.addFlashAttribute("info", "Projeto atualizado com sucesso.");

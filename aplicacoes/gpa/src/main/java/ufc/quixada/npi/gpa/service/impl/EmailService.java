@@ -11,7 +11,7 @@ import org.springframework.mail.SimpleMailMessage;
 public class EmailService{
 	
 	@Inject
-	public MailSender mailSender;
+	private MailSender mailSender;
 
 	public void sendMail(String to, String subject, String body) {
 		SimpleMailMessage message = new SimpleMailMessage();
