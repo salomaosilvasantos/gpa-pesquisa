@@ -8,12 +8,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.Vector;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -31,17 +33,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ufc.quixada.npi.gpa.model.Comentario;
 import ufc.quixada.npi.gpa.model.Documento;
 import ufc.quixada.npi.gpa.model.Parecer;
+import ufc.quixada.npi.gpa.model.Parecer.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
-import ufc.quixada.npi.gpa.model.Parecer.StatusPosicionamento;
+import ufc.quixada.npi.gpa.model.Projeto.Evento;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
+import ufc.quixada.npi.gpa.service.ComentarioService;
 import ufc.quixada.npi.gpa.service.DocumentoService;
 import ufc.quixada.npi.gpa.service.ParecerService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.UsuarioService;
-import ufc.quixada.npi.gpa.service.impl.EmailService;
+import ufc.quixada.npi.gpa.service.impl.NotificationService;
 import ufc.quixada.npi.gpa.utils.Constants;
 
 @Component
@@ -55,6 +60,9 @@ public class ProjetoController {
 	@Inject
 	private UsuarioService serviceUsuario;
 
+	@Autowired
+	private ComentarioService comentarioService;
+	
 	@Inject
 	private DocumentoService serviceDocumento;
 
@@ -62,7 +70,7 @@ public class ProjetoController {
 	private ParecerService serviceParecer;
 
 	@Inject
-	private EmailService mailer;
+	private NotificationService notificationService;
 
 	public static Properties getProp() throws IOException {
 
@@ -89,7 +97,7 @@ public class ProjetoController {
 		if (result.hasErrors()) {
 			return ("projeto/cadastrar");
 		}
-
+		
 		if (projeto.getTermino() != null
 				&& comparaDatas(new Date(), projeto.getTermino()) > 0) {
 			result.rejectValue("termino", "error.projeto",
@@ -134,6 +142,7 @@ public class ProjetoController {
 				|| (serviceUsuario.isDiretor(usuario) && !projeto.getStatus()
 						.equals(StatusProjeto.NOVO))) {
 			model.addAttribute("projeto", projeto);
+			model.addAttribute("comentario", comentarioService.find(Comentario.class));
 			return "projeto/detalhes";
 		} else {
 			redirectAttributes.addFlashAttribute("erro", "Permissão negada.");
@@ -228,61 +237,6 @@ public class ProjetoController {
 
 		}
 
-		Pessoa diretor = serviceUsuario.getDiretor();
-
-		Properties prop = getProp();
-		if (prop.getProperty("enviarEmail").equals("true")) {
-			if (serviceUsuario.isDiretor(projeto.getAutor())) {
-				mailer.sendMail(
-						parecer.getUsuario().getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoEmitirParecerParecerista")
-								+ " " + projeto.getNome() + " " + prop
-								.getProperty("corpoEmitirParecerParecerista2")));
-				mailer.sendMail(
-						diretor.getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoEmitirParecerDiretor")
-								+ " "
-								+ projeto.getNome()
-								+ " "
-								+ prop.getProperty("corpoEmitirParecerDiretor2")
-								+ " " + parecer.getUsuario().getNome() + " " + prop
-								.getProperty("corpoEmitirParecerDiretor3")));
-
-			} else {
-				mailer.sendMail(
-						parecer.getUsuario().getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoEmitirParecerParecerista")
-								+ " " + projeto.getNome() + " " + prop
-								.getProperty("corpoEmitirParecerParecerista2")));
-
-				mailer.sendMail(
-						diretor.getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoEmitirParecerDiretor")
-								+ " "
-								+ projeto.getNome()
-								+ " "
-								+ prop.getProperty("corpoEmitirParecerDiretor2")
-								+ " " + parecer.getUsuario().getNome() + " " + prop
-								.getProperty("corpoEmitirParecerDiretor3")));
-
-				mailer.sendMail(
-						projeto.getAutor().getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoEmitirParecerCoordenador")
-								+ " "
-								+ projeto.getNome()
-								+ " "
-								+ prop.getProperty("corpoEmitirParecerCoordenador2")
-								+ " " + parecer.getUsuario().getNome() + " " + prop
-								.getProperty("corpoEmitirParecerCoordenador3")));
-			}
-			}
-		
-
 		if (status.equals("favorável")) {
 			parecer.setStatus(StatusPosicionamento.FAVORAVEL);
 		} else {
@@ -294,8 +248,10 @@ public class ProjetoController {
 		projeto.setStatus(StatusProjeto.AGUARDANDO_AVALIACAO);
 		serviceProjeto.update(projeto);
 
-		return "redirect:/projeto/listar";
+		notificationService.notificar(projeto, Evento.EMISSAO_PARECER);
 		
+		return "redirect:/projeto/listar";
+
 	}
 	
 	@RequestMapping(value = "/{id}/verParecer", method = RequestMethod.GET)
@@ -305,7 +261,6 @@ public class ProjetoController {
 		
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		Pessoa usuario = getUsuarioLogado(session);
-		Parecer parecer = serviceParecer.find(Parecer.class, id);
 		// Verifica se o projeto existe
 		if (projeto == null) {
 			redirectAttributes
@@ -323,6 +278,79 @@ public class ProjetoController {
 			return "redirect:/projeto/listar";
 		}
 		
+	}
+	
+	@RequestMapping(value = "/{id}/avaliarProjeto", method = RequestMethod.GET)
+	public String avaliarProjeto(@PathVariable("id") long id,
+			 Model model,HttpSession session,
+			RedirectAttributes redirect) {
+		
+		Projeto projeto = serviceProjeto.find(Projeto.class, id);
+		if (projeto == null) {
+			redirect
+					.addFlashAttribute("erro", "Projeto Inexistente.");
+			return "redirect:/projeto/listar";
+		}
+		
+		
+		
+		if (!projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)) {
+			redirect.addFlashAttribute("erro",
+					"Projeto não está aguardando avaliação");
+			return "redirect:/projeto/listar";
+		}
+		if (!(serviceUsuario.isDiretor(getUsuarioLogado(session)))) {
+			redirect.addFlashAttribute("erro",
+					"Permissão para avaliar projeto negada");
+			return "redirect:/projeto/listar";
+		}
+		model.addAttribute("projeto", projeto);
+		return "diretor/avaliarProjeto";
+	}
+	
+	@RequestMapping(value = "/{id}/avaliarProjeto", method = RequestMethod.POST)
+	public String avaliarProjeto(HttpServletRequest request,
+			@PathVariable("id") long id,
+			@RequestParam("file") MultipartFile[] files,
+			@RequestParam("observacao") String observacao,
+			@RequestParam("opcoesAvaliacao") String status,
+			 HttpSession session,
+			RedirectAttributes redirect) throws IOException  {
+		
+		Projeto projeto = serviceProjeto.find(Projeto.class, id);
+		
+		if (observacao.isEmpty()) {
+			redirect.addAttribute("erro",
+					"Comentário não pode estar vazio");
+			return "redirect:/projeto/" + id + "/avaliarProjeto";
+		}
+		
+		for (MultipartFile mpf : files) {
+			if (mpf.getBytes().length > 0) {
+				Documento documento = new Documento();
+				documento.setNomeOriginal(mpf.getOriginalFilename());
+				documento.setTipo(mpf.getContentType());
+				documento.setProjeto(projeto);
+				documento.setArquivo(mpf.getBytes());
+				serviceDocumento.save(documento);
+			}
+
+		}
+		if (status.equals("Aprovado")) {
+			projeto.setStatus(StatusProjeto.APROVADO);
+		} else if(status.equals("Aprovado com restrição")) {
+			projeto.setStatus(StatusProjeto.APROVADO_COM_RESTRICAO);		
+		}else{
+			projeto.setStatus(StatusProjeto.REPROVADO);
+		}
+		
+		this.serviceProjeto.save(projeto);
+
+		this.serviceProjeto.update(projeto);
+		redirect.addFlashAttribute("info", "Projeto avaliado.");
+
+		return "redirect:/projeto/listar";
+
 	}
 	
 	
@@ -367,13 +395,13 @@ public class ProjetoController {
 		Boolean pessoaJaCadastrada = false;
 
 		// verificar se todas as pessoas que vem do formulario estao no BD
-		for (String nomePessoa : listaParticipantes) {
+		for (String identificador : listaParticipantes) {
 
-			Pessoa pessoa = serviceUsuario.getPessoaByNome(nomePessoa);
+			Pessoa pessoa = serviceUsuario.getPessoaByNome(identificador);
 
 			if (pessoa == null) {
 				redirect.addFlashAttribute("error_participantes",
-						"A pessoa '"+nomePessoa +"' não se encontra na base de dados");
+						"A pessoa '"+identificador +"' não se encontra na base de dados");
 				model.addAttribute("action", "editar");
 				return "redirect:/projeto/" + id + "/editar";
 
@@ -381,6 +409,7 @@ public class ProjetoController {
 
 				for (Pessoa participante : participantes) {
 					if(pessoa.equals(participante)){
+						System.out.println("A pessoa "+participante.getNome()+" ja se encontra cadastrada no projeto");
 						pessoaJaCadastrada = true;
 					}
 				}
@@ -449,9 +478,6 @@ public class ProjetoController {
 			throws IOException {
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		Pessoa usuario = getUsuarioLogado(session);
-		Pessoa diretor = serviceUsuario.getDiretor();
-
-		Properties prop = getProp();
 
 		if (projeto == null) {
 			redirectAttributes
@@ -464,47 +490,10 @@ public class ProjetoController {
 			if (validaSubmissao(projeto, model)
 					&& validaSubmissaoAnexo(projeto, model)) {
 
-				if (prop.getProperty("enviarEmail").equals("true")) {
-					if (serviceUsuario.isDiretor(projeto.getAutor())) {
-						mailer.sendMail(
-								diretor.getEmail(),
-								(prop.getProperty("assunto") + " " + projeto
-										.getNome()),
-								(prop.getProperty("corpoSubmeter") + " "
-										+ projeto.getNome() + " " + prop
-											.getProperty("corpoSubmeter2"))
-										+ " "
-										+ projeto.getAutor().getNome()
-										+ " "
-										+ prop.getProperty("corpoSubmeter3"));
-					} else {
-						mailer.sendMail(
-								usuario.getEmail(),
-								(prop.getProperty("assunto") + " " + projeto
-										.getNome()),
-								(prop.getProperty("corpoSubmeter") + " "
-										+ projeto.getNome() + " " + prop
-											.getProperty("corpoSubmeter2"))
-										+ " "
-										+ projeto.getAutor().getNome()
-										+ " "
-										+ prop.getProperty("corpoSubmeter3"));
-						mailer.sendMail(
-								diretor.getEmail(),
-								(prop.getProperty("assunto") + " " + projeto
-										.getNome()),
-								(prop.getProperty("corpoSubmeter") + " "
-										+ projeto.getNome() + " " + prop
-											.getProperty("corpoSubmeter2"))
-										+ " "
-										+ projeto.getAutor().getNome()
-										+ " "
-										+ prop.getProperty("corpoSubmeter3"));
-					}
-				}
-
 				projeto.setStatus(StatusProjeto.SUBMETIDO);
+				
 				this.serviceProjeto.update(projeto);
+				notificationService.notificar(projeto, Evento.SUBMISSAO);
 				redirectAttributes.addFlashAttribute("info",
 						"Projeto submetido com sucesso.");
 				return "redirect:/projeto/listar";
@@ -546,10 +535,14 @@ public class ProjetoController {
 				projeto.setQuantidadeBolsa(proj.getQuantidadeBolsa());
 				projeto.setLocal(proj.getLocal());
 				projeto.setParticipantes(proj.getParticipantes());
+
+				projeto.setStatus(StatusProjeto.SUBMETIDO);
+				Date data = new Date(System.currentTimeMillis());
+				projeto.setSubmissao(data);
+
 				this.serviceProjeto.update(projeto);
+
 				
-				
-			 
 				if (validaSubmissao(projeto, model)) {
 					
 					try {
@@ -580,6 +573,8 @@ public class ProjetoController {
 						if(validaSubmissaoAnexo(projeto, model)){
 							projeto.setStatus(StatusProjeto.SUBMETIDO);
 							serviceProjeto.update(projeto);
+							notificationService.notificar(projeto, Evento.SUBMISSAO);
+
 							redirectAttributes.addFlashAttribute("info",
 									"Projeto submetido com sucesso.");
 							return "redirect:/projeto/listar";	
@@ -698,64 +693,12 @@ public class ProjetoController {
 		parecer.setComentario(observacao);
 		parecer.setPrazo(prazo);
 
-		Pessoa diretor = serviceUsuario.getDiretor();
-
-		Properties prop = getProp();
-		if (prop.getProperty("enviarEmail").equals("true")) {
-			if (serviceUsuario.isDiretor(projeto.getAutor())) {
-				mailer.sendMail(
-						usuario.getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoAtribuirPareceristaParecerista")
-								+ " "
-								+ projeto.getNome()
-								+ " "
-								+ prop.getProperty("corpoAtribuirPareceristaParecerista2")
-								+ " " + parecer.getPrazo()));
-				mailer.sendMail(
-						diretor.getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoAtribuirPareceristaDiretor")
-								+ " "
-								+ projeto.getNome()
-								+ " "
-								+ prop.getProperty("corpoAtribuirPareceristaDiretor2")
-								+ " " + usuario.getNome() + " " + prop
-								.getProperty("corpoAtribuirPareceristaDiretor3")));
-			} else {
-				mailer.sendMail(
-						usuario.getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoAtribuirPareceristaParecerista")
-								+ " "
-								+ projeto.getNome()
-								+ " "
-								+ prop.getProperty("corpoAtribuirPareceristaParecerista2")
-								+ " " + parecer.getPrazo()));
-
-				mailer.sendMail(
-						diretor.getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoAtribuirPareceristaDiretor")
-								+ " "
-								+ projeto.getNome()
-								+ " "
-								+ prop.getProperty("corpoAtribuirPareceristaDiretor2")
-								+ " " + usuario.getNome() + " " + prop
-								.getProperty("corpoAtribuirPareceristaDiretor3")));
-
-				mailer.sendMail(
-						projeto.getAutor().getEmail(),
-						(prop.getProperty("assunto") + " " + projeto.getNome()),
-						(prop.getProperty("corpoAtribuirPareceristaCoordenador")
-								+ " " + projeto.getNome() + " " + prop
-								.getProperty("corpoAtribuirPareceristaCoordenador2")));
-			}
-		}
-
 		serviceParecer.save(parecer);
 		projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);
 		serviceProjeto.update(projeto);
+
+		notificationService.notificar(projeto, Evento.ATRIBUICAO_PARECERISTA);
+
 		redirect.addFlashAttribute("info",
 				"O parecerista foi atribuído ao projeto com sucesso.");
 
@@ -804,7 +747,7 @@ public class ProjetoController {
 					"A data de início deve ser antes da data de término");
 			valid = false;
 		}
-
+		
 		if (projeto.getDescricao().isEmpty()) {
 			model.addAttribute("error_descricao", "Campo obrigatório");
 			valid = false;
@@ -821,10 +764,10 @@ public class ProjetoController {
 			model.addAttribute("error_local", "Campo obrigatório");
 			valid = false;
 		}
-		if (projeto.getParticipantes().isEmpty()) {
+		/*if (projeto.getParticipantes().isEmpty()) {
 			model.addAttribute("error_participantes", "Campo obrigatório");
 			valid = false;
-		}
+		}*/
 
 		return valid;
 	}

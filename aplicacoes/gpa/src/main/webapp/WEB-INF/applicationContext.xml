@@ -45,6 +45,14 @@
 			</props>
 		</property>
 	</bean>
+	
+	<bean id="notificationService" class="ufc.quixada.npi.gpa.service.impl.NotificationService">
+		<property name="observadores">
+			<list>
+				<bean name="emailObserver" class="ufc.quixada.npi.gpa.observer.EmailObserver"></bean>
+			</list>
+		</property>
+	</bean>
 
 	<tx:annotation-driven transaction-manager="txManager"
 		proxy-target-class="true" />

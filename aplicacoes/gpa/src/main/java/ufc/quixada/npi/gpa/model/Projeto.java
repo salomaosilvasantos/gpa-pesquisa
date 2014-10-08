@@ -1,6 +1,6 @@
-
 package ufc.quixada.npi.gpa.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -20,17 +20,18 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
+import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-public class Projeto {
+public class Projeto implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	private String codigo;
 	
-	@Size(min = 2, message = "MínimoW 2 caracteres")
+	@Size(min = 2, message = "Mínimo 2 caracteres")
 	private String nome;
 	
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -39,8 +40,10 @@ public class Projeto {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date termino;
 	
-	@Column(columnDefinition="TEXT")
-	@Size(min = 5, message = "Mínimo 5 caracteres")
+    private Date submissao ;
+	
+    @Column(columnDefinition="TEXT")
+    @Size(min = 5, message = "Mínimo 5 caracteres")
 	private String descricao;
 	
 	@ManyToOne
@@ -57,13 +60,14 @@ public class Projeto {
 	private StatusProjeto status;
 	
 	@ManyToMany
-	@JoinTable(joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="pessoa_id", referencedColumnName="id")})
-	private List<Pessoa> participantes;
+    @JoinTable(joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="pessoa_id", referencedColumnName="id")})
+    private List<Pessoa> participantes;
 	
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Documento> documentos;
 	
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
+	@JsonManagedReference
 	private List<Comentario> comentarios;
 	
 	@OneToMany(mappedBy = "projeto")
@@ -160,14 +164,13 @@ public class Projeto {
 		this.status = status;
 	}
 
-
 	public List<Pessoa> getParticipantes() {
-		return participantes;
-	}
+        return participantes;
+    }
 
-	public void setParticipantes(List<Pessoa> participantes) {
-		this.participantes = participantes;
-	}
+    public void setParticipantes(List<Pessoa> participantes) {
+        this.participantes = participantes;
+    }
 
 	public List<Documento> getDocumentos() {
 		return documentos;
@@ -208,6 +211,14 @@ public class Projeto {
 	public void setPareceres(List<Parecer> pareceres) {
 		this.pareceres = pareceres;
 	}
+	
+	public Date getSubmissao() {
+        return submissao;
+    }
+
+    public void setSubmissao(Date submissao) {
+        this.submissao = submissao;
+    }
 
 	@Override
 	public boolean equals(Object obj) {
@@ -257,4 +268,9 @@ public class Projeto {
 			return this.descricao;
 		}
 	}
+	
+	public enum Evento {
+		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO
+	}
+
 }

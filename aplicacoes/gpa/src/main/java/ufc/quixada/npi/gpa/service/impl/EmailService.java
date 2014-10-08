@@ -8,7 +8,7 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 
 @Named
-public class EmailService{
+public class EmailService {
 	
 	@Inject
 	private MailSender mailSender;
