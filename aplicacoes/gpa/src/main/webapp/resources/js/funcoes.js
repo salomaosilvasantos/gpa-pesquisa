@@ -260,6 +260,21 @@ $(document).ready(function() {
 					$('.delete-file').click(function() {
 						alert($(this).attr('id'));
 					});
+					
+					/*populando o input text participanteEscolhido*/
+					var participantesDoDatalist = $('#listaParticipantes')[0].options;
+					var participantesDoAutoComplete = [];
+					
+					for (var i = 0; i < participantesDoDatalist.length; i++) {
+						
+						participantesDoAutoComplete.push(participantesDoDatalist[i].value);
+					}
+					
+					$('#participanteEscolhido').autocomplete({				
+						source: participantesDoAutoComplete
+					});
+					
+					
 					$('#addParticipante')
 							.click(
 									function adicionarParticipante() {
@@ -284,7 +299,7 @@ $(document).ready(function() {
 											var participantesDoBanco = $('#listaParticipantes')[0].options;
 											var selecionado = false;
 
-											for (i = 0; i < participantesSelecionados.length; i++) {
+											for (var i = 0; i < participantesSelecionados.length; i++) {
 
 												if (participantesSelecionados[i].value === nomeParticipante) {
 													alert("Você selecionou o usuario '"
@@ -315,12 +330,13 @@ $(document).ready(function() {
 																		+ nomeParticipante
 																		+ '" checked="checked" ">, ');
 														participanteLocalizado = true;
+														
 													} 
 												}
-												if(nomeParticipante != nomeParticipanteDoBanco && participanteLocalizado == false){ alert('Essa pessoa "'+nomeParticipante+'" não se encontra na lista de participantes disponíveis.'); }
-												
+												if(nomeParticipante != nomeParticipanteDoBanco && participanteLocalizado == false){ alert('A pessoa "'+nomeParticipante+'" não se encontra na lista de participantes disponíveis.'); }
 											}
 										}
+										$('#participanteEscolhido').val("")[0];
 									});
 		
 function verificarSeExisteUlNaPagina() {
