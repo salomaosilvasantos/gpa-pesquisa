@@ -302,8 +302,7 @@ $(document).ready(function() {
 												for (var i = 0; i < participantesDoBanco.length; i++) {
 													
 												 nomeParticipanteDoBanco = participantesDoBanco[i].value;
-												
-												
+							
 													if(nomeParticipante === nomeParticipanteDoBanco){
 														
 														$(
