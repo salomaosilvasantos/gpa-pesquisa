@@ -155,19 +155,27 @@ public class ProjetoController {
 	@RequestMapping(value = "/{id}/editar", method = RequestMethod.GET)
 	public String editar(@PathVariable("id") long id, Model model,
 			HttpSession session, RedirectAttributes redirectAttributes) {
+		
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		Pessoa usuario = getUsuarioLogado(session);
+		List<Pessoa> listaParticipantesMenosAutorProjeto = new ArrayList<Pessoa>();
+		
 		if (projeto == null) {
 			redirectAttributes
 					.addFlashAttribute("erro", "Projeto inexistente.");
 			return "redirect:/projeto/listar";
 		}
+		for (Pessoa participante : serviceUsuario.getParticipantes()) {
+			
+			if(usuario.getId() != participante.getId()){
+				listaParticipantesMenosAutorProjeto.add(participante);	
+			}	
+		}
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& !projeto.getStatus()
 						.equals(StatusProjeto.AGUARDANDO_PARECER)) {
 			model.addAttribute("projeto", projeto);
-			model.addAttribute("participantes",
-					serviceUsuario.getParticipantes());
+			model.addAttribute("participantes",listaParticipantesMenosAutorProjeto);
 			model.addAttribute("action", "editar");
 
 			return "projeto/editar";
@@ -364,7 +372,7 @@ public class ProjetoController {
 			@Valid @ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result, Model model, HttpSession session,
 			RedirectAttributes redirect) throws IOException {
-
+		
 		if (result.hasErrors()) {
 			model.addAttribute("action", "editar");
 			return "projeto/editar";
@@ -394,6 +402,7 @@ public class ProjetoController {
 
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		List<Pessoa> participantes = new ArrayList<Pessoa>();
+		Pessoa usuario = getUsuarioLogado(session);
 		Boolean pessoaJaCadastrada = false;
 
 		// verificar se todas as pessoas que vem do formulario estao no BD
@@ -415,10 +424,18 @@ public class ProjetoController {
 						pessoaJaCadastrada = true;
 					}
 				}
+				
 				if(pessoaJaCadastrada == false) {
 					
 					participantes.add(pessoa);
 				}
+			}
+			if (usuario.getId() == pessoa.getId()){
+				
+				redirect.addFlashAttribute("error_participantes",
+						"A pessoa '"+pessoa.getNome() +"' já é um participante do projeto.");
+				model.addAttribute("action", "editar");
+				return "redirect:/projeto/" + id + "/editar";
 			}
 
 		}
