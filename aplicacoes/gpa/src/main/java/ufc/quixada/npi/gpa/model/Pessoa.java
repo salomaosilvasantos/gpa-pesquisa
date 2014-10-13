@@ -50,7 +50,7 @@ public class Pessoa {
 	public Pessoa(){
 		super();
 	}
-	public Pessoa(String cpf, String nome, String sobrenome,
+	public Pessoa(String cpf, String nome,
 			String email, String senha) {
 		super();
 		this.cpf = cpf;

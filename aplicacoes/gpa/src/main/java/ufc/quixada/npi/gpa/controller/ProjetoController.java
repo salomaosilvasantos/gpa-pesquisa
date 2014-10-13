@@ -75,9 +75,7 @@ public class ProjetoController {
 	public static Properties getProp() throws IOException {
 
 		Resource resource = new ClassPathResource("/notification.properties");
-		Properties props = PropertiesLoaderUtils.loadProperties(resource);
-		return props;
-
+		return PropertiesLoaderUtils.loadProperties(resource);
 	}
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
@@ -424,8 +422,10 @@ public class ProjetoController {
 						pessoaJaCadastrada = true;
 					}
 				}
-				
+
 				if(pessoaJaCadastrada == false) {
+
+				if(!pessoaJaCadastrada) {
 					
 					participantes.add(pessoa);
 				}
@@ -437,7 +437,7 @@ public class ProjetoController {
 				model.addAttribute("action", "editar");
 				return "redirect:/projeto/" + id + "/editar";
 			}
-
+			}
 		}
 
 		for (MultipartFile mpf : files) {
@@ -459,8 +459,9 @@ public class ProjetoController {
 		projeto.setAtividades(projetoAtualizado.getAtividades());
 		projeto.setQuantidadeBolsa(projetoAtualizado.getQuantidadeBolsa());
 		projeto.setLocal(projetoAtualizado.getLocal());
-		if (participantes.size() > 0)
+		if (participantes.size() > 0){
 			projeto.setParticipantes(participantes);
+		}
 
 		this.serviceProjeto.update(projeto);
 		redirect.addFlashAttribute("info", "Projeto atualizado com sucesso.");
@@ -534,11 +535,9 @@ public class ProjetoController {
 			@RequestParam("file") MultipartFile[] files, BindingResult result,
 			@RequestParam(value = "participanteSelecionado", required = false) List<String> listaParticipantes,
 			Model model, HttpSession session,
-			RedirectAttributes redirectAttributes) {
-		
+			RedirectAttributes redirectAttributes) {		
 		Projeto projeto = serviceProjeto.find(Projeto.class, proj.getId());
 		Pessoa usuario = getUsuarioLogado(session);
-		
 		if (projeto == null) {
 			redirectAttributes
 					.addFlashAttribute("erro", "Projeto inexistente.");
@@ -817,10 +816,10 @@ public class ProjetoController {
 			model.addAttribute("error_local", "Campo obrigatório");
 			valid = false;
 		}
-		if (projeto.getParticipantes().isEmpty()) {
+		/*if (projeto.getParticipantes().isEmpty()) {
 			model.addAttribute("error_participantes", "Campo obrigatório");
 			valid = false;
-		}
+		}*/
 
 		return valid;
 	}
