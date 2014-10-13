@@ -156,8 +156,7 @@ public class ProjetoController {
 		
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		Pessoa usuario = getUsuarioLogado(session);
-		List<Pessoa> participantesDisponiveisCadastro = serviceUsuario.getParticipantes();
-		participantesDisponiveisCadastro.remove(usuario);
+	
 		
 		if (projeto == null) {
 			redirectAttributes
@@ -168,7 +167,7 @@ public class ProjetoController {
 				&& !projeto.getStatus()
 						.equals(StatusProjeto.AGUARDANDO_PARECER)) {
 			model.addAttribute("projeto", projeto);
-			model.addAttribute("participantes",participantesDisponiveisCadastro);
+			model.addAttribute("participantes",serviceUsuario.getParticipantes(usuario));
 			model.addAttribute("action", "editar");
 
 			return "projeto/editar";
