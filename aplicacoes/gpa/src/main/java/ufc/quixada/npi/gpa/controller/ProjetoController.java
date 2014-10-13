@@ -153,8 +153,11 @@ public class ProjetoController {
 	@RequestMapping(value = "/{id}/editar", method = RequestMethod.GET)
 	public String editar(@PathVariable("id") long id, Model model,
 			HttpSession session, RedirectAttributes redirectAttributes) {
+		
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		Pessoa usuario = getUsuarioLogado(session);
+	
+		
 		if (projeto == null) {
 			redirectAttributes
 					.addFlashAttribute("erro", "Projeto inexistente.");
@@ -164,8 +167,7 @@ public class ProjetoController {
 				&& !projeto.getStatus()
 						.equals(StatusProjeto.AGUARDANDO_PARECER)) {
 			model.addAttribute("projeto", projeto);
-			model.addAttribute("participantes",
-					serviceUsuario.getParticipantes());
+			model.addAttribute("participantes",serviceUsuario.getParticipantes(usuario));
 			model.addAttribute("action", "editar");
 
 			return "projeto/editar";
@@ -362,7 +364,7 @@ public class ProjetoController {
 			@Valid @ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result, Model model, HttpSession session,
 			RedirectAttributes redirect) throws IOException {
-
+		
 		if (result.hasErrors()) {
 			model.addAttribute("action", "editar");
 			return "projeto/editar";
@@ -392,9 +394,9 @@ public class ProjetoController {
 
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		List<Pessoa> participantes = new ArrayList<Pessoa>();
+		Pessoa usuario = getUsuarioLogado(session);
 		Boolean pessoaJaCadastrada = false;
 
-		// verificar se todas as pessoas que vem do formulario estao no BD
 		for (String identificador : listaParticipantes) {
 
 			Pessoa pessoa = serviceUsuario.getPessoaByNome(identificador);
@@ -413,12 +415,22 @@ public class ProjetoController {
 						pessoaJaCadastrada = true;
 					}
 				}
+
+				if(pessoaJaCadastrada == false) {
+
 				if(!pessoaJaCadastrada) {
 					
 					participantes.add(pessoa);
 				}
 			}
-
+			if (usuario.getId() == pessoa.getId()){
+				
+				redirect.addFlashAttribute("error_participantes",
+						"A pessoa '"+pessoa.getNome() +"' já é um participante do projeto.");
+				model.addAttribute("action", "editar");
+				return "redirect:/projeto/" + id + "/editar";
+			}
+			}
 		}
 
 		for (MultipartFile mpf : files) {
@@ -514,8 +526,9 @@ public class ProjetoController {
 	public String submeterProjeto(
 			@ModelAttribute(value = "projeto") Projeto proj,
 			@RequestParam("file") MultipartFile[] files, BindingResult result,
+			@RequestParam(value = "participanteSelecionado", required = false) List<String> listaParticipantes,
 			Model model, HttpSession session,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes) {		
 		Projeto projeto = serviceProjeto.find(Projeto.class, proj.getId());
 		Pessoa usuario = getUsuarioLogado(session);
 		if (projeto == null) {
@@ -524,6 +537,37 @@ public class ProjetoController {
 			return "redirect:/projeto/listar";
 		}
 
+		List<Pessoa> participantes = new ArrayList<Pessoa>();
+		Boolean pessoaJaCadastrada = false;
+
+		for (String identificador : listaParticipantes) {
+
+			Pessoa pessoa = serviceUsuario.getPessoaByNome(identificador);
+
+			if (pessoa == null) {
+				redirectAttributes.addFlashAttribute("error_participantes",
+						"A pessoa '"+identificador +"' não se encontra na base de dados");
+				model.addAttribute("action", "editar");
+				return "redirect:/projeto/" + proj.getId() + "/editar";
+
+			} else {
+
+				for (Pessoa participante : participantes) {
+					
+					if(pessoa.equals(participante)){
+						System.out.println("A pessoa "+participante.getNome()+" ja se encontra cadastrada no projeto");
+						pessoaJaCadastrada = true;
+					}
+				}
+				if(pessoaJaCadastrada == false) {
+					
+					participantes.add(pessoa);
+				}
+			}
+
+		}
+		
+		
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
 
@@ -534,7 +578,7 @@ public class ProjetoController {
 				projeto.setAtividades(proj.getAtividades());
 				projeto.setQuantidadeBolsa(proj.getQuantidadeBolsa());
 				projeto.setLocal(proj.getLocal());
-				projeto.setParticipantes(proj.getParticipantes());
+				if(participantes.size() > 0) {projeto.setParticipantes(participantes);}
 
 				projeto.setStatus(StatusProjeto.SUBMETIDO);
 				Date data = new Date(System.currentTimeMillis());

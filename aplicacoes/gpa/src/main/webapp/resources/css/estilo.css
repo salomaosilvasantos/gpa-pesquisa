@@ -181,3 +181,33 @@ table#file-upload {
 	margin-left: 20px;
 	padding: 5px 3px 5px 3px;
 }
+
+.ui-menu {
+	list-style:none;
+	background: #eee;
+	padding: 1px;
+	margin: 0;
+	display:block;
+	width: 80px;
+	float: left;
+}
+
+#ui-id-1 {
+	overflow-y:auto;
+	height: 120px;
+}
+
+.ui-menu li {
+	display: list-item;
+    border: solid 0px #879b17;
+    cursor: pointer; 
+    cursor: hand;
+    padding: 10px 10px 10px 10px;
+} 
+
+.ui-menu li:hover{
+	font-weight: bold;
+    background:white;
+}
+
+
