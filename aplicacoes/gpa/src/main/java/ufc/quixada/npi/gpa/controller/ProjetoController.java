@@ -156,24 +156,19 @@ public class ProjetoController {
 		
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		Pessoa usuario = getUsuarioLogado(session);
-		List<Pessoa> listaParticipantesMenosAutorProjeto = new ArrayList<Pessoa>();
+		List<Pessoa> participantesDisponiveisCadastro = serviceUsuario.getParticipantes();
+		participantesDisponiveisCadastro.remove(usuario);
 		
 		if (projeto == null) {
 			redirectAttributes
 					.addFlashAttribute("erro", "Projeto inexistente.");
 			return "redirect:/projeto/listar";
 		}
-		for (Pessoa participante : serviceUsuario.getParticipantes()) {
-			
-			if(usuario.getId() != participante.getId()){
-				listaParticipantesMenosAutorProjeto.add(participante);	
-			}	
-		}
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& !projeto.getStatus()
 						.equals(StatusProjeto.AGUARDANDO_PARECER)) {
 			model.addAttribute("projeto", projeto);
-			model.addAttribute("participantes",listaParticipantesMenosAutorProjeto);
+			model.addAttribute("participantes",participantesDisponiveisCadastro);
 			model.addAttribute("action", "editar");
 
 			return "projeto/editar";
@@ -403,7 +398,6 @@ public class ProjetoController {
 		Pessoa usuario = getUsuarioLogado(session);
 		Boolean pessoaJaCadastrada = false;
 
-		// verificar se todas as pessoas que vem do formulario estao no BD
 		for (String identificador : listaParticipantes) {
 
 			Pessoa pessoa = serviceUsuario.getPessoaByNome(identificador);
@@ -547,7 +541,6 @@ public class ProjetoController {
 		List<Pessoa> participantes = new ArrayList<Pessoa>();
 		Boolean pessoaJaCadastrada = false;
 
-		// verificar se todas as pessoas que vem do formulario estao no BD
 		for (String identificador : listaParticipantes) {
 
 			Pessoa pessoa = serviceUsuario.getPessoaByNome(identificador);
@@ -586,7 +579,7 @@ public class ProjetoController {
 				projeto.setAtividades(proj.getAtividades());
 				projeto.setQuantidadeBolsa(proj.getQuantidadeBolsa());
 				projeto.setLocal(proj.getLocal());
-				if(participantes.size() > 0) projeto.setParticipantes(participantes);
+				if(participantes.size() > 0) {projeto.setParticipantes(participantes);}
 
 				projeto.setStatus(StatusProjeto.SUBMETIDO);
 				Date data = new Date(System.currentTimeMillis());

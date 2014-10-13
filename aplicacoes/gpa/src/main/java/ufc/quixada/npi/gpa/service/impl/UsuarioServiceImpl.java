@@ -23,6 +23,7 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Pessoa> implements
 	@Override
 	public Pessoa getUsuarioByLogin(String login) {
 		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("login", login);
 		return usuarioRepository.find(QueryType.JPQL,
 				"from Pessoa where login = :login", params).get(0);
 	}
