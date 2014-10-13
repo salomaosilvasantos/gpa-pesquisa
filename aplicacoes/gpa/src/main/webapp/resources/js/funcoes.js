@@ -246,5 +246,4 @@ function verificarSeExisteUlNaPagina() {
 	if (verificaSeListaEstaVazia == 0) {
 		$("#headComentarios").hide();
 	}
-
 }
