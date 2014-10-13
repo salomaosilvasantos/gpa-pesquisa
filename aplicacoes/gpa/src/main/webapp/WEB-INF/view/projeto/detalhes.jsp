@@ -57,6 +57,16 @@
 
 					</tr>
 					<tr>
+						<td class="head">Avaliação:</td>
+
+						<c:if test="${not empty projeto.avaliacao}">					
+							<td class="content"> <fmt:formatDate pattern="dd-MM-yyyy"
+									value="${projeto.avaliacao }" /> às <fmt:formatDate
+									pattern="HH:mm" value="${projeto.avaliacao }" /></td> 
+						</c:if>						
+
+					</tr>
+					<tr>
 						<td class="head">Bolsas:</td>
 						<td class="content">${projeto.quantidadeBolsa }</td>
 					</tr>

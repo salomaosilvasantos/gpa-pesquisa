@@ -28,48 +28,53 @@ public class Projeto implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String codigo;
-	
+
 	@Size(min = 2, message = "Mínimo 2 caracteres")
 	private String nome;
-	
+
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date inicio;
-	
+
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date termino;
-	
-    private Date submissao ;
-	
-    @Column(columnDefinition="TEXT")
-    @Size(min = 5, message = "Mínimo 5 caracteres")
+
+	private Date submissao ;
+
+
+
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	private Date avaliacao;
+
+	@Column(columnDefinition="TEXT")
+	@Size(min = 5, message = "Mínimo 5 caracteres")
 	private String descricao;
-	
+
 	@ManyToOne
 	private Pessoa autor;
-	
+
 	private String atividades;
-	
+
 	@Min(value = 1, message = "Número de bolsas deve ser maior que 1")
 	private Integer quantidadeBolsa;
-	
+
 	private String local;
-	
+
 	@Enumerated(EnumType.STRING)
 	private StatusProjeto status;
-	
+
 	@ManyToMany
-    @JoinTable(joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="pessoa_id", referencedColumnName="id")})
-    private List<Pessoa> participantes;
-	
+	@JoinTable(joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="pessoa_id", referencedColumnName="id")})
+	private List<Pessoa> participantes;
+
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Documento> documentos;
-	
+
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	@JsonManagedReference
 	private List<Comentario> comentarios;
-	
+
 	@OneToMany(mappedBy = "projeto")
 	private List<Parecer> pareceres;
 
@@ -100,6 +105,13 @@ public class Projeto implements Serializable {
 		this.pareceres = pareceres;
 	}
 
+	public Date getAvaliacao() {
+		return avaliacao;
+	}
+
+	public void setAvaliacao(Date avaliacao) {
+		this.avaliacao = avaliacao;
+	}
 	public String getNome() {
 		return nome;
 	}
@@ -165,12 +177,12 @@ public class Projeto implements Serializable {
 	}
 
 	public List<Pessoa> getParticipantes() {
-        return participantes;
-    }
+		return participantes;
+	}
 
-    public void setParticipantes(List<Pessoa> participantes) {
-        this.participantes = participantes;
-    }
+	public void setParticipantes(List<Pessoa> participantes) {
+		this.participantes = participantes;
+	}
 
 	public List<Documento> getDocumentos() {
 		return documentos;
@@ -211,14 +223,14 @@ public class Projeto implements Serializable {
 	public void setPareceres(List<Parecer> pareceres) {
 		this.pareceres = pareceres;
 	}
-	
-	public Date getSubmissao() {
-        return submissao;
-    }
 
-    public void setSubmissao(Date submissao) {
-        this.submissao = submissao;
-    }
+	public Date getSubmissao() {
+		return submissao;
+	}
+
+	public void setSubmissao(Date submissao) {
+		this.submissao = submissao;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -251,24 +263,24 @@ public class Projeto implements Serializable {
 				+ documentos + ", comentarios=" + comentarios + ", pareceres="
 				+ pareceres + "]";
 	}
-	
+
 	public enum StatusProjeto {
-		
+
 		NOVO("NOVO"), SUBMETIDO("SUBMETIDO"), AGUARDANDO_PARECER("AGUARDANDO PARECER"), 
 		AGUARDANDO_AVALIACAO("AGUARDANDO AVALIAÇÃO"), APROVADO("APROVADO"), REPROVADO("REPROVADO"),
 		APROVADO_COM_RESTRICAO("APROVADO COM RESTRIÇÃO");
-		
+
 		private String descricao;
-		
+
 		private StatusProjeto(String descricao) {
 			this.descricao = descricao;
 		}
-		
+
 		public String getDescricao() {
 			return this.descricao;
 		}
 	}
-	
+
 	public enum Evento {
 		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO
 	}
