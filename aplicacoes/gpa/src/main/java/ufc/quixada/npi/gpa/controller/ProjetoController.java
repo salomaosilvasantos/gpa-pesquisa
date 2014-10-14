@@ -157,7 +157,6 @@ public class ProjetoController {
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		Pessoa usuario = getUsuarioLogado(session);
 	
-		
 		if (projeto == null) {
 			redirectAttributes
 					.addFlashAttribute("erro", "Projeto inexistente.");
@@ -417,11 +416,8 @@ public class ProjetoController {
 				}
 
 				if(pessoaJaCadastrada == false) {
-
-				if(!pessoaJaCadastrada) {
-					
+	
 					participantes.add(pessoa);
-				}
 			}
 			if (usuario.getId() == pessoa.getId()){
 				
