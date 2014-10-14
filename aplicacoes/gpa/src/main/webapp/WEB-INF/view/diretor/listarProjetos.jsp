@@ -47,6 +47,8 @@
 					Submetidos</a></li>
 			<li><a href="#projetos-avaliados" role="tab" data-toggle="tab">Projetos
 					Avaliados</a></li>
+			<li><a href="#participantes-projeto" role="tab"
+				data-toggle="tab">Integrantes de Projetos</a></li>
 		</ul>
 
 		<div class="tab-content">
@@ -262,40 +264,58 @@
 				</c:if>
 			</div>
 
-		</div>
-	</div>
+			<!-- Listagem de Participantes dos Projetos -->
+			<c:if test="${not empty participantes}">
+			<div class="tab-pane" id="participantes-projeto">
+				<table class="table" id="table">
+					<thead>
+						<tr>
+							<th>Nome</th>
+						</tr>
+					</thead>
+					<tbody>
+					<c:forEach var="participante" items="${participantes}">
+						<tr class="linha">
+						<td>${participante.nome}</td>	
+						</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</div>
+		</c:if>
 
-	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">Excluir</div>
-				<div class="modal-body">Tem certeza de que deseja excluir esse
-					projeto?</div>
-				<div class="modal-footer">
-					<a href="#" class="btn btn-danger">Excluir</a>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+		</div>
+
+		<div class="modal fade" id="confirm-delete" tabindex="-1"
+			role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">Excluir</div>
+					<div class="modal-body">Tem certeza de que deseja excluir
+						esse projeto?</div>
+					<div class="modal-footer">
+						<a href="#" class="btn btn-danger">Excluir</a>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">Submeter Projeto</div>
-				<div class="modal-body">Tem certeza de que deseja submeter
-					esse projeto?</div>
-				<div class="modal-footer">
-					<a href="#" class="btn btn-primary">Submeter</a>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+		<div class="modal fade" id="confirm-submit" tabindex="-1"
+			role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">Submeter Projeto</div>
+					<div class="modal-body">Tem certeza de que deseja submeter
+						esse projeto?</div>
+					<div class="modal-footer">
+						<a href="#" class="btn btn-primary">Submeter</a>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<jsp:include page="../modulos/footer.jsp" />
-
+		<jsp:include page="../modulos/footer.jsp" />
 </body>
 </html>

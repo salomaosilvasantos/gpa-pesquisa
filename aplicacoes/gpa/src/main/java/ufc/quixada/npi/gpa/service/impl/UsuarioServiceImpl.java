@@ -62,6 +62,7 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Pessoa> implements
 		return diretor;
 	}
 
+	/* Participantes gerais do projeto */
 	@Override
 	public List<Pessoa> getParticipantes() {
 
@@ -69,6 +70,16 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Pessoa> implements
 
 		return participantes;
 	}
+
+	@Override
+	public List<Pessoa> getParticipantesProjetos() {
+		Map<String, Object> params = new HashMap<String, Object>();
+		List<Pessoa> participantes = usuarioRepository.find(QueryType.JPQL,
+				"select distinct proj.participantes from Projeto proj", params);
+		return participantes;
+	}
+
+	//
 
 	@Override
 	public Pessoa getPessoaByNome(String nome) {

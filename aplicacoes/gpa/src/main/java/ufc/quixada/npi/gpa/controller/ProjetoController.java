@@ -62,7 +62,7 @@ public class ProjetoController {
 
 	@Autowired
 	private ComentarioService comentarioService;
-	
+
 	@Inject
 	private DocumentoService serviceDocumento;
 
@@ -99,7 +99,7 @@ public class ProjetoController {
 		if (result.hasErrors()) {
 			return ("projeto/cadastrar");
 		}
-		
+
 		if (projeto.getTermino() != null
 				&& comparaDatas(new Date(), projeto.getTermino()) > 0) {
 			result.rejectValue("termino", "error.projeto",
@@ -144,7 +144,8 @@ public class ProjetoController {
 				|| (serviceUsuario.isDiretor(usuario) && !projeto.getStatus()
 						.equals(StatusProjeto.NOVO))) {
 			model.addAttribute("projeto", projeto);
-			model.addAttribute("comentario", comentarioService.find(Comentario.class));
+			model.addAttribute("comentario",
+					comentarioService.find(Comentario.class));
 			return "projeto/detalhes";
 		} else {
 			redirectAttributes.addFlashAttribute("erro", "Permissão negada.");
@@ -251,16 +252,15 @@ public class ProjetoController {
 		serviceProjeto.update(projeto);
 
 		notificationService.notificar(projeto, Evento.EMISSAO_PARECER);
-		
+
 		return "redirect:/projeto/listar";
 
 	}
-	
+
 	@RequestMapping(value = "/{id}/verParecer", method = RequestMethod.GET)
-	public String verParecer(@PathVariable("id") long id,
-			Model model,
+	public String verParecer(@PathVariable("id") long id, Model model,
 			HttpSession session, RedirectAttributes redirectAttributes) {
-		
+
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		Pessoa usuario = getUsuarioLogado(session);
 		// Verifica se o projeto existe
@@ -272,30 +272,26 @@ public class ProjetoController {
 		// Verifica se o usuário logado é o autor do projeto ou se é o diretor e
 		// o projeto já foi submetido
 		if (usuario.getId() == projeto.getAutor().getId()
-				|| (serviceUsuario.isDiretor(usuario))){
+				|| (serviceUsuario.isDiretor(usuario))) {
 			model.addAttribute("projeto", projeto);
 			return "diretor/verParecer";
 		} else {
 			redirectAttributes.addFlashAttribute("erro", "Permissão negada.");
 			return "redirect:/projeto/listar";
 		}
-		
+
 	}
-	
+
 	@RequestMapping(value = "/{id}/avaliarProjeto", method = RequestMethod.GET)
-	public String avaliarProjeto(@PathVariable("id") long id,
-			 Model model,HttpSession session,
-			RedirectAttributes redirect) {
-		
+	public String avaliarProjeto(@PathVariable("id") long id, Model model,
+			HttpSession session, RedirectAttributes redirect) {
+
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		if (projeto == null) {
-			redirect
-					.addFlashAttribute("erro", "Projeto Inexistente.");
+			redirect.addFlashAttribute("erro", "Projeto Inexistente.");
 			return "redirect:/projeto/listar";
 		}
-		
-		
-		
+
 		if (!projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)) {
 			redirect.addFlashAttribute("erro",
 					"Projeto não está aguardando avaliação");
@@ -309,24 +305,23 @@ public class ProjetoController {
 		model.addAttribute("projeto", projeto);
 		return "diretor/avaliarProjeto";
 	}
-	
+
 	@RequestMapping(value = "/{id}/avaliarProjeto", method = RequestMethod.POST)
 	public String avaliarProjeto(HttpServletRequest request,
 			@PathVariable("id") long id,
 			@RequestParam("file") MultipartFile[] files,
 			@RequestParam("observacao") String observacao,
 			@RequestParam("opcoesAvaliacao") String status,
-			 HttpSession session,
-			RedirectAttributes redirect) throws IOException  {
-		
+			HttpSession session, RedirectAttributes redirect)
+			throws IOException {
+
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
-		
+
 		if (observacao.isEmpty()) {
-			redirect.addAttribute("erro",
-					"Comentário não pode estar vazio");
+			redirect.addAttribute("erro", "Comentário não pode estar vazio");
 			return "redirect:/projeto/" + id + "/avaliarProjeto";
 		}
-		
+
 		for (MultipartFile mpf : files) {
 			if (mpf.getBytes().length > 0) {
 				Documento documento = new Documento();
@@ -340,12 +335,12 @@ public class ProjetoController {
 		}
 		if (status.equals("Aprovado")) {
 			projeto.setStatus(StatusProjeto.APROVADO);
-		} else if(status.equals("Aprovado com restrição")) {
-			projeto.setStatus(StatusProjeto.APROVADO_COM_RESTRICAO);		
-		}else{
+		} else if (status.equals("Aprovado com restrição")) {
+			projeto.setStatus(StatusProjeto.APROVADO_COM_RESTRICAO);
+		} else {
 			projeto.setStatus(StatusProjeto.REPROVADO);
 		}
-		
+
 		this.serviceProjeto.save(projeto);
 
 		this.serviceProjeto.update(projeto);
@@ -354,8 +349,7 @@ public class ProjetoController {
 		return "redirect:/projeto/listar";
 
 	}
-	
-	
+
 	@RequestMapping(value = "/{id}/editar", method = RequestMethod.POST)
 	public String atualizarProjeto(
 			@PathVariable("id") Long id,
@@ -385,7 +379,7 @@ public class ProjetoController {
 			model.addAttribute("action", "editar");
 			return "projeto/editar";
 		}
-		if(listaParticipantes == null){
+		if (listaParticipantes == null) {
 			redirect.addFlashAttribute("error_participantes",
 					"Por favor, selecione ao menos um participante.");
 			model.addAttribute("action", "editar");
@@ -402,21 +396,22 @@ public class ProjetoController {
 			Pessoa pessoa = serviceUsuario.getPessoaByNome(identificador);
 
 			if (pessoa == null) {
-				redirect.addFlashAttribute("error_participantes",
-						"A pessoa '"+identificador +"' não se encontra na base de dados");
+				redirect.addFlashAttribute("error_participantes", "A pessoa '"
+						+ identificador + "' não se encontra na base de dados");
 				model.addAttribute("action", "editar");
 				return "redirect:/projeto/" + id + "/editar";
 
 			} else {
 
 				for (Pessoa participante : participantes) {
-					if(pessoa.equals(participante)){
-						System.out.println("A pessoa "+participante.getNome()+" ja se encontra cadastrada no projeto");
+					if (pessoa.equals(participante)) {
+						System.out.println("A pessoa " + participante.getNome()
+								+ " ja se encontra cadastrada no projeto");
 						pessoaJaCadastrada = true;
 					}
 				}
-				if(pessoaJaCadastrada == false) {
-					
+				if (pessoaJaCadastrada == false) {
+
 					participantes.add(pessoa);
 				}
 			}
@@ -492,7 +487,7 @@ public class ProjetoController {
 					&& validaSubmissaoAnexo(projeto, model)) {
 
 				projeto.setStatus(StatusProjeto.SUBMETIDO);
-				
+
 				this.serviceProjeto.update(projeto);
 				notificationService.notificar(projeto, Evento.SUBMISSAO);
 				redirectAttributes.addFlashAttribute("info",
@@ -528,68 +523,66 @@ public class ProjetoController {
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
 
-				projeto.setNome(proj.getNome());
-				projeto.setDescricao(proj.getDescricao());
-				projeto.setInicio(proj.getInicio());
-				projeto.setTermino(proj.getTermino());
-				projeto.setAtividades(proj.getAtividades());
-				projeto.setQuantidadeBolsa(proj.getQuantidadeBolsa());
-				projeto.setLocal(proj.getLocal());
-				projeto.setParticipantes(proj.getParticipantes());
+			projeto.setNome(proj.getNome());
+			projeto.setDescricao(proj.getDescricao());
+			projeto.setInicio(proj.getInicio());
+			projeto.setTermino(proj.getTermino());
+			projeto.setAtividades(proj.getAtividades());
+			projeto.setQuantidadeBolsa(proj.getQuantidadeBolsa());
+			projeto.setLocal(proj.getLocal());
+			projeto.setParticipantes(proj.getParticipantes());
 
-				projeto.setStatus(StatusProjeto.SUBMETIDO);
-				Date data = new Date(System.currentTimeMillis());
-				projeto.setSubmissao(data);
+			projeto.setStatus(StatusProjeto.SUBMETIDO);
+			Date data = new Date(System.currentTimeMillis());
+			projeto.setSubmissao(data);
 
-				this.serviceProjeto.update(projeto);
+			this.serviceProjeto.update(projeto);
 
-				
-				if (validaSubmissao(projeto, model)) {
-					
-					try {
-						for (MultipartFile mpf : files) {
-							if (mpf.getBytes().length > 0) {
-								Documento documento = new Documento();
-								documento.setNomeOriginal(mpf.getOriginalFilename());
-								documento.setTipo(mpf.getContentType());
-								documento.setProjeto(projeto);
-								documento.setArquivo(mpf.getBytes());
-								serviceDocumento.save(documento);
-							
+			if (validaSubmissao(projeto, model)) {
 
-							} else {
-								redirectAttributes.addFlashAttribute(
-										"error_documento", "Arquivo obrigatório");
-								return "redirect:/projeto/" + projeto.getId()
-										+ "/submeter";
-							}
+				try {
+					for (MultipartFile mpf : files) {
+						if (mpf.getBytes().length > 0) {
+							Documento documento = new Documento();
+							documento
+									.setNomeOriginal(mpf.getOriginalFilename());
+							documento.setTipo(mpf.getContentType());
+							documento.setProjeto(projeto);
+							documento.setArquivo(mpf.getBytes());
+							serviceDocumento.save(documento);
 
+						} else {
+							redirectAttributes.addFlashAttribute(
+									"error_documento", "Arquivo obrigatório");
+							return "redirect:/projeto/" + projeto.getId()
+									+ "/submeter";
 						}
-					} catch (IOException e) {
-						redirectAttributes
-								.addFlashAttribute("error_documento",
-										"Ocorreu um erro ao processar o arquivo, tente novamente.");
-						return "redirect:/projeto/" + projeto.getId() + "/submeter";
+
 					}
-						if(validaSubmissaoAnexo(projeto, model)){
-							projeto.setStatus(StatusProjeto.SUBMETIDO);
-							serviceProjeto.update(projeto);
-							notificationService.notificar(projeto, Evento.SUBMISSAO);
+				} catch (IOException e) {
+					redirectAttributes
+							.addFlashAttribute("error_documento",
+									"Ocorreu um erro ao processar o arquivo, tente novamente.");
+					return "redirect:/projeto/" + projeto.getId() + "/submeter";
+				}
+				if (validaSubmissaoAnexo(projeto, model)) {
+					projeto.setStatus(StatusProjeto.SUBMETIDO);
+					serviceProjeto.update(projeto);
+					notificationService.notificar(projeto, Evento.SUBMISSAO);
 
-							redirectAttributes.addFlashAttribute("info",
-									"Projeto submetido com sucesso.");
-							return "redirect:/projeto/listar";	
-						}else{
-							model.addAttribute("action", "submeter");
-							return "projeto/editar";
-						}
-					
-						
-					} else {
+					redirectAttributes.addFlashAttribute("info",
+							"Projeto submetido com sucesso.");
+					return "redirect:/projeto/listar";
+				} else {
+					model.addAttribute("action", "submeter");
+					return "projeto/editar";
+				}
+
+			} else {
 				model.addAttribute("action", "submeter");
 				return "projeto/editar";
-				}
-				
+			}
+
 		} else {
 			redirectAttributes.addFlashAttribute("erro", "Permissão negada.");
 			return "redirect:/projeto/listar";
@@ -602,10 +595,12 @@ public class ProjetoController {
 		modelMap.addAttribute("projetos", serviceProjeto
 				.getProjetosByUsuario(getUsuarioLogado(session).getId()));
 
-		modelMap.addAttribute("projetosAguardandoParecer",
+		modelMap.addAttribute(
+				"projetosAguardandoParecer",
 				serviceProjeto.getProjetosAguardandoParecer(getUsuarioLogado(
 						session).getId()));
-		modelMap.addAttribute("projetosAvaliados",
+		modelMap.addAttribute(
+				"projetosAvaliados",
 				serviceProjeto.getProjetosAvaliadosDoUsuario(getUsuarioLogado(
 						session).getId()));
 
@@ -615,6 +610,10 @@ public class ProjetoController {
 
 			modelMap.addAttribute("projetosAvaliados",
 					serviceProjeto.getProjetosAvaliados());
+
+			// Participantes gerais do projeto
+			modelMap.addAttribute("participantes",
+					serviceUsuario.getParticipantesProjetos());
 
 			return "diretor/listarProjetos";
 		}
@@ -748,7 +747,7 @@ public class ProjetoController {
 					"A data de início deve ser antes da data de término");
 			valid = false;
 		}
-		
+
 		if (projeto.getDescricao().isEmpty()) {
 			model.addAttribute("error_descricao", "Campo obrigatório");
 			valid = false;
@@ -765,10 +764,11 @@ public class ProjetoController {
 			model.addAttribute("error_local", "Campo obrigatório");
 			valid = false;
 		}
-		/*if (projeto.getParticipantes().isEmpty()) {
-			model.addAttribute("error_participantes", "Campo obrigatório");
-			valid = false;
-		}*/
+		/*
+		 * if (projeto.getParticipantes().isEmpty()) {
+		 * model.addAttribute("error_participantes", "Campo obrigatório"); valid
+		 * = false; }
+		 */
 
 		return valid;
 	}
