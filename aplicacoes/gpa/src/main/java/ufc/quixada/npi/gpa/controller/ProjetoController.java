@@ -524,7 +524,7 @@ public class ProjetoController {
 
 	@RequestMapping(value = "submeter", method = RequestMethod.POST)
 	public String submeterProjeto(
-			@ModelAttribute(value = "projeto") Projeto proj,
+			@Valid @ModelAttribute(value = "projeto") Projeto proj,
 			@RequestParam("file") MultipartFile[] files, BindingResult result,
 			@RequestParam(value = "participanteSelecionado", required = false) List<String> listaParticipantes,
 			Model model, HttpSession session,
