@@ -209,5 +209,9 @@ table#file-upload {
 	font-weight: bold;
     background:white;
 }
-
+.ui-helper-hidden-accessible{
+	
+	display : none;
+	
+}
 
