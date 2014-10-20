@@ -81,6 +81,7 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Pessoa> implements
 
 	//
 
+
 	@Override
 	public Pessoa getPessoaByNome(String nome) {
 
