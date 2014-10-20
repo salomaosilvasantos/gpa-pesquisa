@@ -61,10 +61,11 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Pessoa> implements
 	}
 
 	@Override
-	public List<Pessoa> getParticipantes() {
+	public List<Pessoa> getParticipantes(Pessoa usuario) {
 
 		List<Pessoa> participantes = usuarioRepository.find(Pessoa.class);
-
+		participantes.remove(usuario);
+		
 		return participantes;
 	}
 

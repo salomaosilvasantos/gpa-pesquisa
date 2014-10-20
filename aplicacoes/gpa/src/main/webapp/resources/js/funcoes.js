@@ -168,38 +168,6 @@ $(document).ready(function() {
 		alert($(this).attr('id'));
 	});
 	
-	
-	$('#addParticipante').click(function adicionarParticipante(){
-		
-				var nomeParticipante = $("#participanteEscolhido").val();
-				
-				if(!nomeParticipante || 0 === nomeParticipante.length){
-					
-					 $("#participanteEscolhido").css({'border' : '#a94442 solid 1px','box-shadow' : '1px 1px rgba(0,0,0,.075)'}); 
-					 $("#labelParticipante").css("color","#a94442");
-				}else{
-					
-					var participantesSelecionados = $('input[name=participanteSelecionado]:checked');
-					var selecionado = false;	
-					
-					for (i = 0; i < participantesSelecionados.length; i++) { 
-
-							if(participantesSelecionados[i].value === nomeParticipante){
-								alert("Você selecionou o usuario '" +nomeParticipante +"' mais de uma vez.");
-								selecionado = true;
-							}
-							
-						}
-					if(selecionado == false){
-						 $("#listaParticipantesCadastrados").append(' <label class="participanteSelecionado" for="participanteSelecionado" style="margin-left:20px">'+nomeParticipante+'</label>' 
-							    	+'<input type="checkbox" class = "participanteSelecionado"  id = "participanteSelecionado" name="participanteSelecionado" value = "' +nomeParticipante
-							    	+'" checked="checked" ">, ');
-					}
-					
-				}
-				
-		});
-	
 });
 
 					$('div.error-validation:has(span)').find('span').css(
@@ -292,6 +260,21 @@ $(document).ready(function() {
 					$('.delete-file').click(function() {
 						alert($(this).attr('id'));
 					});
+					
+					/*populando o input text participanteEscolhido*/
+					var participantesDoDatalist = $('#listaParticipantes')[0].options;
+					var participantesDoAutoComplete = [];
+					
+					for (var i = 0; i < participantesDoDatalist.length; i++) {
+						
+						participantesDoAutoComplete.push(participantesDoDatalist[i].value);
+					}
+					
+					$('#participanteEscolhido').autocomplete({				
+						source: participantesDoAutoComplete
+					});
+					
+					
 					$('#addParticipante')
 							.click(
 									function adicionarParticipante() {
@@ -313,20 +296,31 @@ $(document).ready(function() {
 										} else {
 
 											var participantesSelecionados = $('input[name=participanteSelecionado]:checked');
-											var selecionado = "nao";
+											var participantesDoBanco = $('#listaParticipantes')[0].options;
+											var selecionado = false;
 
-											for (i = 0; i < participantesSelecionados.length; i++) {
+											for (var i = 0; i < participantesSelecionados.length; i++) {
 
 												if (participantesSelecionados[i].value === nomeParticipante) {
 													alert("Você selecionou o usuario '"
 															+ nomeParticipante
 															+ "' mais de uma vez.");
-													selecionado = "sim";
+													selecionado = true;
 												}
 
 											}
-											if (selecionado === "nao") {
-												$(
+											if (selecionado === false) {
+												
+												var nomeParticipanteDoBanco = "";
+												 var participanteLocalizado = false;
+												
+												for (var i = 0; i < participantesDoBanco.length; i++) {
+													
+												 nomeParticipanteDoBanco = participantesDoBanco[i].value;
+							
+													if(nomeParticipante === nomeParticipanteDoBanco){
+														
+														$(
 														"#listaParticipantesCadastrados")
 														.append(
 																' <label class="participanteSelecionado" for="participanteSelecionado" style="margin-left:20px">'
@@ -335,10 +329,14 @@ $(document).ready(function() {
 																		+ '<input type="checkbox" class = "participanteSelecionado"  id = "participanteSelecionado" name="participanteSelecionado" value = "'
 																		+ nomeParticipante
 																		+ '" checked="checked" ">, ');
+														participanteLocalizado = true;
+														
+													} 
+												}
+												if(nomeParticipante != nomeParticipanteDoBanco && participanteLocalizado == false){ alert('A pessoa "'+nomeParticipante+'" não se encontra na lista de participantes disponíveis.'); }
 											}
-
 										}
-
+										$('#participanteEscolhido').val("")[0];
 									});
 		
 function verificarSeExisteUlNaPagina() {
