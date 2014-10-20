@@ -41,7 +41,6 @@ import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.Evento;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.model.ProjetoPessoa;
-import ufc.quixada.npi.gpa.model.ProjetoPessoaId;
 import ufc.quixada.npi.gpa.service.ComentarioService;
 import ufc.quixada.npi.gpa.service.DocumentoService;
 import ufc.quixada.npi.gpa.service.ParecerService;
@@ -398,7 +397,6 @@ public class ProjetoController {
 		Boolean pessoaJaCadastrada = false;
 		
 		ProjetoPessoa projetoPessoa = new ProjetoPessoa();
-		ProjetoPessoaId projetoPessoaId = new ProjetoPessoaId();
 
 		// verificar se todas as pessoas que vem do formulario estao no BD
 		for (String identificador : listaParticipantes) {
@@ -451,12 +449,9 @@ public class ProjetoController {
 		if (participantes.size() > 0)
 			projeto.setParticipantes(participantes);		
 		
-		projetoPessoaId.setId(1);
 		
 		projetoPessoa.setCargaHorariaMensal(100);
-		projetoPessoa.setValorBolsaMensal(100);
-		projetoPessoa.setPk(projetoPessoaId);
-		
+		projetoPessoa.setValorBolsaMensal(100);		
 		projetoPessoa.setProjeto(projeto);
 		
 		

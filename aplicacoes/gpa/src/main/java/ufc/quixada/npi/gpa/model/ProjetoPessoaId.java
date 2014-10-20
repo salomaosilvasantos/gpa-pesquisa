@@ -3,22 +3,28 @@ package ufc.quixada.npi.gpa.model;
 import java.io.Serializable;
 
 import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
 
 @Embeddable
 public class ProjetoPessoaId implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	
-	@JoinColumn(name = "projeto_pessoa")
-	private Integer id;
+	private Projeto projeto;
+	private Pessoa pessoa;
 
-	public Integer getId() {
-		return id;
+	public Projeto getProjeto() {
+		return projeto;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setProjeto(Projeto projeto) {
+		this.projeto = projeto;
+	}
+
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
 	}
 
 	@Override

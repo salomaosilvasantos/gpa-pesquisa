@@ -1,5 +1,6 @@
 package ufc.quixada.npi.gpa.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -18,7 +19,8 @@ import javax.persistence.UniqueConstraint;
 @Entity
 @Table(name = "pessoa", uniqueConstraints = @UniqueConstraint(columnNames = {
 		"id", "login" }))
-public class Pessoa {
+public class Pessoa implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,12 +35,11 @@ public class Pessoa {
 	@Column(nullable = false)
 	private boolean habilitado;
 
-
 	@ManyToMany
 	@JoinTable(name = "papel_pessoa", joinColumns = @JoinColumn(name = "pessoa_id"), inverseJoinColumns = @JoinColumn(name = "papel_id"))
 	private List<Papel> papeis;
-	
-	@OneToMany(mappedBy="pessoa", cascade=CascadeType.ALL)
+
+	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL)
 	private List<ProjetoPessoa> participantes;
 
 	@OneToMany(mappedBy = "autor")
