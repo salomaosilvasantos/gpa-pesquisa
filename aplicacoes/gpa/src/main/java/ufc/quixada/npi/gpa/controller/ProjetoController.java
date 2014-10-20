@@ -157,7 +157,6 @@ public class ProjetoController {
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		Pessoa usuario = getUsuarioLogado(session);
 	
-		
 		if (projeto == null) {
 			redirectAttributes
 					.addFlashAttribute("erro", "Projeto inexistente.");
@@ -395,8 +394,7 @@ public class ProjetoController {
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		List<Pessoa> participantes = new ArrayList<Pessoa>();
 		Pessoa usuario = getUsuarioLogado(session);
-		Boolean pessoaJaCadastrada = false;
-
+	
 		for (String identificador : listaParticipantes) {
 
 			Pessoa pessoa = serviceUsuario.getPessoaByNome(identificador);
@@ -407,29 +405,18 @@ public class ProjetoController {
 				model.addAttribute("action", "editar");
 				return "redirect:/projeto/" + id + "/editar";
 
-			} else {
-
-				for (Pessoa participante : participantes) {
-					if(pessoa.equals(participante)){
-						System.out.println("A pessoa "+participante.getNome()+" ja se encontra cadastrada no projeto");
-						pessoaJaCadastrada = true;
-					}
-				}
-
-				if(pessoaJaCadastrada == false) {
-
-				if(!pessoaJaCadastrada) {
-					
-					participantes.add(pessoa);
-				}
-			}
-			if (usuario.getId() == pessoa.getId()){
+			}if (usuario.getId() == pessoa.getId()){
 				
 				redirect.addFlashAttribute("error_participantes",
 						"A pessoa '"+pessoa.getNome() +"' já é um participante do projeto.");
 				model.addAttribute("action", "editar");
 				return "redirect:/projeto/" + id + "/editar";
-			}
+			}else {
+
+  				if(!participantes.contains(pessoa)){
+  						participantes.add(pessoa);
+  				} else { System.out.println("ja se encontra no banco"); }
+			
 			}
 		}
 
