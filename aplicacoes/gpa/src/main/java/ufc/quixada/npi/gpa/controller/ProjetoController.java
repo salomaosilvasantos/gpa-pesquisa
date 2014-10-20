@@ -8,7 +8,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-import java.util.Vector;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +40,8 @@ import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.Evento;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
+import ufc.quixada.npi.gpa.model.ProjetoPessoa;
+import ufc.quixada.npi.gpa.model.ProjetoPessoaId;
 import ufc.quixada.npi.gpa.service.ComentarioService;
 import ufc.quixada.npi.gpa.service.DocumentoService;
 import ufc.quixada.npi.gpa.service.ParecerService;
@@ -393,13 +394,18 @@ public class ProjetoController {
 		}
 
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
-		List<Pessoa> participantes = new ArrayList<Pessoa>();
+		List<ProjetoPessoa> participantes = new ArrayList<ProjetoPessoa>();
 		Boolean pessoaJaCadastrada = false;
+		
+		ProjetoPessoa projetoPessoa = new ProjetoPessoa();
+		ProjetoPessoaId projetoPessoaId = new ProjetoPessoaId();
 
 		// verificar se todas as pessoas que vem do formulario estao no BD
 		for (String identificador : listaParticipantes) {
 
 			Pessoa pessoa = serviceUsuario.getPessoaByNome(identificador);
+			
+			projetoPessoa.setPessoa(pessoa);
 
 			if (pessoa == null) {
 				redirect.addFlashAttribute("error_participantes",
@@ -409,15 +415,15 @@ public class ProjetoController {
 
 			} else {
 
-				for (Pessoa participante : participantes) {
+				for (ProjetoPessoa participante : participantes) {
 					if(pessoa.equals(participante)){
-						System.out.println("A pessoa "+participante.getNome()+" ja se encontra cadastrada no projeto");
+						System.out.println("A pessoa "+participante.getPessoa().getNome()+" ja se encontra cadastrada no projeto");
 						pessoaJaCadastrada = true;
 					}
 				}
 				if(pessoaJaCadastrada == false) {
 					
-					participantes.add(pessoa);
+					participantes.add(projetoPessoa);
 				}
 			}
 
@@ -443,8 +449,19 @@ public class ProjetoController {
 		projeto.setQuantidadeBolsa(projetoAtualizado.getQuantidadeBolsa());
 		projeto.setLocal(projetoAtualizado.getLocal());
 		if (participantes.size() > 0)
-			projeto.setParticipantes(participantes);
-
+			projeto.setParticipantes(participantes);		
+		
+		projetoPessoaId.setId(1);
+		
+		projetoPessoa.setCargaHorariaMensal(100);
+		projetoPessoa.setValorBolsaMensal(100);
+		projetoPessoa.setPk(projetoPessoaId);
+		
+		projetoPessoa.setProjeto(projeto);
+		
+		
+		
+		
 		this.serviceProjeto.update(projeto);
 		redirect.addFlashAttribute("info", "Projeto atualizado com sucesso.");
 		return "redirect:/projeto/listar";

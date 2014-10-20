@@ -340,7 +340,8 @@ $(document).ready(function() {
 										}
 
 									});
-		
+});
+
 function verificarSeExisteUlNaPagina() {
 	var verificaSeListaEstaVazia = $("#comentarioList li").length;
 	if (verificaSeListaEstaVazia == 0) {
@@ -348,4 +349,4 @@ function verificarSeExisteUlNaPagina() {
 	}
 
 }
-});
+
