@@ -63,7 +63,6 @@ public class Projeto implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private StatusProjeto status;
 
-
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL)
 	private List<ProjetoPessoa> participantes;
 
