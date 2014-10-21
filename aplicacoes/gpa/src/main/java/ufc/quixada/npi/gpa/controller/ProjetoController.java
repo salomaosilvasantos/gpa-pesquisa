@@ -436,6 +436,8 @@ public class ProjetoController {
 		projeto.setDescricao(projetoAtualizado.getDescricao());
 		projeto.setInicio(projetoAtualizado.getInicio());
 		projeto.setTermino(projetoAtualizado.getTermino());
+		projeto.setCargaHoraria(projetoAtualizado.getCargaHoraria());
+		projeto.setValorDaBolsa(projetoAtualizado.getValorDaBolsa());
 		projeto.setAtividades(projetoAtualizado.getAtividades());
 		projeto.setQuantidadeBolsa(projetoAtualizado.getQuantidadeBolsa());
 		projeto.setLocal(projetoAtualizado.getLocal());
@@ -562,6 +564,8 @@ public class ProjetoController {
 				projeto.setDescricao(proj.getDescricao());
 				projeto.setInicio(proj.getInicio());
 				projeto.setTermino(proj.getTermino());
+				projeto.setCargaHoraria(proj.getCargaHoraria());
+				projeto.setValorDaBolsa(proj.getValorDaBolsa());
 				projeto.setAtividades(proj.getAtividades());
 				projeto.setQuantidadeBolsa(proj.getQuantidadeBolsa());
 				projeto.setLocal(proj.getLocal());
@@ -777,8 +781,7 @@ public class ProjetoController {
 			model.addAttribute("error_inicio",
 					"A data de início deve ser antes da data de término");
 			valid = false;
-		}
-		
+		}		
 		if (projeto.getDescricao().isEmpty()) {
 			model.addAttribute("error_descricao", "Campo obrigatório");
 			valid = false;
@@ -791,6 +794,10 @@ public class ProjetoController {
 			model.addAttribute("error_cargaHoraria", "Campo obrigatório");
 			valid = false;
 		}		
+		if (projeto.getValorDaBolsa() == null) {
+			model.addAttribute("error_valorDaBolsa", "Campo obrigatório");
+			valid = false;
+		}	
 		if (projeto.getQuantidadeBolsa() == null) {
 			model.addAttribute("error_quantidadeBolsa", "Campo obrigatório");
 			valid = false;
