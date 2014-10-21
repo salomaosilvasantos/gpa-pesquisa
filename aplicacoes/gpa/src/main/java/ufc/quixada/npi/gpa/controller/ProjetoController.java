@@ -102,13 +102,13 @@ public class ProjetoController {
 				&& comparaDatas(new Date(), projeto.getTermino()) > 0) {
 			result.rejectValue("termino", "error.projeto",
 					"Somente data futura");
-			return "projeto/editar";
+			return "projeto/cadastrar";
 		}
 		if (projeto.getTermino() != null && projeto.getInicio() != null
 				&& comparaDatas(projeto.getInicio(), projeto.getTermino()) > 0) {
 			result.rejectValue("inicio", "error.projeto",
 					"A data de início deve ser antes da data de término.");
-			return "projeto/editar";
+			return "projeto/cadastrar";
 		}
 
 		projeto.setAutor(getUsuarioLogado(session));
@@ -511,7 +511,7 @@ public class ProjetoController {
 
 	@RequestMapping(value = "submeter", method = RequestMethod.POST)
 	public String submeterProjeto(
-			@ModelAttribute(value = "projeto") Projeto proj,
+			@Valid @ModelAttribute(value = "projeto") Projeto proj,
 			@RequestParam("file") MultipartFile[] files, BindingResult result,
 			@RequestParam(value = "participanteSelecionado", required = false) List<String> listaParticipantes,
 			Model model, HttpSession session,
@@ -787,6 +787,10 @@ public class ProjetoController {
 			model.addAttribute("error_atividades", "Campo obrigatório");
 			valid = false;
 		}
+		if (projeto.getCargaHoraria() == null) {
+			model.addAttribute("error_cargaHoraria", "Campo obrigatório");
+			valid = false;
+		}		
 		if (projeto.getQuantidadeBolsa() == null) {
 			model.addAttribute("error_quantidadeBolsa", "Campo obrigatório");
 			valid = false;

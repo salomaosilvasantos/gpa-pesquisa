@@ -65,6 +65,14 @@
 						<td class="content">${projeto.local }</td>
 					</tr>
 					<tr>
+						<td class="head">Carga Horária:</td>
+						<td class="content">${projeto.cargaHoraria}</td>
+					</tr>
+					<tr>
+						<td class="head">Valor da Bolsa:</td>
+						<td class="content">${projeto.valorDaBolsa}</td>
+					</tr>
+					<tr>
 						<td class="head" valign="top">Participantes:</td>
 							<c:forEach items="${projeto.participantes}" var="participante">
 								<td class="content">${participante.nome}</td>

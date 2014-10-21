@@ -18,58 +18,64 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.springframework.format.annotation.DateTimeFormat;
+
 
 @Entity
 public class Projeto implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String codigo;
-	
+
 	@Size(min = 2, message = "Mínimo 2 caracteres")
 	private String nome;
-	
+
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date inicio;
-	
+
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date termino;
-	
-    private Date submissao ;
-	
-    @Column(columnDefinition="TEXT")
-    @Size(min = 5, message = "Mínimo 5 caracteres")
+
+	private Date submissao;
+
+	@Column(columnDefinition = "TEXT")
+	@Size(min = 5, message = "Mínimo 5 caracteres")
 	private String descricao;
-	
+
 	@ManyToOne
 	private Pessoa autor;
-	
+
 	private String atividades;
-	
+
+	@NotNull(message="Campo obrigatório")
+	private Integer cargaHoraria;
+
+	private Integer valorDaBolsa;
+
 	@Min(value = 1, message = "Número de bolsas deve ser maior que 1")
 	private Integer quantidadeBolsa;
-	
+
 	private String local;
-	
+
 	@Enumerated(EnumType.STRING)
 	private StatusProjeto status;
-	
+
 	@ManyToMany
-    @JoinTable(joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="pessoa_id", referencedColumnName="id")})
-    private List<Pessoa> participantes;
-	
+	@JoinTable(joinColumns = { @JoinColumn(name = "projeto_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "pessoa_id", referencedColumnName = "id") })
+	private List<Pessoa> participantes;
+
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Documento> documentos;
-	
+
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	@JsonManagedReference
 	private List<Comentario> comentarios;
-	
+
 	@OneToMany(mappedBy = "projeto")
 	private List<Parecer> pareceres;
 
@@ -78,7 +84,8 @@ public class Projeto implements Serializable {
 	}
 
 	public Projeto(Long id, String codigo, String nome, Date inicio,
-			Date termino, String descricao, Pessoa autor, String atividades,
+			Date termino, Date submissao, String descricao, Pessoa autor,
+			String atividades, Integer cargaHoraria, Integer valorDaBolsa,
 			Integer quantidadeBolsa, String local, StatusProjeto status,
 			List<Pessoa> participantes, List<Documento> documentos,
 			List<Comentario> comentarios, List<Parecer> pareceres) {
@@ -88,9 +95,12 @@ public class Projeto implements Serializable {
 		this.nome = nome;
 		this.inicio = inicio;
 		this.termino = termino;
+		this.submissao = submissao;
 		this.descricao = descricao;
 		this.autor = autor;
 		this.atividades = atividades;
+		this.cargaHoraria = cargaHoraria;
+		this.valorDaBolsa = valorDaBolsa;
 		this.quantidadeBolsa = quantidadeBolsa;
 		this.local = local;
 		this.status = status;
@@ -140,6 +150,22 @@ public class Projeto implements Serializable {
 		this.atividades = atividades;
 	}
 
+	public Integer getCargaHoraria() {
+		return cargaHoraria;
+	}
+
+	public void setCargaHoraria(Integer cargaHoraria) {
+		this.cargaHoraria = cargaHoraria;
+	}
+
+	public Integer getValorDaBolsa() {
+		return valorDaBolsa;
+	}
+
+	public void setValorDaBolsa(Integer valorDaBolsa) {
+		this.valorDaBolsa = valorDaBolsa;
+	}
+
 	public Integer getQuantidadeBolsa() {
 		return quantidadeBolsa;
 	}
@@ -165,12 +191,12 @@ public class Projeto implements Serializable {
 	}
 
 	public List<Pessoa> getParticipantes() {
-        return participantes;
-    }
+		return participantes;
+	}
 
-    public void setParticipantes(List<Pessoa> participantes) {
-        this.participantes = participantes;
-    }
+	public void setParticipantes(List<Pessoa> participantes) {
+		this.participantes = participantes;
+	}
 
 	public List<Documento> getDocumentos() {
 		return documentos;
@@ -211,14 +237,14 @@ public class Projeto implements Serializable {
 	public void setPareceres(List<Parecer> pareceres) {
 		this.pareceres = pareceres;
 	}
-	
-	public Date getSubmissao() {
-        return submissao;
-    }
 
-    public void setSubmissao(Date submissao) {
-        this.submissao = submissao;
-    }
+	public Date getSubmissao() {
+		return submissao;
+	}
+
+	public void setSubmissao(Date submissao) {
+		this.submissao = submissao;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -244,31 +270,34 @@ public class Projeto implements Serializable {
 	public String toString() {
 		return "Projeto [id=" + id + ", codigo=" + codigo + ", nome=" + nome
 				+ ", inicio=" + inicio + ", termino=" + termino
-				+ ", descricao=" + descricao + ", autor=" + autor
-				+ ", atividades=" + atividades + ", quantidadeBolsa="
-				+ quantidadeBolsa + ", local=" + local + ", status=" + status
+				+ ", submissao=" + submissao + ", descricao=" + descricao
+				+ ", autor=" + autor + ", atividades=" + atividades
+				+ ", cargaHoraria=" + cargaHoraria + ", valorDaBolsa="
+				+ valorDaBolsa + ", quantidadeBolsa=" + quantidadeBolsa
+				+ ", local=" + local + ", status=" + status
 				+ ", participantes=" + participantes + ", documentos="
 				+ documentos + ", comentarios=" + comentarios + ", pareceres="
 				+ pareceres + "]";
 	}
-	
+
 	public enum StatusProjeto {
-		
-		NOVO("NOVO"), SUBMETIDO("SUBMETIDO"), AGUARDANDO_PARECER("AGUARDANDO PARECER"), 
-		AGUARDANDO_AVALIACAO("AGUARDANDO AVALIAÇÃO"), APROVADO("APROVADO"), REPROVADO("REPROVADO"),
-		APROVADO_COM_RESTRICAO("APROVADO COM RESTRIÇÃO");
-		
+
+		NOVO("NOVO"), SUBMETIDO("SUBMETIDO"), AGUARDANDO_PARECER(
+				"AGUARDANDO PARECER"), AGUARDANDO_AVALIACAO(
+				"AGUARDANDO AVALIAÇÃO"), APROVADO("APROVADO"), REPROVADO(
+				"REPROVADO"), APROVADO_COM_RESTRICAO("APROVADO COM RESTRIÇÃO");
+
 		private String descricao;
-		
+
 		private StatusProjeto(String descricao) {
 			this.descricao = descricao;
 		}
-		
+
 		public String getDescricao() {
 			return this.descricao;
 		}
 	}
-	
+
 	public enum Evento {
 		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO
 	}
