@@ -287,6 +287,7 @@ public class ProjetoController {
 			RedirectAttributes redirect) {
 		
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
+		
 		if (projeto == null) {
 			redirect
 					.addFlashAttribute("erro", "Projeto Inexistente.");
@@ -305,6 +306,7 @@ public class ProjetoController {
 					"Permissão para avaliar projeto negada");
 			return "redirect:/projeto/listar";
 		}
+		projeto.setAvaliacao(new Date());
 		model.addAttribute("projeto", projeto);
 		return "diretor/avaliarProjeto";
 	}
@@ -344,7 +346,7 @@ public class ProjetoController {
 		}else{
 			projeto.setStatus(StatusProjeto.REPROVADO);
 		}
-		
+		projeto.setAvaliacao(new Date());
 		this.serviceProjeto.save(projeto);
 
 		this.serviceProjeto.update(projeto);

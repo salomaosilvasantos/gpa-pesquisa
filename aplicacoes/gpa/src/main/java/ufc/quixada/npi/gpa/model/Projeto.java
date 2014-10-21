@@ -23,7 +23,6 @@ import javax.validation.constraints.Size;
 import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.springframework.format.annotation.DateTimeFormat;
 
-
 @Entity
 public class Projeto implements Serializable {
 	@Id
@@ -41,6 +40,10 @@ public class Projeto implements Serializable {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date termino;
 
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	private Date avaliacao;
+
+	@Column(columnDefinition="TEXT")
 	private Date submissao;
 
 	@Column(columnDefinition = "TEXT")
@@ -66,9 +69,9 @@ public class Projeto implements Serializable {
 	private StatusProjeto status;
 
 	@ManyToMany
-	@JoinTable(joinColumns = { @JoinColumn(name = "projeto_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "pessoa_id", referencedColumnName = "id") })
-	private List<Pessoa> participantes;
-
+    @JoinTable(joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="pessoa_id", referencedColumnName="id")})
+    private List<Pessoa> participantes;
+	
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Documento> documentos;
 
@@ -110,6 +113,13 @@ public class Projeto implements Serializable {
 		this.pareceres = pareceres;
 	}
 
+	public Date getAvaliacao() {
+		return avaliacao;
+	}
+
+	public void setAvaliacao(Date avaliacao) {
+		this.avaliacao = avaliacao;
+	}
 	public String getNome() {
 		return nome;
 	}
@@ -282,11 +292,10 @@ public class Projeto implements Serializable {
 
 	public enum StatusProjeto {
 
-		NOVO("NOVO"), SUBMETIDO("SUBMETIDO"), AGUARDANDO_PARECER(
-				"AGUARDANDO PARECER"), AGUARDANDO_AVALIACAO(
-				"AGUARDANDO AVALIAÇÃO"), APROVADO("APROVADO"), REPROVADO(
-				"REPROVADO"), APROVADO_COM_RESTRICAO("APROVADO COM RESTRIÇÃO");
-
+		NOVO("NOVO"), SUBMETIDO("SUBMETIDO"), AGUARDANDO_PARECER("AGUARDANDO PARECER"), 
+		AGUARDANDO_AVALIACAO("AGUARDANDO AVALIAÇÃO"), APROVADO("APROVADO"), REPROVADO("REPROVADO"),
+		APROVADO_COM_RESTRICAO("APROVADO COM RESTRIÇÃO");
+		
 		private String descricao;
 
 		private StatusProjeto(String descricao) {
