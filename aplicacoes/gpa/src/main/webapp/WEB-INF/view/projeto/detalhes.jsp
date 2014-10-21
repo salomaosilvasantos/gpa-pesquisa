@@ -18,7 +18,7 @@
 	rel="stylesheet" />
 </head>
 
-<body onload="verificarSeExisteUlNaPagina()">
+<body onload="esconderComentarioSeVazio()">
 	<jsp:include page="../modulos/header.jsp" />
 
 	<div class="container" style="margin-bottom: 70px;">
