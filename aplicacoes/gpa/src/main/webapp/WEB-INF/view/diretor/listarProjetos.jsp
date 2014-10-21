@@ -306,6 +306,7 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">Submeter Projeto</div>
+					
 					<div class="modal-body">Tem certeza de que deseja submeter
 						esse projeto?</div>
 					<div class="modal-footer">
