@@ -15,15 +15,15 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.springframework.format.annotation.DateTimeFormat;
+
 
 @Entity
 public class Projeto implements Serializable {
 	private static final long serialVersionUID = 1L;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -50,6 +50,11 @@ public class Projeto implements Serializable {
 
 	private String atividades;
 
+	@NotNull(message="Campo obrigatório")
+	private Integer cargaHoraria;
+
+	private Integer valorDaBolsa;
+
 	@Min(value = 1, message = "Número de bolsas deve ser maior que 1")
 	private Integer quantidadeBolsa;
 
@@ -57,6 +62,7 @@ public class Projeto implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	private StatusProjeto status;
+
 
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL)
 	private List<ProjetoPessoa> participantes;
@@ -76,7 +82,8 @@ public class Projeto implements Serializable {
 	}
 
 	public Projeto(Long id, String codigo, String nome, Date inicio,
-			Date termino, String descricao, Pessoa autor, String atividades,
+			Date termino, Date submissao, String descricao, Pessoa autor,
+			String atividades, Integer cargaHoraria, Integer valorDaBolsa,
 			Integer quantidadeBolsa, String local, StatusProjeto status,
 			List<ProjetoPessoa> participantes, List<Documento> documentos,
 			List<Comentario> comentarios, List<Parecer> pareceres) {
@@ -86,9 +93,12 @@ public class Projeto implements Serializable {
 		this.nome = nome;
 		this.inicio = inicio;
 		this.termino = termino;
+		this.submissao = submissao;
 		this.descricao = descricao;
 		this.autor = autor;
 		this.atividades = atividades;
+		this.cargaHoraria = cargaHoraria;
+		this.valorDaBolsa = valorDaBolsa;
 		this.quantidadeBolsa = quantidadeBolsa;
 		this.local = local;
 		this.status = status;
@@ -138,6 +148,22 @@ public class Projeto implements Serializable {
 		this.atividades = atividades;
 	}
 
+	public Integer getCargaHoraria() {
+		return cargaHoraria;
+	}
+
+	public void setCargaHoraria(Integer cargaHoraria) {
+		this.cargaHoraria = cargaHoraria;
+	}
+
+	public Integer getValorDaBolsa() {
+		return valorDaBolsa;
+	}
+
+	public void setValorDaBolsa(Integer valorDaBolsa) {
+		this.valorDaBolsa = valorDaBolsa;
+	}
+
 	public Integer getQuantidadeBolsa() {
 		return quantidadeBolsa;
 	}
@@ -161,6 +187,7 @@ public class Projeto implements Serializable {
 	public void setStatus(StatusProjeto status) {
 		this.status = status;
 	}
+
 
 	public List<ProjetoPessoa> getParticipantes() {
 		return participantes;
@@ -242,9 +269,11 @@ public class Projeto implements Serializable {
 	public String toString() {
 		return "Projeto [id=" + id + ", codigo=" + codigo + ", nome=" + nome
 				+ ", inicio=" + inicio + ", termino=" + termino
-				+ ", descricao=" + descricao + ", autor=" + autor
-				+ ", atividades=" + atividades + ", quantidadeBolsa="
-				+ quantidadeBolsa + ", local=" + local + ", status=" + status
+				+ ", submissao=" + submissao + ", descricao=" + descricao
+				+ ", autor=" + autor + ", atividades=" + atividades
+				+ ", cargaHoraria=" + cargaHoraria + ", valorDaBolsa="
+				+ valorDaBolsa + ", quantidadeBolsa=" + quantidadeBolsa
+				+ ", local=" + local + ", status=" + status
 				+ ", participantes=" + participantes + ", documentos="
 				+ documentos + ", comentarios=" + comentarios + ", pareceres="
 				+ pareceres + "]";
@@ -271,5 +300,6 @@ public class Projeto implements Serializable {
 	public enum Evento {
 		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO
 	}
+
 
 }

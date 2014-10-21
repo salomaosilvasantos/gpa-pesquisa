@@ -18,24 +18,22 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Pessoa> implements
 		UsuarioService {
 
 	@Inject
-	UsuarioRepository usuarioRepository;
+	private UsuarioRepository usuarioRepository;
 
 	@Override
 	public Pessoa getUsuarioByLogin(String login) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("login", login);
-		Pessoa usuariologado = usuarioRepository.find(QueryType.JPQL,
+		return usuarioRepository.find(QueryType.JPQL,
 				"from Pessoa where login = :login", params).get(0);
-		return usuariologado;
 	}
 
 	@Override
 	public List<Pessoa> getPareceristas(Long id) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
-		List<Pessoa> usuarios = usuarioRepository.find(QueryType.JPQL,
+		return usuarioRepository.find(QueryType.JPQL,
 				"from Pessoa u where u.id != :id", params);
-		return usuarios;
 	}
 
 	@Override
@@ -63,10 +61,11 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Pessoa> implements
 	}
 
 	@Override
-	public List<Pessoa> getParticipantes() {
+	public List<Pessoa> getParticipantes(Pessoa usuario) {
 
 		List<Pessoa> participantes = usuarioRepository.find(Pessoa.class);
-
+		participantes.remove(usuario);
+		
 		return participantes;
 	}
 
@@ -80,7 +79,7 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Pessoa> implements
 		List<Pessoa> listaPessoas = usuarioRepository.find(QueryType.JPQL,
 				"from Pessoa where nome = :nome", params);
 
-		if (listaPessoas.isEmpty() == false) {
+		if (!listaPessoas.isEmpty()) {
 
 			pessoa = listaPessoas.get(0);
 		}

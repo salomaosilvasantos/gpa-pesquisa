@@ -17,15 +17,14 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "pessoa", uniqueConstraints = @UniqueConstraint(columnNames = {
-		"id", "login" }))
+@Table(name = "pessoa", uniqueConstraints = @UniqueConstraint(columnNames = {"id", "login" }))
 public class Pessoa implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	
 	@Column(nullable = false)
 	private String login;
 
@@ -57,9 +56,8 @@ public class Pessoa implements Serializable {
 	public Pessoa() {
 		super();
 	}
-
-	public Pessoa(String cpf, String nome, String sobrenome, String email,
-			String senha) {
+	public Pessoa(String cpf, String nome, String sobrenome,
+			String email, String senha) {
 		super();
 		this.cpf = cpf;
 		this.nome = nome;
