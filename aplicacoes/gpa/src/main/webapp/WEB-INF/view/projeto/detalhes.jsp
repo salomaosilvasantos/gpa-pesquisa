@@ -18,7 +18,7 @@
 	rel="stylesheet" />
 </head>
 
-<body onload="verificarSeExisteUlNaPagina()">
+<body onload="esconderComentarioSeVazio()">
 	<jsp:include page="../modulos/header.jsp" />
 
 	<div class="container" style="margin-bottom: 70px;">
@@ -75,6 +75,14 @@
 						<td class="content">${projeto.local }</td>
 					</tr>
 					<tr>
+						<td class="head">Carga Horária:</td>
+						<td class="content">${projeto.cargaHoraria}</td>
+					</tr>
+					<tr>
+						<td class="head">Valor da Bolsa:</td>
+						<td class="content">${projeto.valorDaBolsa}</td>
+					</tr>
+					<tr>
 						<td class="head" valign="top">Participantes:</td>
 							<c:forEach items="${projeto.participantes}" var="participante">
 								<td class="content">${participante.nome}</td>
@@ -91,8 +99,6 @@
 							<!--  <a href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a>-->
 							<td class="content"><a
 								href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a></td>
-
-							<!--  <td class="content">${documento.nomeOriginal }</td>-->
 
 						</c:forEach>
 					</tr>

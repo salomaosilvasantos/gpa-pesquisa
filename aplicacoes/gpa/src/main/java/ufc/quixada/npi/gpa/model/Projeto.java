@@ -18,8 +18,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -40,14 +40,13 @@ public class Projeto implements Serializable {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date termino;
 
-	private Date submissao ;
-
-
-
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date avaliacao;
 
 	@Column(columnDefinition="TEXT")
+	private Date submissao;
+
+	@Column(columnDefinition = "TEXT")
 	@Size(min = 5, message = "Mínimo 5 caracteres")
 	private String descricao;
 
@@ -55,6 +54,11 @@ public class Projeto implements Serializable {
 	private Pessoa autor;
 
 	private String atividades;
+
+	@NotNull(message="Campo obrigatório")
+	private Integer cargaHoraria;
+
+	private Integer valorDaBolsa;
 
 	@Min(value = 1, message = "Número de bolsas deve ser maior que 1")
 	private Integer quantidadeBolsa;
@@ -65,9 +69,9 @@ public class Projeto implements Serializable {
 	private StatusProjeto status;
 
 	@ManyToMany
-	@JoinTable(joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="pessoa_id", referencedColumnName="id")})
-	private List<Pessoa> participantes;
-
+    @JoinTable(joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="pessoa_id", referencedColumnName="id")})
+    private List<Pessoa> participantes;
+	
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Documento> documentos;
 
@@ -83,7 +87,8 @@ public class Projeto implements Serializable {
 	}
 
 	public Projeto(Long id, String codigo, String nome, Date inicio,
-			Date termino, String descricao, Pessoa autor, String atividades,
+			Date termino, Date submissao, String descricao, Pessoa autor,
+			String atividades, Integer cargaHoraria, Integer valorDaBolsa,
 			Integer quantidadeBolsa, String local, StatusProjeto status,
 			List<Pessoa> participantes, List<Documento> documentos,
 			List<Comentario> comentarios, List<Parecer> pareceres) {
@@ -93,9 +98,12 @@ public class Projeto implements Serializable {
 		this.nome = nome;
 		this.inicio = inicio;
 		this.termino = termino;
+		this.submissao = submissao;
 		this.descricao = descricao;
 		this.autor = autor;
 		this.atividades = atividades;
+		this.cargaHoraria = cargaHoraria;
+		this.valorDaBolsa = valorDaBolsa;
 		this.quantidadeBolsa = quantidadeBolsa;
 		this.local = local;
 		this.status = status;
@@ -150,6 +158,22 @@ public class Projeto implements Serializable {
 
 	public void setAtividades(String atividades) {
 		this.atividades = atividades;
+	}
+
+	public Integer getCargaHoraria() {
+		return cargaHoraria;
+	}
+
+	public void setCargaHoraria(Integer cargaHoraria) {
+		this.cargaHoraria = cargaHoraria;
+	}
+
+	public Integer getValorDaBolsa() {
+		return valorDaBolsa;
+	}
+
+	public void setValorDaBolsa(Integer valorDaBolsa) {
+		this.valorDaBolsa = valorDaBolsa;
 	}
 
 	public Integer getQuantidadeBolsa() {
@@ -256,9 +280,11 @@ public class Projeto implements Serializable {
 	public String toString() {
 		return "Projeto [id=" + id + ", codigo=" + codigo + ", nome=" + nome
 				+ ", inicio=" + inicio + ", termino=" + termino
-				+ ", descricao=" + descricao + ", autor=" + autor
-				+ ", atividades=" + atividades + ", quantidadeBolsa="
-				+ quantidadeBolsa + ", local=" + local + ", status=" + status
+				+ ", submissao=" + submissao + ", descricao=" + descricao
+				+ ", autor=" + autor + ", atividades=" + atividades
+				+ ", cargaHoraria=" + cargaHoraria + ", valorDaBolsa="
+				+ valorDaBolsa + ", quantidadeBolsa=" + quantidadeBolsa
+				+ ", local=" + local + ", status=" + status
 				+ ", participantes=" + participantes + ", documentos="
 				+ documentos + ", comentarios=" + comentarios + ", pareceres="
 				+ pareceres + "]";
@@ -269,7 +295,7 @@ public class Projeto implements Serializable {
 		NOVO("NOVO"), SUBMETIDO("SUBMETIDO"), AGUARDANDO_PARECER("AGUARDANDO PARECER"), 
 		AGUARDANDO_AVALIACAO("AGUARDANDO AVALIAÇÃO"), APROVADO("APROVADO"), REPROVADO("REPROVADO"),
 		APROVADO_COM_RESTRICAO("APROVADO COM RESTRIÇÃO");
-
+		
 		private String descricao;
 
 		private StatusProjeto(String descricao) {
