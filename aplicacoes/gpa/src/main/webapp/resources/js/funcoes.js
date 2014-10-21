@@ -338,12 +338,11 @@ $(document).ready(function() {
 										}
 										$('#participanteEscolhido').val("")[0];
 									});
-		
+});
+
 function verificarSeExisteUlNaPagina() {
 	var verificaSeListaEstaVazia = $("#comentarioList li").length;
 	if (verificaSeListaEstaVazia == 0) {
 		$("#headComentarios").hide();
 	}
-
 }
-});
