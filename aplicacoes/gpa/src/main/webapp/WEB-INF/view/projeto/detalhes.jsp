@@ -18,7 +18,7 @@
 	rel="stylesheet" />
 </head>
 
-<body onload="verificarSeExisteUlNaPagina()">
+<body onload="esconderComentarioSeVazio()">
 	<jsp:include page="../modulos/header.jsp" />
 
 	<div class="container" style="margin-bottom: 70px;">
@@ -57,12 +57,30 @@
 
 					</tr>
 					<tr>
+						<td class="head">Avaliação:</td>
+
+						<c:if test="${not empty projeto.avaliacao}">					
+							<td class="content"> <fmt:formatDate pattern="dd-MM-yyyy"
+									value="${projeto.avaliacao }" /> às <fmt:formatDate
+									pattern="HH:mm" value="${projeto.avaliacao }" /></td> 
+						</c:if>						
+
+					</tr>
+					<tr>
 						<td class="head">Bolsas:</td>
 						<td class="content">${projeto.quantidadeBolsa }</td>
 					</tr>
 					<tr>
 						<td class="head">Local:</td>
 						<td class="content">${projeto.local }</td>
+					</tr>
+					<tr>
+						<td class="head">Carga Horária:</td>
+						<td class="content">${projeto.cargaHoraria}</td>
+					</tr>
+					<tr>
+						<td class="head">Valor da Bolsa:</td>
+						<td class="content">${projeto.valorDaBolsa}</td>
 					</tr>
 					<tr>
 						<td class="head" valign="top">Participantes:</td>
@@ -81,8 +99,6 @@
 							<!--  <a href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a>-->
 							<td class="content"><a
 								href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a></td>
-
-							<!--  <td class="content">${documento.nomeOriginal }</td>-->
 
 						</c:forEach>
 					</tr>
