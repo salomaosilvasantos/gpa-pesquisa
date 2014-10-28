@@ -439,6 +439,8 @@ public class ProjetoController {
 		projeto.setDescricao(projetoAtualizado.getDescricao());
 		projeto.setInicio(projetoAtualizado.getInicio());
 		projeto.setTermino(projetoAtualizado.getTermino());
+		projeto.setCargaHoraria(projetoAtualizado.getCargaHoraria());
+		projeto.setValorDaBolsa(projetoAtualizado.getValorDaBolsa());
 		projeto.setAtividades(projetoAtualizado.getAtividades());
 		projeto.setQuantidadeBolsa(projetoAtualizado.getQuantidadeBolsa());
 		projeto.setLocal(projetoAtualizado.getLocal());
@@ -562,6 +564,8 @@ public class ProjetoController {
 				projeto.setDescricao(proj.getDescricao());
 				projeto.setInicio(proj.getInicio());
 				projeto.setTermino(proj.getTermino());
+				projeto.setCargaHoraria(proj.getCargaHoraria());
+				projeto.setValorDaBolsa(proj.getValorDaBolsa());
 				projeto.setAtividades(proj.getAtividades());
 				projeto.setQuantidadeBolsa(proj.getQuantidadeBolsa());
 				projeto.setLocal(proj.getLocal());
