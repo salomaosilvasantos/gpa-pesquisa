@@ -41,14 +41,10 @@
 
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" role="tablist">
-			<li class="active"><a href="#meus-projetos" role="tab"
-				data-toggle="tab">Meus Projetos</a></li>
-			<li><a href="#projetos-submetidos" role="tab" data-toggle="tab">Projetos
-					Submetidos</a></li>
-			<li><a href="#projetos-avaliados" role="tab" data-toggle="tab">Projetos
-					Avaliados</a></li>
-			<li><a href="#participantes-projeto" role="tab"
-				data-toggle="tab">Integrantes de Projetos</a></li>
+			<li class="active"><a href="#meus-projetos" role="tab" data-toggle="tab">Meus Projetos</a></li>
+			<li><a href="#projetos-submetidos" role="tab" data-toggle="tab">Projetos Submetidos</a></li>
+			<li><a href="#projetos-avaliados" role="tab" data-toggle="tab">Projetos Avaliados</a></li>
+			<li><a href="#participantes-projeto" role="tab" data-toggle="tab">Integrantes de Projetos</a></li>
 		</ul>
 
 		<div class="tab-content">
@@ -265,24 +261,36 @@
 			</div>
 
 			<!-- Listagem de Participantes dos Projetos -->
-			<c:if test="${not empty participantes}">
 			<div class="tab-pane" id="participantes-projeto">
-				<table class="table" id="table">
-					<thead>
-						<tr>
-							<th>Nome</th>
-						</tr>
-					</thead>
-					<tbody>
-					<c:forEach var="participante" items="${participantes}">
-						<tr class="linha">
-						<td>${participante.nome}</td>	
-						</tr>
-						</c:forEach>
-					</tbody>
-				</table>
+				<c:if test="${empty participantes}">
+					<div class="alert alert-warning" role="alert">Não há projetos
+						Avaliados.</div>
+				</c:if>
+				<c:if test="${not empty participantes}">
+					<div class="panel panel-default">
+						<div class="panel-heading" align="center">
+							<h4>Projetos Avaliados</h4>
+						</div>
+						<input type="hidden" name="parecerId" value="${parecerId}">
+						<!-- Table -->
+						<table class="table" id="table">
+							<thead>
+								<tr>
+									<th>Nome</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="participante" items="${participantes}">
+									<tr class="linha">
+										<td>${participante.nome}</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+
+				</c:if>
 			</div>
-		</c:if>
 
 		</div>
 
