@@ -163,20 +163,41 @@
 							
 					<datalist id = "listaParticipantes">
 					
-					<c:forEach items="${participantes}" var="participante">
-							<option value="${participante.nome}" label="CPF : ${participante.cpf}">
+					<c:forEach items="${projeto.participantes}" var="participante">
+							<option value="${participante.pessoa.nome}" label="CPF : ${participante.pessoa.cpf}">
 		            </c:forEach>
 					
 					</datalist>
 					<div id = "listaParticipantesCadastrados">
 					<c:forEach items="${projeto.participantes}" var="participante">
 				
-						<label class="participanteSelecionado" for="participanteSelecionado">${participante.nome}</label>
-						<input type="checkbox" class="participanteSelecionado" id = "participanteSelecionado" name="participanteSelecionado" value = "${participante.nome}"  checked="checked"> ,
+						<label class="participanteSelecionado" for="participanteSelecionado">${participante.pessoa.nome}</label>
+						<input type="checkbox" class="participanteSelecionado" id = "participanteSelecionado" name="participanteSelecionado" value = "${participante.pessoa.nome}"  checked="checked"> ,
 					
 		            </c:forEach>
 		            </div>
 						</div>
+						  
+						<div class="form-group">
+                        <label for="cargaHoraria" class="col-sm-2 control-label">Carga
+                            Horária:</label>
+                        <div class="col-sm-2">
+								<form:input id="cargaHoraria" type="number" min="1"
+									placeholder="45" path="cargaHoraria" cssClass="form-control" />
+								<div class="error-validation">
+                                <form:errors path="cargaHoraria"></form:errors>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <label for="valorDaBolsa" class="col-sm-2 control-label">Valor
+                            da bolsa:</label>
+                        <div class="col-sm-2">
+                            <form:input id="valorDaBolsa" type="number" min="0"
+                                placeholder="0" path="valorDaBolsa" cssClass="form-control" />
+                        </div>
+                    </div>
 					</div>
 					
 					<div class="form-group">

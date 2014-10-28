@@ -75,7 +75,7 @@
 					<tr>
 						<td class="head" valign="top">Participantes:</td>
 							<c:forEach items="${projeto.participantes}" var="participante">
-								<td class="content">${participante.nome}</td>
+								<td class="content">${participante.pessoa.nome}</td>
 		           		    </c:forEach>
 					</tr>
 					<tr>

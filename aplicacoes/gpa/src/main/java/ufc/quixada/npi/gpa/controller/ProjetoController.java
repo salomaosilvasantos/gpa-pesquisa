@@ -447,12 +447,7 @@ public class ProjetoController {
 		
 		projetoPessoa.setCargaHorariaMensal(100);
 		projetoPessoa.setValorBolsaMensal(100);		
-		projetoPessoa.setProjeto(projeto);			
-
-		if (participantes.size() > 0){
-			projeto.setParticipantes(participantes);
-		}
-
+		projetoPessoa.setProjeto(projeto);	
 
 		this.serviceProjeto.update(projeto);
 		redirect.addFlashAttribute("info", "Projeto atualizado com sucesso.");
@@ -528,10 +523,7 @@ public class ProjetoController {
 			Model model, HttpSession session,
 			RedirectAttributes redirectAttributes) {		
 		Projeto projeto = serviceProjeto.find(Projeto.class, proj.getId());
-		ProjetoPessoa projetoPessoa = new ProjetoPessoa();
 		Pessoa usuario = getUsuarioLogado(session);
-		
-		projetoPessoa.setPessoa(usuario);
 		if (projeto == null) {
 			redirectAttributes
 					.addFlashAttribute("erro", "Projeto inexistente.");
@@ -539,11 +531,13 @@ public class ProjetoController {
 		}
 
 		List<ProjetoPessoa> participantes = new ArrayList<ProjetoPessoa>();
-		Boolean pessoaJaCadastrada = false;
+		ProjetoPessoa projetoPessoa = new ProjetoPessoa();
+		
 
 		for (String identificador : listaParticipantes) {
 
 			Pessoa pessoa = serviceUsuario.getPessoaByNome(identificador);
+			projetoPessoa.setPessoa(pessoa);
 
 			if (pessoa == null) {
 				redirectAttributes.addFlashAttribute("error_participantes",
@@ -552,18 +546,10 @@ public class ProjetoController {
 				return "redirect:/projeto/" + proj.getId() + "/editar";
 
 			} else {
+				if(!participantes.contains(pessoa)){
+						participantes.add(projetoPessoa);
+				} else { System.out.println("ja se encontra no banco"); }			
 
-				for (ProjetoPessoa participante : participantes) {
-					
-					if(pessoa.equals(participante)){
-						System.out.println("A pessoa "+participante.getPessoa().getNome()+" ja se encontra cadastrada no projeto");
-						pessoaJaCadastrada = true;
-					}
-				}
-				if(pessoaJaCadastrada == false) {
-					
-					participantes.add(projetoPessoa);
-				}
 			}
 
 		}
@@ -579,9 +565,11 @@ public class ProjetoController {
 				projeto.setAtividades(proj.getAtividades());
 				projeto.setQuantidadeBolsa(proj.getQuantidadeBolsa());
 				projeto.setLocal(proj.getLocal());
-				if(participantes.size() > 0) {
-					projeto.setParticipantes(participantes);
-				}
+				if(participantes.size() > 0) {projeto.setParticipantes(participantes);}
+				
+				projetoPessoa.setCargaHorariaMensal(proj.getCargaHoraria());
+				projetoPessoa.setValorBolsaMensal(proj.getValorDaBolsa());		
+				projetoPessoa.setProjeto(projeto);	
 
 				projeto.setStatus(StatusProjeto.SUBMETIDO);
 				Date data = new Date(System.currentTimeMillis());
