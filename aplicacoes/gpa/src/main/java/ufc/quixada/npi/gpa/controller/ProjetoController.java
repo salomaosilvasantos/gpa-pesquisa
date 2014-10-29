@@ -79,14 +79,14 @@ public class ProjetoController {
 		return props;
 
 	}
-
+	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index() {
 		return "redirect:/projeto/listar";
 	}
-
+	
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.GET)
-	public String cadastro(Model model) {
+	public String cadastro(Model model) {   
 		model.addAttribute("projeto", new Projeto());
 		return "projeto/cadastrar";
 	}
@@ -126,6 +126,25 @@ public class ProjetoController {
 
 	}
 
+	@RequestMapping(value = "/{id}/detalhesParticipante")
+    public String detalhesParticipante(Pessoa p, @PathVariable("id") Long id,
+            Model model, HttpSession session,
+            RedirectAttributes redirectAttributes ) {
+	    Pessoa usuario = serviceUsuario.find(Pessoa.class, id);
+	  // Verifica se a pessoa existe  
+	    if(usuario== null){
+	        redirectAttributes
+            .addFlashAttribute("erro", "Pessoa inexistente.");
+            return "redirect:/projeto/listar";
+	        
+	    }
+	    else{
+	        model.addAttribute("usuario", usuario);
+	        return "projeto/detalhesParticipante";
+	    }
+        
+    }
+	
 	@RequestMapping(value = "/{id}/detalhes")
 	public String getDetalhes(Projeto p, @PathVariable("id") Long id,
 			Model model, HttpSession session,

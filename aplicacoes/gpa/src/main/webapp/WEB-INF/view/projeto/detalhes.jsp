@@ -67,7 +67,9 @@
 					<tr>
 						<td class="head" valign="top">Participantes:</td>
 							<c:forEach items="${projeto.participantes}" var="participante">
-								<td class="content">${participante.nome}</td>
+							<!-- Testando link com detalhes participante -->
+							<td class="content">	<a href="<c:url value="/projeto/${participante.id}/detalhesParticipante" ></c:url>">${participante.nome}</a></td>
+							<!-- <td class="content">${participante.nome}</td> -->
 		           		    </c:forEach>
 					</tr>
 					<tr>
