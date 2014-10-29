@@ -22,55 +22,41 @@ public class ProjetoServiceImpl extends GenericServiceImpl<Projeto> implements
 
 	@Override
 	public List<Projeto> getProjetosSubmetidos() {
-		return projetoRepository
-				.find(QueryType.JPQL,
-						"from Projeto as p where p.status = 'SUBMETIDO' or p.status = 'AGUARDANDO_PARECER' or p.status = 'AGUARDANDO_AVALIACAO'",
-						null);
+		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where p.status = 'SUBMETIDO' or p.status = 'AGUARDANDO_PARECER' or p.status = 'AGUARDANDO_AVALIACAO'", null);
 	}
-
+	
 	@Override
 	public List<Projeto> getProjetosAtribuidos() {
-		return projetoRepository.find(QueryType.JPQL,
-				"from Projeto as p where p.status = 'AGUARDANDO_PARECER' ",
-				null);
+		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where p.status = 'AGUARDANDO_PARECER' ", null);
 	}
 
 	@Override
 	public List<Projeto> getProjetosByUsuario(Long id) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
-		return projetoRepository.find(QueryType.JPQL,
-				"from Projeto where autor.id = :id", params);
+		return projetoRepository.find(QueryType.JPQL, "from Projeto where autor.id = :id", params);
 	}
+	
 
 	@Override
 	public List<Projeto> getProjetosAvaliadosDoUsuario(Long id) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
-		return projetoRepository
-				.find(QueryType.JPQL,
-						"from Projeto as p where ((p.status = 'APROVADO') OR (p.status = 'REPROVADO') OR (p.status = 'APROVADO_COM_RESTRICAO')) AND (autor.id = :id)",
-						params);
+		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where ((p.status = 'APROVADO') OR (p.status = 'REPROVADO') OR (p.status = 'APROVADO_COM_RESTRICAO')) AND (autor.id = :id)" , params);
 	}
 
 	@Override
 	public List<Projeto> getProjetosAvaliados() {
-		return projetoRepository
-				.find(QueryType.JPQL,
-						"from Projeto as p where (p.status = 'APROVADO') OR (p.status = 'REPROVADO') OR (p.status = 'APROVADO_COM_RESTRICAO')",
-						null);
+		return projetoRepository.find(QueryType.JPQL, "from Projeto as p where (p.status = 'APROVADO') OR (p.status = 'REPROVADO') OR (p.status = 'APROVADO_COM_RESTRICAO')" , null);
 	}
 
 	@Override
 	public List<Projeto> getProjetosAguardandoParecer(Long id) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
-		return projetoRepository
-				.find(QueryType.JPQL,
-						"Select p from Projeto as p, Parecer as pa where p.id = pa.projeto.id and pa.usuario.id = :id and p.status = 'AGUARDANDO_PARECER'",
-						params);
+		return projetoRepository.find(QueryType.JPQL, "Select p from Projeto as p, Parecer as pa where p.id = pa.projeto.id and pa.usuario.id = :id and p.status = 'AGUARDANDO_PARECER'" , params);
 	}
-	
-	
 
+	
+	
 }

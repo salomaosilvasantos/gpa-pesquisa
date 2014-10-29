@@ -60,7 +60,7 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Pessoa> implements
 		return diretor;
 	}
 
-	/* Participantes gerais do projeto */
+	
 	@Override
 	public List<Pessoa> getParticipantes(Pessoa usuario) {
 
@@ -78,7 +78,7 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Pessoa> implements
 		return participantes;
 	}
 
-	//
+	
 
 
 	@Override
