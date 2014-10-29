@@ -75,8 +75,8 @@ public class ProjetoController {
 	public static Properties getProp() throws IOException {
 
 		Resource resource = new ClassPathResource("/notification.properties");
-		Properties props = PropertiesLoaderUtils.loadProperties(resource);
-		return props;
+		return PropertiesLoaderUtils.loadProperties(resource);
+		
 
 	}
 
@@ -555,14 +555,6 @@ public class ProjetoController {
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
 
-			projeto.setNome(proj.getNome());
-			projeto.setDescricao(proj.getDescricao());
-			projeto.setInicio(proj.getInicio());
-			projeto.setTermino(proj.getTermino());
-			projeto.setAtividades(proj.getAtividades());
-			projeto.setQuantidadeBolsa(proj.getQuantidadeBolsa());
-			projeto.setLocal(proj.getLocal());
-			projeto.setParticipantes(proj.getParticipantes());
 				projeto.setNome(proj.getNome());
 				projeto.setDescricao(proj.getDescricao());
 				projeto.setInicio(proj.getInicio());
