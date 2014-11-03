@@ -214,4 +214,11 @@ table#file-upload {
 	display : none;
 	
 }
+#404{
+	
+	position: relative;
+	background-color: blue;
+	width: 500px;
+	
+}
 
