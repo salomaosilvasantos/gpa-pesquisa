@@ -48,7 +48,6 @@ public class DocumentoController {
 				response.flushBuffer();
 			}
 		} catch (IOException ex) {
-			throw new RuntimeException("IOError writing file to output stream");
 		}
 
 	}

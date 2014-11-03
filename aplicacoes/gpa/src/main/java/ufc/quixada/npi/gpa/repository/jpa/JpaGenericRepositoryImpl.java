@@ -23,7 +23,7 @@ public class JpaGenericRepositoryImpl<T> implements GenericRepository<T> {
 	private static Logger logger = LoggerFactory
 			.getLogger(JpaGenericRepositoryImpl.class);
 
-	protected EntityManager em;
+	private EntityManager em;
 
 	@Override
 	@PersistenceContext

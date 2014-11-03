@@ -14,8 +14,10 @@ public interface UsuarioService extends GenericService<Pessoa> {
 
 	Pessoa getDiretor();
 
-	List<Pessoa> getParticipantes();
+	List<Pessoa> getParticipantes(Pessoa usuario);
 
 	Pessoa getPessoaByNome(String nome);
-
+	
+	List<Pessoa> getParticipantesProjetos();
+	
 }

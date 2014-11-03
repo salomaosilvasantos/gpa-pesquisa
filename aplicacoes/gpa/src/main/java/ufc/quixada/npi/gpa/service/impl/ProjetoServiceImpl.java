@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.repository.ProjetoRepository;
 import ufc.quixada.npi.gpa.repository.QueryType;
@@ -55,4 +56,7 @@ public class ProjetoServiceImpl extends GenericServiceImpl<Projeto> implements
 		params.put("id", id);
 		return projetoRepository.find(QueryType.JPQL, "Select p from Projeto as p, Parecer as pa where p.id = pa.projeto.id and pa.usuario.id = :id and p.status = 'AGUARDANDO_PARECER'" , params);
 	}
+
+	
+	
 }
