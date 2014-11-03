@@ -69,8 +69,6 @@
 	<jsp:include page="../modulos/footer.jsp" />
 
 
-	<script
-		src="<c:url value="/webjars/jquery-maskedinput/1.3.1/jquery.maskedinput.min.js" />"></script>
-
+	
 </body>
 </html>

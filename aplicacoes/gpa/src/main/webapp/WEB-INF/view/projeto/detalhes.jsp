@@ -85,9 +85,9 @@
 					<tr>
 						<td class="head" valign="top">Participantes:</td>
 							<c:forEach items="${projeto.participantes}" var="participante">
-							<!-- Testando link com detalhes participante -->
+							
 							<td class="content">	<a href="<c:url value="/projeto/${participante.id}/detalhesParticipante" ></c:url>">${participante.nome}</a></td>
-							<!-- <td class="content">${participante.nome}</td> -->
+							
 		           		    </c:forEach>
 					</tr>
 					<tr>
@@ -159,8 +159,7 @@
 	<jsp:include page="../modulos/footer.jsp" />
 
 
-	<script
-		src="<c:url value="/webjars/jquery-maskedinput/1.3.1/jquery.maskedinput.min.js" />"></script>
+	
 
 </body>
 </html>

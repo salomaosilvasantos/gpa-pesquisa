@@ -128,7 +128,7 @@ public class ProjetoController {
 
 	@RequestMapping(value = "/{id}/detalhesParticipante")
     public String detalhesParticipante(Pessoa p, @PathVariable("id") Long id,
-            Model model, HttpSession session,
+            Model model, 
             RedirectAttributes redirectAttributes ) {
 	    Pessoa usuario = serviceUsuario.find(Pessoa.class, id);
 	  // Verifica se a pessoa existe  
@@ -140,7 +140,7 @@ public class ProjetoController {
 	    }
 	    else{
 	        model.addAttribute("usuario", usuario);
-	        return "projeto/detalhesParticipante";
+	        return "diretor/detalhesParticipante";
 	    }
         
     }

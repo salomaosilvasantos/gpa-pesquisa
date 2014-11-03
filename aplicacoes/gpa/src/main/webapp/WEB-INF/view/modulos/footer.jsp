@@ -23,3 +23,4 @@
 <script src="<c:url value="/resources/js/bootstrap.file-input.js" />"></script>
 <script src="<c:url value="/resources/js/bootbox.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrapValidator.min.js" />"></script>
+<script src="<c:url value="/webjars/jquery-maskedinput/1.3.1/jquery.maskedinput.min.js" />"></script>
