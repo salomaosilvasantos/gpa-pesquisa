@@ -88,6 +88,10 @@ div.alert {
 	text-align: center;
 }
 
+div.error{
+	color: #a94442 ;
+}
+
 div.files {
 	text-align: left;
 }

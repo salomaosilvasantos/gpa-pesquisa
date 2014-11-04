@@ -10,7 +10,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>Informações do Participante</title>
+<title>Informações do Integrante</title>
 <link
 	href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />"
 	rel="stylesheet" />
@@ -24,7 +24,7 @@
 	<div class="container" style="margin-bottom: 70px;">
 		<div class="novo-projeto" align="left">
 			<div class="form" align="center">
-				<h2>Detalhes do Participante</h2>
+				<h2>Detalhes do Integrante</h2>
 
 				<table id="details">
 					<tr>
@@ -43,21 +43,41 @@
 					</tr>
 
 					<tr>
-						<td class="head" valign="top">Projetos Envolvidos:</td> 
-				        
+						<td class="head" valign="top">Projetos que coordena:</td>
+						
+                           <c:if test="${empty usuario.projetos}">
+                           <td>
+                            <div class="error"> Não atua como coordenador em nenhum projeto. </div>
+                            </td>
+                            </c:if>
+                        
+                        <c:if test="${not empty usuario.projetos}">
 						<c:forEach items="${usuario.projetos}" var="projeto">
 							<td class="content"><a
 								href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
 						</c:forEach>
-						
-
+						</c:if>
+					</tr>
+					
+					<tr>
+						<td class="head" valign="top">Projetos que participa:</td>
+                           
+                           <c:if test="${empty usuario.projetosEnvolvidos}">
+                           <td>
+                            <div class="error"> Não atua como participante em nenhum projeto. </div>
+                            </td>
+                            </c:if>
+                        
+                        <c:if test="${not empty usuario.projetosEnvolvidos}">
+                        
 						<c:forEach items="${usuario.projetosEnvolvidos}" var="projeto">
 							<td class="content"><a
 								href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
 						</c:forEach>
-						
+                        
+                         </c:if>
 					</tr>
-					
+
 
 				</table>
 
@@ -69,6 +89,6 @@
 	<jsp:include page="../modulos/footer.jsp" />
 
 
-	
+
 </body>
 </html>
