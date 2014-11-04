@@ -6,13 +6,13 @@
 <html>
 <head>
 <jsp:include page="modulos/header-estrutura.jsp" />
-<title>Página não encontrada</title>
+<title>Problema no servidor</title>
 </head>
 <body>
     <jsp:include page="modulos/header.jsp" />
 
 <div class = "error">
-    <h1>Oops, página não encontrada.</h1>
+    <h1>Oops, o site teve um problema técnico.</h1>
     <a class ="errorback" href="/gpa-pesquisa/projeto/index">Voltar ao início</a>
 </div>
 

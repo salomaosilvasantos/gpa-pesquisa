@@ -214,11 +214,32 @@ table#file-upload {
 	display : none;
 	
 }
-#404{
+
+.error{
+	
+	position: absolute;
+	background-color: #F0F8FF;
+	left: 50%;
+	top: 50%;
+	margin-left:-250px;
+	width: 500px;
+	text-align: center;
+	padding: 5px 5px 5px 5px;
+}
+.errorback{
 	
 	position: relative;
-	background-color: blue;
-	width: 500px;
-	
+	background: white;
+	width: 150px;
+	height: 50px;
+	font-size: 25px;
+	font-family: inherit;
+	padding: 5px 55px 5px 55px;
+	color: black;
+	text-decoration: none;
 }
 
+.errorback:hover{
+	background-color: #e7e7e7;
+	text-decoration: none;
+}
