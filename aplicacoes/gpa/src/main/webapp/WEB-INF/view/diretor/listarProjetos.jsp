@@ -263,8 +263,7 @@
 			<!-- Listagem de Participantes dos Projetos -->
 			<div class="tab-pane" id="participantes-projeto">
 				<c:if test="${empty participantes}">
-					<div class="alert alert-warning" role="alert">Não há projetos
-						Avaliados.</div>
+					<div class="alert alert-warning" role="alert">Não há participantes nos projetos.</div>
 				</c:if>
 				<c:if test="${not empty participantes}">
 					<div class="panel panel-default">
