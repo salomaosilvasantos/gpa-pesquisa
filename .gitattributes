@@ -1,5 +1,5 @@
-# Autodetect text files
-* text eof=lf
+# End-of-line normalization should not be attempted for text files
+* -text
 
 # Definitively text files 
 *.xml text
