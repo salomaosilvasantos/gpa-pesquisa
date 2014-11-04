@@ -35,6 +35,11 @@
 					<li>
 						<a href="<c:url value="/projeto/cadastrar" />">Novo Projeto <span class="glyphicon glyphicon-plus"></span></a>
 					</li>
+					
+					<li>
+						<a href="<c:url value="/projeto/relatorios" />">Relatórios <span class="glyphicon glyphicon-list-alt"></span></a>
+					</li>
+				
 					<li>
 						<a href="<c:url value="/j_spring_security_logout" />">Sair <span class="glyphicon glyphicon-off"></span></a>
 					</li>

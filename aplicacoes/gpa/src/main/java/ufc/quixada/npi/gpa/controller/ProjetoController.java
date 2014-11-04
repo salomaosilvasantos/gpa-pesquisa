@@ -854,4 +854,16 @@ public class ProjetoController {
 			}
 		}
 	}
+	
+	@RequestMapping(value = "/relatorios", method = RequestMethod.GET)
+	public String relatorios() {		
+	
+			return "diretor/relatorios";
+		}
+	
+	@RequestMapping(value = "/relatorioEmAndamento", method = RequestMethod.GET)
+	public String relatoriosAndamento() {		
+	
+			return "diretor/relatoriosAndamento";
+		}
 }
