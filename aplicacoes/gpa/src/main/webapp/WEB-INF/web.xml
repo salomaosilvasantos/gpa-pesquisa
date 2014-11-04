@@ -36,6 +36,15 @@ see here: http://static.springsource.org/spring/docs/current/spring-framework-re
         <servlet-name>mvc-dispatcher</servlet-name>
     </filter-mapping>
  
+   <error-page>
+    <error-code>404</error-code>
+    <location>/WEB-INF/view/404.jsp</location>
+  </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/view/500.jsp</location>
+    </error-page>
+ 
  	<context-param>
  		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring-security.xml, /WEB-INF/applicationContext.xml</param-value>
