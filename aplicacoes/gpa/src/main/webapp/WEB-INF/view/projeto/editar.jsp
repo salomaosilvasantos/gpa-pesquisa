@@ -114,6 +114,27 @@
 					</div>
 					
 					<div class="form-group">
+						<label for="cargaHoraria" class="col-sm-2 control-label">Carga
+							Horária:</label>
+						<div class="col-sm-2">
+							<form:input id="cargaHoraria" type="number" min="1"
+								placeholder="45" path="cargaHoraria" cssClass="form-control" />
+							<div class="error-validation">
+								<form:errors path="cargaHoraria"></form:errors>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+
+						<label for="valorDaBolsa" class="col-sm-2 control-label">Valor
+							da bolsa:</label>
+						<div class="col-sm-2">
+							<form:input id="valorDaBolsa" type="number" min="0"
+								placeholder="0" path="valorDaBolsa" cssClass="form-control" />
+						</div>
+					</div>
+					
+					<div class="form-group">
 						<label for="local" class="col-sm-2 control-label">Local:</label>
 						<div class="col-sm-10">
 							<form:input id="local" path="local" cssClass="form-control" placeholder="Local do projeto"/>
