@@ -41,7 +41,10 @@ public class Pessoa {
 	@OneToMany(mappedBy="usuario")
 	private List<Servidor> servidores;
 	
-	private String cpf;
+	@ManyToMany
+    private List<Projeto> projetosEnvolvidos; 
+    	
+    private String cpf;
 	
 	private String nome;
 	
@@ -79,14 +82,13 @@ public class Pessoa {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	/*
-	public List<Projeto> getProjetoParticipante() {
-		return projeto;
-	}
-	public void setProjetoParticipante(List<Projeto> projetoParticipante) {
-		this.projeto = projetoParticipante;
-	}
-	*/
+	public List<Projeto> getProjetosEnvolvidos() {
+        return projetosEnvolvidos;
+    }
+    public void setProjetosEnvolvidos(List<Projeto> projetosEnvolvidos) {
+        this.projetosEnvolvidos = projetosEnvolvidos;
+    }
+
 	public String getEmail() {
 		return email;
 	}

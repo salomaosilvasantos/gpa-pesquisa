@@ -282,7 +282,7 @@
 							<tbody>
 								<c:forEach var="participante" items="${participantes}">
 									<tr class="linha">
-										<td>${participante.nome}</td>
+										<td><a href="<c:url value="/projeto/${participante.id}/detalhesParticipante" ></c:url>">${participante.nome}</a></td>
 									</tr>
 								</c:forEach>
 							</tbody>
