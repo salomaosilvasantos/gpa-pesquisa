@@ -7,6 +7,12 @@
 <title>Relatórios em Andamento</title>
 </head>
 <body>
+<jsp:include page="../modulos/header.jsp" />
+	<div class="container">
+
+
+
+	</div>
 
 </body>
 </html>
