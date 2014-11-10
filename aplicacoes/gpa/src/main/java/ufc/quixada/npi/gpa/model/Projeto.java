@@ -17,6 +17,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
@@ -64,7 +65,13 @@ public class Projeto implements Serializable {
     private List<Pessoa> participantes;
 	
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
-	private List<Documento> documentos;
+	private List<Documento> anexos;
+	
+	@OneToOne
+	private Documento ataReuniao;
+	
+	@OneToOne
+	private Documento oficioAceitacao;
 	
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	@JsonManagedReference
@@ -95,7 +102,7 @@ public class Projeto implements Serializable {
 		this.local = local;
 		this.status = status;
 		this.participantes = participantes;
-		this.documentos = documentos;
+		this.anexos = documentos;
 		this.comentarios = comentarios;
 		this.pareceres = pareceres;
 	}
@@ -173,11 +180,11 @@ public class Projeto implements Serializable {
     }
 
 	public List<Documento> getDocumentos() {
-		return documentos;
+		return anexos;
 	}
 
 	public void setDocumentos(List<Documento> documentos) {
-		this.documentos = documentos;
+		this.anexos = documentos;
 	}
 
 	public Pessoa getAutor() {
@@ -248,7 +255,7 @@ public class Projeto implements Serializable {
 				+ ", atividades=" + atividades + ", quantidadeBolsa="
 				+ quantidadeBolsa + ", local=" + local + ", status=" + status
 				+ ", participantes=" + participantes + ", documentos="
-				+ documentos + ", comentarios=" + comentarios + ", pareceres="
+				+ anexos + ", comentarios=" + comentarios + ", pareceres="
 				+ pareceres + "]";
 	}
 	
@@ -269,6 +276,22 @@ public class Projeto implements Serializable {
 		}
 	}
 	
+	public Documento getAtaReuniao() {
+		return ataReuniao;
+	}
+
+	public void setAtaReuniao(Documento ataReuniao) {
+		this.ataReuniao = ataReuniao;
+	}
+
+	public Documento getOficioAceitacao() {
+		return oficioAceitacao;
+	}
+
+	public void setOficioAceitacao(Documento oficioAceitacao) {
+		this.oficioAceitacao = oficioAceitacao;
+	}
+
 	public enum Evento {
 		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO
 	}
