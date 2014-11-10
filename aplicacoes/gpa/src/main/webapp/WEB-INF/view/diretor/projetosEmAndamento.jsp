@@ -40,24 +40,49 @@
 					value="Enviar" />
 			</form>
 		</div>
+		
 
-		<table class="table" id="table">
-			<thead>
-				<tr>
-					<th>Nome do Projeto</th>
-					<th>Coordenador</th>
-					<th>Quantidade de Participantes</th>
-					<th>Valor da Bolsa</th>
-					<th>Carga Horária</th>
-					<th>Data de Início</th>
-					<th>Data de Término</th>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
+		 <!-- Meus Projetos -->
+            <div class="tab-pane active" id="meus-projetos">
+                <c:if test="${empty projetos}">
+                    <div class="alert alert-warning" role="alert">Não há projetos
+                        cadastrados.</div>
+                </c:if>
+                <c:if test="${not empty projetos}">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" align="center">
+                            <h4>Meus Projetos</h4>
+                        </div>
 
-	</div>
+                        <!-- Table -->
+                        <table class="table" id="table">
+                            <thead>
+                                <tr>
+                                    <th id="teste">Nome do Projeto </th>
+                                    <th>Coordenador</th>
+                                    <th>Data de Submissão</th>
+                                    <th>Data de Avaliação</th>
+                                    <th>Data de Início</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="projeto" items="${projetos}">
+                                <td><c:if test="${projeto.status == 'APROVADO'}">
+                                    <tr class="linha">
+                                        <td>${projeto.nome}</td>                                        
+                                        <td>${projeto.autor.nome}</td>   
+                                        <td>${projeto.submissao}</td>
+                                        <td>${projeto.avaliacao}</td>
+                                        <td>${projeto.inicio}</td> 
+                                    </tr>
+                                    </c:if>
+                                    </td>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </c:if>
+            </div>
 
 	<jsp:include page="../modulos/footer.jsp"></jsp:include>
 </body>

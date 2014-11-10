@@ -885,7 +885,9 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/relatorioEmAndamento", method = RequestMethod.GET)
-	public String relatoriosAndamento() {
+	public String relatoriosAndamento(ModelMap modelMap, HttpSession session) {
+		modelMap.addAttribute("projetos", serviceProjeto
+				.getProjetosByUsuario(getUsuarioLogado(session).getId()));
 		return "diretor/projetosEmAndamento";
 	}
 
