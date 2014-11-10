@@ -16,9 +16,8 @@
 
 
 		<ul>
-			<li><a href="<c:url value="/projeto/relatorioEmAndamento"/>">
-					Projetos em Andamento</a></li>
-			<li>Quantidade de Bolsa</li>
+			<li><a href="<c:url value="/projeto/relatorioEmAndamento"/>">Projetos em Andamento</a></li>
+			<li><a href="<c:url value="/projeto/relatorioBolsasPorDocente" />">Quantidade de Bolsa por docente</a></li>
 			<li><a href="<c:url value="/projeto/relatorioBolsaProjeto" />">Bolsa por Projeto</a></li>
 		</ul>
 

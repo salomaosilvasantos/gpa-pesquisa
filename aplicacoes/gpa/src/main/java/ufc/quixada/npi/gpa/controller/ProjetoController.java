@@ -886,12 +886,17 @@ public class ProjetoController {
 
 	@RequestMapping(value = "/relatorioEmAndamento", method = RequestMethod.GET)
 	public String relatoriosAndamento() {
-		return "diretor/relatoriosAndamento";
+		return "diretor/projetosEmAndamento";
 	}
 	
 	@RequestMapping(value = "/relatorioBolsaProjeto", method = RequestMethod.GET)
 	public String relatorioBolsaProjeto() {
 		return "diretor/relatorioBolsaProjeto";
+	}
+	
+	@RequestMapping(value = "/relatorioBolsasPorDocente", method = RequestMethod.GET)
+	public String relatorioBolsaDocente() {
+		return "diretor/relatorioBolsasPorDocente";
 	}
 	
 }
