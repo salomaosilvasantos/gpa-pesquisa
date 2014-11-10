@@ -10,7 +10,7 @@
 <html>
 <head>
 <jsp:include page="../modulos/header-estrutura.jsp" />
-<title>Projetos em andamento</title>
+<title>Projetos em Andamento</title>
 </head>
 
 
@@ -20,7 +20,6 @@
 	<div class="container">
 
 		<div class="row text-center">
-
 			<form id="formularioCadastroComentario" role="form" method="POST"
 				class="form-horizontal">
 				<div class="form-group">
@@ -34,10 +33,13 @@
 						<input id="termino" type="text" class="form-control data"
 							placeholder="Data de Término" />
 					</div>
+					<div class="col-sm-4">
+					<input name="botao" type="submit" class="btn btn-primary" value="Enviar" />	
+					
+					</div>
+					
 				</div>
 
-				<input name="botao" type="submit" class="btn btn-primary"
-					value="Enviar" />
 			</form>
 		</div>
 		
@@ -50,9 +52,7 @@
                 </c:if>
                 <c:if test="${not empty projetos}">
                     <div class="panel panel-default">
-                        <div class="panel-heading" align="center">
-                            <h4>Meus Projetos</h4>
-                        </div>
+                        
 
                         <!-- Table -->
                         <table class="table" id="table">
@@ -67,16 +67,15 @@
                             </thead>
                             <tbody>
                                 <c:forEach var="projeto" items="${projetos}">
-                                <td><c:if test="${projeto.status == 'APROVADO'}">
-                                    <tr class="linha">
+                                <c:if test="${projeto.status == 'APROVADO'}">
+									<tr>                                    
                                         <td>${projeto.nome}</td>                                        
                                         <td>${projeto.autor.nome}</td>   
-                                        <td>${projeto.submissao}</td>
-                                        <td>${projeto.avaliacao}</td>
-                                        <td>${projeto.inicio}</td> 
-                                    </tr>
+                                        <td><fmt:formatDate value="${projeto.submissao}" pattern="dd/MM/yyyy" /></td>
+                                        <td><fmt:formatDate value="${projeto.avaliacao}" pattern="dd/MM/yyyy" /></td>
+                                        <td><fmt:formatDate value="${projeto.inicio}" pattern="dd/MM/yyyy" /></td>
+                                     </tr>   
                                     </c:if>
-                                    </td>
                                 </c:forEach>
                             </tbody>
                         </table>
