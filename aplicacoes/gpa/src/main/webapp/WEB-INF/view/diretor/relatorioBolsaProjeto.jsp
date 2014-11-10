@@ -21,24 +21,25 @@
 
 		<div class="row text-center">
 
-			<form id="formularioCadastroComentario" role="form" method="POST"
-				class="form-horizontal">
+			<form:form id="projetoEntreDatas" role="form"
+                    commandName="projeto" servletRelativeAction="/projeto/retornarProjetosEntreDatas"
+                    method="POST" cssClass="form-horizontal">
 				<div class="form-group">
 					<label for="inicio" class="col-sm-2 control-label">Início:</label>
 					<div class="col-sm-2">
-						<input id="inicio" type="text" class="form-control data"
+						<input id="inicio" type="text" class="form-control data" name="inicio"
 							placeholder="Data de Início" />
 					</div>
 					<label for="termino" class="col-sm-2 control-label">Termino:</label>
 					<div class="col-sm-2">
-						<input id="termino" type="text" class="form-control data"
+						<input id="termino" type="text" class="form-control data" name="termino"
 							placeholder="Data de Término" />
 					</div>
 				</div>
 
-				<input name="botao" type="submit" class="btn btn-primary"
+				<input name="botao" id="botaoEnviarDatas" type="submit" class="btn btn-primary"
 					value="Enviar" />
-			</form>
+			</form:form>
 		</div>
 
 		
@@ -58,7 +59,7 @@
                         </div>
 
                         <!-- Table -->
-                        <table class="table" id="table">
+                        <table class="table" id="tabelaList">
                             <thead>
                                 <tr>
                                     <th id="teste">Nome do Projeto </th>
@@ -75,19 +76,20 @@
                                     <tr class="linha">
                                         <td>${projeto.nome}</td>                                        
                                         <td>${projeto.autor.nome}</td>   
-                                        <td>${projeto.quantidadeBolsa}</td>
+                                        <td>${fn:length(projeto.participantes)}</td>
                                         <td>${projeto.valorDaBolsa}</td>
                                         <td>${projeto.cargaHoraria}</td>
-                                        <td>${projeto.inicio}</td>
-                                        <td>${projeto.termino}</td>                                     
+                                        <td><fmt:formatDate value="${projeto.inicio}" pattern="dd/MM/yyyy" /></td>
+                                        <td><fmt:formatDate value="${projeto.termino}" pattern="dd/MM/yyyy" /></td>                              
                                     </tr>
                                 </c:forEach>
                             </tbody>
                         </table>
                     </div>
                 </c:if>
-            </div>
-
+            </div>                       
+            
+</div>
 	</div>
 
 	<jsp:include page="../modulos/footer.jsp"></jsp:include>

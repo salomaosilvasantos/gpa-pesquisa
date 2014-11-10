@@ -81,7 +81,7 @@ $(document).ready(function() {
 			}
 		}
 	});
-
+	
 	$('div.error-validation:has(span)').find('span').css('color', '#a94442');
 	$('div.error-validation:has(span)').find('span').parent().parent().parent().addClass('has-error has-feedback');
 

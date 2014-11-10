@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.repository.ProjetoRepository;
 import ufc.quixada.npi.gpa.repository.QueryType;
@@ -55,6 +54,13 @@ public class ProjetoServiceImpl extends GenericServiceImpl<Projeto> implements
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
 		return projetoRepository.find(QueryType.JPQL, "Select p from Projeto as p, Parecer as pa where p.id = pa.projeto.id and pa.usuario.id = :id and p.status = 'AGUARDANDO_PARECER'" , params);
+	}
+
+	@Override
+	public List<Projeto> getProjetosByDates(String inicio, String termino) {
+		System.out.println("Variavel inicio: "+inicio);
+		System.out.println("Variavel termino: "+termino);		
+		return projetoRepository.find(QueryType.NATIVE, "select pro.nome, pe.nome, pro.quantidadebolsa, pro.valordabolsa, pro.cargahoraria, pro.inicio, pro.termino from projeto as pro, pessoa as pe where pro.autor_id = pe.id and pro.inicio between "+inicio+" and "+termino+" ",null);
 	}
 
 	

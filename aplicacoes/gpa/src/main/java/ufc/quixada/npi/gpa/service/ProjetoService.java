@@ -2,7 +2,6 @@ package ufc.quixada.npi.gpa.service;
 
 import java.util.List;
 
-import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
 
 public interface ProjetoService extends GenericService<Projeto> {
@@ -18,5 +17,7 @@ public interface ProjetoService extends GenericService<Projeto> {
 	  List<Projeto> getProjetosAvaliados();
 	  
 	  List<Projeto> getProjetosAguardandoParecer(Long id);
+	  
+	  List<Projeto> getProjetosByDates(String inicio, String termino);
 
 }

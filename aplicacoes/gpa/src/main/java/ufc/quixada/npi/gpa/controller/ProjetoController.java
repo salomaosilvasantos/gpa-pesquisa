@@ -894,7 +894,7 @@ public class ProjetoController {
 	@RequestMapping(value = "/relatorioBolsaProjeto", method = RequestMethod.GET)
 	public String relatorioBolsaProjeto(ModelMap modelMap, HttpSession session) {
 		modelMap.addAttribute("projetos", serviceProjeto
-				.getProjetosByUsuario(getUsuarioLogado(session).getId()));	
+				.getProjetosByUsuario(getUsuarioLogado(session).getId()));
 		return "diretor/relatorioBolsaProjeto";
 
 	}
@@ -902,7 +902,31 @@ public class ProjetoController {
 	@RequestMapping(value = "/relatorioBolsasPorDocente", method = RequestMethod.GET)
 	public String relatorioBolsaDocente(ModelMap modelMap, HttpSession session) {
 		modelMap.addAttribute("projetos", serviceProjeto
-				.getProjetosByUsuario(getUsuarioLogado(session).getId()));	
+				.getProjetosByUsuario(getUsuarioLogado(session).getId()));
+		return "diretor/relatorioBolsasPorDocente";
+	}
+
+	@RequestMapping(value = "/retornarProjetosEntreDatas", method = RequestMethod.POST)
+	public String retornarProjetosEntreDatas(ModelMap modelMap,
+			HttpSession session, HttpServletRequest request) {
+
+		String diaDeInicio = request.getParameter("inicio").substring(0, 2);
+		String mesDeInicio = request.getParameter("inicio").substring(3, 5);
+		String anoDeInicio = request.getParameter("inicio").substring(6, 10);
+
+		String inicio = anoDeInicio + "-" + mesDeInicio + "-" + diaDeInicio;
+		
+		String diaDeTermino = request.getParameter("termino").substring(0, 2);
+		String mesDeTermino = request.getParameter("termino").substring(3, 5);
+		String anoDeTermino = request.getParameter("termino").substring(6, 10);
+
+		String termino = anoDeTermino + "-" + mesDeTermino + "-" + diaDeTermino;
+		System.out.println("Requisição termino: "+request.getParameter("termino"));
+		System.out.println("Parametro data de Inicio" + inicio);
+		System.out.println("Parametro data de Termino" + termino);
+
+		modelMap.addAttribute("projetos",
+				serviceProjeto.getProjetosByDates(inicio, termino));
 		return "diretor/relatorioBolsasPorDocente";
 	}
 
