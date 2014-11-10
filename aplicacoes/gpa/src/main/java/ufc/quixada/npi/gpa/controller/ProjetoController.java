@@ -900,7 +900,9 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/relatorioBolsasPorDocente", method = RequestMethod.GET)
-	public String relatorioBolsaDocente() {
+	public String relatorioBolsaDocente(ModelMap modelMap, HttpSession session) {
+		modelMap.addAttribute("projetos", serviceProjeto
+				.getProjetosByUsuario(getUsuarioLogado(session).getId()));	
 		return "diretor/relatorioBolsasPorDocente";
 	}
 
