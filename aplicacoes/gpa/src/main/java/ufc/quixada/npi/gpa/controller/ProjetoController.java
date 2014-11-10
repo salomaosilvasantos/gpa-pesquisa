@@ -888,15 +888,18 @@ public class ProjetoController {
 	public String relatoriosAndamento() {
 		return "diretor/projetosEmAndamento";
 	}
-	
+
 	@RequestMapping(value = "/relatorioBolsaProjeto", method = RequestMethod.GET)
-	public String relatorioBolsaProjeto() {
+	public String relatorioBolsaProjeto(ModelMap modelMap, HttpSession session) {
+		modelMap.addAttribute("projetos", serviceProjeto
+				.getProjetosByUsuario(getUsuarioLogado(session).getId()));	
 		return "diretor/relatorioBolsaProjeto";
+
 	}
-	
+
 	@RequestMapping(value = "/relatorioBolsasPorDocente", method = RequestMethod.GET)
 	public String relatorioBolsaDocente() {
 		return "diretor/relatorioBolsasPorDocente";
 	}
-	
+
 }
