@@ -10,7 +10,7 @@
 <html>
 <head>
 <jsp:include page="../modulos/header-estrutura.jsp" />
-<title>Bolsas por Docente</title>
+<title>Bolsas por Projeto</title>
 </head>
 
 
@@ -41,21 +41,50 @@
             </form>
         </div>
 
-        <table class="table" id="table">
-            <thead>
-                <tr>
-                    <th>Nome do Projeto</th>
-                    <th>Coordenador</th>
-                    <th>Quantidade de Participantes</th>
-                    <th>Valor da Bolsa</th>
-                    <th>Carga Horária</th>
-                    <th>Data de Início</th>
-                    <th>Data de Término</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+                <div class="tab-content">
+                <h3>Quantidade de Projetos: <c:out value="${fn:length(projetos)}" /></h3>
+
+            <div class="tab-pane active" id="meus-projetos">
+                <c:if test="${empty projetos}">
+                    <div class="alert alert-warning" role="alert">Não há projetos
+                        cadastrados.</div>
+                </c:if>
+                <c:if test="${not empty projetos}">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" align="center">
+                            <h4>Meus Projetos</h4>
+                        </div>
+
+                        <!-- Table -->
+                        <table class="table" id="table">
+                            <thead>
+                                <tr>
+                                    <th>Coordenador</th>
+                                    <th>Nome do Projeto </th>
+                                    <th>Quantidade de Bolsas</th>
+                                    <th>Valor da Bolsa</th>
+                                    <th>Carga Horária</th>
+                                    <th>Data de Início</th>
+                                    <th>Data de Término</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="projeto" items="${projetos}">
+                                    <tr class="linha">       
+                                        <td>${projeto.autor.nome}</td> 
+                                        <td>${projeto.nome}</td>       
+                                        <td>${projeto.quantidadeBolsa}</td>
+                                        <td>${projeto.valorDaBolsa}</td>
+                                        <td>${projeto.cargaHoraria}</td>
+                                        <td><fmt:formatDate value="${projeto.inicio}" pattern="dd-MM-yyyy" /></td>
+                                        <td><fmt:formatDate value="${projeto.termino}" pattern="dd-MM-yyyy" /></td>                                
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </c:if>
+            </div>
 
     </div>
 
