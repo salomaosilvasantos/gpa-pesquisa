@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import ufc.quixada.npi.gpa.model.Papel;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.repository.QueryType;
@@ -37,6 +39,7 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Pessoa> implements
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public boolean isDiretor(Pessoa usuario) {
 		List<Papel> papeis = usuario.getPapeis();
 		for (Papel p : papeis) {

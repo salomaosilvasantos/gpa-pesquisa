@@ -358,6 +358,8 @@ public class ProjetoController {
 			@PathVariable("id") Long id,
 			@RequestParam("file") MultipartFile[] files,
 			@RequestParam(value = "participanteSelecionado", required = false) List<String> listaParticipantes,
+			@RequestParam(value = "cargaParticipante", required = true) float cargaParticipante,
+			@RequestParam(value = "valorBolsaParticipante", required = true) float valorBolsaParticipante,
 			@Valid @ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result, Model model, HttpSession session,
 			RedirectAttributes redirect) throws IOException {
@@ -447,8 +449,11 @@ public class ProjetoController {
 		if (participantes.size() > 0)
 			projeto.setParticipantes(participantes);	
 		
-		projetoPessoa.setCargaHorariaMensal(100);
-		projetoPessoa.setValorBolsaMensal(100);		
+			projetoPessoa.setCargaHorariaMensalParticipante(cargaParticipante);
+			projetoPessoa.setValorBolsaMensalParticipante(valorBolsaParticipante);
+
+		
+		
 		projetoPessoa.setProjeto(projeto);	
 
 		this.serviceProjeto.update(projeto);
@@ -571,8 +576,7 @@ public class ProjetoController {
 				projeto.setLocal(proj.getLocal());
 				if(participantes.size() > 0) {projeto.setParticipantes(participantes);}
 				
-				projetoPessoa.setCargaHorariaMensal(proj.getCargaHoraria());
-				projetoPessoa.setValorBolsaMensal(proj.getValorDaBolsa());		
+				
 				projetoPessoa.setProjeto(projeto);	
 
 				projeto.setStatus(StatusProjeto.SUBMETIDO);

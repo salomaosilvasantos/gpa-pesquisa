@@ -25,8 +25,8 @@ public class ProjetoPessoa implements Serializable {
 	@JoinColumn(name = "pessoa_id")
 	private Pessoa pessoa;
 
-	private float cargaHoraria;
-	private float valorBolsa;
+	private float cargaHorariaMensalParticipante;
+	private float valorBolsaMensalParticipante;
 
 	public ProjetoPessoa() {
 
@@ -48,20 +48,20 @@ public class ProjetoPessoa implements Serializable {
 		this.pessoa = pessoa;
 	}
 
-	public float getCargaHorariaMensal() {
-		return cargaHoraria;
+	public float getCargaHorariaMensalParticipante() {
+		return cargaHorariaMensalParticipante;
 	}
 
-	public void setCargaHorariaMensal(float cargaHorariaMensal) {
-		this.cargaHoraria = cargaHorariaMensal;
+	public void setCargaHorariaMensalParticipante(float cargaHorariaMensalParticipante2) {
+		this.cargaHorariaMensalParticipante = cargaHorariaMensalParticipante2;
 	}
 
-	public float getValorBolsaMensal() {
-		return valorBolsa;
+	public float getValorBolsaMensalParticipante() {
+		return valorBolsaMensalParticipante;
 	}
 
-	public void setValorBolsaMensal(float valorBolsaMensal) {
-		this.valorBolsa = valorBolsaMensal;
+	public void setValorBolsaMensalParticipante(float valorBolsaMensalParticipante) {
+		this.valorBolsaMensalParticipante = valorBolsaMensalParticipante;
 	}
 
 	@Override
