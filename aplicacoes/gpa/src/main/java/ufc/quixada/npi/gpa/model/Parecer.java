@@ -24,7 +24,6 @@ public class Parecer {
 	@Enumerated(EnumType.STRING)
 	private StatusPosicionamento status;
 	
-	
 	private String observacao;
 	
 	private String textoParecer;
