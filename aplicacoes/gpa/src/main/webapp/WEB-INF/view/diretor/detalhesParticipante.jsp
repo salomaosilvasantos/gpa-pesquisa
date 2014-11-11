@@ -47,7 +47,7 @@
 						
                            <c:if test="${empty usuario.projetos}">
                            <td>
-                            <div class="error"> Não atua como coordenador em nenhum projeto. </div>
+                            <div class="msgerror"> Não atua como coordenador em nenhum projeto. </div>
                             </td>
                             </c:if>
                         
@@ -64,7 +64,7 @@
                            
                            <c:if test="${empty usuario.projetosEnvolvidos}">
                            <td>
-                            <div class="error"> Não atua como participante em nenhum projeto. </div>
+                            <div class="msgerror"> Não atua como participante em nenhum projeto. </div>
                             </td>
                             </c:if>
                         

@@ -226,7 +226,7 @@ public class ProjetoController {
 			@PathVariable("id") long id,
 			@PathVariable("parecerId") long parecerId,
 			@RequestParam("file") MultipartFile[] files,
-			@RequestParam("parecer") String comentario,
+			@RequestParam("parecer") String textoParecer,
 			@RequestParam("statusParecer") String status,
 			@ModelAttribute(value = "parecer") Parecer parecer,
 			BindingResult result, HttpSession session,
@@ -239,11 +239,6 @@ public class ProjetoController {
 			return "redirect:/projeto/listar";
 		}
 
-		if (comentario.isEmpty()) {
-			redirectAttributes.addAttribute("erro",
-					"Comentário não pode estar vazio");
-			return "redirect:/projeto/" + id + "/emitirParecer" + parecerId;
-		}
 
 		for (MultipartFile mpf : files) {
 			if (mpf.getBytes().length > 0) {
@@ -258,13 +253,13 @@ public class ProjetoController {
 
 		}
 
-		if (status.equals("favorável")) {
+		if (status.equals("Favorável")) {
 			parecer.setStatus(StatusPosicionamento.FAVORAVEL);
 		} else {
 			parecer.setStatus(StatusPosicionamento.NAO_FAVORAVEL);
 		}
 
-		parecer.setComentario(comentario);
+		parecer.setTextoParecer(textoParecer); 
 		serviceParecer.update(parecer);
 		projeto.setStatus(StatusProjeto.AGUARDANDO_AVALIACAO);
 		serviceProjeto.update(projeto);
@@ -743,7 +738,7 @@ public class ProjetoController {
 		parecer.setProjeto(projeto);
 		parecer.setUsuario(usuario);
 		parecer.setDataAtribuicao(new Date());
-		parecer.setComentario(observacao);
+		parecer.setObservacao(observacao);
 		parecer.setPrazo(prazo);
 
 		serviceParecer.save(parecer);

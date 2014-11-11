@@ -9,6 +9,7 @@
 
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<jsp:include page="../modulos/header-estrutura.jsp" />
 	<title>Atribuir Parecerista</title>
 </head>
@@ -31,6 +32,15 @@
 			<form:form servletRelativeAction="/projeto/${projeto.id}/emitirParecer/${url}" 
 			commandName="parecer" 	enctype="multipart/form-data" method="POST" cssClass="form-horizontal">
 					
+					
+					<div class="form-group">
+                        <label for="observacao" class="col-sm-2 control-label">Observações do Diretor:</label>
+                        <div class="col-sm-10 files">
+                        
+                        <c:forEach items="${projeto.pareceres}" var="parecer">${parecer.observacao}</c:forEach>
+                        
+                        </div>
+                        </div>
 					
 					<div class="form-group">
 						<label for="posicionamento" class="col-sm-2 control-label">Posicionamento:</label>

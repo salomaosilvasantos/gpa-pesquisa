@@ -24,10 +24,10 @@ public class Parecer {
 	@Enumerated(EnumType.STRING)
 	private StatusPosicionamento status;
 	
-	@Lob
-	private String comentario;
 	
-	private String posicionamento;
+	private String observacao;
+	
+	private String textoParecer;
 	
 	@DateTimeFormat(pattern = "dd/mm/yyyy")
 	private Date dataAtribuicao;
@@ -54,14 +54,14 @@ public class Parecer {
 		super();
 	}
 
-	public Parecer(Long id, StatusPosicionamento status, String comentario,
-			String posicionamento, Date dataAtribuicao, Date dataRealizacao,
+	public Parecer(Long id, StatusPosicionamento status, String observacao,
+			String textoParecer, Date dataAtribuicao, Date dataRealizacao,
 			Date prazo, Documento documento, Pessoa usuario, Projeto projeto) {
 		super();
 		this.id = id;
 		this.status = status;
-		this.comentario = comentario;
-		this.posicionamento = posicionamento;
+		this.observacao = observacao;
+		this.textoParecer = textoParecer;
 		this.dataAtribuicao = dataAtribuicao;
 		this.dataRealizacao = dataRealizacao;
 		this.prazo = prazo;
@@ -87,8 +87,8 @@ public class Parecer {
 		this.status = status;
 	}
 
-	public String getComentario() {
-		return comentario;
+	public String getObservacao() {
+		return observacao;
 	}
 
 	public Documento getDocumento() {
@@ -99,8 +99,8 @@ public class Parecer {
 		this.documento = documento;
 	}
 
-	public void setComentario(String comentario) {
-		this.comentario = comentario;
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
 	}
 
 	public Date getDataAtribuicao() {
@@ -143,19 +143,19 @@ public class Parecer {
 		this.projeto = projeto;
 	}
 
-	public String getPosicionamento() {
-		return posicionamento;
+	public String getTextoParecer() {
+		return textoParecer;
 	}
 
-	public void setPosicionamento(String posicionamento) {
-		this.posicionamento = posicionamento;
+	public void setTextoParecer(String textoParecer) {
+		this.textoParecer = textoParecer;
 	}
 
 
 	@Override
 	public String toString() {
-		return "Parecer [id=" + id + ", status=" + status + ", comentario="
-				+ comentario + ", posicionamento=" + posicionamento
+		return "Parecer [id=" + id + ", status=" + status + ", observacao="
+				+ observacao + ", textoParecer=" + textoParecer
 				+ ", dataAtribuicao=" + dataAtribuicao + ", dataRealizacao="
 				+ dataRealizacao + ", prazo=" + prazo + ", documento="
 				+ documento + ", usuario=" + usuario + ", projeto=" + projeto
