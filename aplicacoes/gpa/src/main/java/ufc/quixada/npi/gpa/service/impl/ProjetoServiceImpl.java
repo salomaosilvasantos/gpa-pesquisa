@@ -1,5 +1,6 @@
 package ufc.quixada.npi.gpa.service.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,12 +58,17 @@ public class ProjetoServiceImpl extends GenericServiceImpl<Projeto> implements
 	}
 
 	@Override
-	public List<Projeto> getProjetosByDates(String inicio, String termino) {
-		System.out.println("Variavel inicio: "+inicio);
-		System.out.println("Variavel termino: "+termino);		
-		return projetoRepository.find(QueryType.NATIVE, "select pro.nome, pe.nome, pro.quantidadebolsa, pro.valordabolsa, pro.cargahoraria, pro.inicio, pro.termino from projeto as pro, pessoa as pe where pro.autor_id = pe.id and pro.inicio between "+inicio+" and "+termino+" ",null);
-	}
-
+	public List<Projeto> getProjetosByDates(Date inicio, Date termino) {
 	
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("inicio", inicio);
+			params.put("termino", termino);
+			System.out.println("inicio e termino do  hashmap: " +params.get("termino").toString());
+		 	
+	//return projetoRepository.find(QueryType.JPQL,"select pro.nome, pe.nome, pro.quantidadeBolsa, pro.valorDaBolsa, pro.cargaHoraria, pro.inicio, pro.termino from Projeto as pro, Pessoa as pe where pro.autor_id = pe.id and pro.inicio between :inicio and :termino" , params);
+	
+	return projetoRepository.find(QueryType.NATIVE, "select pro.nome, pe.nome, pro.quantidadeBolsa, pro.valorDaBolsa, pro.cargaHoraria, pro.inicio, pro.termino from Projeto as pro, Pessoa as pe where pro.autor_id = pe.id and pro.inicio between "+inicio+" and "+termino, null);
+			
+	}
 	
 }

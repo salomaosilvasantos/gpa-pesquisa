@@ -53,4 +53,6 @@ public class GenericServiceImpl<T> implements GenericService<T> {
 		// TODO Auto-generated method stub
 		return genericRepository.find(type, query, namedParams);
 	}
+	
+	
 }

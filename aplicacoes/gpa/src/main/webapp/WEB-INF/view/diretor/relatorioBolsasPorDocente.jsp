@@ -76,8 +76,8 @@
                                         <td>${projeto.quantidadeBolsa}</td>
                                         <td>${projeto.valorDaBolsa}</td>
                                         <td>${projeto.cargaHoraria}</td>
-                                        <td><fmt:formatDate value="${projeto.inicio}" pattern="dd-MM-yyyy" /></td>
-                                        <td><fmt:formatDate value="${projeto.termino}" pattern="dd-MM-yyyy" /></td>                                
+                                        <td><fmt:formatDate value="${projeto.inicio}" pattern="dd/MM/yyyy" /></td>
+                                        <td><fmt:formatDate value="${projeto.termino}" pattern="dd/MM/yyyy" /></td>                                
                                     </tr>
                                 </c:forEach>
                             </tbody>

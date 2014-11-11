@@ -1,6 +1,7 @@
 package ufc.quixada.npi.gpa.controller;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -909,7 +910,7 @@ public class ProjetoController {
 	@RequestMapping(value = "/retornarProjetosEntreDatas", method = RequestMethod.POST)
 	public String retornarProjetosEntreDatas(ModelMap modelMap,
 			HttpSession session, HttpServletRequest request) {
-
+		/*
 		String diaDeInicio = request.getParameter("inicio").substring(0, 2);
 		String mesDeInicio = request.getParameter("inicio").substring(3, 5);
 		String anoDeInicio = request.getParameter("inicio").substring(6, 10);
@@ -921,12 +922,25 @@ public class ProjetoController {
 		String anoDeTermino = request.getParameter("termino").substring(6, 10);
 
 		String termino = anoDeTermino + "-" + mesDeTermino + "-" + diaDeTermino;
-		System.out.println("Requisição termino: "+request.getParameter("termino"));
-		System.out.println("Parametro data de Inicio" + inicio);
-		System.out.println("Parametro data de Termino" + termino);
-
+		*/
+		
+		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); 
+		Date dateInicio = null;
+		Date dateTermino = null;
+		
+		try {
+			
+            dateInicio = formatter.parse(request.getParameter("inicio"));
+			dateTermino = formatter.parse(request.getParameter("termino"));
+			 
+			System.out.println("data inicio e termino:" +formatter.format(dateInicio));
+		
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} 
+		
 		modelMap.addAttribute("projetos",
-				serviceProjeto.getProjetosByDates(inicio, termino));
+				serviceProjeto.getProjetosByDates(dateInicio, dateTermino));
 		return "diretor/relatorioBolsasPorDocente";
 	}
 
