@@ -299,6 +299,4 @@ public class Projeto implements Serializable {
 	public enum Evento {
 		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO
 	}
-
-
 }

@@ -46,9 +46,12 @@ public class Pessoa implements Serializable {
 
 	@OneToMany(mappedBy = "usuario")
 	private List<Servidor> servidores;
-
-	private String cpf;
-
+	
+	@ManyToMany
+    private List<Projeto> projetosEnvolvidos; 
+    	
+    private String cpf;
+	
 	private String nome;
 
 	private String email;
@@ -103,6 +106,13 @@ public class Pessoa implements Serializable {
 	 * void setProjetoParticipante(List<Projeto> projetoParticipante) {
 	 * this.projeto = projetoParticipante; }
 	 */
+	public List<Projeto> getProjetosEnvolvidos() {
+        return projetosEnvolvidos;
+    }
+    public void setProjetosEnvolvidos(List<Projeto> projetosEnvolvidos) {
+        this.projetosEnvolvidos = projetosEnvolvidos;
+    }
+
 	public String getEmail() {
 		return email;
 	}

@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.Vector;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -62,7 +63,7 @@ public class ProjetoController {
 
 	@Autowired
 	private ComentarioService comentarioService;
-	
+
 	@Inject
 	private DocumentoService serviceDocumento;
 
@@ -76,6 +77,7 @@ public class ProjetoController {
 
 		Resource resource = new ClassPathResource("/notification.properties");
 		return PropertiesLoaderUtils.loadProperties(resource);
+
 	}
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
@@ -97,7 +99,7 @@ public class ProjetoController {
 		if (result.hasErrors()) {
 			return ("projeto/cadastrar");
 		}
-		
+
 		if (projeto.getTermino() != null
 				&& comparaDatas(new Date(), projeto.getTermino()) > 0) {
 			result.rejectValue("termino", "error.projeto",
@@ -124,6 +126,22 @@ public class ProjetoController {
 
 	}
 
+	@RequestMapping(value = "/{id}/detalhesParticipante")
+	public String detalhesParticipante(Pessoa p, @PathVariable("id") Long id,
+			Model model, RedirectAttributes redirectAttributes) {
+		Pessoa usuario = serviceUsuario.find(Pessoa.class, id);
+		// Verifica se a pessoa existe
+		if (usuario == null) {
+			redirectAttributes.addFlashAttribute("erro", "Pessoa inexistente.");
+			return "redirect:/projeto/listar";
+
+		} else {
+			model.addAttribute("usuario", usuario);
+			return "diretor/detalhesParticipante";
+		}
+
+	}
+
 	@RequestMapping(value = "/{id}/detalhes")
 	public String getDetalhes(Projeto p, @PathVariable("id") Long id,
 			Model model, HttpSession session,
@@ -142,7 +160,8 @@ public class ProjetoController {
 				|| (serviceUsuario.isDiretor(usuario) && !projeto.getStatus()
 						.equals(StatusProjeto.NOVO))) {
 			model.addAttribute("projeto", projeto);
-			model.addAttribute("comentario", comentarioService.find(Comentario.class));
+			model.addAttribute("comentario",
+					comentarioService.find(Comentario.class));
 			return "projeto/detalhes";
 		} else {
 			redirectAttributes.addFlashAttribute("erro", "Permissão negada.");
@@ -152,7 +171,9 @@ public class ProjetoController {
 
 	@RequestMapping(value = "/{id}/editar", method = RequestMethod.GET)
 	public String editar(@PathVariable("id") long id, Model model,
-			HttpSession session, RedirectAttributes redirectAttributes) {
+
+	HttpSession session, RedirectAttributes redirectAttributes) {
+
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		Pessoa usuario = getUsuarioLogado(session);
 		if (projeto == null) {
@@ -164,7 +185,8 @@ public class ProjetoController {
 				&& !projeto.getStatus()
 						.equals(StatusProjeto.AGUARDANDO_PARECER)) {
 			model.addAttribute("projeto", projeto);
-			model.addAttribute("participantes",serviceUsuario.getParticipantes(usuario));
+			model.addAttribute("participantes",
+					serviceUsuario.getParticipantes(usuario));
 			model.addAttribute("action", "editar");
 
 			return "projeto/editar";
@@ -248,16 +270,15 @@ public class ProjetoController {
 		serviceProjeto.update(projeto);
 
 		notificationService.notificar(projeto, Evento.EMISSAO_PARECER);
-		
+
 		return "redirect:/projeto/listar";
 
 	}
-	
+
 	@RequestMapping(value = "/{id}/verParecer", method = RequestMethod.GET)
-	public String verParecer(@PathVariable("id") long id,
-			Model model,
+	public String verParecer(@PathVariable("id") long id, Model model,
 			HttpSession session, RedirectAttributes redirectAttributes) {
-		
+
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
 		Pessoa usuario = getUsuarioLogado(session);
 		// Verifica se o projeto existe
@@ -269,30 +290,27 @@ public class ProjetoController {
 		// Verifica se o usuário logado é o autor do projeto ou se é o diretor e
 		// o projeto já foi submetido
 		if (usuario.getId() == projeto.getAutor().getId()
-				|| (serviceUsuario.isDiretor(usuario))){
+				|| (serviceUsuario.isDiretor(usuario))) {
 			model.addAttribute("projeto", projeto);
 			return "diretor/verParecer";
 		} else {
 			redirectAttributes.addFlashAttribute("erro", "Permissão negada.");
 			return "redirect:/projeto/listar";
 		}
-		
+
 	}
-	
+
 	@RequestMapping(value = "/{id}/avaliarProjeto", method = RequestMethod.GET)
-	public String avaliarProjeto(@PathVariable("id") long id,
-			 Model model,HttpSession session,
-			RedirectAttributes redirect) {
-		
+	public String avaliarProjeto(@PathVariable("id") long id, Model model,
+			HttpSession session, RedirectAttributes redirect) {
+
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
+
 		if (projeto == null) {
-			redirect
-					.addFlashAttribute("erro", "Projeto Inexistente.");
+			redirect.addFlashAttribute("erro", "Projeto Inexistente.");
 			return "redirect:/projeto/listar";
 		}
-		
-		
-		
+
 		if (!projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)) {
 			redirect.addFlashAttribute("erro",
 					"Projeto não está aguardando avaliação");
@@ -306,24 +324,23 @@ public class ProjetoController {
 		model.addAttribute("projeto", projeto);
 		return "diretor/avaliarProjeto";
 	}
-	
+
 	@RequestMapping(value = "/{id}/avaliarProjeto", method = RequestMethod.POST)
 	public String avaliarProjeto(HttpServletRequest request,
 			@PathVariable("id") long id,
 			@RequestParam("file") MultipartFile[] files,
 			@RequestParam("observacao") String observacao,
 			@RequestParam("opcoesAvaliacao") String status,
-			 HttpSession session,
-			RedirectAttributes redirect) throws IOException  {
-		
+			HttpSession session, RedirectAttributes redirect)
+			throws IOException {
+
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
-		
+
 		if (observacao.isEmpty()) {
-			redirect.addAttribute("erro",
-					"Comentário não pode estar vazio");
+			redirect.addAttribute("erro", "Comentário não pode estar vazio");
 			return "redirect:/projeto/" + id + "/avaliarProjeto";
 		}
-		
+
 		for (MultipartFile mpf : files) {
 			if (mpf.getBytes().length > 0) {
 				Documento documento = new Documento();
@@ -337,12 +354,12 @@ public class ProjetoController {
 		}
 		if (status.equals("Aprovado")) {
 			projeto.setStatus(StatusProjeto.APROVADO);
-		} else if(status.equals("Aprovado com restrição")) {
-			projeto.setStatus(StatusProjeto.APROVADO_COM_RESTRICAO);		
-		}else{
+		} else if (status.equals("Aprovado com restrição")) {
+			projeto.setStatus(StatusProjeto.APROVADO_COM_RESTRICAO);
+		} else {
 			projeto.setStatus(StatusProjeto.REPROVADO);
 		}
-		
+
 		this.serviceProjeto.save(projeto);
 
 		this.serviceProjeto.update(projeto);
@@ -351,8 +368,7 @@ public class ProjetoController {
 		return "redirect:/projeto/listar";
 
 	}
-	
-	
+
 	@RequestMapping(value = "/{id}/editar", method = RequestMethod.POST)
 	public String atualizarProjeto(
 			@PathVariable("id") Long id,
@@ -363,7 +379,7 @@ public class ProjetoController {
 			@Valid @ModelAttribute(value = "projeto") Projeto projetoAtualizado,
 			BindingResult result, Model model, HttpSession session,
 			RedirectAttributes redirect) throws IOException {
-		
+
 		if (result.hasErrors()) {
 			model.addAttribute("action", "editar");
 			return "projeto/editar";
@@ -384,7 +400,7 @@ public class ProjetoController {
 			model.addAttribute("action", "editar");
 			return "projeto/editar";
 		}
-		if(listaParticipantes == null){
+		if (listaParticipantes == null) {
 			redirect.addFlashAttribute("error_participantes",
 					"Por favor, selecione ao menos um participante.");
 			model.addAttribute("action", "editar");
@@ -392,7 +408,7 @@ public class ProjetoController {
 		}
 
 		Projeto projeto = serviceProjeto.find(Projeto.class, id);
-		List<ProjetoPessoa> participantes = new ArrayList<ProjetoPessoa>();	
+		List<ProjetoPessoa> participantes = new ArrayList<ProjetoPessoa>();
 		ProjetoPessoa projetoPessoa = new ProjetoPessoa();
 
 		// verificar se todas as pessoas que vem do formulario estao no BD
@@ -401,26 +417,30 @@ public class ProjetoController {
 		for (String identificador : listaParticipantes) {
 
 			Pessoa pessoa = serviceUsuario.getPessoaByNome(identificador);
-			
+
 			projetoPessoa.setPessoa(pessoa);
 
 			if (pessoa == null) {
-				redirect.addFlashAttribute("error_participantes",
-						"A pessoa '"+identificador +"' não se encontra na base de dados");
+				redirect.addFlashAttribute("error_participantes", "A pessoa '"
+						+ identificador + "' não se encontra na base de dados");
 				model.addAttribute("action", "editar");
 				return "redirect:/projeto/" + id + "/editar";
 
-			}if (usuario.getId() == pessoa.getId()){
-				
-				redirect.addFlashAttribute("error_participantes",
-						"A pessoa '"+pessoa.getNome() +"' já é um participante do projeto.");
+			}
+			if (usuario.getId() == pessoa.getId()) {
+
+				redirect.addFlashAttribute("error_participantes", "A pessoa '"
+						+ pessoa.getNome()
+						+ "' já é um participante do projeto.");
 				model.addAttribute("action", "editar");
 				return "redirect:/projeto/" + id + "/editar";
-			}else{
+			} else {
 
-  				if(!participantes.contains(pessoa)){
-  						participantes.add(projetoPessoa);
-  				} else { System.out.println("ja se encontra no banco"); }			
+				if (!participantes.contains(pessoa)) {
+					participantes.add(projetoPessoa);
+				} else {
+					System.out.println("ja se encontra no banco");
+				}
 
 			}
 		}
@@ -447,14 +467,12 @@ public class ProjetoController {
 		projeto.setQuantidadeBolsa(projetoAtualizado.getQuantidadeBolsa());
 		projeto.setLocal(projetoAtualizado.getLocal());
 		if (participantes.size() > 0)
-			projeto.setParticipantes(participantes);	
-		
-			projetoPessoa.setCargaHorariaMensalParticipante(cargaParticipante);
-			projetoPessoa.setValorBolsaMensalParticipante(valorBolsaParticipante);
+			projeto.setParticipantes(participantes);
 
-		
-		
-		projetoPessoa.setProjeto(projeto);	
+		projetoPessoa.setCargaHorariaMensalParticipante(cargaParticipante);
+		projetoPessoa.setValorBolsaMensalParticipante(valorBolsaParticipante);
+
+		projetoPessoa.setProjeto(projeto);
 
 		this.serviceProjeto.update(projeto);
 		redirect.addFlashAttribute("info", "Projeto atualizado com sucesso.");
@@ -503,7 +521,7 @@ public class ProjetoController {
 					&& validaSubmissaoAnexo(projeto, model)) {
 
 				projeto.setStatus(StatusProjeto.SUBMETIDO);
-				
+
 				this.serviceProjeto.update(projeto);
 				notificationService.notificar(projeto, Evento.SUBMISSAO);
 				redirectAttributes.addFlashAttribute("info",
@@ -525,10 +543,11 @@ public class ProjetoController {
 	@RequestMapping(value = "submeter", method = RequestMethod.POST)
 	public String submeterProjeto(
 			@Valid @ModelAttribute(value = "projeto") Projeto proj,
-			@RequestParam("file") MultipartFile[] files, BindingResult result,
+			@RequestParam("file") MultipartFile[] files,
+			BindingResult result,
 			@RequestParam(value = "participanteSelecionado", required = false) List<String> listaParticipantes,
 			Model model, HttpSession session,
-			RedirectAttributes redirectAttributes) {		
+			RedirectAttributes redirectAttributes) {
 		Projeto projeto = serviceProjeto.find(Projeto.class, proj.getId());
 		Pessoa usuario = getUsuarioLogado(session);
 		if (projeto == null) {
@@ -539,7 +558,6 @@ public class ProjetoController {
 
 		List<ProjetoPessoa> participantes = new ArrayList<ProjetoPessoa>();
 		ProjetoPessoa projetoPessoa = new ProjetoPessoa();
-		
 
 		for (String identificador : listaParticipantes) {
 
@@ -548,90 +566,91 @@ public class ProjetoController {
 
 			if (pessoa == null) {
 				redirectAttributes.addFlashAttribute("error_participantes",
-						"A pessoa '"+identificador +"' não se encontra na base de dados");
+						"A pessoa '" + identificador
+								+ "' não se encontra na base de dados");
 				model.addAttribute("action", "editar");
 				return "redirect:/projeto/" + proj.getId() + "/editar";
 
 			} else {
-				if(!participantes.contains(pessoa)){
-						participantes.add(projetoPessoa);
-				} else { System.out.println("ja se encontra no banco"); }			
 
+				if (!participantes.contains(pessoa)) {
+					participantes.add(projetoPessoa);
+				} else {
+					System.out.println("ja se encontra no banco");
+				}
 			}
 
 		}
-		
-		
+
 		if (usuario.getId() == projeto.getAutor().getId()
 				&& projeto.getStatus().equals(StatusProjeto.NOVO)) {
 
-				projeto.setNome(proj.getNome());
-				projeto.setDescricao(proj.getDescricao());
-				projeto.setInicio(proj.getInicio());
-				projeto.setTermino(proj.getTermino());
-				projeto.setCargaHoraria(proj.getCargaHoraria());
-				projeto.setValorDaBolsa(proj.getValorDaBolsa());
-				projeto.setAtividades(proj.getAtividades());
-				projeto.setQuantidadeBolsa(proj.getQuantidadeBolsa());
-				projeto.setLocal(proj.getLocal());
-				if(participantes.size() > 0) {projeto.setParticipantes(participantes);}
-				
-				
-				projetoPessoa.setProjeto(projeto);	
+			projeto.setNome(proj.getNome());
+			projeto.setDescricao(proj.getDescricao());
+			projeto.setInicio(proj.getInicio());
+			projeto.setTermino(proj.getTermino());
+			projeto.setCargaHoraria(proj.getCargaHoraria());
+			projeto.setValorDaBolsa(proj.getValorDaBolsa());
+			projeto.setAtividades(proj.getAtividades());
+			projeto.setQuantidadeBolsa(proj.getQuantidadeBolsa());
+			projeto.setLocal(proj.getLocal());
+			if (participantes.size() > 0) {
+				projeto.setParticipantes(participantes);
+			}
 
-				projeto.setStatus(StatusProjeto.SUBMETIDO);
-				Date data = new Date(System.currentTimeMillis());
-				projeto.setSubmissao(data);
+			projetoPessoa.setProjeto(projeto);
 
-				this.serviceProjeto.update(projeto);
+			projeto.setStatus(StatusProjeto.SUBMETIDO);
+			Date data = new Date(System.currentTimeMillis());
+			projeto.setSubmissao(data);
 
-				
-				if (validaSubmissao(projeto, model)) {
-					
-					try {
-						for (MultipartFile mpf : files) {
-							if (mpf.getBytes().length > 0) {
-								Documento documento = new Documento();
-								documento.setNomeOriginal(mpf.getOriginalFilename());
-								documento.setTipo(mpf.getContentType());
-								documento.setProjeto(projeto);
-								documento.setArquivo(mpf.getBytes());
-								serviceDocumento.save(documento);
-							
+			this.serviceProjeto.update(projeto);
 
-							} else {
-								redirectAttributes.addFlashAttribute(
-										"error_documento", "Arquivo obrigatório");
-								return "redirect:/projeto/" + projeto.getId()
-										+ "/submeter";
-							}
+			if (validaSubmissao(projeto, model)) {
 
+				try {
+					for (MultipartFile mpf : files) {
+						if (mpf.getBytes().length > 0) {
+							Documento documento = new Documento();
+							documento
+									.setNomeOriginal(mpf.getOriginalFilename());
+							documento.setTipo(mpf.getContentType());
+							documento.setProjeto(projeto);
+							documento.setArquivo(mpf.getBytes());
+							serviceDocumento.save(documento);
+
+						} else {
+							redirectAttributes.addFlashAttribute(
+									"error_documento", "Arquivo obrigatório");
+							return "redirect:/projeto/" + projeto.getId()
+									+ "/submeter";
 						}
-					} catch (IOException e) {
-						redirectAttributes
-								.addFlashAttribute("error_documento",
-										"Ocorreu um erro ao processar o arquivo, tente novamente.");
-						return "redirect:/projeto/" + projeto.getId() + "/submeter";
+
 					}
-						if(validaSubmissaoAnexo(projeto, model)){
-							projeto.setStatus(StatusProjeto.SUBMETIDO);
-							serviceProjeto.update(projeto);
-							notificationService.notificar(projeto, Evento.SUBMISSAO);
+				} catch (IOException e) {
+					redirectAttributes
+							.addFlashAttribute("error_documento",
+									"Ocorreu um erro ao processar o arquivo, tente novamente.");
+					return "redirect:/projeto/" + projeto.getId() + "/submeter";
+				}
+				if (validaSubmissaoAnexo(projeto, model)) {
+					projeto.setStatus(StatusProjeto.SUBMETIDO);
+					serviceProjeto.update(projeto);
+					notificationService.notificar(projeto, Evento.SUBMISSAO);
 
-							redirectAttributes.addFlashAttribute("info",
-									"Projeto submetido com sucesso.");
-							return "redirect:/projeto/listar";	
-						}else{
-							model.addAttribute("action", "submeter");
-							return "projeto/editar";
-						}
-					
-						
-					} else {
+					redirectAttributes.addFlashAttribute("info",
+							"Projeto submetido com sucesso.");
+					return "redirect:/projeto/listar";
+				} else {
+					model.addAttribute("action", "submeter");
+					return "projeto/editar";
+				}
+
+			} else {
 				model.addAttribute("action", "submeter");
 				return "projeto/editar";
-				}
-				
+			}
+
 		} else {
 			redirectAttributes.addFlashAttribute("erro", "Permissão negada.");
 			return "redirect:/projeto/listar";
@@ -644,10 +663,12 @@ public class ProjetoController {
 		modelMap.addAttribute("projetos", serviceProjeto
 				.getProjetosByUsuario(getUsuarioLogado(session).getId()));
 
-		modelMap.addAttribute("projetosAguardandoParecer",
+		modelMap.addAttribute(
+				"projetosAguardandoParecer",
 				serviceProjeto.getProjetosAguardandoParecer(getUsuarioLogado(
 						session).getId()));
-		modelMap.addAttribute("projetosAvaliados",
+		modelMap.addAttribute(
+				"projetosAvaliados",
 				serviceProjeto.getProjetosAvaliadosDoUsuario(getUsuarioLogado(
 						session).getId()));
 
@@ -657,6 +678,10 @@ public class ProjetoController {
 
 			modelMap.addAttribute("projetosAvaliados",
 					serviceProjeto.getProjetosAvaliados());
+
+			// Participantes gerais do projeto
+			modelMap.addAttribute("participantes",
+					serviceUsuario.getParticipantesProjetos());
 
 			return "diretor/listarProjetos";
 		}
@@ -789,8 +814,9 @@ public class ProjetoController {
 			model.addAttribute("error_inicio",
 					"A data de início deve ser antes da data de término");
 			valid = false;
+
 		}
-		
+
 		if (projeto.getDescricao().isEmpty()) {
 			model.addAttribute("error_descricao", "Campo obrigatório");
 			valid = false;
@@ -802,7 +828,11 @@ public class ProjetoController {
 		if (projeto.getCargaHoraria() == null) {
 			model.addAttribute("error_cargaHoraria", "Campo obrigatório");
 			valid = false;
-		}		
+		}
+		if (projeto.getValorDaBolsa() == null) {
+			model.addAttribute("error_valorDaBolsa", "Campo obrigatório");
+			valid = false;
+		}
 		if (projeto.getQuantidadeBolsa() == null) {
 			model.addAttribute("error_quantidadeBolsa", "Campo obrigatório");
 			valid = false;
@@ -811,10 +841,11 @@ public class ProjetoController {
 			model.addAttribute("error_local", "Campo obrigatório");
 			valid = false;
 		}
-		/*if (projeto.getParticipantes().isEmpty()) {
-			model.addAttribute("error_participantes", "Campo obrigatório");
-			valid = false;
-		}*/
+		/*
+		 * if (projeto.getParticipantes().isEmpty()) {
+		 * model.addAttribute("error_participantes", "Campo obrigatório"); valid
+		 * = false; }
+		 */
 
 		return valid;
 	}

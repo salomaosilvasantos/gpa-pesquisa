@@ -18,7 +18,7 @@
 	rel="stylesheet" />
 </head>
 
-<body onload="verificarSeExisteUlNaPagina()">
+<body onload="esconderComentarioSeVazio()">
 	<jsp:include page="../modulos/header.jsp" />
 
 	<div class="container" style="margin-bottom: 70px;">
@@ -57,6 +57,16 @@
 
 					</tr>
 					<tr>
+						<td class="head">Avaliação:</td>
+
+						<c:if test="${not empty projeto.avaliacao}">					
+							<td class="content"> <fmt:formatDate pattern="dd-MM-yyyy"
+									value="${projeto.avaliacao }" /> às <fmt:formatDate
+									pattern="HH:mm" value="${projeto.avaliacao }" /></td> 
+						</c:if>						
+
+					</tr>
+					<tr>
 						<td class="head">Bolsas:</td>
 						<td class="content">${projeto.quantidadeBolsa }</td>
 					</tr>
@@ -75,7 +85,12 @@
 					<tr>
 						<td class="head" valign="top">Participantes:</td>
 							<c:forEach items="${projeto.participantes}" var="participante">
+
 								<td class="content">${participante.pessoa.nome}</td>
+
+							
+							<td class="content">	<a href="<c:url value="/projeto/${participante.id}/detalhesParticipante" ></c:url>">${participante.nome}</a></td>
+						
 		           		    </c:forEach>
 					</tr>
 					<tr>
