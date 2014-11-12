@@ -76,14 +76,36 @@
 					</tr>
 
 					<tr>
-						<td class="head" valign="top">Arquivos:</td>
+						<td class="head" valign="top">Carta de Solicitação:</td>
 						<c:forEach var="documento" items="${projeto.documentos}">
-							<!--  <a href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a>-->
 							<td class="content"><a
 								href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a></td>
 
 						</c:forEach>
 					</tr>
+					
+					                   <tr>
+                        <td class="head" valign="top">Parecer:</td>
+                        
+                            <td class="content"><a
+                                href="<c:url value="/documento/${parecer.documento.id}"></c:url>">${parecer.documento.nomeOriginal}</a></td>
+
+                        
+                    </tr>
+					
+					<tr>
+                        <td class="head" valign="top">Ata:</td>
+                        
+                            <td class="content"><a
+                                href="<c:url value="/documento/${projeto.ataReuniao.id}"></c:url>">${projeto.ataReuniao.nomeOriginal}</a></td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="head" valign="top">Ofício:</td>
+                        
+                            <td class="content"><a
+                                href="<c:url value="/documento/${projeto.oficioAceitacao.id} }"></c:url>">${projeto.oficioAceitacao.nomeOriginal}</a></td>
+                    </tr>
 				</table>
 
 				<div>

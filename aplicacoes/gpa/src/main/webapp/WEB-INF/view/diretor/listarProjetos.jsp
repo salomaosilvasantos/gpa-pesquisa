@@ -130,7 +130,7 @@
 
 												<a id="avaliarProjeto" data-toggle="modal"
 													href="<c:url value="/projeto/${projeto.id}/avaliarProjeto" ></c:url>">
-													<button class="btn btn-danger">
+													<button class="btn btn-sucess">
 
 														Avaliar Projeto <span class="glyphicon glyphicon-trash"></span>
 													</button>
@@ -212,7 +212,7 @@
 													href="<c:url value="/projeto/${projeto.id}/avaliarProjeto" ></c:url>">
 													<button class="btn btn-danger">
 
-														Avaliar Projeto <span class="glyphicon glyphicon-trash"></span>
+														Avaliar Projeto <span class="glyphicon glyphicon-ok"></span>
 													</button>
 												</a>
 											</c:if></td>

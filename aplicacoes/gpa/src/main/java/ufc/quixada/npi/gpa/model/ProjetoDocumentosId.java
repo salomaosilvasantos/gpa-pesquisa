@@ -6,25 +6,25 @@ import javax.persistence.Embeddable;
 
 
 @Embeddable
-public class Projeto_DocumentosId implements Serializable {
+public class ProjetoDocumentosId implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private int projeto;
-	private int documento;
+	private long projeto;
+	private long documento;
 
-	public int getProjeto() {
+	public long getProjeto() {
 		return projeto;
 	}
 
-	public void setProjeto(int projeto) {
+	public void setProjeto(long projeto) {
 		this.projeto = projeto;
 	}
 
-	public int getPessoa() {
+	public long getPessoa() {
 		return documento;
 	}
 
-	public void setDocumento(int documento) {
+	public void setDocumento(long documento) {
 		this.documento = documento;
 	}
 
@@ -40,7 +40,7 @@ public class Projeto_DocumentosId implements Serializable {
 		// Tools | Templates.
 	}
 
-	public Projeto_DocumentosId() {
+	public ProjetoDocumentosId() {
 		super();
 	}
 }

@@ -8,11 +8,14 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
-@IdClass(Projeto_DocumentosId.class)
-public class Projeto_Documentos implements Serializable {
+@IdClass(ProjetoDocumentosId.class)
+@Table(name ="projeto_documentos")
+public class ProjetoDocumentos implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@ManyToOne
@@ -24,7 +27,7 @@ public class Projeto_Documentos implements Serializable {
 	@JoinColumn(name = "documento_id")
 	private Documento documento;
 
-	public Projeto_Documentos() {
+	public ProjetoDocumentos() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -60,7 +63,7 @@ public class Projeto_Documentos implements Serializable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		final Projeto_Documentos other = (Projeto_Documentos) obj;
+		final ProjetoDocumentos other = (ProjetoDocumentos) obj;
 		if (!Objects.equals(this.projeto, other.projeto)) {
 			return false;
 		}
