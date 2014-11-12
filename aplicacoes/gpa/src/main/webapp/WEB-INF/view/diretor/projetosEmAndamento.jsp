@@ -25,12 +25,12 @@
 				<div class="form-group">
 					<label for="inicio" class="col-sm-2 control-label">Início:</label>
 					<div class="col-sm-2">
-						<input id="inicio" type="text" class="form-control data"
+						<input id="inicio" name="inicio" type="text" class="form-control data"
 							placeholder="Data de Início" />
 					</div>
-					<label for="termino" class="col-sm-2 control-label">Termino:</label>
+					<label for="termino" class="col-sm-2 control-label">Término:</label>
 					<div class="col-sm-2">
-						<input id="termino" type="text" class="form-control data"
+						<input id="termino" type="text" name="termino" class="form-control data"
 							placeholder="Data de Término" />
 					</div>
 					<div class="col-sm-4">
@@ -58,7 +58,7 @@
                         <table class="table" id="table">
                             <thead>
                                 <tr>
-                                    <th id="teste">Nome do Projeto </th>
+                                    <th id="teste">Nome do Projeto</th>
                                     <th>Coordenador</th>
                                     <th>Data de Submissão</th>
                                     <th>Data de Avaliação</th>

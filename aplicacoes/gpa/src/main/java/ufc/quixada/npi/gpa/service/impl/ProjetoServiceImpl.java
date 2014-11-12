@@ -67,7 +67,7 @@ public class ProjetoServiceImpl extends GenericServiceImpl<Projeto> implements
 		 	
 	//return projetoRepository.find(QueryType.JPQL,"select pro.nome, pe.nome, pro.quantidadeBolsa, pro.valorDaBolsa, pro.cargaHoraria, pro.inicio, pro.termino from Projeto as pro, Pessoa as pe where pro.autor_id = pe.id and pro.inicio between :inicio and :termino" , params);
 	
-	return projetoRepository.find(QueryType.NATIVE, "select pro.nome, pe.nome, pro.quantidadeBolsa, pro.valorDaBolsa, pro.cargaHoraria, pro.inicio, pro.termino from Projeto as pro, Pessoa as pe where pro.autor_id = pe.id and pro.inicio between "+inicio+" and "+termino, null);
+	return projetoRepository.find(QueryType.JPQL, "from Projeto where (inicio between :inicio and :termino or termino between :inicio and :termino) and status = 'APROVADO'", params);
 			
 	}
 	

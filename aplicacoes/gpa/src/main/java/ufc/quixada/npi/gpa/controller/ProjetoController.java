@@ -1,7 +1,6 @@
 package ufc.quixada.npi.gpa.controller;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,7 +8,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-import java.util.Vector;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -908,40 +906,11 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/retornarProjetosEntreDatas", method = RequestMethod.POST)
-	public String retornarProjetosEntreDatas(ModelMap modelMap,
-			HttpSession session, HttpServletRequest request) {
-		/*
-		String diaDeInicio = request.getParameter("inicio").substring(0, 2);
-		String mesDeInicio = request.getParameter("inicio").substring(3, 5);
-		String anoDeInicio = request.getParameter("inicio").substring(6, 10);
-
-		String inicio = anoDeInicio + "-" + mesDeInicio + "-" + diaDeInicio;
-		
-		String diaDeTermino = request.getParameter("termino").substring(0, 2);
-		String mesDeTermino = request.getParameter("termino").substring(3, 5);
-		String anoDeTermino = request.getParameter("termino").substring(6, 10);
-
-		String termino = anoDeTermino + "-" + mesDeTermino + "-" + diaDeTermino;
-		*/
-		
-		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); 
-		Date dateInicio = null;
-		Date dateTermino = null;
-		
-		try {
-			
-            dateInicio = formatter.parse(request.getParameter("inicio"));
-			dateTermino = formatter.parse(request.getParameter("termino"));
-			 
-			System.out.println("data inicio e termino:" +formatter.format(dateInicio));
-		
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} 
+	public String retornarProjetosEntreDatas(ModelMap modelMap, @RequestParam("inicio") Date inicio, @RequestParam("termino") Date termino) {
 		
 		modelMap.addAttribute("projetos",
-				serviceProjeto.getProjetosByDates(dateInicio, dateTermino));
-		return "diretor/relatorioBolsasPorDocente";
+				serviceProjeto.getProjetosByDates(inicio, termino));
+		return "diretor/relatorioBolsaProjeto";
 	}
 
 }
