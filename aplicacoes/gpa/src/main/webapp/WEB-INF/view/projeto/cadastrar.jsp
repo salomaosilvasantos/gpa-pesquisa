@@ -91,9 +91,6 @@
 						<div class="col-sm-2">
 							<form:input id="cargaHoraria" type="number" min="1"
 								placeholder="45" path="cargaHoraria" cssClass="form-control" />
-							<div class="error-validation">
-								<form:errors path="cargaHoraria"></form:errors>
-							</div>
 						</div>
 					</div>
 					<div class="form-group">

@@ -782,7 +782,7 @@ public class ProjetoController {
 		if (projeto.getNome().isEmpty()) {
 			model.addAttribute("error_nome", "Campo obrigatório");
 			valid = false;
-		}
+		}	
 		if (projeto.getInicio() == null) {
 			model.addAttribute("error_inicio", "Campo obrigatório");
 			valid = false;
@@ -810,7 +810,7 @@ public class ProjetoController {
 			model.addAttribute("error_atividades", "Campo obrigatório");
 			valid = false;
 		}
-		if (projeto.getCargaHoraria() == null) {
+		if (projeto.getCargaHoraria() == null && projeto.getCargaHoraria() == 0) {
 			model.addAttribute("error_cargaHoraria", "Campo obrigatório");
 			valid = false;
 		}		

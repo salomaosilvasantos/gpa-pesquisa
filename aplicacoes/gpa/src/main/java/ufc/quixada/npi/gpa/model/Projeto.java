@@ -55,7 +55,6 @@ public class Projeto implements Serializable {
 
 	private String atividades;
 
-	//@NotNull(message="Campo obrigatório")
 	private Integer cargaHoraria;
 
 	private Integer valorDaBolsa;
