@@ -7,18 +7,41 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
-import ufc.quixada.npi.gpa.repository.ProjetoRepository;
-import ufc.quixada.npi.gpa.repository.QueryType;
+import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.ProjetoService;
+import br.ufc.quixada.npi.enumeration.QueryType;
+import br.ufc.quixada.npi.repository.GenericRepository;
 
 @Named
-public class ProjetoServiceImpl extends GenericServiceImpl<Projeto> implements
-		ProjetoService {
+public class ProjetoServiceImpl implements ProjetoService {
 
 	@Inject
-	private ProjetoRepository projetoRepository;
+	private GenericRepository<Projeto> projetoRepository;
+	
+	@Override
+	public Map<String, String> cadastrar(Projeto projeto) {
+		Map<String, String> resultado = new HashMap<String, String>();
+		
+		if(!projeto.isDataTerminoFutura()) {
+			resultado.put("termino", "Somente data futura");
+		}
+		
+		if(!projeto.isPeriodoValido()) {
+			resultado.put("inicio", "A data de início deve ser antes da data de término");
+		}
+		
+		if (resultado.isEmpty()) {
+			projeto.setStatus(StatusProjeto.NOVO);
+			projetoRepository.save(projeto);
+
+			String codigo = geraCodigoProjeto(projeto.getId());
+			projeto.setCodigo(codigo);
+			projetoRepository.update(projeto);
+		}
+		
+		return resultado;
+	}
 
 	@Override
 	public List<Projeto> getProjetosSubmetidos() {
@@ -57,6 +80,17 @@ public class ProjetoServiceImpl extends GenericServiceImpl<Projeto> implements
 		return projetoRepository.find(QueryType.JPQL, "Select p from Projeto as p, Parecer as pa where p.id = pa.projeto.id and pa.usuario.id = :id and p.status = 'AGUARDANDO_PARECER'" , params);
 	}
 
+	@Override
+	public Projeto getProjetoById(Long id) {
+		return projetoRepository.find(Projeto.class, id);
+	}
 	
-	
+	private String geraCodigoProjeto(Long id) {
+		if (id < 10) {
+			return "PESQ0" + id;
+		} else {
+			return "PESQ" + id;
+		}
+	}
+
 }

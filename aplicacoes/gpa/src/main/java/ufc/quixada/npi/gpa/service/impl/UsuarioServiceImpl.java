@@ -9,16 +9,15 @@ import javax.inject.Named;
 
 import ufc.quixada.npi.gpa.model.Papel;
 import ufc.quixada.npi.gpa.model.Pessoa;
-import ufc.quixada.npi.gpa.repository.QueryType;
-import ufc.quixada.npi.gpa.repository.UsuarioRepository;
 import ufc.quixada.npi.gpa.service.UsuarioService;
+import br.ufc.quixada.npi.enumeration.QueryType;
+import br.ufc.quixada.npi.repository.GenericRepository;
 
 @Named
-public class UsuarioServiceImpl extends GenericServiceImpl<Pessoa> implements
-		UsuarioService {
+public class UsuarioServiceImpl implements UsuarioService {
 
 	@Inject
-	private UsuarioRepository usuarioRepository;
+	private GenericRepository<Pessoa> usuarioRepository;
 
 	@Override
 	public Pessoa getUsuarioByLogin(String login) {
@@ -50,7 +49,7 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Pessoa> implements
 	@Override
 	public Pessoa getDiretor() {
 		Pessoa diretor = new Pessoa();
-		List<Pessoa> usuarios = find(Pessoa.class);
+		List<Pessoa> usuarios = usuarioRepository.find(Pessoa.class);
 		for (Pessoa u : usuarios) {
 			if (isDiretor(u)) {
 				diretor = u;
@@ -98,6 +97,11 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Pessoa> implements
 
 		return pessoa;
 
+	}
+
+	@Override
+	public Pessoa getUsuarioById(Long id) {
+		return usuarioRepository.find(Pessoa.class, id);
 	}
 
 }

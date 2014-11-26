@@ -1,6 +1,5 @@
 package ufc.quixada.npi.gpa.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -15,7 +14,7 @@ import org.codehaus.jackson.annotate.JsonBackReference;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-public class Comentario implements Serializable {
+public class Comentario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

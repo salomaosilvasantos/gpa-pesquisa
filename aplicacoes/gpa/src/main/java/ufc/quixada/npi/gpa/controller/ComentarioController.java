@@ -29,7 +29,7 @@ public class ComentarioController {
 	@Inject
 	private ComentarioService comentarioService;
 
-	@RequestMapping(value = "/comentarProjeto", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/comentarProjeto", method = RequestMethod.POST)
 	@ResponseBody
 	public Comentario adicionar(HttpServletRequest request) throws Exception {
 
@@ -47,6 +47,6 @@ public class ComentarioController {
 
 		this.comentarioService.save(comentario);
 		return comentario;
-	}
+	}*/
 
 }

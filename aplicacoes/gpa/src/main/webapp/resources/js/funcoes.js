@@ -1,4 +1,32 @@
-$(document).ready(function() {    
+$(document).ready(function() {
+	$('#adicionarProjetoForm').bootstrapValidator({
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            nome: {
+                validators: {
+                    notEmpty: {
+                        message: 'Campo obrigatório'
+                    },
+                    stringLength: {
+                        min: 6,
+                        message: 'O nome deve ter no mínimo 5 caracteres'
+                    }
+                }
+            },
+            descricao: {
+                validators: {
+                    notEmpty: {
+                        message: 'Campo obrigatório'
+                    }
+                }
+            }
+        }
+    });
 	$("#formularioCadastroComentario").validate({
 		submitHandler : function(form) {
 			var idProjeto = $('#projeto').val();

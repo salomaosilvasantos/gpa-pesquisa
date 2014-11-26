@@ -33,7 +33,7 @@ public class DocumentoController {
 	@Inject
 	private UsuarioService serviceUsuario;
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public void getFile(@PathVariable("id") Long id, HttpServletResponse response, HttpSession session) {
 		try {
 			Documento documento = serviceDocumento.find(Documento.class, id);
@@ -69,7 +69,7 @@ public class DocumentoController {
 		serviceDocumento.delete(documento);
 		map.addAttribute("result", "ok");
 		return map;
-	}
+	}*/
 	
 	private Pessoa getUsuarioLogado(HttpSession session) {
 		if (session.getAttribute(Constants.USUARIO_LOGADO) == null) {

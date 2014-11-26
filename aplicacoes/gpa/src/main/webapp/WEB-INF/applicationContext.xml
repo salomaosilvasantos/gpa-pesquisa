@@ -61,4 +61,6 @@
 	<context:component-scan base-package="ufc.quixada.npi.gpa.repository" />
 	<context:component-scan base-package="ufc.quixada.npi.gpa.service" />
 	<context:component-scan base-package="ufc.quixada.npi.gpa.controller" />
+	<context:component-scan base-package="br.ufc.quixada.npi.repository" />
+	
 </beans>

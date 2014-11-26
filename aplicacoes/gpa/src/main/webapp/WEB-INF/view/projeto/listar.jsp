@@ -44,8 +44,7 @@
 				data-toggle="tab">Meus Projetos</a></li>
 			<li><a href="#projetos-aguardando-parecer" role="tab"
 				data-toggle="tab">Aguardando Parecer</a></li>
-			<li><a href="#projetos-avaliados" role="tab" data-toggle="tab">Projetos
-					Avaliados</a></li>
+			<li><a href="#projetos-avaliados" role="tab" data-toggle="tab">Projetos Avaliados</a></li>
 		</ul>
 
 		<div class="tab-content">
@@ -175,8 +174,7 @@
 			<!-- Projetos Avaliados -->
 			<div class="tab-pane" id="projetos-avaliados">
 				<c:if test="${empty projetosAvaliados}">
-					<div class="alert alert-warning" role="alert">Não há projetos
-						Avaliados.</div>
+					<div class="alert alert-warning" role="alert">Não há projetos avaliados.</div>
 				</c:if>
 				<c:if test="${not empty projetosAvaliados}">
 					<div class="panel panel-default">

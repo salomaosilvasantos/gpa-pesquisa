@@ -1,6 +1,6 @@
 package ufc.quixada.npi.gpa.model;
 
-import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -18,13 +18,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-public class Projeto implements Serializable {
+public class Projeto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -55,7 +55,6 @@ public class Projeto implements Serializable {
 
 	private String atividades;
 
-	//@NotNull(message="Campo obrigatório")
 	private Integer cargaHoraria;
 
 	private Integer valorDaBolsa;
@@ -81,37 +80,6 @@ public class Projeto implements Serializable {
 
 	@OneToMany(mappedBy = "projeto")
 	private List<Parecer> pareceres;
-
-	public Projeto() {
-		super();
-	}
-
-	public Projeto(Long id, String codigo, String nome, Date inicio,
-			Date termino, Date submissao, String descricao, Pessoa autor,
-			String atividades, Integer cargaHoraria, Integer valorDaBolsa,
-			Integer quantidadeBolsa, String local, StatusProjeto status,
-			List<Pessoa> participantes, List<Documento> documentos,
-			List<Comentario> comentarios, List<Parecer> pareceres) {
-		super();
-		this.id = id;
-		this.codigo = codigo;
-		this.nome = nome;
-		this.inicio = inicio;
-		this.termino = termino;
-		this.submissao = submissao;
-		this.descricao = descricao;
-		this.autor = autor;
-		this.atividades = atividades;
-		this.cargaHoraria = cargaHoraria;
-		this.valorDaBolsa = valorDaBolsa;
-		this.quantidadeBolsa = quantidadeBolsa;
-		this.local = local;
-		this.status = status;
-		this.participantes = participantes;
-		this.documentos = documentos;
-		this.comentarios = comentarios;
-		this.pareceres = pareceres;
-	}
 
 	public Date getAvaliacao() {
 		return avaliacao;
@@ -309,6 +277,49 @@ public class Projeto implements Serializable {
 
 	public enum Evento {
 		SUBMISSAO, ATRIBUICAO_PARECERISTA, EMISSAO_PARECER, AVALIACAO
+	}
+	
+	public boolean isDataTerminoFutura() {
+		if (this.termino != null && comparaDatas(new Date(), this.termino) > 0) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean isPeriodoValido() {
+		if (this.termino != null && this.inicio != null && comparaDatas(this.inicio, this.termino) > 0) {
+			return false;
+		}
+		return true;
+	}
+	
+	private int comparaDatas(Date date1, Date date2) {
+		Calendar calendar1 = Calendar.getInstance();
+		calendar1.setTime(date1);
+		Calendar calendar2 = Calendar.getInstance();
+		calendar2.setTime(date2);
+		if (calendar1.get(Calendar.YEAR) > calendar2.get(Calendar.YEAR)) {
+			return 1;
+		} else if (calendar1.get(Calendar.YEAR) < calendar2.get(Calendar.YEAR)) {
+			return -1;
+		} else {
+			if (calendar1.get(Calendar.MONTH) > calendar2.get(Calendar.MONTH)) {
+				return 1;
+			} else if (calendar1.get(Calendar.MONTH) < calendar2
+					.get(Calendar.MONTH)) {
+				return -1;
+			} else {
+				if (calendar1.get(Calendar.DAY_OF_MONTH) > calendar2
+						.get(Calendar.DAY_OF_MONTH)) {
+					return 1;
+				} else if (calendar1.get(Calendar.DAY_OF_MONTH) < calendar2
+						.get(Calendar.DAY_OF_MONTH)) {
+					return -1;
+				} else {
+					return 0;
+				}
+			}
+		}
 	}
 
 }

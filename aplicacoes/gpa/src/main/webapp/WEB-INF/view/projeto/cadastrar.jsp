@@ -27,8 +27,8 @@
 					<div class="form-group">
 						<label for="nome" class="col-sm-2 control-label">Nome:</label>
 						<div class="col-sm-10">
-							<form:input id="nome" path="nome" onchange="TrimNome()"
-								cssClass="form-control" placeholder="Nome do projeto" />
+							<form:input id="nome" name="nome" path="nome" onchange="TrimNome()"
+								cssClass="form-control" placeholder="Nome do projeto"/>
 							<div class="error-validation">
 								<form:errors path="nome"></form:errors>
 							</div>
@@ -40,7 +40,7 @@
 						<div class="col-sm-10">
 							<form:textarea id="descricao" path="descricao"
 								onchange="TrimDescricao()" class="form-control" rows="5"
-								placeholder="Descrição"></form:textarea>
+								placeholder="Descrição" name="descricao"></form:textarea>
 							<div class="error-validation">
 								<form:errors path="descricao"></form:errors>
 							</div>
@@ -66,7 +66,7 @@
 						<label for="termino" class="col-sm-2 control-label">Término:</label>
 						<div class="col-sm-2">
 							<form:input id="termino" type="text" path="termino"
-								cssClass="form-control data" placeholder="Data de Término" />
+								cssClass="form-control data" placeholder="Data de término" />
 							<div class="error-validation">
 								<form:errors path="termino"></form:errors>
 							</div>
@@ -90,7 +90,7 @@
 							Horária:</label>
 						<div class="col-sm-2">
 							<form:input id="cargaHoraria" type="number" min="1"
-								placeholder="45" path="cargaHoraria" cssClass="form-control" />
+								placeholder="0" path="cargaHoraria" cssClass="form-control" />
 							<div class="error-validation">
 								<form:errors path="cargaHoraria"></form:errors>
 							</div>
