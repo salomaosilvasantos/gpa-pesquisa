@@ -1,11 +1,13 @@
 package ufc.quixada.npi.gpa.controller;
 
-import static ufc.quixada.npi.gpa.utils.Constants.*;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PERMISSAO_NEGADA;
 import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_PROJETO_INEXISTENTE;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_CADASTRAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_DETALHES_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_EDITAR_PROJETO;
 import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_EMITIR_PARECER;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO;
+import static ufc.quixada.npi.gpa.utils.Constants.PAGINA_LISTAR_PROJETO_DIRETOR;
 import static ufc.quixada.npi.gpa.utils.Constants.REDIRECT_PAGINA_LISTAR_PROJETO;
 
 import java.io.IOException;

@@ -23,6 +23,7 @@
 				<form:form id="adicionarProjetoForm" role="form" commandName="projeto" servletRelativeAction="/projeto/cadastrar"
 					method="POST" cssClass="form-horizontal">
 
+					<input type="hidden" id="valorDaBolsa" name="valorDaBolsa" value="${projeto.valorDaBolsa }"/>
 					<div class="form-group form-item">
 						<label for="nome" class="col-sm-2 control-label">Nome:</label>
 						<div class="col-sm-10">
@@ -98,9 +99,12 @@
 						</div>
 						
 						<div class="form-item">
-							<label for="valorDaBolsa" class="col-sm-2 control-label">Valor da bolsa:</label>
+							<label for="bolsa" class="col-sm-2 control-label">Valor da bolsa:</label>
 							<div class="col-sm-2">
-								<form:input id="valorDaBolsa" name="valorDaBolsa" placeholder="R$ 0,00" path="valorDaBolsa" cssClass="form-control" />
+								<input id="bolsa" name="bolsa" placeholder="R$ 0,00" class="form-control" value="${projeto.valorDaBolsa }"/>
+								<div class="error-validation">
+									<form:errors path="valorDaBolsa"></form:errors>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -119,7 +123,7 @@
 					</div>
 
 					<div class="controls">
-						<input name="submit" type="submit" class="btn btn-primary" value="Cadastrar" />
+						<input name="SUBMIT" type="submit" class="btn btn-primary" value="Cadastrar" />
 						<a href="<c:url value="/projeto/index"></c:url>" class="btn btn-default">Cancelar</a>
 					</div>
 				</form:form>

@@ -17,20 +17,77 @@ $(document).ready(function() {
             quantidadeBolsa: {
             	validators: {
             		integer: {
-                        message: 'Digite apenas números'
+                        message: 'Digite um número válido'
                     }
             	}
             },
             cargaHoraria: {
             	validators: {
             		integer: {
-                        message: 'Digite apenas números'
+                        message: 'Digite um número válido'
+                    }
+            	}
+            },
+            inicio :{
+            	validators: {
+            		callback: {
+                        message: 'A data de início deve ser anterior à data de término',
+                        callback: function(value, validator) {
+                        	var termino = validator.getFieldElements('termino').val();
+                        	if(value != "" && termino != "") {
+                        		termino = moment(termino, "DD/MM/YYYY").format("DD/MM/YYYY");
+	                        	var inicio = moment(value, "DD/MM/YYYY").format("DD/MM/YYYY");
+	                        	if(moment(termino, "DD/MM/YYYY").isBefore(moment(inicio, "DD/MM/YYYY"))) {
+	                        		return false;
+	                        	}
+                        	}
+                        	return true;
+                        }
+                    }
+            	}
+            },
+            termino :{
+            	validators: {
+            		callback: {
+                        message: 'A data de término não pode ser anterior à data atual',
+                        callback: function(value, validator) {
+                        	if(value != "") {
+	                        	var today = moment().format("DD/MM/YYYY");
+	                        	var termino = moment(value, "DD/MM/YYYY").format("DD/MM/YYYY");
+	                        	if(moment(termino, "DD/MM/YYYY").isBefore(moment(today, "DD/MM/YYYY"))) {
+	                        		return false;
+	                        	}
+                        	}
+                        	return true;
+                        }
                     }
             	}
             }
+            
         }
-    })
-    .find('[name="valorDaBolsa"]').maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:','});
+    });
+	
+	// Usado para não apagar a máscara e enviar somente o valor para o servidor
+	$("#adicionarProjetoForm").submit(function() {
+		$('#valorDaBolsa').val($('#bolsa').maskMoney('unmasked')[0]);
+	});
+	
+	//Máscaras
+    $('[name="quantidadeBolsa"]').mask("");
+    $('[name="bolsa"]').maskMoney({prefix:'R$ ', showSymbol:true, thousands:'.', decimal:','});
+    $('[name="bolsa"]').maskMoney('mask');
+	
+	$("input.data").datepicker({
+		format : "dd/mm/yyyy",
+		todayBtn : "linked",
+		autoclose : true,
+		language : "pt-BR",
+		todayHighlight : true
+	})
+	.on('changeDate', function(e) {
+        $('#adicionarProjetoForm').bootstrapValidator('revalidateField', 'termino');
+        $('#adicionarProjetoForm').bootstrapValidator('revalidateField', 'inicio');
+    });
 	
 	
 	$("#formularioCadastroComentario").validate({
@@ -118,14 +175,6 @@ $(document).ready(function() {
 
 	$('div.error-validation:has(span)').find('span').css('color', '#a94442');
 	$('div.error-validation:has(span)').find('span').parent().parent().parent().addClass('has-error has-feedback');
-
-	$("input.data").datepicker({
-		format : "dd/mm/yyyy",
-		todayBtn : "linked",
-		autoclose : true,
-		language : "pt-BR",
-		todayHighlight : true
-	});
 
 	$('.tab a').click(function (e) {
 		e.preventDefault();

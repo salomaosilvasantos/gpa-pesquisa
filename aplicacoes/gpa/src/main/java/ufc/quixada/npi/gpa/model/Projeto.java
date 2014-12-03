@@ -57,7 +57,7 @@ public class Projeto {
 
 	private Integer cargaHoraria;
 
-	private Integer valorDaBolsa;
+	private Double valorDaBolsa;
 
 	@Min(value = 1, message = "Número de bolsas deve ser maior que 1")
 	private Integer quantidadeBolsa;
@@ -136,11 +136,11 @@ public class Projeto {
 		this.cargaHoraria = cargaHoraria;
 	}
 
-	public Integer getValorDaBolsa() {
+	public Double getValorDaBolsa() {
 		return valorDaBolsa;
 	}
 
-	public void setValorDaBolsa(Integer valorDaBolsa) {
+	public void setValorDaBolsa(Double valorDaBolsa) {
 		this.valorDaBolsa = valorDaBolsa;
 	}
 
