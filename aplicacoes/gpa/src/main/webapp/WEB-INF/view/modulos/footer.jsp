@@ -27,4 +27,5 @@
 <script src="<c:url value="/resources/js/jquery.maskMoney.min.js" />"></script>
 <script src="<c:url value="/resources/js/moment.js" />"></script>
 <script src="<c:url value="/resources/js/moment-with-locales.js" />"></script>
-<script src="<c:url value="/resources/js/bootstrap-select.min.js" />"></script>
+<script src="<c:url value="/resources/js/select2.min.js" />"></script>
+<script src="<c:url value="/resources/js/select2_locale_pt-BR.js" />"></script>

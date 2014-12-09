@@ -142,6 +142,11 @@ public class Pessoa {
 		}
 		return false;
 	}
+	@Override
+	public String toString() {
+		return "Pessoa [id=" + id + ", nome=" + nome + "]";
+	}
+	
 	
 }
 

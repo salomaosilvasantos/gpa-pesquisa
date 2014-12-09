@@ -6,4 +6,8 @@
 <link href="<c:url value="/resources/css/estilo.css" />" rel="stylesheet" />
 <link href="<c:url value="/resources/css/bootstrapValidator.css" />" rel="stylesheet" />
 <link href="<c:url value="/resources/css/bootstrap-select.min.css" />" rel="stylesheet" />
+<link href="<c:url value="/resources/css/jquery.fileupload.css"/>" rel="stylesheet"/>
+<link href="<c:url value="/resources/css/jquery.fileupload-ui.css"/>" rel="stylesheet"/>
+<link href="<c:url value="/resources/css/select2.css"/>" rel="stylesheet"/>
+<link href="<c:url value="/resources/css/select2-bootstrap.css"/>" rel="stylesheet"/>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

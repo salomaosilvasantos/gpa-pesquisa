@@ -17,7 +17,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonManagedReference;
@@ -31,7 +30,7 @@ public class Projeto {
 
 	private String codigo;
 
-	@Size(min = 2, message = "Mínimo 2 caracteres")
+	@Size(min = 2, message = "O nome deve ter no mínimo 2 caracteres")
 	private String nome;
 
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -47,7 +46,7 @@ public class Projeto {
 	private Date submissao;
 
 	@Column(columnDefinition = "TEXT")
-	@Size(min = 5, message = "Mínimo 5 caracteres")
+	@Size(min = 5, message = "A descrição deve ter no mínimo 5 caracteres")
 	private String descricao;
 
 	@ManyToOne
@@ -59,7 +58,6 @@ public class Projeto {
 
 	private Double valorDaBolsa;
 
-	@Min(value = 1, message = "Número de bolsas deve ser maior que 1")
 	private Integer quantidadeBolsa;
 
 	private String local;
@@ -68,7 +66,7 @@ public class Projeto {
 	private StatusProjeto status;
 
 	@ManyToMany
-    @JoinTable(joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="pessoa_id", referencedColumnName="id")})
+    @JoinTable(name="projeto_participante", joinColumns = {@JoinColumn(name="projeto_id",referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="participante_id", referencedColumnName="id")})
     private List<Pessoa> participantes;
 	
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)

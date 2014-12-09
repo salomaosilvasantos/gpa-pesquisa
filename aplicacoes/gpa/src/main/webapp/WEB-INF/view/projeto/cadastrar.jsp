@@ -15,17 +15,29 @@
 <body>
 
 	<jsp:include page="../modulos/header.jsp" />
+	
+	<fmt:formatNumber value="${projeto.valorDaBolsa}"  type="currency" var="valorBolsa"/>
+	<c:if test="${action eq 'cadastrar' }">
+		<c:set var="url" value="/projeto/cadastrar"></c:set>
+		<c:set var="titulo" value="Novo Projeto"></c:set>
+	</c:if>
+	<c:if test="${action eq 'editar' }">
+		<c:set var="url" value="/projeto/editar"></c:set>
+		<c:set var="titulo" value="Editar - ${projeto.nome } "></c:set>
+	</c:if>
 
 	<div class="container">
 		<div class="novo-projeto" align="left">
 			<div class="form" align="center">
-				<h2>Novo Projeto</h2>
-				<form:form id="adicionarProjetoForm" role="form" commandName="projeto" servletRelativeAction="/projeto/cadastrar"
-					method="POST" cssClass="form-horizontal">
+				<h2>${titulo}</h2>
+				<form:form id="adicionarProjetoForm" role="form" commandName="projeto" servletRelativeAction="${url }" method="POST" cssClass="form-horizontal">
 
 					<input type="hidden" id="valorDaBolsa" name="valorDaBolsa" value="${projeto.valorDaBolsa }"/>
+					<input type="hidden" id="id" name="id" value="${projeto.id }"/>
+					<input type="hidden" id="codigo" name="codigo" value="${projeto.codigo }"/>
+					
 					<div class="form-group form-item">
-						<label for="nome" class="col-sm-2 control-label">Nome:</label>
+						<label for="nome" class="col-sm-2 control-label"><span class="required">*</span> Nome:</label>
 						<div class="col-sm-10">
 							<form:input id="nome" name="nome" path="nome" cssClass="form-control" placeholder="Nome do projeto" required="required"/>
 							<div class="error-validation">
@@ -35,7 +47,7 @@
 					</div>
 
 					<div class="form-group form-item">
-						<label for="descricao" class="col-sm-2 control-label">Descrição:</label>
+						<label for="descricao" class="col-sm-2 control-label"><span class="required">*</span> Descrição:</label>
 						<div class="col-sm-10">
 							<form:textarea id="descricao" path="descricao" class="form-control" rows="5" placeholder="Descrição" name="descricao" required="required"/>
 							<div class="error-validation">
@@ -49,7 +61,7 @@
 						<div class="form-item">
 							<label for="inicio" class="col-sm-2 control-label">Início:</label>
 							<div class="col-sm-2">
-								<form:input id="inicio" type="text" path="inicio" cssClass="form-control data" placeholder="Data de início" />
+								<form:input id="inicio" type="text" path="inicio" cssClass="form-control data" placeholder="Data de início"/>
 								<div class="error-validation">
 									<form:errors path="inicio"></form:errors>
 								</div>
@@ -64,7 +76,7 @@
 						<div class="form-item">
 							<label for="termino" class="col-sm-2 control-label">Término:</label>
 							<div class="col-sm-2">
-								<form:input id="termino" type="text" path="termino" cssClass="form-control data" placeholder="Data de término" />
+								<form:input id="termino" type="text" path="termino" cssClass="form-control data" placeholder="Data de término"/>
 								<div class="error-validation">
 									<form:errors path="termino"></form:errors>
 								</div>
@@ -77,9 +89,9 @@
 						</div>
 
 						<div class="form-item">
-							<label for="bolsas" class="col-sm-2 control-label">Número de bolsas:</label>
+							<label for="quantidadeBolsa" class="col-sm-2 control-label">Número de bolsas:</label>
 							<div class="col-sm-2" >
-								<form:input id="bolsas" name="quantidadeBolsa" type="number" placeholder="0" path="quantidadeBolsa" cssClass="form-control" min="0"/>
+								<form:input id="quantidadeBolsa" name="quantidadeBolsa" type="number" placeholder="0" path="quantidadeBolsa" cssClass="form-control" min="0"/>
 								<div class="error-validation">
 									<form:errors path="quantidadeBolsa"></form:errors>
 								</div>
@@ -101,13 +113,31 @@
 						<div class="form-item">
 							<label for="bolsa" class="col-sm-2 control-label">Valor da bolsa:</label>
 							<div class="col-sm-2">
-								<input id="bolsa" name="bolsa" placeholder="R$ 0,00" class="form-control" value="${projeto.valorDaBolsa }"/>
+								<input id="bolsa" name="bolsa" placeholder="R$ 0,00" class="form-control" value="${valorBolsa }"/>
 								<div class="error-validation">
 									<form:errors path="valorDaBolsa"></form:errors>
 								</div>
 							</div>
 						</div>
 					</div>
+					
+					<div class="form-group form-item">
+						<label for="idParticipantes" class="col-sm-2 control-label">Participantes:</label>
+						<div class="col-sm-10">
+							<select id="participantes" name="idParticipantes" class="form-control" multiple="multiple">
+								<c:set var="part" value="${projeto.participantes }"></c:set>
+								<c:forEach items="${participantes }" var="participante">
+									<c:set var="selected" value=""></c:set>
+									<c:set var="idParticipante" value="id=${participante.id }"></c:set>
+									<c:if test="${fn:contains(part, idParticipante)}">
+										<c:set var="selected" value="selected=\"selected\""></c:set>
+									</c:if>
+									<option value="${participante.id }" ${selected }>${participante.nome }</option>
+								</c:forEach>
+							</select>
+						</div>
+					</div>
+					
 					<div class="form-group form-item">
 						<label for="local" class="col-sm-2 control-label">Local:</label>
 						<div class="col-sm-10">
@@ -121,9 +151,16 @@
 							<form:textarea id="atividades" path="atividades" name="atividades" class="form-control" rows="5" placeholder="Atividades"></form:textarea>
 						</div>
 					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-2">
+							<span class="campo-obrigatorio"><span class="required">*</span> Campos obrigatórios</span>
+						</div>
+					</div>
 
 					<div class="controls">
-						<input name="SUBMIT" type="submit" class="btn btn-primary" value="Cadastrar" />
+						<input name="salvar" type="submit" class="btn btn-primary" value="Salvar" />
 						<a href="<c:url value="/projeto/index"></c:url>" class="btn btn-default">Cancelar</a>
 					</div>
 				</form:form>

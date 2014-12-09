@@ -12,6 +12,7 @@ import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
+import static ufc.quixada.npi.gpa.utils.Constants.*;
 
 @Named
 public class ProjetoServiceImpl implements ProjetoService {
@@ -24,11 +25,11 @@ public class ProjetoServiceImpl implements ProjetoService {
 		Map<String, String> resultado = new HashMap<String, String>();
 		
 		if(!projeto.isDataTerminoFutura()) {
-			resultado.put("termino", "Somente data futura");
+			resultado.put("termino", MENSAGEM_DATA_TERMINO_FUTURA);
 		}
 		
 		if(!projeto.isPeriodoValido()) {
-			resultado.put("inicio", "A data de início deve ser antes da data de término");
+			resultado.put("inicio", MENSAGEM_DATA_INICIO_TERMINO);
 		}
 		
 		if (resultado.isEmpty()) {
@@ -41,6 +42,31 @@ public class ProjetoServiceImpl implements ProjetoService {
 		}
 		
 		return resultado;
+	}
+	
+	@Override
+	public Map<String, String> atualizar(Projeto projeto) {
+		Map<String, String> resultado = new HashMap<String, String>();
+		
+		if(!projeto.isDataTerminoFutura()) {
+			resultado.put("termino", MENSAGEM_DATA_TERMINO_FUTURA);
+		}
+		
+		if(!projeto.isPeriodoValido()) {
+			resultado.put("inicio", MENSAGEM_DATA_INICIO_TERMINO);
+		}
+		
+		if (resultado.isEmpty()) {
+			projeto.setStatus(StatusProjeto.NOVO);
+			projetoRepository.update(projeto);
+		}
+		
+		return resultado;
+	}
+	
+	@Override
+	public void remover(Projeto projeto) {
+		projetoRepository.delete(projeto);
 	}
 
 	@Override
@@ -91,6 +117,64 @@ public class ProjetoServiceImpl implements ProjetoService {
 		} else {
 			return "PESQ" + id;
 		}
+	}
+
+	@Override
+	public Map<String, String> validarSubmissao(Projeto projeto) {
+		Map<String, String> resultado = new HashMap<String, String>();
+		
+		if(projeto.getNome() == null || projeto.getNome().isEmpty()) {
+			resultado.put("nome", MENSAGEM_CAMPO_OBRIGATORIO);
+		}
+		
+		if(projeto.getDescricao() == null || projeto.getDescricao().isEmpty()) {
+			resultado.put("descricao", MENSAGEM_CAMPO_OBRIGATORIO);
+		}
+		
+		if(projeto.getInicio() == null) {
+			resultado.put("inicio", MENSAGEM_CAMPO_OBRIGATORIO);
+		}
+		
+		if(!projeto.isPeriodoValido()) {
+			resultado.put("inicio", MENSAGEM_DATA_INICIO_TERMINO);
+		}
+		
+		if(projeto.getTermino() == null) {
+			resultado.put("termino", MENSAGEM_CAMPO_OBRIGATORIO);
+		}
+		
+		if(!projeto.isDataTerminoFutura()) {
+			resultado.put("termino", MENSAGEM_DATA_TERMINO_FUTURA);
+		}
+		
+		if(projeto.getCargaHoraria() == null || projeto.getCargaHoraria() == 0) {
+			resultado.put("cargaHoraria", MENSAGEM_CAMPO_OBRIGATORIO);
+		}
+		
+		if(projeto.getParticipantes() == null || projeto.getParticipantes().isEmpty()) {
+			resultado.put("participantes", MENSAGEM_CAMPO_OBRIGATORIO);
+		}
+		
+		if(projeto.getLocal() == null || projeto.getLocal().isEmpty()) {
+			resultado.put("local", MENSAGEM_CAMPO_OBRIGATORIO);
+		}
+		
+		if(projeto.getAtividades() == null || projeto.getAtividades().isEmpty()) {
+			resultado.put("atividades", MENSAGEM_CAMPO_OBRIGATORIO);
+		}
+		
+		
+		return resultado;
+	}
+
+	@Override
+	public Map<String, String> submeter(Projeto projeto) {
+		Map<String, String> resultadoValidacao = this.validarSubmissao(projeto);
+		if (resultadoValidacao.isEmpty()) {
+			projeto.setStatus(StatusProjeto.SUBMETIDO);
+			projetoRepository.update(projeto);
+		}
+		return resultadoValidacao;
 	}
 
 }

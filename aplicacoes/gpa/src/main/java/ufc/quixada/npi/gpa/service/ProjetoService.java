@@ -9,6 +9,14 @@ public interface ProjetoService {
 	
 	Map<String, String> cadastrar(Projeto projeto);
 	
+	Map<String, String> atualizar(Projeto projeto);
+	
+	void remover(Projeto projeto);
+	
+	Map<String, String> validarSubmissao(Projeto projeto);
+	
+	Map<String, String> submeter(Projeto projeto);
+	
 	Projeto getProjetoById(Long id);
 
 	List<Projeto> getProjetosSubmetidos();
@@ -22,5 +30,5 @@ public interface ProjetoService {
 	List<Projeto> getProjetosAvaliados();
 
 	List<Projeto> getProjetosAguardandoParecer(Long id);
-
+	
 }

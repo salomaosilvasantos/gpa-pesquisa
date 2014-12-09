@@ -78,40 +78,31 @@
 										<td><a
 											href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
 										<td class="status">${projeto.status.descricao}</td>
-										<td><c:if test="${projeto.status == 'NOVO'}">
-												<a id="submeter" data-toggle="modal"
-													data-target="#confirm-submit" href="#"
-													data-href="<c:url value="/projeto/${projeto.id}/submeter" ></c:url>">
-													<button class="btn btn-primary">
-														Submeter <span class="glyphicon glyphicon-upload"></span>
-													</button>
+										<td>
+											<c:if test="${projeto.status == 'NOVO'}">
+												<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#"
+													data-href="<c:url value="/projeto/${projeto.id}/submeter" ></c:url>" data-name="${projeto.nome }">
+													<button class="btn btn-primary">Submeter <span class="glyphicon glyphicon-upload"></span></button>
 												</a>
 
-												<a id="editar"
-													href="<c:url value="/projeto/${projeto.id}/editar" ></c:url>">
-													<button class="btn btn-info">
-														Editar <span class="glyphicon glyphicon-pencil"></span>
-													</button>
+												<a id="editar" href="<c:url value="/projeto/${projeto.id}/editar" ></c:url>">
+													<button class="btn btn-info"> Editar <span class="glyphicon glyphicon-pencil"></span></button>
 												</a>
 
-												<a id="excluir" data-toggle="modal"
-													data-target="#confirm-delete" href="#"
-													data-href="<c:url value="/projeto/${projeto.id}/excluir" ></c:url>">
-													<button class="btn btn-danger">
-														Excluir <span class="glyphicon glyphicon-trash"></span>
-													</button>
+												<a id="excluir" data-toggle="modal" data-target="#confirm-delete" href="#" 
+													data-href="<c:url value="/projeto/${projeto.id}/excluir"></c:url>" data-name="${projeto.nome }">
+													<button class="btn btn-danger">Excluir <span class="glyphicon glyphicon-trash"></span></button>
 												</a>
-											</c:if> <sec:authorize ifAnyGranted="ROLE_DIRETOR">
+											</c:if>
+											<sec:authorize ifAnyGranted="ROLE_DIRETOR">
 												<c:if test="${projeto.status == 'SUBMETIDO'}">
-													<a id="atribuirParecerista"
-														href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
-														<button class="btn btn-primary">
-															Atribuir Parecerista <span
-																class="glyphicon glyphicon-user"></span>
+													<a id="atribuirParecerista" href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
+														<button class="btn btn-primary">Atribuir Parecerista <span class="glyphicon glyphicon-user"></span>
 														</button>
 													</a>
 												</c:if>
-											</sec:authorize></td>
+											</sec:authorize>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -211,13 +202,15 @@
 		</div>
 	</div>
 
-	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
+	<!-- Modal Excluir Projeto -->
+	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<div class="modal-header">Excluir</div>
-				<div class="modal-body">Tem certeza de que deseja excluir esse
-					projeto?</div>
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        			<h4 class="modal-title" id="excluirModalLabel">Excluir</h4>
+				</div>
+				<div class="modal-body"></div>
 				<div class="modal-footer">
 					<a href="#" class="btn btn-danger">Excluir</a>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -226,13 +219,15 @@
 		</div>
 	</div>
 
-	<div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
+	<!-- Modal Submeter Projeto -->
+	<div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<div class="modal-header">Submeter Projeto</div>
-				<div class="modal-body">Tem certeza de que deseja submeter
-					esse projeto?</div>
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        			<h4 class="modal-title" id="submeterModalLabel">Submeter</h4>
+				</div>
+				<div class="modal-body"></div>
 				<div class="modal-footer">
 					<a href="#" class="btn btn-primary">Submeter</a>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
