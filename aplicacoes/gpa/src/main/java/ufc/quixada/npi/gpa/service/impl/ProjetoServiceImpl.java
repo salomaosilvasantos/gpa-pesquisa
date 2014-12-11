@@ -1,5 +1,10 @@
 package ufc.quixada.npi.gpa.service.impl;
 
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_CAMPO_OBRIGATORIO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_DATA_INICIO_TERMINO;
+import static ufc.quixada.npi.gpa.utils.Constants.MENSAGEM_DATA_TERMINO_FUTURA;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,18 +12,21 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import ufc.quixada.npi.gpa.model.Parecer;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 import br.ufc.quixada.npi.enumeration.QueryType;
 import br.ufc.quixada.npi.repository.GenericRepository;
-import static ufc.quixada.npi.gpa.utils.Constants.*;
 
 @Named
 public class ProjetoServiceImpl implements ProjetoService {
 
 	@Inject
 	private GenericRepository<Projeto> projetoRepository;
+	
+	@Inject
+	private GenericRepository<Parecer> parecerRepository;
 	
 	@Override
 	public Map<String, String> cadastrar(Projeto projeto) {
@@ -103,7 +111,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 	public List<Projeto> getProjetosAguardandoParecer(Long id) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
-		return projetoRepository.find(QueryType.JPQL, "Select p from Projeto as p, Parecer as pa where p.id = pa.projeto.id and pa.usuario.id = :id and p.status = 'AGUARDANDO_PARECER'" , params);
+		return projetoRepository.find(QueryType.JPQL, "select p from Projeto as p where p.parecer.parecerista.id = :id and p.status = 'AGUARDANDO_PARECER'" , params);
 	}
 
 	@Override
@@ -119,8 +127,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 		}
 	}
 
-	@Override
-	public Map<String, String> validarSubmissao(Projeto projeto) {
+	private Map<String, String> validarSubmissao(Projeto projeto) {
 		Map<String, String> resultado = new HashMap<String, String>();
 		
 		if(projeto.getNome() == null || projeto.getNome().isEmpty()) {
@@ -175,6 +182,44 @@ public class ProjetoServiceImpl implements ProjetoService {
 			projetoRepository.update(projeto);
 		}
 		return resultadoValidacao;
+	}
+
+	@Override
+	public Map<String, String> atribuirParecerista(Projeto projeto, Parecer parecer) {
+		Map<String, String> resultado = new HashMap<String, String>();
+		if(parecer.getPrazo() == null) {
+			resultado.put("prazo", MENSAGEM_CAMPO_OBRIGATORIO);
+		}
+		if(resultado.isEmpty()) {
+			parecerRepository.save(parecer);
+			projeto.setParecer(parecer);
+			projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);
+			projetoRepository.update(projeto);
+			
+		}
+		return resultado;
+	}
+
+	@Override
+	public Map<String, String> emitirParecer(Projeto projeto) {
+		Map<String, String> resultado = new HashMap<String, String>();
+		if(projeto.getParecer().getParecer() == null || projeto.getParecer().getParecer().isEmpty()) {
+			resultado.put("parecer", MENSAGEM_CAMPO_OBRIGATORIO);
+		}
+		if(resultado.isEmpty()) {
+			projeto.setStatus(StatusProjeto.AGUARDANDO_AVALIACAO);
+			projetoRepository.update(projeto);
+			
+		}
+		return resultado;
+	}
+
+	@Override
+	public Map<String, String> avaliar(Projeto projeto) {
+		Map<String, String> resultado = new HashMap<String, String>();
+		projeto.setAvaliacao(new Date());
+		projetoRepository.update(projeto);
+		return resultado;
 	}
 
 }

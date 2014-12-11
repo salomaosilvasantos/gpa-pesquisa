@@ -3,11 +3,13 @@ package ufc.quixada.npi.gpa.controller;
 import static ufc.quixada.npi.gpa.utils.Constants.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ufc.quixada.npi.gpa.model.Parecer;
+import ufc.quixada.npi.gpa.model.Parecer.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Pessoa;
 import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
@@ -110,7 +114,7 @@ public class ProjetoController {
 		
 		Map<String, String> resultado = projetoService.cadastrar(projeto);
 		if (!resultado.isEmpty()) {
-			buildValidacoes(resultado, result);
+			buildValidacoesBindingResult(resultado, result);
 			return PAGINA_CADASTRAR_PROJETO;
 		}
 		
@@ -177,7 +181,7 @@ public class ProjetoController {
 		
 		Map<String, String> resultado = projetoService.atualizar(projeto);
 		if (!resultado.isEmpty()) {
-			buildValidacoes(resultado, result);
+			buildValidacoesBindingResult(resultado, result);
 			return PAGINA_CADASTRAR_PROJETO;
 		}
 		
@@ -217,30 +221,28 @@ public class ProjetoController {
 			Map<String, String> resultadoValidacao = projetoService.submeter(projeto);
 			if(resultadoValidacao.isEmpty()) {
 				redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_SUBMETIDO);
+				return REDIRECT_PAGINA_LISTAR_PROJETO;
 			}
 			model.addAttribute("projeto", projeto);
 			model.addAttribute("participantes", usuarioService.getParticipantes(usuario));
 			model.addAttribute("alert", MENSAGEM_CAMPO_OBRIGATORIO_SUBMISSAO);
-			buildValidacoes(resultadoValidacao, result);
+			buildValidacoesBindingResult(resultadoValidacao, result);
 			return PAGINA_SUBMETER_PROJETO;
 		} else {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		
-		return REDIRECT_PAGINA_LISTAR_PROJETO;
 
 	}
 
 	@RequestMapping(value = "submeter", method = RequestMethod.POST)
 	public String submeter(@RequestParam(value = "idParticipantes", required = false) List<String> idParticipantes, @Valid Projeto projeto, BindingResult result,
 			Model model, HttpSession session, RedirectAttributes redirectAttributes) {		
-		
 		if (result.hasErrors()) {
 			return PAGINA_SUBMETER_PROJETO;
 		}
-		
 		projeto.setAutor(getUsuarioLogado(session));
-		
 		if(idParticipantes != null && !idParticipantes.isEmpty()) {
 			List<Pessoa> participantes = new ArrayList<Pessoa>();
 			for(String idParticipante : idParticipantes) {
@@ -248,8 +250,6 @@ public class ProjetoController {
 			}
 			projeto.setParticipantes(participantes);
 		}
-		
-		
 		Map<String, String> resultadoValidacao = projetoService.submeter(projeto);
 		if(resultadoValidacao.isEmpty()) {
 			redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_SUBMETIDO);
@@ -257,14 +257,55 @@ public class ProjetoController {
 		}
 		model.addAttribute("projeto", projeto);
 		model.addAttribute("participantes", usuarioService.getParticipantes(getUsuarioLogado(session)));
-		buildValidacoes(resultadoValidacao, result);
+		buildValidacoesBindingResult(resultadoValidacao, result);
 		return PAGINA_SUBMETER_PROJETO;
 	}
+	
+	@RequestMapping(value = "diretor/{projetoId}/atribuirParecerista", method = RequestMethod.GET)
+	public String atribuirPareceristaForm(@PathVariable("projetoId") Long projetoId, Model model, RedirectAttributes redirectAttributes) {
+		Projeto projeto = projetoService.getProjetoById(projetoId);
+		if (projeto == null) {
+			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;
+		}
+		if (projeto.getStatus() != StatusProjeto.SUBMETIDO) {
+			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;
+		}
 
-	/*@RequestMapping(value = "/{idProjeto}/emitirParecer/{idParecer}", method = RequestMethod.GET)
-	public String emitirParecerForm(@PathVariable("idProjeto") long idProjeto,
-			@PathVariable("idParecer") long idParecer, Model model,
-			HttpSession session, RedirectAttributes redirectAttributes) {
+		model.addAttribute("projeto", projeto);
+		model.addAttribute("usuarios", usuarioService.getPareceristas(projeto.getAutor().getId()));
+		return PAGINA_ATRIBUIR_PARECERISTA;
+	}
+	
+	@RequestMapping(value = "diretor/atribuirParecerista", method = RequestMethod.POST)
+	public String atribuirParecerista(@RequestParam("prazo") Date prazo, @RequestParam("observacao") String observacao, @RequestParam("projetoId") Long projetoId, 
+			@RequestParam("pareceristaId") Long pareceristaId, Model model, RedirectAttributes redirectAttributes) {
+
+		Projeto projeto = projetoService.getProjetoById(projetoId);
+		Pessoa parecerista = usuarioService.getUsuarioById(pareceristaId);
+		
+		Parecer parecer = new Parecer();
+		parecer.setDataAtribuicao(new Date());
+		parecer.setObservacao(observacao);
+		parecer.setParecerista(parecerista);
+		parecer.setPrazo(prazo);
+		
+		Map<String, String> resultado = projetoService.atribuirParecerista(projeto, parecer);
+		if(!resultado.isEmpty()) {
+			buildValidacoesModel(resultado, model);
+			model.addAttribute("projeto", projeto);
+			model.addAttribute("usuarios", usuarioService.getPareceristas(projeto.getAutor().getId()));
+			return PAGINA_ATRIBUIR_PARECERISTA;
+		}
+		
+		redirectAttributes.addFlashAttribute("info", MENSAGEM_PARECERISTA_ATRIBUIDO);
+		return REDIRECT_PAGINA_LISTAR_PROJETO;
+
+	}
+
+	@RequestMapping(value = "/{idProjeto}/emitirParecer", method = RequestMethod.GET)
+	public String emitirParecerForm(@PathVariable("idProjeto") long idProjeto, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
 		Projeto projeto = projetoService.getProjetoById(idProjeto);
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
@@ -274,71 +315,62 @@ public class ProjetoController {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		Parecer parecer = parecerService.getParecerById(idParecer);
-		if (getUsuarioLogado(session).getId() != parecer.getUsuario().getId()) {
+		if (!getUsuarioLogado(session).equals(projeto.getParecer().getParecerista())) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		model.addAttribute("projeto", projeto);
+		model.addAttribute("posicionamento", StatusPosicionamento.values());
 		return PAGINA_EMITIR_PARECER;
-	}*/
-
-	/*@RequestMapping(value = "/{idProjeto}/emitirParecer/{idParecer}", method = RequestMethod.POST)
+	}
+	
+	@RequestMapping(value = "/{idProjeto}/emitirParecer", method = RequestMethod.POST)
 	public String emitirParecer(@PathVariable("idProjeto") Long idProjeto,
-			@PathVariable("idParecer") Long idParecer,
-			@RequestParam("file") MultipartFile[] files,
-			@RequestParam("parecer") String comentario,
-			@RequestParam("statusParecer") String status,
-			BindingResult result, RedirectAttributes redirectAttributes){
+			@RequestParam("parecer") String parecerTexto,
+			@RequestParam("posicionamento") StatusPosicionamento posicionamento, Model model, RedirectAttributes redirectAttributes){
 
 		Projeto projeto = projetoService.getProjetoById(idProjeto);
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		Parecer parecer = parecerService.getParecerById(idParecer);
-		if (parecer == null) {
-			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
-			return REDIRECT_PAGINA_LISTAR_PROJETO;
+		projeto.getParecer().setDataRealizacao(new Date());
+		projeto.getParecer().setStatus(posicionamento);
+		projeto.getParecer().setParecer(parecerTexto);
+		Map<String, String> resultado = projetoService.emitirParecer(projeto);
+		if(!resultado.isEmpty()) {
+			buildValidacoesModel(resultado, model);
+			model.addAttribute("projeto", projeto);
+			model.addAttribute("posicionamento", StatusPosicionamento.values());
+			return PAGINA_EMITIR_PARECER;
 		}
 
-		if (comentario.isEmpty()) {
-			redirectAttributes.addAttribute("erro",
-					"Comentário não pode estar vazio");
-			return "redirect:/projeto/" + idProjeto + "/emitirParecer" + idParecer;
-		}
-
-		for (MultipartFile mpf : files) {
-			if (mpf.getBytes().length > 0) {
-				Documento documento = new Documento();
-				documento.setNomeOriginal(mpf.getOriginalFilename());
-				documento.setTipo(mpf.getContentType());
-				documento.setProjeto(projeto);
-				documento.setArquivo(mpf.getBytes());
-				documentoService.save(documento);
-				parecer.setDocumento(documento);
-			}
-
-		}
-
-		if (status.equals("favorável")) {
-			parecer.setStatus(StatusPosicionamento.FAVORAVEL);
-		} else {
-			parecer.setStatus(StatusPosicionamento.NAO_FAVORAVEL);
-		}
-
-		parecer.setComentario(comentario);
-		parecerService.update(parecer);
-		projeto.setStatus(StatusProjeto.AGUARDANDO_AVALIACAO);
-		projetoService.update(projeto);
-
-		notificationService.notificar(projeto, Evento.EMISSAO_PARECER);
-
-		return "redirect:/projeto/listar";
+		redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_INEXISTENTE);
+		return REDIRECT_PAGINA_LISTAR_PROJETO;
 
 	}
+	
+	@RequestMapping(value = "/diretor/{id}/avaliar", method = RequestMethod.GET)
+	public String avaliarForm(@PathVariable("id") Long id, Model model, RedirectAttributes redirect) {
+		Projeto projeto = projetoService.getProjetoById(id);
+		if (projeto == null || !projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)) {
+			redirect.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;
+		}
+		model.addAttribute("projeto", projeto);
+		return PAGINA_AVALIAR_PROJETO;
+	}
+	
+	@RequestMapping(value = "/diretor/{id}/avaliar", method = RequestMethod.POST)
+	public String avaliar(@PathVariable("id") Long id, @RequestParam("avaliacao") StatusProjeto avaliacao, RedirectAttributes redirect) {
+		Projeto projeto = projetoService.getProjetoById(id);
+		projeto.setStatus(avaliacao);
+		projetoService.avaliar(projeto);
+		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_AVALIADO);
+		return REDIRECT_PAGINA_LISTAR_PROJETO;
+	}
 
-	@RequestMapping(value = "/{id}/verParecer", method = RequestMethod.GET)
+	/*
 	public String verParecer(@PathVariable("id") long id, Model model,
 			HttpSession session, RedirectAttributes redirectAttributes) {
 
@@ -363,233 +395,20 @@ public class ProjetoController {
 
 	}
 
-	@RequestMapping(value = "/{id}/avaliarProjeto", method = RequestMethod.GET)
-	public String avaliarProjeto(@PathVariable("id") long id, Model model,
-			HttpSession session, RedirectAttributes redirect) {
 
-		Projeto projeto = projetoService.find(Projeto.class, id);
-		
-		if (projeto == null) {
-			redirect.addFlashAttribute("erro", "Projeto Inexistente.");
-			return "redirect:/projeto/listar";
-		}
-
-		if (!projeto.getStatus().equals(StatusProjeto.AGUARDANDO_AVALIACAO)) {
-			redirect.addFlashAttribute("erro",
-					"Projeto não está aguardando avaliação");
-			return "redirect:/projeto/listar";
-		}
-		if (!(usuarioService.isDiretor(getUsuarioLogado(session)))) {
-			redirect.addFlashAttribute("erro",
-					"Permissão para avaliar projeto negada");
-			return "redirect:/projeto/listar";
-		}
-		projeto.setAvaliacao(new Date());
-		model.addAttribute("projeto", projeto);
-		return "diretor/avaliarProjeto";
-	}
-
-	@RequestMapping(value = "/{id}/avaliarProjeto", method = RequestMethod.POST)
-	public String avaliarProjeto(HttpServletRequest request,
-			@PathVariable("id") long id,
-			@RequestParam("file") MultipartFile[] files,
-			@RequestParam("observacao") String observacao,
-			@RequestParam("opcoesAvaliacao") String status,
-			HttpSession session, RedirectAttributes redirect)
-			throws IOException {
-
-		Projeto projeto = projetoService.find(Projeto.class, id);
-
-		if (observacao.isEmpty()) {
-			redirect.addAttribute("erro", "Comentário não pode estar vazio");
-			return "redirect:/projeto/" + id + "/avaliarProjeto";
-		}
-
-		for (MultipartFile mpf : files) {
-			if (mpf.getBytes().length > 0) {
-				Documento documento = new Documento();
-				documento.setNomeOriginal(mpf.getOriginalFilename());
-				documento.setTipo(mpf.getContentType());
-				documento.setProjeto(projeto);
-				documento.setArquivo(mpf.getBytes());
-				documentoService.save(documento);
-			}
-
-		}
-		if (status.equals("Aprovado")) {
-			projeto.setStatus(StatusProjeto.APROVADO);
-		} else if (status.equals("Aprovado com restrição")) {
-			projeto.setStatus(StatusProjeto.APROVADO_COM_RESTRICAO);
-		} else {
-			projeto.setStatus(StatusProjeto.REPROVADO);
-		}
-
-		this.projetoService.save(projeto);
-
-		this.projetoService.update(projeto);
-		redirect.addFlashAttribute("info", "Projeto avaliado.");
-
-		return "redirect:/projeto/listar";
-
-	}
-
-	@RequestMapping(value = "diretor/{projetoId}/atribuirParecerista", method = RequestMethod.GET)
-	public String atribuirParecerista(
-			@PathVariable("projetoId") Long projetoId, Model model,
-			RedirectAttributes redirectAttributes) {
-
-		Projeto projeto = projetoService.find(Projeto.class, projetoId);
-
-		if (projeto == null) {
-			redirectAttributes.addFlashAttribute("erro",
-					"O projeto não existe!");
-			return "redirect:/projeto/listar";
-		}
-		if (projeto.getStatus() != StatusProjeto.SUBMETIDO) {
-			redirectAttributes.addFlashAttribute("erro",
-					"Não é possível atribuir um parecerista a este projeto.");
-			return "redirect:/projeto/listar";
-		}
-
-		model.addAttribute("projetoId", projetoId);
-		model.addAttribute("usuarios",
-				usuarioService.getPareceristas(projeto.getAutor().getId()));
-		return "diretor/atribuirParecerista";
-	}
-
-	@RequestMapping(value = "diretor/atribuirParecerista", method = RequestMethod.POST)
-	public String atribuirPareceristaNoProjeto(HttpServletRequest request,
-			Model model, RedirectAttributes redirect) throws IOException {
-
-		Long projetoId = Long.parseLong(request.getParameter("projetoId"));
-		Long parecerista = Long.parseLong(request.getParameter("parecerista"));
-		String observacao = request.getParameter("observacao");
-
-		Projeto projeto = projetoService.find(Projeto.class, projetoId);
-		redirect.addFlashAttribute("parecerista", parecerista);
-		redirect.addFlashAttribute("observacao", observacao);
-		redirect.addFlashAttribute("projetoId", projetoId);
-		redirect.addFlashAttribute("usuarios",
-				usuarioService.getPareceristas(projeto.getAutor().getId()));
-
-		if (request.getParameter("prazo") == null
-				|| request.getParameter("prazo").isEmpty()) {
-			redirect.addFlashAttribute("error_prazo", "Campo obrigatório");
-			return "redirect:/projeto/diretor/" + projetoId
-					+ "/atribuirParecerista";
-		}
-
-		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-		Date prazo = null;
-		try {
-			prazo = format.parse(request.getParameter("prazo"));
-		} catch (ParseException e) {
-			redirect.addFlashAttribute("error_prazo", "Data inválida");
-			return "redirect:/projeto/diretor/" + projetoId
-					+ "/atribuirParecerista";
-		}
-
-		if (comparaDatas(prazo, new Date()) < 0) {
-			redirect.addFlashAttribute("error_prazo",
-					"O prazo não pode ser uma data passada");
-			redirect.addFlashAttribute("prazo", request.getParameter("prazo"));
-			return "redirect:/projeto/diretor/" + projetoId
-					+ "/atribuirParecerista";
-		}
-
-		Pessoa usuario = usuarioService.find(Pessoa.class, parecerista);
-		Parecer parecer = new Parecer();
-		parecer.setProjeto(projeto);
-		parecer.setUsuario(usuario);
-		parecer.setDataAtribuicao(new Date());
-		parecer.setComentario(observacao);
-		parecer.setPrazo(prazo);
-
-		parecerService.save(parecer);
-		projeto.setStatus(StatusProjeto.AGUARDANDO_PARECER);
-		projetoService.update(projeto);
-
-		notificationService.notificar(projeto, Evento.ATRIBUICAO_PARECERISTA);
-
-		redirect.addFlashAttribute("info",
-				"O parecerista foi atribuído ao projeto com sucesso.");
-
-		return "redirect:/projeto/listar";
-	}
-
-	private boolean validaSubmissao(Projeto projeto, Model model) {
-		boolean valid = true;
-
-		if (projeto.getNome().isEmpty()) {
-			model.addAttribute("error_nome", "Campo obrigatório");
-			valid = false;
-		}
-		if (projeto.getInicio() == null) {
-			model.addAttribute("error_inicio", "Campo obrigatório");
-			valid = false;
-		}
-		if (projeto.getTermino() == null) {
-			model.addAttribute("error_termino", "Campo obrigatório");
-			valid = false;
-		} else if (comparaDatas(new Date(), projeto.getTermino()) > 0) {
-			model.addAttribute("error_termino", "Somente data futura");
-			valid = false;
-		}
-		if (projeto.getInicio() != null && projeto.getTermino() != null
-				&& comparaDatas(projeto.getInicio(), projeto.getTermino()) > 0) {
-			model.addAttribute("error_inicio",
-					"A data de início deve ser antes da data de término");
-			valid = false;
-
-		}
-			
-		if (projeto.getDescricao().isEmpty()) {
-			model.addAttribute("error_descricao", "Campo obrigatório");
-			valid = false;
-		}
-		if (projeto.getAtividades().isEmpty()) {
-			model.addAttribute("error_atividades", "Campo obrigatório");
-			valid = false;
-		}
-		if (projeto.getCargaHoraria() == null) {
-			model.addAttribute("error_cargaHoraria", "Campo obrigatório");
-			valid = false;
-		}		
-		if (projeto.getValorDaBolsa() == null) {
-			model.addAttribute("error_valorDaBolsa", "Campo obrigatório");
-			valid = false;
-		}	
-		if (projeto.getQuantidadeBolsa() == null) {
-			model.addAttribute("error_quantidadeBolsa", "Campo obrigatório");
-			valid = false;
-		}
-		if (projeto.getLocal().isEmpty()) {
-			model.addAttribute("error_local", "Campo obrigatório");
-			valid = false;
-		}
-		
-		 * if (projeto.getParticipantes().isEmpty()) {
-		 * model.addAttribute("error_participantes", "Campo obrigatório"); valid
-		 * = false; }
-		 
-
-		return valid;
-	}
-
-	private boolean validaSubmissaoAnexo(Projeto projeto, Model model) {
-		boolean valid = true;
-		if (projeto.getDocumentos().size() == 0) {
-			model.addAttribute("error_documento", "Arquivo obrigatório");
-			valid = false;
-		}
-
-		return valid;
-	}*/
+	*/
 	
-	private void buildValidacoes(Map<String, String> resultado, BindingResult result) {
+	private void buildValidacoesBindingResult(Map<String, String> resultado, BindingResult result) {
 		Set<String> keys = resultado.keySet();
 		for (String key : keys) {
 			result.rejectValue(key, "Repeat.titulo." + key, resultado.get(key));
+		}
+	}
+	
+	private void buildValidacoesModel(Map<String, String> resultado, Model model) {
+		Set<String> keys = resultado.keySet();
+		for (String key : keys) {
+			model.addAttribute("erro_" + key, resultado.get(key));
 		}
 	}
 	

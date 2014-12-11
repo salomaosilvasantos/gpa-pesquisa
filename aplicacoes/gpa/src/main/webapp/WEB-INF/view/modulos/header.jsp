@@ -30,13 +30,13 @@
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li>
-						<a href="<c:url value="/projeto/listar" />">Projetos <span class="glyphicon glyphicon-list"></span></a>
+						<a href="<c:url value="/projeto/listar" />"><span class="glyphicon glyphicon-list"></span> Projetos</a>
 					</li>
 					<li>
-						<a href="<c:url value="/projeto/cadastrar" />">Novo Projeto <span class="glyphicon glyphicon-plus"></span></a>
+						<a href="<c:url value="/projeto/cadastrar" />"><span class="glyphicon glyphicon-plus"></span> Novo Projeto</a>
 					</li>
 					<li>
-						<a href="<c:url value="/j_spring_security_logout" />">Sair <span class="glyphicon glyphicon-off"></span></a>
+						<a href="<c:url value="/j_spring_security_logout" />"><span class="glyphicon glyphicon-off"></span> Sair</a>
 					</li>
 					
 				</ul>

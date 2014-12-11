@@ -110,6 +110,15 @@ $(document).ready(function() {
         }
     });
 	
+	$('#atribuirPareceristaForm, #emitirParecerForm, #avaliarProjetoForm').bootstrapValidator({
+		group: '.form-item',
+		excluded: ':disabled',
+        feedbackIcons: {
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        }
+    });
+	
 	// Usado para não apagar a máscara e enviar somente o valor para o servidor
 	$("#adicionarProjetoForm, #submeterProjetoForm").submit(function() {
 		$('#valorDaBolsa').val($('#bolsa').maskMoney('unmasked')[0]);
@@ -143,9 +152,20 @@ $(document).ready(function() {
 		$('#adicionarProjetoForm, #submeterProjetoForm').bootstrapValidator('revalidateField', 'termino');
     });
     
-    $("#participantes").select2({
-    	 placeholder: "Buscar participante...",
-    	 dropdownCssClass: "bigdrop"
+    $("#prazo").datepicker({
+		format : "dd/mm/yyyy",
+		todayBtn : "linked",
+		language : "pt-BR",
+		todayHighlight : true,
+		startDate: new Date()
+	}).on('changeDate', function(e) {
+		$(this).datepicker('hide');
+		$('#atribuirPareceristaForm').bootstrapValidator('revalidateField', 'prazo');
+    });
+    
+    $("#participantes, #parecerista, #posicionamento, #avaliacao").select2({
+   	 placeholder: "Buscar...",
+   	 dropdownCssClass: "bigdrop"
     });
     
     $('div.error-validation:has(span)').find('span').css('color', '#a94442');

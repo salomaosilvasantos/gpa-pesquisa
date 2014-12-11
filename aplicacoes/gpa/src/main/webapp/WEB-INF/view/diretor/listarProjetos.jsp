@@ -33,9 +33,7 @@
 		</c:if>
 		<div align="right" style="margin-bottom: 20px;">
 			<a href="<c:url value="/projeto/cadastrar" ></c:url>">
-				<button class="btn btn-primary">
-					Novo Projeto <span class="glyphicon glyphicon-plus"></span>
-				</button>
+				<button class="btn btn-primary">Novo Projeto <span class="glyphicon glyphicon-plus"></span></button>
 			</a>
 		</div>
 
@@ -52,16 +50,10 @@
 			<!-- Meus Projetos -->
 			<div class="tab-pane active" id="meus-projetos">
 				<c:if test="${empty projetos}">
-					<div class="alert alert-warning" role="alert">Não há projetos
-						cadastrados.</div>
+					<div class="alert alert-warning" role="alert">Não há projetos cadastrados.</div>
 				</c:if>
 				<c:if test="${not empty projetos}">
 					<div class="panel panel-default">
-						<div class="panel-heading" align="center">
-							<h4>Meus Projetos</h4>
-						</div>
-
-						<!-- Table -->
 						<table class="table" id="table">
 							<thead>
 								<tr>
@@ -75,65 +67,39 @@
 								<c:forEach var="projeto" items="${projetos}">
 									<tr class="linha">
 										<td>${projeto.codigo}</td>
-										<td><a
-											href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
+										<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
 										<td class="status">${projeto.status.descricao}</td>
-										<td><c:if test="${projeto.status == 'NOVO'}">
-												<a id="submeter" data-toggle="modal"
-													data-target="#confirm-submit" href="#"
-													data-href="<c:url value="/projeto/${projeto.id}/submeter" ></c:url>">
-													<button class="btn btn-primary">
-														Submeter <span class="glyphicon glyphicon-upload"></span>
-													</button>
+										<td>
+											<c:if test="${projeto.status == 'NOVO'}">
+												<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#" data-href="<c:url value="/projeto/${projeto.id}/submeter" ></c:url>">
+													<button class="btn btn-primary">Submeter <span class="glyphicon glyphicon-upload"></span></button>
 												</a>
-
-												<a id="editar"
-													href="<c:url value="/projeto/${projeto.id}/editar" ></c:url>">
-													<button class="btn btn-info">
-														Editar <span class="glyphicon glyphicon-pencil"></span>
-													</button>
+												<a id="editar" href="<c:url value="/projeto/${projeto.id}/editar" ></c:url>">
+													<button class="btn btn-info">Editar <span class="glyphicon glyphicon-pencil"></span></button>
 												</a>
-
-												<a id="excluir" data-toggle="modal"
-													data-target="#confirm-delete" href="#"
-													data-href="<c:url value="/projeto/${projeto.id}/excluir" ></c:url>">
-													<button class="btn btn-danger">
-														Excluir <span class="glyphicon glyphicon-trash"></span>
-													</button>
+												<a id="excluir" data-toggle="modal" data-target="#confirm-delete" href="#" data-href="<c:url value="/projeto/${projeto.id}/excluir" ></c:url>">
+													<button class="btn btn-danger">Excluir <span class="glyphicon glyphicon-trash"></span></button>
 												</a>
-											</c:if> <sec:authorize ifAnyGranted="ROLE_DIRETOR">
+											</c:if>
+											<sec:authorize ifAnyGranted="ROLE_DIRETOR">
 												<c:if test="${projeto.status == 'SUBMETIDO'}">
-													<a id="atribuirParecerista"
-														href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
-														<button class="btn btn-primary">
-															Atribuir Parecerista <span
-																class="glyphicon glyphicon-user"></span>
-														</button>
+													<a id="atribuirParecerista"href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
+														<button class="btn btn-primary">Atribuir Parecerista <span class="glyphicon glyphicon-user"></span></button>
 													</a>
 												</c:if>
-											</sec:authorize> <c:if test="${projeto.status == 'AGUARDANDO_AVALIACAO'}">
-												<a id="verParecer" data-toggle="modal"
-													href="<c:url value="/projeto/${projeto.id}/verParecer" ></c:url>">
-													<button class="btn btn-primary">
-														Ver Parecer <span class="glyphicon glyphicon-upload"></span>
-													</button>
+											</sec:authorize>
+											<c:if test="${projeto.status == 'AGUARDANDO_AVALIACAO'}">
+												<a id="verParecer" data-toggle="modal" href="<c:url value="/projeto/${projeto.id}/verParecer" ></c:url>">
+													<button class="btn btn-primary">Ver Parecer <span class="glyphicon glyphicon-upload"></span></button>
 												</a>
-
-												<a id="comentario"
-													href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">
-													<button class="btn btn-info">
-														Comentario <span class="glyphicon glyphicon-pencil"></span>
-													</button>
+												<a id="comentario" href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">
+													<button class="btn btn-info">Comentario <span class="glyphicon glyphicon-pencil"></span></button>
 												</a>
-
-												<a id="avaliarProjeto" data-toggle="modal"
-													href="<c:url value="/projeto/${projeto.id}/avaliarProjeto" ></c:url>">
-													<button class="btn btn-danger">
-
-														Avaliar Projeto <span class="glyphicon glyphicon-trash"></span>
-													</button>
+												<a id="avaliarProjeto" data-toggle="modal" href="<c:url value="/projeto/${projeto.id}/avaliarProjeto" ></c:url>">
+													<button class="btn btn-danger">Avaliar Projeto <span class="glyphicon glyphicon-trash"></span></button>
 												</a>
-											</c:if></td>
+											</c:if>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -145,16 +111,10 @@
 			<!-- Projetos Submetidos -->
 			<div class="tab-pane" id="projetos-submetidos">
 				<c:if test="${empty projetosSubmetidos}">
-					<div class="alert alert-warning" role="alert">Não há projetos
-						submetidos.</div>
+					<div class="alert alert-warning" role="alert">Não há projetos submetidos.</div>
 				</c:if>
 				<c:if test="${not empty projetosSubmetidos}">
 					<div class="panel panel-default">
-						<div class="panel-heading" align="center">
-							<h4>Projetos Submetidos</h4>
-						</div>
-
-						<!-- Table -->
 						<table class="table" id="table">
 							<thead>
 								<tr>
@@ -162,10 +122,8 @@
 									<th>Nome</th>
 									<th>Autor</th>
 									<th>Status</th>
-
-									<th>Atribuição</th>
+									<th>Parecerista</th>
 									<th>Prazo</th>
-
 									<th id="acoes">Ações</th>
 								</tr>
 							</thead>
@@ -173,68 +131,42 @@
 								<c:forEach var="projeto" items="${projetosSubmetidos}">
 									<tr class="linha">
 										<td>${projeto.codigo}</td>
-										<td><a
-											href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
+										<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
 										<td>${projeto.autor.nome}</td>
 										<td class="status">${projeto.status.descricao}</td>
-
-										<td>${projeto.pareceres[0].usuario.nome}</td>
-
-										<td><fmt:formatDate pattern="dd-MM-yyyy"
-												value="${projeto.pareceres[0].prazo}" /></td>
-
-										<td><c:if test="${projeto.status == 'SUBMETIDO'}">
-												<a id="atribuirParecerista"
-													href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
-													<button class="btn btn-primary">
-														Atribuir Parecerista <span
-															class="glyphicon glyphicon-user"></span>
-													</button>
+										<td>${projeto.parecer.parecerista.nome}</td>
+										<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.parecer.prazo}" /></td>
+										<td>
+											<c:if test="${projeto.status == 'SUBMETIDO'}">
+												<a id="atribuirParecerista" href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
+													<button class="btn btn-primary">Atribuir Parecerista <span class="glyphicon glyphicon-user"></span></button>
 												</a>
-											</c:if> <c:if test="${projeto.status == 'AGUARDANDO_AVALIACAO'}">
-												<a id="verParecer" data-toggle="modal"
-													href="<c:url value="/projeto/${projeto.id}/verParecer" ></c:url>">
-													<button class="btn btn-primary">
-														Ver Parecer <span class="glyphicon glyphicon-upload"></span>
-													</button>
+											</c:if>
+											<c:if test="${projeto.status == 'AGUARDANDO_AVALIACAO'}">
+												<a id="verParecer" data-toggle="modal" href="<c:url value="/projeto/${projeto.id}/verParecer" ></c:url>">
+													<button class="btn btn-primary">Ver Parecer <span class="glyphicon glyphicon-search"></span></button>
 												</a>
-
-												<a id="comentario"
-													href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">
-													<button class="btn btn-info">
-														Comentario <span class="glyphicon glyphicon-pencil"></span>
-													</button>
+												<a id="avaliarProjeto" data-toggle="modal"href="<c:url value="/projeto/diretor/${projeto.id}/avaliar" ></c:url>">
+													<button class="btn btn-primary">Avaliar Projeto <span class="glyphicon glyphicon-ok"></span></button>
 												</a>
-
-												<a id="avaliarProjeto" data-toggle="modal"
-													href="<c:url value="/projeto/${projeto.id}/avaliarProjeto" ></c:url>">
-													<button class="btn btn-danger">
-
-														Avaliar Projeto <span class="glyphicon glyphicon-trash"></span>
-													</button>
-												</a>
-											</c:if></td>
+											</c:if>
+										</td>
 									</tr>
-
 								</c:forEach>
 							</tbody>
 						</table>
 					</div>
 				</c:if>
 			</div>
+			
 			<!-- Projetos Avaliados -->
 			<div class="tab-pane" id="projetos-avaliados">
 				<c:if test="${empty projetosAvaliados}">
-					<div class="alert alert-warning" role="alert">Não há projetos
-						Avaliados.</div>
+					<div class="alert alert-warning" role="alert">Não há projetos Avaliados.</div>
 				</c:if>
 				<c:if test="${not empty projetosAvaliados}">
 					<div class="panel panel-default">
-						<div class="panel-heading" align="center">
-							<h4>Projetos Avaliados</h4>
-						</div>
 						<input type="hidden" name="parecerId" value="${parecerId}">
-						<!-- Table -->
 						<table class="table" id="table">
 							<thead>
 								<tr>
@@ -248,8 +180,7 @@
 								<c:forEach var="projeto" items="${projetosAvaliados}">
 									<tr class="linha">
 										<td>${projeto.codigo}</td>
-										<td><a
-											href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
+										<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
 										<td>${projeto.autor.nome}</td>
 										<td class="status">${projeto.status.descricao}</td>
 									</tr>
@@ -260,18 +191,13 @@
 				</c:if>
 			</div>
 
-			<!-- Listagem de Participantes dos Projetos -->
+			<!-- Participantes dos Projetos -->
 			<div class="tab-pane" id="participantes-projeto">
 				<c:if test="${empty participantes}">
 					<div class="alert alert-warning" role="alert">Não há participantes nos projetos.</div>
 				</c:if>
 				<c:if test="${not empty participantes}">
 					<div class="panel panel-default">
-						<div class="panel-heading" align="center">
-							<h4>Projetos Avaliados</h4>
-						</div>
-						<input type="hidden" name="parecerId" value="${parecerId}">
-						<!-- Table -->
 						<table class="table" id="table">
 							<thead>
 								<tr>
@@ -281,16 +207,16 @@
 							<tbody>
 								<c:forEach var="participante" items="${participantes}">
 									<tr class="linha">
-										<td><a href="<c:url value="/projeto/${participante.id}/detalhesParticipante" ></c:url>">${participante.nome}</a></td>
+										<td>
+											<a href="<c:url value="/projeto/${participante.id}/detalhesParticipante" ></c:url>">${participante.nome}</a>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>
 						</table>
 					</div>
-
 				</c:if>
 			</div>
-
 		</div>
 
 		<div class="modal fade" id="confirm-delete" tabindex="-1"

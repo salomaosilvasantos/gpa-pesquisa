@@ -17,6 +17,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonManagedReference;
@@ -42,7 +43,6 @@ public class Projeto {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date avaliacao;
 
-	@Column(columnDefinition="TEXT")
 	private Date submissao;
 
 	@Column(columnDefinition = "TEXT")
@@ -61,7 +61,7 @@ public class Projeto {
 	private Integer quantidadeBolsa;
 
 	private String local;
-
+	
 	@Enumerated(EnumType.STRING)
 	private StatusProjeto status;
 
@@ -75,9 +75,9 @@ public class Projeto {
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	@JsonManagedReference
 	private List<Comentario> comentarios;
-
-	@OneToMany(mappedBy = "projeto")
-	private List<Parecer> pareceres;
+	
+	@OneToOne
+	private Parecer parecer;
 
 	public Date getAvaliacao() {
 		return avaliacao;
@@ -206,20 +206,20 @@ public class Projeto {
 		return id;
 	}
 
-	public List<Parecer> getPareceres() {
-		return pareceres;
-	}
-
-	public void setPareceres(List<Parecer> pareceres) {
-		this.pareceres = pareceres;
-	}
-
 	public Date getSubmissao() {
 		return submissao;
 	}
 
 	public void setSubmissao(Date submissao) {
 		this.submissao = submissao;
+	}
+
+	public Parecer getParecer() {
+		return parecer;
+	}
+
+	public void setParecer(Parecer parecer) {
+		this.parecer = parecer;
 	}
 
 	@Override
@@ -250,10 +250,7 @@ public class Projeto {
 				+ ", autor=" + autor + ", atividades=" + atividades
 				+ ", cargaHoraria=" + cargaHoraria + ", valorDaBolsa="
 				+ valorDaBolsa + ", quantidadeBolsa=" + quantidadeBolsa
-				+ ", local=" + local + ", status=" + status
-				+ ", participantes=" + participantes + ", documentos="
-				+ documentos + ", comentarios=" + comentarios + ", pareceres="
-				+ pareceres + "]";
+				+ ", local=" + local + ", status=" + status + "]";
 	}
 
 	public enum StatusProjeto {

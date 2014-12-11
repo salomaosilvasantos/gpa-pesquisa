@@ -20,6 +20,10 @@ public class Constants {
 	
 	public static final String PAGINA_EMITIR_PARECER = "projeto/emitirParecer";
 	
+	public static final String PAGINA_ATRIBUIR_PARECERISTA = "diretor/atribuirParecerista";
+	
+	public static final String PAGINA_AVALIAR_PROJETO = "diretor/avaliarProjeto";
+	
 	
 	/** Redirecionamentos */
 	
@@ -37,14 +41,22 @@ public class Constants {
 	
 	public static final String MENSAGEM_PROJETO_CADASTRADO = "Projeto cadastrado com sucesso";
 	
+	public static final String MENSAGEM_PARECERISTA_ATRIBUIDO = "Parecerista atribuído com sucesso";
+	
 	public static final String MENSAGEM_PROJETO_SUBMETIDO = "Projeto submetido com sucesso";
 	
+	public static final String MENSAGEM_PARECER_EMITIDO = "Parecer emitido com sucesso";
+	
 	public static final String MENSAGEM_PROJETO_REMOVIDO = "Projeto removido com sucesso";
+	
+	public static final String MENSAGEM_PROJETO_AVALIADO = "Projeto avaliado com sucesso";
 	
 	public static final String MENSAGEM_DATA_TERMINO_FUTURA = "A data de término não pode ser anterior à data atual";
 	
 	public static final String MENSAGEM_DATA_INICIO_TERMINO = "A data de início deve ser anterior à data de término";
 	
 	public static final String MENSAGEM_CAMPO_OBRIGATORIO_SUBMISSAO = "É necessário preencher todas as informações do projeto para submetê-lo";
+	
+	public static final String MENSAGEM_DATA_INVALIDA = "Data inválida";
 	
 }
