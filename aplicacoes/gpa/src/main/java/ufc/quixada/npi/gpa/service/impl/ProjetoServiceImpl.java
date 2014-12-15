@@ -170,6 +170,10 @@ public class ProjetoServiceImpl implements ProjetoService {
 			resultado.put("atividades", MENSAGEM_CAMPO_OBRIGATORIO);
 		}
 		
+		if(projeto.getDocumentos() == null || projeto.getDocumentos().isEmpty()) {
+			resultado.put("documentos", MENSAGEM_CAMPO_OBRIGATORIO);
+		}
+		
 		
 		return resultado;
 	}

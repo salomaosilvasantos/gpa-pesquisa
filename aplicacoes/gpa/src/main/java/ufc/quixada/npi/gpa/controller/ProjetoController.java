@@ -2,6 +2,7 @@ package ufc.quixada.npi.gpa.controller;
 
 import static ufc.quixada.npi.gpa.utils.Constants.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ufc.quixada.npi.gpa.model.Documento;
 import ufc.quixada.npi.gpa.model.Parecer;
 import ufc.quixada.npi.gpa.model.Parecer.StatusPosicionamento;
 import ufc.quixada.npi.gpa.model.Pessoa;
@@ -31,10 +33,8 @@ import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.ComentarioService;
 import ufc.quixada.npi.gpa.service.DocumentoService;
-import ufc.quixada.npi.gpa.service.ParecerService;
 import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.UsuarioService;
-import ufc.quixada.npi.gpa.service.impl.NotificationService;
 import ufc.quixada.npi.gpa.utils.Constants;
 
 @Controller
@@ -50,19 +50,8 @@ public class ProjetoController {
 	@Autowired
 	private ComentarioService comentarioService;
 	
-	@Inject
+	@Autowired
 	private DocumentoService documentoService;
-
-	@Inject
-	private ParecerService parecerService;
-
-	@Inject
-	private NotificationService notificationService;
-
-	/*public static Properties getProp() throws IOException {
-		Resource resource = new ClassPathResource("/notification.properties");
-		return PropertiesLoaderUtils.loadProperties(resource);
-	}*/
 	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index() {
@@ -95,7 +84,9 @@ public class ProjetoController {
 	}
 
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
-	public String cadastrar(@RequestParam(value = "idParticipantes", required = false) List<String> idParticipantes, @Valid Projeto projeto, BindingResult result, HttpSession session, RedirectAttributes redirect, Model model) {
+	public String cadastrar(@RequestParam(value = "idParticipantes", required = false) List<String> idParticipantes, @RequestParam("anexos") List<MultipartFile> anexos,
+			@Valid Projeto projeto, BindingResult result, HttpSession session, RedirectAttributes redirect, Model model) {
+		
 		model.addAttribute("participantes", usuarioService.getParticipantes(getUsuarioLogado(session)));
 		model.addAttribute("action", "cadastrar");
 		if (result.hasErrors()) {
@@ -112,22 +103,45 @@ public class ProjetoController {
 			projeto.setParticipantes(participantes);
 		}
 		
+		List<Documento> documentos = new ArrayList<Documento>();
+		if(anexos != null && !anexos.isEmpty()) {
+			for(MultipartFile anexo : anexos) {
+				try {
+					if(anexo.getBytes() != null && anexo.getBytes().length != 0) {
+						Documento documento = new Documento();
+						documento.setArquivo(anexo.getBytes());
+						documento.setNome(anexo.getOriginalFilename());
+						documento.setExtensao(anexo.getContentType());
+						documento.setProjeto(projeto);
+						documentos.add(documento);
+					}
+				} catch (IOException e) {
+					model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
+					return PAGINA_CADASTRAR_PROJETO;
+				}
+			}
+		}
+		
 		Map<String, String> resultado = projetoService.cadastrar(projeto);
 		if (!resultado.isEmpty()) {
 			buildValidacoesBindingResult(resultado, result);
 			return PAGINA_CADASTRAR_PROJETO;
 		}
 		
+		if(!documentos.isEmpty()) {
+			documentoService.salvar(documentos);
+		}
+		
 		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_CADASTRADO);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 	}
 
-	/*@RequestMapping(value = "/{id}/detalhes")
-	public String getDetalhes(@PathVariable("id") Long id, Model model, HttpSession session,
+	@RequestMapping(value = "/{id}/detalhes")
+	public String verDetalhes(@PathVariable("id") Long id, Model model, HttpSession session,
 			RedirectAttributes redirectAttributes) {
 		Projeto projeto = projetoService.getProjetoById(id);
 		if (projeto == null) {
-			redirectAttributes.addFlashAttribute("erro", "Projeto inexistente.");
+			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		Pessoa usuario = getUsuarioLogado(session);
@@ -135,10 +149,10 @@ public class ProjetoController {
 			model.addAttribute("projeto", projeto);
 			return PAGINA_DETALHES_PROJETO;
 		} else {
-			redirectAttributes.addFlashAttribute("erro", "Permissão negada.");
+			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-	}*/
+	}
 
 	@RequestMapping(value = "/{id}/editar", method = RequestMethod.GET)
 	public String editarForm(@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirectAttributes) {		
@@ -160,7 +174,8 @@ public class ProjetoController {
 	}
 	
 	@RequestMapping(value = "/editar", method = RequestMethod.POST)
-	public String editar(@RequestParam(value = "idParticipantes", required = false) List<String> idParticipantes, @Valid Projeto projeto, BindingResult result, Model model, HttpSession session,
+	public String editar(@RequestParam(value = "idParticipantes", required = false) List<String> idParticipantes, @RequestParam("anexos") List<MultipartFile> anexos,
+			@Valid Projeto projeto, BindingResult result, Model model, HttpSession session,
 			RedirectAttributes redirect) {
 		
 		model.addAttribute("participantes", usuarioService.getParticipantes(getUsuarioLogado(session)));
@@ -179,10 +194,33 @@ public class ProjetoController {
 			projeto.setParticipantes(participantes);
 		}
 		
+		List<Documento> documentos = new ArrayList<Documento>();
+		if(anexos != null && !anexos.isEmpty()) {
+			for(MultipartFile anexo : anexos) {
+				try {
+					if(anexo.getBytes() != null && anexo.getBytes().length != 0) {
+						Documento documento = new Documento();
+						documento.setArquivo(anexo.getBytes());
+						documento.setNome(anexo.getOriginalFilename());
+						documento.setExtensao(anexo.getContentType());
+						documento.setProjeto(projeto);
+						documentos.add(documento);
+					}
+				} catch (IOException e) {
+					model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
+					return PAGINA_CADASTRAR_PROJETO;
+				}
+			}
+		}
+		
 		Map<String, String> resultado = projetoService.atualizar(projeto);
 		if (!resultado.isEmpty()) {
 			buildValidacoesBindingResult(resultado, result);
 			return PAGINA_CADASTRAR_PROJETO;
+		}
+		
+		if(!documentos.isEmpty()) {
+			documentoService.salvar(documentos);
 		}
 		
 		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_ATUALIZADO);
@@ -208,8 +246,8 @@ public class ProjetoController {
 	}
 	
 	@RequestMapping(value = "{id}/submeter", method = RequestMethod.GET)
-	public String submeterForm(@PathVariable("id") Long id, Projeto projeto, BindingResult result, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
-		projeto = projetoService.getProjetoById(id);
+	public String submeterForm(@PathVariable("id") Long id, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+		Projeto projeto = projetoService.getProjetoById(id);
 
 		if (projeto == null) {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PROJETO_INEXISTENTE);
@@ -226,22 +264,17 @@ public class ProjetoController {
 			model.addAttribute("projeto", projeto);
 			model.addAttribute("participantes", usuarioService.getParticipantes(usuario));
 			model.addAttribute("alert", MENSAGEM_CAMPO_OBRIGATORIO_SUBMISSAO);
-			buildValidacoesBindingResult(resultadoValidacao, result);
 			return PAGINA_SUBMETER_PROJETO;
 		} else {
 			redirectAttributes.addFlashAttribute("erro", MENSAGEM_PERMISSAO_NEGADA);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		
-
 	}
 
 	@RequestMapping(value = "submeter", method = RequestMethod.POST)
-	public String submeter(@RequestParam(value = "idParticipantes", required = false) List<String> idParticipantes, @Valid Projeto projeto, BindingResult result,
-			Model model, HttpSession session, RedirectAttributes redirectAttributes) {		
-		if (result.hasErrors()) {
-			return PAGINA_SUBMETER_PROJETO;
-		}
+	public String submeter(@RequestParam(value = "idParticipantes", required = false) List<String> idParticipantes, @RequestParam("anexos") List<MultipartFile> anexos,
+			@Valid Projeto projeto, Model model, HttpSession session, RedirectAttributes redirectAttributes) {		
+		
 		projeto.setAutor(getUsuarioLogado(session));
 		if(idParticipantes != null && !idParticipantes.isEmpty()) {
 			List<Pessoa> participantes = new ArrayList<Pessoa>();
@@ -250,14 +283,39 @@ public class ProjetoController {
 			}
 			projeto.setParticipantes(participantes);
 		}
+		List<Documento> documentos = new ArrayList<Documento>();
+		if(anexos != null && !anexos.isEmpty()) {
+			for(MultipartFile anexo : anexos) {
+				try {
+					if(anexo.getBytes() != null && anexo.getBytes().length != 0) {
+						Documento documento = new Documento();
+						documento.setArquivo(anexo.getBytes());
+						documento.setNome(anexo.getOriginalFilename());
+						documento.setExtensao(anexo.getContentType());
+						documento.setProjeto(projeto);
+						documentos.add(documento);
+					}
+				} catch (IOException e) {
+					model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
+					return PAGINA_CADASTRAR_PROJETO;
+				}
+			}
+		}
+		
+		if(!documentos.isEmpty()) {
+			documentoService.salvar(documentos);
+		}
+		projetoService.atualizar(projeto);
+		projeto.setDocumentos(documentoService.getDocumentoByProjeto(projeto));
 		Map<String, String> resultadoValidacao = projetoService.submeter(projeto);
 		if(resultadoValidacao.isEmpty()) {
 			redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_SUBMETIDO);
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
+		
 		model.addAttribute("projeto", projeto);
 		model.addAttribute("participantes", usuarioService.getParticipantes(getUsuarioLogado(session)));
-		buildValidacoesBindingResult(resultadoValidacao, result);
+		buildValidacoesModel(resultadoValidacao, model);
 		return PAGINA_SUBMETER_PROJETO;
 	}
 	

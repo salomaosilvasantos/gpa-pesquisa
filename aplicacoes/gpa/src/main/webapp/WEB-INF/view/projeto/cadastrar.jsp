@@ -27,10 +27,18 @@
 	</c:if>
 
 	<div class="container">
+		<c:if test="${not empty erro}">
+			<div class="alert alert-danger alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<c:out value="${erro}"></c:out>
+			</div>
+		</c:if>
 		<div class="novo-projeto" align="left">
 			<div class="form" align="center">
 				<h2>${titulo}</h2>
-				<form:form id="adicionarProjetoForm" role="form" commandName="projeto" servletRelativeAction="${url }" method="POST" cssClass="form-horizontal">
+				<form:form id="adicionarProjetoForm" role="form" commandName="projeto" enctype="multipart/form-data" servletRelativeAction="${url }" method="POST" cssClass="form-horizontal">
 
 					<input type="hidden" id="valorDaBolsa" name="valorDaBolsa" value="${projeto.valorDaBolsa }"/>
 					<input type="hidden" id="id" name="id" value="${projeto.id }"/>
@@ -152,6 +160,37 @@
 						</div>
 					</div>
 					
+					<div class="form-group form-item">
+						<label for="atividades" class="col-sm-2 control-label">Anexos:</label>
+						<div class="col-sm-10">
+							<input type="file" id="anexos" name="anexos" class="file" multiple="multiple" ></input>
+							<c:if test="${not empty projeto.documentos }">
+								<table id="table-anexos" class="table table-striped">
+									<thead>
+										<tr>
+											<th data-column-id="nome" data-order="desc">Arquivo</th>
+											<th data-column-id="excluir" width="5%">Excluir</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach items="${projeto.documentos }" var="documento">
+			                    			<tr id="documento-${documento.id}">
+										        <td>
+										            <a href="<c:url value="/documento/${documento.id }" />">${documento.nome }</a>
+										        </td>
+										        <td>
+										        	<a id="exluir-arquivo" data-toggle="modal" data-target="#delete-file" href="#" data-id="${documento.id}" data-name="${documento.nome }">
+														<button class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
+													</a>
+										        </td>
+										    </tr>	
+			                    		</c:forEach>
+									</tbody>
+								</table>
+							</c:if>
+						</div>
+					</div>
+					
 					<div class="form-group">
 						<div class="col-sm-2"></div>
 						<div class="col-sm-2">
@@ -164,6 +203,23 @@
 						<a href="<c:url value="/projeto/index"></c:url>" class="btn btn-default">Cancelar</a>
 					</div>
 				</form:form>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Modal Excluir Arquivo -->
+	<div class="modal fade" id="delete-file" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        			<h4 class="modal-title" id="excluirArquivoModalLabel">Excluir</h4>
+				</div>
+				<div class="modal-body"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger confirm-delete-file" data-dismiss="modal">Excluir</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+				</div>
 			</div>
 		</div>
 	</div>

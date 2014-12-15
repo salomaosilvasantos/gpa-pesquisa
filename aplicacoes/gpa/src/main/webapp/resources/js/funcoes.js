@@ -105,6 +105,22 @@ $(document).ready(function() {
                         }
                     }
             	}
+            },
+            anexos :{
+            	validators: {
+            		callback: {
+                        message: 'Adicione pelo menos um anexo',
+                        callback: function(value, validator) {
+                        	var lines = $('#table-anexos').find('tr').length;
+                        	if(lines == 0 || lines == 1) {
+                        		if(validator.getFieldElements('anexos').val() == "") {
+                        			return false;
+                        		}
+                        	}
+                        	return true;
+                        }
+                    }
+            	}
             }
             
         }
@@ -164,8 +180,8 @@ $(document).ready(function() {
     });
     
     $("#participantes, #parecerista, #posicionamento, #avaliacao").select2({
-   	 placeholder: "Buscar...",
-   	 dropdownCssClass: "bigdrop"
+   	 	placeholder: "Buscar...",
+   	 	dropdownCssClass: "bigdrop"
     });
     
     $('div.error-validation:has(span)').find('span').css('color', '#a94442');
@@ -176,12 +192,88 @@ $(document).ready(function() {
 		$(this).find('.modal-body').text('Tem certeza de que deseja excluir o projeto \"' + $(e.relatedTarget).data('name') + '\"?');
 		$(this).find('.btn-danger').attr('href', $(e.relatedTarget).data('href'));
 	});
+	
+	$('#delete-file').on('show.bs.modal', function(e) {
+		$(this).find('.modal-body').text('Tem certeza de que deseja excluir o arquivo \"' + $(e.relatedTarget).data('name') + '\"?');
+		$(this).find('.btn-danger').attr('data-id', $(e.relatedTarget).data('id'));
+	});
+	
+	$('.confirm-delete-file').on('click', function(e) {
+		var id = $(this).attr('data-id');
+		$.ajax({
+			type: "POST",
+			url: "/gpa-pesquisa/documento/ajax/remover/" + id
+		})
+		.success(function( result ) {
+			if(result.result == 'ok') {
+				$('#documento-'+id).remove();
+			} else {
+				
+			}
+		});
+	});
 
 	$('#confirm-submit').on('show.bs.modal', function(e) {
 		$(this).find('.modal-body').text('Tem certeza de que deseja submeter o projeto \"' + $(e.relatedTarget).data('name') + '\"?');
 		$(this).find('.btn-primary').attr('href', $(e.relatedTarget).data('href'));
 	});
 	
+	
+	$(".file").fileinput({
+		showUpload: false,
+		overwriteInitial: false,
+		initialCaption: "Selecione...",
+		browseLabel: "Buscar",
+		browseClass: "btn btn-default",
+		removeLabel: "Excluir",
+		msgSelected: "{n} arquivos selecionados",
+		msgLoading: "Carregando arquivo {index} de {files} &hellip;"
+	});
+	
+	/*$('.delete-document').on('click', function (e) {
+		alert('clicou');
+		var line = this;
+		var id = $(this).attr('id');
+		e.preventDefault();
+		bootbox.dialog({
+			message: "Tem certeza de que deseja excluir esse arquivo?",
+			title: "Excluir",
+			buttons: {
+				danger: {
+					label: "Excluir",
+					className: "btn-danger",
+					callback: function() {
+						$.ajax({
+							type: "POST",
+							url: "/gpa-pesquisa/documento/ajax/remover/"+id
+						})
+						.success(function( result ) {
+							if(result.result == 'ok') {
+								$(line).parent().parent().remove();
+							} else {
+								bootbox.alert(result.mensagem, function() {});
+							}
+						});
+					}
+				},
+				main: {
+					label: "Cancelar",
+					className: "btn-default",
+					callback: function() {
+					}
+				}
+			}
+		});
+
+
+		$('input[type=file]').bootstrapFileInput();
+
+		$('.delete-file').click(function(){
+			alert($(this).attr('id'));
+		});
+
+	});*/
+
 	
 	$("#formularioCadastroComentario").validate({
 		submitHandler : function(form) {
@@ -270,49 +362,7 @@ $(document).ready(function() {
 		$(this).tab('show');
 	});
 
-	$('.delete-document').on('click', function (e) {
-		var line = this;
-		var id = $(this).attr('id');
-		e.preventDefault();
-		bootbox.dialog({
-			message: "Tem certeza de que deseja excluir esse arquivo?",
-			title: "Excluir",
-			buttons: {
-				danger: {
-					label: "Excluir",
-					className: "btn-danger",
-					callback: function() {
-						$.ajax({
-							type: "POST",
-							url: "/gpa-pesquisa/documento/ajax/remover/"+id
-						})
-						.success(function( result ) {
-							if(result.result == 'ok') {
-								$(line).parent().parent().remove();
-							} else {
-								bootbox.alert(result.mensagem, function() {
-								});
-							}
-						});
-					}
-				},
-				main: {
-					label: "Cancelar",
-					className: "btn-default",
-					callback: function() {
-					}
-				}
-			}
-		});
-
-
-		$('input[type=file]').bootstrapFileInput();
-
-		$('.delete-file').click(function(){
-			alert($(this).attr('id'));
-		});
-
-	});
+	
 
 	$('div.error-validation:has(span)').find('span').css('color', '#a94442');
 	$('div.error-validation:has(span)').find('span').parent().parent().parent().addClass('has-error has-feedback');

@@ -59,4 +59,8 @@ public class Constants {
 	
 	public static final String MENSAGEM_DATA_INVALIDA = "Data inválida";
 	
+	public static final String MENSAGEM_ERRO_UPLOAD = "Ocorreu um erro no upload de arquivos";
+	
+	public static final String MENSAGEM_DOCUMENTO_INEXISTENTE = "Documento inexistente";
+	
 }

@@ -97,12 +97,24 @@
 
 					<tr>
 						<td class="head" valign="top">Arquivos:</td>
-						<c:forEach var="documento" items="${projeto.documentos}">
-							<!--  <a href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a>-->
-							<td class="content"><a
-								href="<c:url value="/documento/${documento.id}"></c:url>">${documento.nomeOriginal}</a></td>
-
-						</c:forEach>
+						<c:if test="${not empty projeto.documentos }">
+								<table id="table-anexos" class="table table-striped">
+									<thead>
+										<tr>
+											<th data-column-id="nome" data-order="desc">Arquivo</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach items="${projeto.documentos }" var="documento">
+			                    			<tr>
+										        <td>
+										            <a href="<c:url value="/documento/${documento.id }" />">${documento.nome }</a>
+										        </td>
+										    </tr>	
+			                    		</c:forEach>
+									</tbody>
+								</table>
+							</c:if>
 					</tr>
 				</table>
 
