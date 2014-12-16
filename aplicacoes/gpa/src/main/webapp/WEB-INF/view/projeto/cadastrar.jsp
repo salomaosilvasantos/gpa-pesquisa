@@ -13,9 +13,6 @@
 <title>Cadastro de Projetos</title>
 </head>
 <body>
-
-	<jsp:include page="../modulos/header.jsp" />
-	
 	<fmt:formatNumber value="${projeto.valorDaBolsa}"  type="currency" var="valorBolsa"/>
 	<c:if test="${action eq 'cadastrar' }">
 		<c:set var="url" value="/projeto/cadastrar"></c:set>
@@ -27,6 +24,7 @@
 	</c:if>
 
 	<div class="container">
+	<jsp:include page="../modulos/header.jsp" />
 		<c:if test="${not empty erro}">
 			<div class="alert alert-danger alert-dismissible" role="alert">
 				<button type="button" class="close" data-dismiss="alert">

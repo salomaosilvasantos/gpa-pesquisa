@@ -28,3 +28,4 @@
 <script src="<c:url value="/resources/js/select2.min.js" />"></script>
 <script src="<c:url value="/resources/js/select2_locale_pt-BR.js" />"></script>
 <script src="<c:url value="/resources/js/fileinput.min.js" />"></script>
+<script src="<c:url value="/resources/js/tabs.js" />"></script>

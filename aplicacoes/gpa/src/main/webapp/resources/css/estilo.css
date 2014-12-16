@@ -1,12 +1,10 @@
-div.container {
-	margin-bottom: 70px;
+body {
+	background: url('http://jrain.oscitas.netdna-cdn.com/wp-content/themes/zillapress/images/bg-body.png') repeat scroll 0% 0% transparent;
+	/* background: none repeat scroll 0% 0% #F2F2F2;*/
 }
 
-#header-page {
-	width: 100%;
-	background-color: #0064A1;
-	padding-top: 20px;
-	padding-bottom: 20px;
+div.container {
+	margin-bottom: 50px;
 }
 
 div.row {
@@ -44,6 +42,24 @@ div.row {
 
 .acoes {
 	margin-top: 5%;
+}
+
+table#projetos {
+	background-color: #F5F5F5;
+}
+
+table#projetos > thead {
+	color: #473F3F;
+	background-color: #A4CDE6;
+}
+
+div.main {
+	margin-bottom: 10px;
+}
+
+.close {
+	margin-top: -20px !important;
+	line-height: inherit !important;
 }
 
 table#details {

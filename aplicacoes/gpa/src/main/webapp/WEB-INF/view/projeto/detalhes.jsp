@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<jsp:include page="../modulos/header-estrutura.jsp" />
 <title>Informações do Projeto</title>
 <link
 	href="<c:url value="/webjars/bootstrap/3.1.1/css/bootstrap.min.css" />"
@@ -19,9 +19,9 @@
 </head>
 
 <body onload="esconderComentarioSeVazio()">
-	<jsp:include page="../modulos/header.jsp" />
 
 	<div class="container" style="margin-bottom: 70px;">
+	<jsp:include page="../modulos/header.jsp" />
 		<div class="novo-projeto" align="left">
 			<div class="form" align="center">
 				<h2>Detalhes do Projeto</h2>
