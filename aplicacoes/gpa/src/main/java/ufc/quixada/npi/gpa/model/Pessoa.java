@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @Entity
 @Table(name = "pessoa", uniqueConstraints=@UniqueConstraint(columnNames = {"id", "login"}))
 public class Pessoa {
@@ -50,20 +52,7 @@ public class Pessoa {
 	
 	private String email;
 
-	public Pessoa(){
-		super();
-	}
-	public Pessoa(String cpf, String nome,
-			String email, String senha) {
-		super();
-		this.cpf = cpf;
-		this.nome = nome;
-		
-		this.email = email;
-		this.password = senha;
-	}
-	
-	
+	@JsonIgnore
 	public List<Projeto> getProjetos() {
 		return projetos;
 	}
@@ -82,6 +71,7 @@ public class Pessoa {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	@JsonIgnore
 	public List<Projeto> getProjetosEnvolvidos() {
         return projetosEnvolvidos;
     }
@@ -125,6 +115,7 @@ public class Pessoa {
 	public void setPapeis(List<Papel> papeis) {
 		this.papeis = papeis;
 	}
+	@JsonIgnore
 	public List<Servidor> getServidores() {
 		return servidores;
 	}

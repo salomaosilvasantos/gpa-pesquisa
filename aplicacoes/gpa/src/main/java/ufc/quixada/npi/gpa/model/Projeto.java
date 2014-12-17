@@ -20,7 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Size;
 
-import org.codehaus.jackson.annotate.JsonManagedReference;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -73,7 +73,6 @@ public class Projeto {
 	private List<Documento> documentos;
 
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
-	@JsonManagedReference
 	private List<Comentario> comentarios;
 	
 	@OneToOne
@@ -234,6 +233,7 @@ public class Projeto {
 		return false;
 	}
 
+	@JsonIgnore
 	public List<Comentario> getComentarios() {
 		return comentarios;
 	}

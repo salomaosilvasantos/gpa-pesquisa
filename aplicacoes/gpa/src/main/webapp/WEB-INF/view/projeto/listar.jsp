@@ -1,7 +1,7 @@
+<!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 <head>
@@ -36,12 +36,12 @@
 		        </ul>
 		    </nav>
 		    <div class="content">
-		        <section id="section-1">
+		        <section id="section-meus-projetos">
 		            <c:if test="${empty projetos}">
 						<div class="alert alert-warning" role="alert">Não há projetos cadastrados.</div>
 					</c:if>
 					<c:if test="${not empty projetos}">
-						<table id="projetos" class="table table-striped">
+						<table id="meus-projetos" class="table table-striped projetos">
 							<thead>
 								<tr>
 									<th>Nome</th>
@@ -56,20 +56,20 @@
 											<a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a>
 										</td>
 										<td>${projeto.status.descricao}</td>
-										<td>
+										<td class="acoes">
 											<c:if test="${projeto.status == 'NOVO'}">
 												<a id="submeter" data-toggle="modal" data-target="#confirm-submit" href="#"
 													data-href="<c:url value="/projeto/${projeto.id}/submeter" ></c:url>" data-name="${projeto.nome }">
-													<button class="btn btn-primary">Submeter <span class="glyphicon glyphicon-upload"></span></button>
+													<button class="btn btn-primary">Submeter&nbsp;<i class="fa fa-cloud-upload"></i></button>
 												</a>
 	
 												<a id="editar" href="<c:url value="/projeto/${projeto.id}/editar" ></c:url>">
-													<button class="btn btn-info"> Editar <span class="glyphicon glyphicon-pencil"></span></button>
+													<button class="btn btn-info">Editar&nbsp;<i class="fa fa-edit"></i></button>
 												</a>
 	
 												<a id="excluir" data-toggle="modal" data-target="#confirm-delete" href="#" 
 													data-href="<c:url value="/projeto/${projeto.id}/excluir"></c:url>" data-name="${projeto.nome }">
-													<button class="btn btn-danger">Excluir <span class="glyphicon glyphicon-trash"></span></button>
+													<button class="btn btn-danger">Excluir&nbsp;<i class="fa fa-trash-o"></i></button>
 												</a>
 											</c:if>
 											<sec:authorize ifAnyGranted="ROLE_DIRETOR">
@@ -87,31 +87,29 @@
 						</table>
 					</c:if>
 		        </section>
-		        <section id="section-2">
+		        <section id="section-projetos-aguardando-parecer">
 		            <c:if test="${empty projetosAguardandoParecer}">
 						<div class="alert alert-warning" role="alert">Não há projetos aguardando parecer.</div>
 					</c:if>
 					<c:if test="${not empty projetosAguardandoParecer}">
 						<div class="panel panel-default">
-							<table class="table" id="table">
+							<table id="projetos-aguardando-parecer" class="table table-striped projetos">
 								<thead>
 									<tr>
-										<th id="teste">Identificador</th>
 										<th>Nome</th>
 										<th>Autor</th>
 										<th>Status</th>
-										<th id="acoes">Ações</th>
+										<th></th>
 									</tr>
 								</thead>
 								<tbody>
 									<c:forEach var="projeto" items="${projetosAguardandoParecer}">
-										<tr class="linha">
-											<td>${projeto.codigo}</td>
+										<tr>
 											<td><a
 												href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
 											<td>${projeto.autor.nome}</td>
 											<td class="status">${projeto.status.descricao}</td>
-											<td>
+											<td class="acoes">
 												<c:if test="${projeto.status == 'AGUARDANDO_PARECER'}">
 													<a id="emitirParecer" href="<c:url value="/projeto/${projeto.id}/emitirParecer" ></c:url>">
 														<button class="btn btn-primary">Emitir Parecer <span class="glyphicon glyphicon-exclamation-sign"></span>
@@ -126,16 +124,15 @@
 						</div>
 					</c:if>
 		        </section>
-		        <section id="section-3">
+		        <section id="section-projetos-avaliados">
 		            <c:if test="${empty projetosAvaliados}">
 						<div class="alert alert-warning" role="alert">Não há projetos avaliados.</div>
 					</c:if>
 					<c:if test="${not empty projetosAvaliados}">
 						<div class="panel panel-default">
-							<table class="table" id="table">
+							<table id="projetos-avaliados" class="table table-striped projetos">
 								<thead>
 									<tr>
-										<th id="teste">Identificador</th>
 										<th>Nome</th>
 										<th>Autor</th>
 										<th>Status</th>
@@ -143,12 +140,11 @@
 								</thead>
 								<tbody>
 									<c:forEach var="projeto" items="${projetosAvaliados}">
-										<tr class="linha">
-											<td>${projeto.codigo}</td>
-											<td><a
-												href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
+										<tr>
+											<td>
+												<a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
 											<td>${projeto.autor.nome}</td>
-											<td class="status">${projeto.status.descricao}</td>
+											<td>${projeto.status.descricao}</td>
 										</tr>
 									</c:forEach>
 								</tbody>

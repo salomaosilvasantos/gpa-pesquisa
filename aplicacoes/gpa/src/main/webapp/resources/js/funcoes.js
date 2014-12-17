@@ -230,49 +230,34 @@ $(document).ready(function() {
 		msgLoading: "Carregando arquivo {index} de {files} &hellip;"
 	});
 	
-	/*$('.delete-document').on('click', function (e) {
-		alert('clicou');
-		var line = this;
-		var id = $(this).attr('id');
-		e.preventDefault();
-		bootbox.dialog({
-			message: "Tem certeza de que deseja excluir esse arquivo?",
-			title: "Excluir",
-			buttons: {
-				danger: {
-					label: "Excluir",
-					className: "btn-danger",
-					callback: function() {
-						$.ajax({
-							type: "POST",
-							url: "/gpa-pesquisa/documento/ajax/remover/"+id
-						})
-						.success(function( result ) {
-							if(result.result == 'ok') {
-								$(line).parent().parent().remove();
-							} else {
-								bootbox.alert(result.mensagem, function() {});
-							}
-						});
-					}
-				},
-				main: {
-					label: "Cancelar",
-					className: "btn-default",
-					callback: function() {
-					}
-				}
+	$('#comentar').on('click', function(e){
+		var texto = $('#comentario').val();
+	    var projetoId = $('#projetoId').val();
+	       
+	    $.ajax({
+	    	type: "POST",
+	        url: '/gpa-pesquisa/comentario/comentar',
+	        data : {
+	        	texto : texto,
+	        	projetoId : projetoId
 			}
-		});
-
-
-		$('input[type=file]').bootstrapFileInput();
-
-		$('.delete-file').click(function(){
-			alert($(this).attr('id'));
-		});
-
-	});*/
+	    })
+	    .success(function( comentario ) {
+	    	$('#comentario').val('');
+			$('ul.cbp_tmtimeline').append(
+				'<li><time class="cbp_tmtime"><span>' + comentario.data + '</span><span>' + comentario.data + '</span></time>' +
+			    '<div class="cbp_tmlabel"><h2>' + comentario.autor.nome + '</h2><p>' + comentario.texto + '</p></div></li>'
+			);
+		})
+		.error(function(error) {
+			alert(error.status);
+			alert(error.responseText);
+			alert(JSON.stringify(error));
+		})
+	});
+	
+	
+	
 
 	
 	$("#formularioCadastroComentario").validate({

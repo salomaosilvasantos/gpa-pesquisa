@@ -13,11 +13,9 @@
 <title>Submeter Projeto</title>
 </head>
 <body>
-
-	<jsp:include page="../modulos/header.jsp" />
-	
 	<fmt:formatNumber value="${projeto.valorDaBolsa}"  type="currency" var="valorBolsa"/>
 	<div class="container">
+		<jsp:include page="../modulos/header.jsp" />
 		<div class="novo-projeto" align="left">
 			<c:if test="${not empty alert}">
 				<div class="alert alert-warning alert-dismissible" role="alert">
@@ -31,10 +29,9 @@
 					<c:out value="${erro }"></c:out>
 				</div>
 			</c:if>
-			<div class="form" align="center">
+			<div class="formulario">
 				<h2>Submeter - ${projeto.nome }</h2>
 				<form:form id="submeterProjetoForm" role="form" commandName="projeto" enctype="multipart/form-data" servletRelativeAction="/projeto/submeter" method="POST" cssClass="form-horizontal">
-
 					<input type="hidden" id="valorDaBolsa" name="valorDaBolsa" value="${projeto.valorDaBolsa }"/>
 					<input type="hidden" id="id" name="id" value="${projeto.id }"/>
 					<input type="hidden" id="codigo" name="codigo" value="${projeto.codigo }"/>
