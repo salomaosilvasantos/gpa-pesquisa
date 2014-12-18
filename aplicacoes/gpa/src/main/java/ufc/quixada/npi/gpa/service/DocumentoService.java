@@ -8,6 +8,8 @@ import ufc.quixada.npi.gpa.model.Projeto;
 
 public interface DocumentoService {
 	
+	void salvar(Documento documento);
+	
 	void salvar(List<Documento> documentos);
 	
 	Documento getDocumentoById(Long id);

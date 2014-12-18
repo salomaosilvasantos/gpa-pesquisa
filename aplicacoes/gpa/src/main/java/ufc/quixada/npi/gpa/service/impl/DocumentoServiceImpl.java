@@ -21,6 +21,11 @@ public class DocumentoServiceImpl implements DocumentoService {
 	private GenericRepository<Documento> documentoRepository;
 
 	@Override
+	public void salvar(Documento documento) {
+		documentoRepository.save(documento);
+	}
+	
+	@Override
 	public void salvar(List<Documento> documentos) {
 		for(Documento documento : documentos) {
 			documentoRepository.save(documento);

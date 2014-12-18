@@ -18,8 +18,6 @@ public interface UsuarioService {
 
 	List<Pessoa> getParticipantes(Pessoa usuario);
 
-	Pessoa getPessoaByNome(String nome);
-	
 	List<Pessoa> getParticipantesProjetos();
 	
 }

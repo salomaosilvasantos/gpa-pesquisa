@@ -30,13 +30,13 @@ public class Parecer {
 	@Column(columnDefinition = "TEXT")
 	private String parecer;
 	
-	@DateTimeFormat(pattern = "dd/mm/yyyy")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date dataAtribuicao;
 	
-	@DateTimeFormat(pattern = "dd/mm/yyyy")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date dataRealizacao;
 	
-	@DateTimeFormat(pattern = "dd/mm/yyyy")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date prazo;
 	
 	@ManyToOne

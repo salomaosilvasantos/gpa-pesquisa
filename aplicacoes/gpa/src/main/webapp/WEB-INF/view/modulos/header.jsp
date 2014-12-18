@@ -10,10 +10,10 @@
 		<div class="cbp-hsinner">
 			<ul class="cbp-hsmenu">
 				<li>
-					<a href="<c:url value="/projeto/listar" />" title="Projetos"><i class="fa fa-briefcase fa-2x"></i>&nbsp; Projetos</a>
+					<a href="<c:url value="/projeto/cadastrar" />" title="Novo Projeto"><i class="fa fa-plus-circle fa-2x"></i>&nbsp; Novo Projeto</a>
 				</li>
 				<li>
-					<a href="<c:url value="/projeto/cadastrar" />" title="Novo Projeto"><i class="fa fa-plus-circle fa-2x"></i>&nbsp; Novo Projeto</a>
+					<a href="<c:url value="/projeto/listar" />" title="Projetos"><i class="fa fa-briefcase fa-2x"></i>&nbsp; Projetos</a>
 				</li>
 				<li style="float: right;">
 					<a href="<c:url value="/j_spring_security_logout" />" title="Sair"><i class="fa fa-power-off"></i>&nbsp;</a>

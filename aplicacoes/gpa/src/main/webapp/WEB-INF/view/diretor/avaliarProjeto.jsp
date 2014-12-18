@@ -12,54 +12,77 @@
 <jsp:include page="../modulos/header-estrutura.jsp" />
 <title>Avaliar Projeto</title>
 </head>
-
 <body>
-	<jsp:include page="../modulos/header.jsp" />
-
 	<div class="container">
-		<div class="emitirParecer" align="center">
-			<div class="form" align="center">
-				<h2>Avaliar - ${projeto.nome }</h2>
-				<form:form id="avaliarProjetoForm" servletRelativeAction="/projeto/diretor/${projeto.id}/avaliar" method="POST" cssClass="form-horizontal">
-					<div class="form-group form-item">
-						<label for="avaliacao" class="col-sm-2 control-label">Status:</label>
-						<div class="col-sm-10 files">
-							<select id="avaliacao" name="avaliacao" class="form-control">
-								<option value="APROVADO">APROVADO</option>
-								<option value="APROVADO_COM_RESTRICAO">APROVADO COM RESTRIÇÃO</option>
-								<option value="REPROVADO">REPROVADO</option>
-							</select>
-						</div>
+		<jsp:include page="../modulos/header.jsp" />
+		<div class="formulario">
+			<h2>Avaliar - <a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></h2>
+			<form:form id="avaliarProjetoForm" enctype="multipart/form-data" servletRelativeAction="/projeto/diretor/${projeto.id}/avaliar" method="POST" cssClass="form-horizontal">
+				<div class="form-group">
+					<label for="autor" class="col-sm-2 control-label">Parecerista:</label>
+					<div class="col-sm-4 field-value parecer">
+						<label>${projeto.parecer.parecerista.nome }</label>
 					</div>
-
-					<!-- <div class="form-group">
-						<label for="ata" class="col-sm-2 control-label">Anexar Ata:</label>
-						<div class="col-sm-10 files">
-							<input class="btn btn-success" type="file" name="file" title="Anexar ata..." multiple="multiple">
-						</div>
+					<label for="autor" class="col-sm-2 control-label">Autor:</label>
+					<div class="col-sm-4 field-value parecer">
+						<label><a href="<c:url value="/usuario/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></label>
 					</div>
-					
-					<div class="form-group">
-						<label for="oficio" class="col-sm-2 control-label">Anexar Ofício:</label>
-						<div class="col-sm-10 files">
-							<input class="btn btn-success" type="file" name="file" title="Anexar oficio..." multiple="multiple">
-						</div>
-					</div> -->
-
-
-					<div class="controls">
-						<input name="salvar" type="submit" class="btn btn-primary" value="Salvar" />
-						<a href="<c:url value="/projeto/index"></c:url>" class="btn btn-default">Cancelar</a>
+				</div>
+				<div class="form-group">
+					<label for="observacao" class="col-sm-2 control-label">Parecer:</label>
+					<div class="col-sm-10 field-value parecer">
+						<label>${projeto.parecer.parecer }</label>
 					</div>
-				</form:form>
-			</div>
+				</div>
+				<div class="form-group">
+					<label for="observacao" class="col-sm-2 control-label">Anexo:</label>
+					<div class="col-sm-10 field-value parecer">
+						<a href="<c:url value="/documento/${projeto.id }/${projeto.parecer.documento.id }" />" class="col-sm-12" style="margin-top: 5px;">${projeto.parecer.documento.nome }</a>
+					</div>
+				</div>
+				<div class="form-group form-item">
+					<label for="avaliacao" class="col-sm-2 control-label">Status:</label>
+					<div class="col-sm-4">
+						<select id="avaliacao" name="avaliacao" class="form-control">
+							<option value="APROVADO">APROVADO</option>
+							<option value="APROVADO_COM_RESTRICAO">APROVADO COM RESTRIÇÃO</option>
+							<option value="REPROVADO">REPROVADO</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group form-item">
+					<label for="ata" class="col-sm-2 control-label"><span class="required">*</span> Ata de reunião:</label>
+					<div class="col-sm-10 files">
+						<input type="file" id="ata" name="ata" class="file"></input>
+						<c:if test="${not empty erro_ata}">
+							<div class="error-validation">
+								<span>${erro_ata}</span>
+							</div>
+						</c:if>
+					</div>
+				</div>
+				
+				<div class="form-group form-item">
+					<label for="oficio" class="col-sm-2 control-label"><span class="required">*</span> Ofício de aceitação:</label>
+					<div class="col-sm-10 files">
+						<input type="file" id="oficio" name="oficio" class="file"></input>
+						<c:if test="${not empty erro_oficio}">
+							<div class="error-validation">
+								<span>${erro_oficio}</span>
+							</div>
+						</c:if>
+					</div>
+				</div>
+
+
+				<div class="controls">
+					<input name="salvar" type="submit" class="btn btn-primary" value="Salvar" />
+					<a href="<c:url value="/projeto/index"></c:url>" class="btn btn-default">Cancelar</a>
+				</div>
+			</form:form>
 		</div>
 	</div>
-
 	<jsp:include page="../modulos/footer.jsp"></jsp:include>
-
 </body>
-
-
-
 </html>

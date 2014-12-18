@@ -48,55 +48,24 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	public Pessoa getDiretor() {
-		Pessoa diretor = new Pessoa();
-		List<Pessoa> usuarios = usuarioRepository.find(Pessoa.class);
-		for (Pessoa u : usuarios) {
-			if (isDiretor(u)) {
-				diretor = u;
-				break;
-			}
-		}
-		return diretor;
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("papel", "DIRETOR");
+		return usuarioRepository.findFirst("select pe Pessoa pe, pe.papeis pa where pa.nome = :papel", params);
 	}
 
 	
 	@Override
 	public List<Pessoa> getParticipantes(Pessoa usuario) {
-
 		List<Pessoa> participantes = usuarioRepository.find(Pessoa.class);
 		participantes.remove(usuario);
-		
 		return participantes;
 	}
 
 	@Override
 	public List<Pessoa> getParticipantesProjetos() {
-		Map<String, Object> params = new HashMap<String, Object>();
 		List<Pessoa> participantes = usuarioRepository.find(QueryType.JPQL,
-				"select distinct proj.participantes from Projeto proj", params);
+				"select distinct proj.participantes from Projeto proj", null);
 		return participantes;
-	}
-
-	
-
-
-	@Override
-	public Pessoa getPessoaByNome(String nome) {
-
-		Pessoa pessoa = null;
-
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("nome", nome);
-		List<Pessoa> listaPessoas = usuarioRepository.find(QueryType.JPQL,
-				"from Pessoa where nome = :nome", params);
-
-		if (!listaPessoas.isEmpty()) {
-
-			pessoa = listaPessoas.get(0);
-		}
-
-		return pessoa;
-
 	}
 
 	@Override

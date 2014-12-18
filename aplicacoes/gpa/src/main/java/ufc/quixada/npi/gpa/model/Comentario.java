@@ -29,7 +29,7 @@ public class Comentario {
 	
 	@ManyToOne
 	private Projeto projeto;
-
+	
 	public Long getId() {
 		return id;
 	}

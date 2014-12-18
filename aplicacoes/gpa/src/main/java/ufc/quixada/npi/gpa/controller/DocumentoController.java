@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import ufc.quixada.npi.gpa.model.Documento;
 import ufc.quixada.npi.gpa.model.Pessoa;
+import ufc.quixada.npi.gpa.model.Projeto;
 import ufc.quixada.npi.gpa.model.Projeto.StatusProjeto;
 import ufc.quixada.npi.gpa.service.DocumentoService;
+import ufc.quixada.npi.gpa.service.ProjetoService;
 import ufc.quixada.npi.gpa.service.UsuarioService;
 import ufc.quixada.npi.gpa.utils.Constants;
 
@@ -34,13 +36,18 @@ public class DocumentoController {
 	private DocumentoService documentoService;
 	
 	@Inject
+	private ProjetoService projetoService;
+	
+	@Inject
 	private UsuarioService usuarioService;
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public void getFile(@PathVariable("id") Long id, HttpServletResponse response, HttpSession session) {
+	@RequestMapping(value = "/{idProjeto}/{idArquivo}", method = RequestMethod.GET)
+	public void getArquivo(@PathVariable("idProjeto") Long idProjeto, @PathVariable("idArquivo") Long idArquivo, HttpServletResponse response, HttpSession session) {
 		try {
-			Documento documento = documentoService.getDocumentoById(id);
-			if(documento != null && (getUsuarioLogado(session).equals(documento.getProjeto().getAutor()) || usuarioService.isDiretor(getUsuarioLogado(session)))) {
+			Projeto projeto = projetoService.getProjetoById(idProjeto);
+			Documento documento = documentoService.getDocumentoById(idArquivo);
+			if(documento != null && projeto != null && (getUsuarioLogado(session).equals(projeto.getAutor()) || 
+					usuarioService.isDiretor(getUsuarioLogado(session)) || (projeto.getParecer() != null && getUsuarioLogado(session).equals(projeto.getParecer().getParecerista())))) {
 				InputStream is = new ByteArrayInputStream(documento.getArquivo());
 				response.setContentType(documento.getExtensao());
 				response.setHeader("Content-Disposition", "attachment; filename=" + documento.getNome());

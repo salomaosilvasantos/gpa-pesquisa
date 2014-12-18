@@ -24,6 +24,8 @@ public class Constants {
 	
 	public static final String PAGINA_AVALIAR_PROJETO = "diretor/avaliarProjeto";
 	
+	public static final String PAGINA_DETALHES_USUARIO = "diretor/detalhesUsuario";
+	
 	
 	/** Redirecionamentos */
 	
@@ -62,5 +64,7 @@ public class Constants {
 	public static final String MENSAGEM_ERRO_UPLOAD = "Ocorreu um erro no upload de arquivos";
 	
 	public static final String MENSAGEM_DOCUMENTO_INEXISTENTE = "Documento inexistente";
+	
+	public static final String MENSAGEM_USUARIO_NAO_ENCONTRADO = "Usuário não encontrado";
 	
 }

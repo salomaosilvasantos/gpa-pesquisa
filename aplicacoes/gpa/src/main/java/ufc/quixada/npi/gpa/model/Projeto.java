@@ -20,7 +20,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Size;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -43,6 +42,7 @@ public class Projeto {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date avaliacao;
 
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date submissao;
 
 	@Column(columnDefinition = "TEXT")
@@ -52,6 +52,7 @@ public class Projeto {
 	@ManyToOne
 	private Pessoa autor;
 
+	@Column(columnDefinition = "TEXT")
 	private String atividades;
 
 	private Integer cargaHoraria;
@@ -75,8 +76,14 @@ public class Projeto {
 	@OneToMany(mappedBy = "projeto", cascade = CascadeType.REMOVE)
 	private List<Comentario> comentarios;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.REMOVE)
 	private Parecer parecer;
+	
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	private Documento ata;
+	
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	private Documento oficio;
 
 	public Date getAvaliacao() {
 		return avaliacao;
@@ -221,6 +228,22 @@ public class Projeto {
 		this.parecer = parecer;
 	}
 
+	public Documento getAta() {
+		return ata;
+	}
+
+	public void setAta(Documento ata) {
+		this.ata = ata;
+	}
+
+	public Documento getOficio() {
+		return oficio;
+	}
+
+	public void setOficio(Documento oficio) {
+		this.oficio = oficio;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Projeto) {
@@ -233,7 +256,6 @@ public class Projeto {
 		return false;
 	}
 
-	@JsonIgnore
 	public List<Comentario> getComentarios() {
 		return comentarios;
 	}

@@ -67,7 +67,7 @@
 														<button class="btn btn-primary">Submeter&nbsp;<i class="fa fa-cloud-upload"></i></button>
 													</a>
 													<a id="editar" href="<c:url value="/projeto/${projeto.id}/editar" ></c:url>">
-														<button class="btn btn-info">Editar&nbsp;<i class="fa fa-edit"></i></button>
+														<button class="btn btn-primary">Editar&nbsp;<i class="fa fa-edit"></i></button>
 													</a>
 													<a id="excluir" data-toggle="modal" data-target="#confirm-delete" href="#" 
 														data-href="<c:url value="/projeto/${projeto.id}/excluir"></c:url>" data-name="${projeto.nome }">
@@ -77,19 +77,13 @@
 												<sec:authorize ifAnyGranted="ROLE_DIRETOR">
 													<c:if test="${projeto.status == 'SUBMETIDO'}">
 														<a id="atribuirParecerista"href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
-															<button class="btn btn-primary">Atribuir Parecerista <span class="glyphicon glyphicon-user"></span></button>
+															<button class="btn btn-primary">Atribuir Parecerista&nbsp;<i class="fa fa-user"></i></button>
 														</a>
 													</c:if>
 												</sec:authorize>
 												<c:if test="${projeto.status == 'AGUARDANDO_AVALIACAO'}">
-													<a id="verParecer" data-toggle="modal" href="<c:url value="/projeto/${projeto.id}/verParecer" ></c:url>">
-														<button class="btn btn-primary">Ver Parecer <span class="glyphicon glyphicon-upload"></span></button>
-													</a>
-													<a id="comentario" href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">
-														<button class="btn btn-info">Comentario <span class="glyphicon glyphicon-pencil"></span></button>
-													</a>
-													<a id="avaliarProjeto" data-toggle="modal" href="<c:url value="/projeto/${projeto.id}/avaliarProjeto" ></c:url>">
-														<button class="btn btn-danger">Avaliar Projeto <span class="glyphicon glyphicon-trash"></span></button>
+													<a id="avaliarProjeto" data-toggle="modal" href="<c:url value="/projeto/diretor/${projeto.id}/avaliar" ></c:url>">
+														<button class="btn btn-primary">Avaliar Projeto&nbsp;<i class="fa fa-check-square-o"></i></button>
 													</a>
 												</c:if>
 											</td>
@@ -121,10 +115,18 @@
 									<c:forEach var="projeto" items="${projetosSubmetidos}">
 										<tr>
 											<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
-											<td>${projeto.autor.nome}</td>
+											<td><a href="<c:url value="/usuario/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
 											<td>${projeto.status.descricao}</td>
-											<td>${projeto.parecer.parecerista.nome}</td>
-											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.parecer.prazo}" /></td>
+											<td>
+												<c:if test="${projeto.parecer == null }">-</c:if>
+												<c:if test="${projeto.parecer != null }">
+													<a href="<c:url value="/usuario/${projeto.parecer.parecerista.id}/detalhes" ></c:url>">${projeto.parecer.parecerista.nome}</a>
+												</c:if>
+											</td>
+											<td>
+												<c:if test="${projeto.parecer == null }">-</c:if>
+												<c:if test="${projeto.parecer != null }"><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.parecer.prazo}" /></c:if>
+											</td>
 											<td class="acoes">
 												<c:if test="${projeto.status == 'SUBMETIDO'}">
 													<a id="atribuirParecerista" href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
@@ -132,11 +134,8 @@
 													</a>
 												</c:if>
 												<c:if test="${projeto.status == 'AGUARDANDO_AVALIACAO'}">
-													<a id="verParecer" data-toggle="modal" href="<c:url value="/projeto/${projeto.id}/verParecer" ></c:url>">
-														<button class="btn btn-primary">Ver Parecer <span class="glyphicon glyphicon-search"></span></button>
-													</a>
 													<a id="avaliarProjeto" data-toggle="modal"href="<c:url value="/projeto/diretor/${projeto.id}/avaliar" ></c:url>">
-														<button class="btn btn-primary">Avaliar Projeto <span class="glyphicon glyphicon-ok"></span></button>
+														<button class="btn btn-primary">Avaliar Projeto&nbsp;<i class="fa fa-check-square-o"></i></button>
 													</a>
 												</c:if>
 											</td>
@@ -149,7 +148,7 @@
 		        </section>
 		        <section id="section-projetos-avaliados">
 		            <c:if test="${empty projetosAvaliados}">
-						<div class="alert alert-warning" role="alert">Não há projetos Avaliados.</div>
+						<div class="alert alert-warning" role="alert">Não há projetos avaliados.</div>
 					</c:if>
 					<c:if test="${not empty projetosAvaliados}">
 						<div class="panel panel-default">
@@ -166,7 +165,7 @@
 									<c:forEach var="projeto" items="${projetosAvaliados}">
 										<tr>
 											<td><a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
-											<td>${projeto.autor.nome}</td>
+											<td><a href="<c:url value="/usuario/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
 											<td>${projeto.status.descricao}</td>
 										</tr>
 									</c:forEach>
@@ -191,7 +190,7 @@
 									<c:forEach var="participante" items="${participantes}">
 										<tr>
 											<td>
-												<a href="<c:url value="/projeto/${participante.id}/detalhesParticipante" ></c:url>">${participante.nome}</a>
+												<a href="<c:url value="/usuario/${participante.id}/detalhes" ></c:url>">${participante.nome}</a>
 											</td>
 										</tr>
 									</c:forEach>

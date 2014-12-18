@@ -4,6 +4,8 @@ import static ufc.quixada.npi.gpa.utils.Constants.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ufc.quixada.npi.gpa.model.Comentario;
 import ufc.quixada.npi.gpa.model.Documento;
 import ufc.quixada.npi.gpa.model.Parecer;
 import ufc.quixada.npi.gpa.model.Parecer.StatusPosicionamento;
@@ -145,7 +149,17 @@ public class ProjetoController {
 			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
 		Pessoa usuario = getUsuarioLogado(session);
-		if (usuario.getId() == projeto.getAutor().getId() || usuarioService.isDiretor(usuario)) {
+		if (usuario.getId() == projeto.getAutor().getId() || usuarioService.isDiretor(usuario) || 
+				(projeto.getParecer() != null && projeto.getParecer().getParecerista().getId() == usuario.getId())) {
+			List<Comentario> comentarios = projeto.getComentarios();
+			Collections.sort(comentarios, new Comparator<Comentario>() {
+		        @Override
+		        public int compare(Comentario  comentario1, Comentario  comentario2)
+		        {
+		            return  comentario1.getData().compareTo(comentario2.getData());
+		        }
+		    });
+			projeto.setComentarios(comentarios);
 			model.addAttribute("projeto", projeto);
 			return PAGINA_DETALHES_PROJETO;
 		} else {
@@ -337,7 +351,7 @@ public class ProjetoController {
 	}
 	
 	@RequestMapping(value = "diretor/atribuirParecerista", method = RequestMethod.POST)
-	public String atribuirParecerista(@RequestParam("prazo") Date prazo, @RequestParam("observacao") String observacao, @RequestParam("projetoId") Long projetoId, 
+	public String atribuirParecerista(@RequestParam("prazo") @DateTimeFormat(pattern = "dd/MM/yyyy") Date prazo, @RequestParam("observacao") String observacao, @RequestParam("projetoId") Long projetoId, 
 			@RequestParam("pareceristaId") Long pareceristaId, Model model, RedirectAttributes redirectAttributes) {
 
 		Projeto projeto = projetoService.getProjetoById(projetoId);
@@ -383,9 +397,9 @@ public class ProjetoController {
 	}
 	
 	@RequestMapping(value = "/{idProjeto}/emitirParecer", method = RequestMethod.POST)
-	public String emitirParecer(@PathVariable("idProjeto") Long idProjeto,
-			@RequestParam("parecer") String parecerTexto,
-			@RequestParam("posicionamento") StatusPosicionamento posicionamento, Model model, RedirectAttributes redirectAttributes){
+	public String emitirParecer(@PathVariable("idProjeto") Long idProjeto, @RequestParam("parecer") String parecerTexto,
+			@RequestParam("anexo") MultipartFile anexo, @RequestParam("posicionamento") StatusPosicionamento posicionamento, 
+			Model model, RedirectAttributes redirectAttributes){
 
 		Projeto projeto = projetoService.getProjetoById(idProjeto);
 		if (projeto == null) {
@@ -395,6 +409,19 @@ public class ProjetoController {
 		projeto.getParecer().setDataRealizacao(new Date());
 		projeto.getParecer().setStatus(posicionamento);
 		projeto.getParecer().setParecer(parecerTexto);
+		if (anexo != null) {
+			try {
+				Documento documento = new Documento();
+				documento.setArquivo(anexo.getBytes());
+				documento.setNome(anexo.getOriginalFilename());
+				documento.setExtensao(anexo.getContentType());
+				documentoService.salvar(documento);
+				projeto.getParecer().setDocumento(documento);
+			} catch (IOException e) {
+				model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
+				return PAGINA_EMITIR_PARECER;
+			}
+		}
 		Map<String, String> resultado = projetoService.emitirParecer(projeto);
 		if(!resultado.isEmpty()) {
 			buildValidacoesModel(resultado, model);
@@ -403,7 +430,7 @@ public class ProjetoController {
 			return PAGINA_EMITIR_PARECER;
 		}
 
-		redirectAttributes.addFlashAttribute("info", MENSAGEM_PROJETO_INEXISTENTE);
+		redirectAttributes.addFlashAttribute("info", MENSAGEM_PARECER_EMITIDO);
 		return REDIRECT_PAGINA_LISTAR_PROJETO;
 
 	}
@@ -420,41 +447,41 @@ public class ProjetoController {
 	}
 	
 	@RequestMapping(value = "/diretor/{id}/avaliar", method = RequestMethod.POST)
-	public String avaliar(@PathVariable("id") Long id, @RequestParam("avaliacao") StatusProjeto avaliacao, RedirectAttributes redirect) {
+	public String avaliar(@PathVariable("id") Long id, @RequestParam("avaliacao") StatusProjeto avaliacao, 
+			@RequestParam("ata") MultipartFile ata, @RequestParam("oficio") MultipartFile oficio, Model model, RedirectAttributes redirect) {
+		Documento ataDocumento = null;
+		Documento oficioDocumento = null;
+		try {
+			if (ata != null && ata.getBytes() != null && ata.getBytes().length != 0) {
+				ataDocumento = new Documento();
+				ataDocumento.setArquivo(ata.getBytes());
+				ataDocumento.setNome(ata.getOriginalFilename());
+				ataDocumento.setExtensao(ata.getContentType());
+			}
+			if (oficio != null && oficio.getBytes() != null && oficio.getBytes().length != 0) {
+				oficioDocumento = new Documento();
+				oficioDocumento.setArquivo(oficio.getBytes());
+				oficioDocumento.setNome(oficio.getOriginalFilename());
+				oficioDocumento.setExtensao(oficio.getContentType());
+			}
+		} catch (IOException e) {
+			model.addAttribute("erro", MENSAGEM_ERRO_UPLOAD);
+			return PAGINA_AVALIAR_PROJETO;
+		}
+		
 		Projeto projeto = projetoService.getProjetoById(id);
 		projeto.setStatus(avaliacao);
-		projetoService.avaliar(projeto);
-		redirect.addFlashAttribute("info", MENSAGEM_PROJETO_AVALIADO);
-		return REDIRECT_PAGINA_LISTAR_PROJETO;
-	}
-
-	/*
-	public String verParecer(@PathVariable("id") long id, Model model,
-			HttpSession session, RedirectAttributes redirectAttributes) {
-
-		Projeto projeto = projetoService.find(Projeto.class, id);
-		Pessoa usuario = getUsuarioLogado(session);
-		// Verifica se o projeto existe
-		if (projeto == null) {
-			redirectAttributes
-					.addFlashAttribute("erro", "Projeto inexistente.");
-			return "redirect:/projeto/listar";
+		projeto.setAta(ataDocumento);
+		projeto.setOficio(oficioDocumento);
+		Map<String, String> resultado = projetoService.avaliar(projeto);
+		if(resultado.isEmpty()) {
+			redirect.addFlashAttribute("info", MENSAGEM_PROJETO_AVALIADO);
+			return REDIRECT_PAGINA_LISTAR_PROJETO;
 		}
-		// Verifica se o usuário logado é o autor do projeto ou se é o diretor e
-		// o projeto já foi submetido
-		if (usuario.getId() == projeto.getAutor().getId()
-				|| (usuarioService.isDiretor(usuario))) {
-			model.addAttribute("projeto", projeto);
-			return "diretor/verParecer";
-		} else {
-			redirectAttributes.addFlashAttribute("erro", "Permissão negada.");
-			return "redirect:/projeto/listar";
-		}
-
+		model.addAttribute("projeto", projeto);
+		buildValidacoesModel(resultado, model);
+		return PAGINA_AVALIAR_PROJETO;
 	}
-
-
-	*/
 	
 	private void buildValidacoesBindingResult(Map<String, String> resultado, BindingResult result) {
 		Set<String> keys = resultado.keySet();

@@ -94,6 +94,13 @@ public class ProjetoServiceImpl implements ProjetoService {
 		return projetoRepository.find(QueryType.JPQL, "from Projeto where autor.id = :id", params);
 	}
 	
+	@Override
+	public List<Projeto> getProjetosByParticipante(Long id) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		return projetoRepository.find(QueryType.JPQL, "select distinct p FROM Projeto p JOIN p.participantes pa WHERE pa.id = :id and p.status != 'NOVO'", params);
+	}
+	
 
 	@Override
 	public List<Projeto> getProjetosAvaliadosDoUsuario(Long id) {
@@ -183,6 +190,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 		Map<String, String> resultadoValidacao = this.validarSubmissao(projeto);
 		if (resultadoValidacao.isEmpty()) {
 			projeto.setStatus(StatusProjeto.SUBMETIDO);
+			projeto.setSubmissao(new Date());
 			projetoRepository.update(projeto);
 		}
 		return resultadoValidacao;
@@ -221,8 +229,17 @@ public class ProjetoServiceImpl implements ProjetoService {
 	@Override
 	public Map<String, String> avaliar(Projeto projeto) {
 		Map<String, String> resultado = new HashMap<String, String>();
-		projeto.setAvaliacao(new Date());
-		projetoRepository.update(projeto);
+		if(projeto.getAta() == null) {
+			resultado.put("ata", MENSAGEM_CAMPO_OBRIGATORIO);
+		}
+		if(projeto.getOficio() == null) {
+			resultado.put("oficio", MENSAGEM_CAMPO_OBRIGATORIO);
+		}
+		if(resultado.isEmpty()) {
+			projeto.setAvaliacao(new Date());
+			projetoRepository.update(projeto);
+			projetoRepository.update(projeto);
+		}
 		return resultado;
 	}
 

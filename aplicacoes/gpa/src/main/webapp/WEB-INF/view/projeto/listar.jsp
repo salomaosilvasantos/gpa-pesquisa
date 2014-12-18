@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <html>
 <head>
@@ -46,7 +47,7 @@
 								<tr>
 									<th>Nome</th>
 									<th>Status</th>
-									<th id="acoes"></th>
+									<th></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -64,7 +65,7 @@
 												</a>
 	
 												<a id="editar" href="<c:url value="/projeto/${projeto.id}/editar" ></c:url>">
-													<button class="btn btn-info">Editar&nbsp;<i class="fa fa-edit"></i></button>
+													<button class="btn btn-primary">Editar&nbsp;<i class="fa fa-edit"></i></button>
 												</a>
 	
 												<a id="excluir" data-toggle="modal" data-target="#confirm-delete" href="#" 
@@ -75,8 +76,7 @@
 											<sec:authorize ifAnyGranted="ROLE_DIRETOR">
 												<c:if test="${projeto.status == 'SUBMETIDO'}">
 													<a id="atribuirParecerista" href="<c:url value="/projeto/diretor/${projeto.id}/atribuirParecerista" ></c:url>">
-														<button class="btn btn-primary">Atribuir Parecerista <span class="glyphicon glyphicon-user"></span>
-														</button>
+														<button class="btn btn-primary">Atribuir Parecerista&nbsp;<i class="fa fa-user"></i></button>
 													</a>
 												</c:if>
 											</sec:authorize>
@@ -98,22 +98,22 @@
 									<tr>
 										<th>Nome</th>
 										<th>Autor</th>
-										<th>Status</th>
+										<th>Prazo</th>
 										<th></th>
 									</tr>
 								</thead>
 								<tbody>
 									<c:forEach var="projeto" items="${projetosAguardandoParecer}">
 										<tr>
-											<td><a
-												href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
-											<td>${projeto.autor.nome}</td>
-											<td class="status">${projeto.status.descricao}</td>
+											<td>
+												<a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a>
+											</td>
+											<td><a href="<c:url value="/usuario/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
+											<td><fmt:formatDate pattern="dd/MM/yyyy" value="${projeto.parecer.prazo }" /></td>
 											<td class="acoes">
 												<c:if test="${projeto.status == 'AGUARDANDO_PARECER'}">
 													<a id="emitirParecer" href="<c:url value="/projeto/${projeto.id}/emitirParecer" ></c:url>">
-														<button class="btn btn-primary">Emitir Parecer <span class="glyphicon glyphicon-exclamation-sign"></span>
-														</button>
+														<button class="btn btn-primary">Emitir Parecer&nbsp; <i class="fa fa-gavel"></i></button>
 													</a>
 												</c:if>
 											</td>
@@ -142,8 +142,9 @@
 									<c:forEach var="projeto" items="${projetosAvaliados}">
 										<tr>
 											<td>
-												<a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a></td>
-											<td>${projeto.autor.nome}</td>
+												<a href="<c:url value="/projeto/${projeto.id}/detalhes" ></c:url>">${projeto.nome}</a>
+											</td>
+											<td><a href="<c:url value="/usuario/${projeto.autor.id}/detalhes" ></c:url>">${projeto.autor.nome}</a></td>
 											<td>${projeto.status.descricao}</td>
 										</tr>
 									</c:forEach>

@@ -23,6 +23,8 @@ public interface ProjetoService {
 	List<Projeto> getProjetosAtribuidos();
 
 	List<Projeto> getProjetosByUsuario(Long id);
+	
+	List<Projeto> getProjetosByParticipante(Long id);
 
 	List<Projeto> getProjetosAvaliadosDoUsuario(Long id);
 
